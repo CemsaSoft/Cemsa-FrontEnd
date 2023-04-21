@@ -5,13 +5,15 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ConsultarServicioComponent } from './pages/consultar-servicio/consultar-servicio.component';
+import { ModalComponent } from './shared/modal/modal.component';
 
 
 @NgModule({
   //Componentes que va a utilizar el módulo
   declarations: [
     AppComponent,
-    ConsultarServicioComponent
+    ConsultarServicioComponent,
+    ModalComponent
   ],
   //Para importar otros módulos de angular
   imports: [
@@ -19,6 +21,7 @@ import { ConsultarServicioComponent } from './pages/consultar-servicio/consultar
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
+    ReactiveFormsModule,
   ],
   // Inyección de dependencias
   providers: [],

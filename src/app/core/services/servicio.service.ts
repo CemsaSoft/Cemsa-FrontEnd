@@ -13,11 +13,18 @@ export class ServicioService {
     console.log ("El servicio está corriendo");
   }
 
-  obtenerServicios(): Observable<any>{
+  obtenerServicios(): Observable<any> {
     return this.http.get(this.url);
   }
-  obtenerServiciosPorId(id: number): Observable<any>{
+  obtenerServiciosPorId(id: number): Observable<any> {
     return this.http.get(this.url + '/' + id);
   }
+
+  eliminarServicio(serId: number): Observable<any> {
+    return this.http.delete(this.url + '/' + serId);   
+  }
   
+  modificarServicio(serId: number, servicio: ServicioClass): Observable<any> {
+    return this.http.post(this.url + '/' + serId, servicio);  
+  }
 }
