@@ -27,4 +27,8 @@ export class ServicioService {
   modificarServicio(serId: number, servicio: ServicioClass): Observable<any> {
     return this.http.post(this.url + '/' + serId, servicio);  
   }
+
+  guardarServicio(servicio: ServicioClass): Observable<any> {
+    return this.http.post(this.url, servicio);
+  }
 }

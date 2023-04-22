@@ -36,19 +36,29 @@ export class ConsultarServicioComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private servicioConsultar: ServicioService) { 
-    this.formModificar = this.fb.group({
-      id: new FormControl(null, []),
-      descripcion: new FormControl(null, [
-        Validators.required,
-        Validators.pattern("^[A-Z][A-ZÑa-zñáéíóúÁÉÍÓÚ'° ]+$"),
-      ]),
-      unidad: new FormControl(null, [
-        Validators.required,
-        Validators.pattern("^[A-Z][A-ZÑa-zñáéíóúÁÉÍÓÚ'° ]+$"),
-      ]),
-    });
-  }
+    private servicioRegistrar: ServicioService,
+    private servicioConsultar: ServicioService) 
+    { 
+      this.formModificar = this.fb.group({
+        id: new FormControl(null, []),
+        descripcion: new FormControl(null, [
+          Validators.required,
+          Validators.pattern("^[A-Z][A-ZÑa-zñáéíóúÁÉÍÓÚ'° ]+$"),
+        ]),
+        unidad: new FormControl(null, [
+          Validators.required,
+          Validators.pattern("^[A-Z][A-ZÑa-zñáéíóúÁÉÍÓÚ'° ]+$"),
+        ]),
+        descripcionA: new FormControl(null, [
+          Validators.required,
+          Validators.pattern("^[A-Z][A-ZÑa-zñáéíóúÁÉÍÓÚ'° ]+$"),
+        ]),
+        unidadA: new FormControl(null, [
+          Validators.required,
+          Validators.pattern("^[A-Z][A-ZÑa-zñáéíóúÁÉÍÓÚ'° ]+$"),
+        ]),
+      });
+    }
 
   ngOnInit(): void {
 
@@ -68,6 +78,14 @@ export class ConsultarServicioComponent implements OnInit {
 
   get unidad() {
     return this.formModificar.get('unidad');
+  }
+
+  get descripcionA() {
+    return this.formModificar.get('descripcionA');
+  }
+
+  get unidadA() {
+    return this.formModificar.get('unidadA');
   }
 
   esFiltrar(event: Event){
@@ -109,12 +127,12 @@ export class ConsultarServicioComponent implements OnInit {
     if (opcion == 'Ver Mas') {
       this.titulo = opcion;
       this.bloquearEditar();
-    } else {
-      if (opcion == 'Desactivar') {
+    } 
+    if (opcion == 'Desactivar') {
         this.titulo = opcion;
-      } else {
-        this.titulo = opcion;
-      } 
+    }
+    if (opcion == 'Agregar') {
+          this.titulo = opcion;
     }
   }
 
@@ -209,6 +227,45 @@ export class ConsultarServicioComponent implements OnInit {
     }, (error) => {
       Swal.fire({
         text: 'No es posible eliminar este servicio',
+        icon: 'error',
+        position: 'top',
+        showConfirmButton: true,
+        confirmButtonColor: '#0f425b',
+        confirmButtonText: 'Aceptar',
+      } as SweetAlertOptions);    
+    });
+  }
+
+  //Agregar un servicio
+  agregarServicio(): void {
+    let Servicios: ServicioClass = new ServicioClass(
+      0,
+      this.formModificar.get('descripcionA')?.value,
+      this.formModificar.get('unidadA')?.value,
+    );
+    this.servicioRegistrar.guardarServicio(Servicios).subscribe((data) => {
+      console.log(data);
+      Swal.fire({
+        text:
+          'El Servicio ' + 
+          data.serDescripcion +
+          ' con la unidad: ' +
+          data.serUnidad +
+          ' ha sido registrado con éxito con el número de Cod.: ' +
+          data.serId,
+        icon: 'success',
+        position: 'top',
+        showConfirmButton: true,
+        confirmButtonColor: '#0f425b',
+        confirmButtonText: 'Aceptar',
+      } as SweetAlertOptions).then((result) => {
+        if (result.value == true) {
+          return location.reload();
+        }
+      });
+    }, (error) => {
+      Swal.fire({
+        text: 'No es posible Agregar este servicio',
         icon: 'error',
         position: 'top',
         showConfirmButton: true,
