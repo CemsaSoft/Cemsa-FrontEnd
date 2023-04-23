@@ -104,7 +104,7 @@
                     <span class="input-group-text">Nombre de Servicio</span>
                     <input type="text" class="form-control" id="descripcion" value="descripcion"
                         formControlName="descripcion" required [(ngModel)]="despcionSeleccionado"/>
-                    <span class="input-group-text"><svg
+                    <span class="input-group-text" title="{{caracteresValidos}}"><svg
                           xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                           class="bi bi-question-circle" viewBox="0 0 16 16">
                           <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
@@ -128,7 +128,7 @@
                   <span class="input-group-text">Unidad de Medida</span>
                   <input type="text" class="form-control" id="unidad" value="unidad"
                       formControlName="unidad" required [(ngModel)]="unidadSeleccionada" />
-                  <span class="input-group-text"><svg
+                  <span class="input-group-text" title="{{caracteresValidos}}"><svg
                           xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                           class="bi bi-question-circle" viewBox="0 0 16 16">
                           <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
@@ -152,11 +152,14 @@
       <div class="modal-footer text-center col-3">
           <button *ngIf="mostrarBtnEditarModificacion" type="submit" id="btnEditar" class="btn btn-success" (click)="desbloquearEditar()">Editar</button>
       </div>
-      <div class="modal-footer text-center col-3">
+      <div class="modal-footer text-center col-3" *ngIf="validarControlesMod() == '1'">
           <button *ngIf="mostrarBtnAceptarModificacion" id="btnAceptarModificacion" type="submit" class="btn btn-success"data-bs-toggle="button" data-bs-dismiss="modal"(click)="modificarServicio()">Aceptar</button>  
       </div>
       <div class="modal-footer text-center col-3"> 
           <button style="background-color: #0e3c53;" id="CancelarModificacion" type="button" class="btn text-white"data-bs-dismiss="modal">Cancelar</button>        
+      </div>
+      <div *ngIf="validarControlesMod() == '2' && mostrarBtnAceptarModificacion" class="text-danger">
+        Verifique los campos ingresados
       </div>
     </div>
   </div>    
@@ -173,7 +176,7 @@
 
     <div class="row">
       <div class="modal-footer text-center col-3">
-        <button type="submit" class="btn btn-success" data-bs-toggle="button"              
+        <button type="submit" class="btn btn-success" data-bs-toggle="button"             
         data-bs-dismiss="modal" (click)="desactivarServicio()">Confirmar</button>
       </div>
       <div class="modal-footer text-center col-8">
@@ -185,14 +188,14 @@
 
   <!-- Seccion de Agregar un Servicio -->
   <div *ngIf="titulo == 'Agregar'">
-    <form [formGroup]="formModificar" class="row g-3">
+    <form [formGroup]="formAgregar" class="row g-3">
         <fieldset id="fieldset">
             <div class="col-md-12">
                 <div class="form-outline input-group mb-3">
                     <span class="input-group-text">Nombre de Servicio</span>
                     <input type="text" class="form-control" id="descripcionA"
                         formControlName="descripcionA" placeholder="Ingrese una descripción"/>
-                    <span class="input-group-text"><svg
+                    <span class="input-group-text" title="{{caracteresValidos}}"><svg
                           xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                           class="bi bi-question-circle" viewBox="0 0 16 16">
                           <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
@@ -215,7 +218,7 @@
                   <span class="input-group-text">Unidad de Medida</span>
                   <input type="text" class="form-control" id="unidadA"
                       formControlName="unidadA" placeholder="Ingrese una unidad"/>
-                  <span class="input-group-text"><svg
+                  <span class="input-group-text" title="{{caracteresValidos}}"><svg
                           xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                           class="bi bi-question-circle" viewBox="0 0 16 16">
                           <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
@@ -238,13 +241,16 @@
         </fieldset>
     </form>
     <div class="row">
-      <div class="modal-footer text-center col-3">
+      <div class="modal-footer text-center col-3" *ngIf="validarControlesAgregar() == '1'">
           <button type="submit" id="Validar" class="btn btn-success" (click)="agregarServicio()">
             Agregar</button>
       </div>
       <div class="modal-footer text-center col-8">
         <button style="background-color: #0e3c53;" id="Cancelar" type="button" class="btn text-white"
           data-bs-dismiss="modal">Cancelar</button>        
+      </div>
+      <div *ngIf="validarControlesAgregar() == '2' && descripcionA?.value.trim().length > 0 || unidadA?.value.trim().length > 0" class="text-danger">
+        Verifique los campos ingresados
       </div>
     </div>
   </div>    

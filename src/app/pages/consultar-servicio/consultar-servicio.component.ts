@@ -27,6 +27,8 @@ export class ConsultarServicioComponent implements OnInit {
 
   //VARIABLES DE DATOS
   titulo: string = '';
+  validadorCamposModif: string = '1';
+  validadorCamposAgregar: string = '1';
   serDescripcion: string = '';
   serUnidad: string = '';
   unidadSeleccionada: string = '';
@@ -43,6 +45,7 @@ export class ConsultarServicioComponent implements OnInit {
 
   //FORMULARIOS DE AGRUPACION DE DATOS
   formModificar: FormGroup;
+  formAgregar: FormGroup;
 
   constructor(
     private fb: FormBuilder,
@@ -59,6 +62,8 @@ export class ConsultarServicioComponent implements OnInit {
           Validators.required,
           Validators.pattern("^[A-Z][A-ZÑa-zñáéíóúÁÉÍÓÚ'° ]+$"),
         ]),
+      }),
+      this.formAgregar = this.fb.group({
         descripcionA: new FormControl(null, [
           Validators.required,
           Validators.pattern("^[A-Z][A-ZÑa-zñáéíóúÁÉÍÓÚ'° ]+$"),
@@ -91,11 +96,11 @@ export class ConsultarServicioComponent implements OnInit {
   }
 
   get descripcionA() {
-    return this.formModificar.get('descripcionA');
+    return this.formAgregar.get('descripcionA');
   }
 
   get unidadA() {
-    return this.formModificar.get('unidadA');
+    return this.formAgregar.get('unidadA');
   }
   
   //Filtro de Servicios por Descripcion.
@@ -144,6 +149,24 @@ export class ConsultarServicioComponent implements OnInit {
     }
     if (opcion == 'Agregar') {
           this.titulo = opcion;
+    }
+  }
+
+    //Valida que los campos descripcion y uniddad se encuentren correctamente ingresados.
+    validarControlesMod(): string {
+      if (this.formModificar.valid == false) {
+        return (this.validadorCamposModif = '2');
+      } else {
+        return (this.validadorCamposModif = '1');
+      }
+    }
+
+  //Valida que los campos descripcion y uniddad se encuentren correctamente ingresados.
+  validarControlesAgregar(): string {
+    if (this.formAgregar.valid == false) {
+      return (this.validadorCamposAgregar = '2');
+    } else {
+      return (this.validadorCamposAgregar = '1');
     }
   }
 
@@ -271,8 +294,8 @@ export class ConsultarServicioComponent implements OnInit {
   agregarServicio(): void {
     let Servicios: ServicioClass = new ServicioClass(
       0,
-      this.formModificar.get('descripcionA')?.value,
-      this.formModificar.get('unidadA')?.value,
+      this.formAgregar.get('descripcionA')?.value,
+      this.formAgregar.get('unidadA')?.value,
     );
     this.servicioRegistrar.guardarServicio(Servicios).subscribe((data) => {
       console.log(data);
