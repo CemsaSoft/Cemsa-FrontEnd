@@ -1,6 +1,5 @@
+//SISTEMA
 import { Component, OnInit } from '@angular/core';
-import { ServicioClass } from 'src/app/core/models/servicio';
-import { ServicioService } from 'src/app/core/services/servicio.service';
 import {
   FormBuilder,
   FormGroup,
@@ -8,6 +7,12 @@ import {
   Validators,
 } from '@angular/forms';
 import Swal, { SweetAlertOptions } from 'sweetalert2';
+
+//COMPONENTES
+import { ServicioClass } from 'src/app/core/models/servicio';
+
+//SERVICIOS
+import { ServicioService } from 'src/app/core/services/servicio.service';
 
 @Component({
   selector: 'app-consultar-servicio',
@@ -26,10 +31,15 @@ export class ConsultarServicioComponent implements OnInit {
   serUnidad: string = '';
   unidadSeleccionada: string = '';
   despcionSeleccionado: string = '';
+  propiedadOrdenamiento: string = 'serId';
   caracteresValidos: string =
     "La primera letra del nombre debe ser Mayúscula, y no se admiten: 1-9 ! # $ % & ' ( ) * + , - . / : ; < = > ¿? @ [  ] ^ _` { | } ~";
 
   idSeleccionado: number = 0;
+  tipoOrdenamiento: number = 1;
+
+  mostrarBtnAceptarModificacion: boolean = false;
+  mostrarBtnEditarModificacion : boolean = true;
 
   //FORMULARIOS DE AGRUPACION DE DATOS
   formModificar: FormGroup;
@@ -57,11 +67,11 @@ export class ConsultarServicioComponent implements OnInit {
           Validators.required,
           Validators.pattern("^[A-Z][A-ZÑa-zñáéíóúÁÉÍÓÚ'° ]+$"),
         ]),
-      });
-    }
+      }
+    );
+  }
 
   ngOnInit(): void {
-
     this.servicioConsultar.obtenerServicios().subscribe(data => {
       this.Servicios = data;  
       this.ServiciosFiltrados = data;
@@ -87,35 +97,36 @@ export class ConsultarServicioComponent implements OnInit {
   get unidadA() {
     return this.formModificar.get('unidadA');
   }
-
+  
+  //Filtro de Servicios por Descripcion.
   esFiltrar(event: Event){
     let txtBuscar = (event.target as HTMLInputElement).value;
     let filtro = txtBuscar
-    .replace(/[^\w\s]/g, '')
-    .trim()
-    .toLowerCase();
+      .replace(/[^\w\s]/g, '')
+      .trim()
+      .toLowerCase();
     this.ServiciosFiltrados = [];
 
     this.Servicios.forEach((servicio) => {
       if(
-        servicio.serDescripcion.toString().includes(filtro)
+        servicio.serDescripcion.toString().toLowerCase().includes(filtro)
       ){
-        this.ServiciosFiltrados.push(servicio)
+        this.ServiciosFiltrados.push(servicio);
       }
     }
     );
   }
 
-    //Valida que exista algún servicio que responda al filtro.
-    validarFiltrado(): Boolean {
-      if (this.ServiciosFiltrados.length == 0) {
-        return false;
-      } else {
-        return true;
-      }
+  //Valida que exista algún servicio que responda al filtro.
+  validarFiltrado(): Boolean {
+    if (this.ServiciosFiltrados.length == 0) {
+      return false;
+    } else {
+      return true;
     }
+  }
 
-    //Almacena los datos del servicio que fue seleccionado en la tabla de servicio filtrados dentro de variables locales.
+  //Almacena los datos del servicio que fue seleccionado en la tabla de servicio filtrados dentro de variables locales.
   esfilaSeleccionada(servicios: ServicioClass) {
     this.idSeleccionado = servicios.serId;
     this.despcionSeleccionado = servicios.serDescripcion;
@@ -136,29 +147,50 @@ export class ConsultarServicioComponent implements OnInit {
     }
   }
 
+  //Metodos para grilla
+  //Almacena en una variable la propiedad por la cual se quiere ordenar la consulta de Servicios.
+  ordenarPor(propiedad: string) {
+    this.tipoOrdenamiento =
+      propiedad === this.propiedadOrdenamiento ? this.tipoOrdenamiento * -1 : 1;
+    this.propiedadOrdenamiento = propiedad;
+  }
+
+  //En base a la propiedad por la que se quiera ordenar y el tipo de orden muestra un icono.
+  ordenarIcono(propiedad: string) {
+    if (propiedad === this.propiedadOrdenamiento) {
+      return this.tipoOrdenamiento === 1 ? '🠉' : '🠋';
+    } else {
+      return '🠋🠉';
+    }
+  }
+
   //Bloquea los campos ante una consulta.
   bloquearEditar(): void {
     this.formModificar.get('id')?.disable();
     this.formModificar.get('descripcion')?.disable();
-    this.formModificar.get('unidad')?.disable();
+    this.formModificar.get('unidad')?.disable();    
+    this.mostrarBtnAceptarModificacion = false;
+    this.mostrarBtnEditarModificacion = true;
   }
 
   //Desbloquea los campos para su modificación.
   desbloquearEditar(): void {
-    this.formModificar.get('descripcion')?.enable();
-    this.formModificar.get('unidad')?.enable();
+    this.formModificar.get('descripcion')?.enable();   
+    this.formModificar.get('unidad')?.enable();   
+    this.mostrarBtnAceptarModificacion = true;   
+    this.mostrarBtnEditarModificacion = false;
   }
 
-    //Consulta los Servicio que se encuentran registrados y los guarda en una lista de Servicio.
-    obtenerServicio() {
-      this.servicioConsultar.obtenerServicios().subscribe((data) => {
-        this.Servicios = data;
-        this.Servicios.forEach((servicio) => {
-          servicio.serDescripcion = this.serDescripcion;
-          servicio.serUnidad = this.serUnidad;
-        });
+  //Consulta los Servicio que se encuentran registrados y los guarda en una lista de Servicio.
+  obtenerServicio() {
+    this.servicioConsultar.obtenerServicios().subscribe((data) => {
+      this.Servicios = data;
+      this.Servicios.forEach((servicio) => {
+        servicio.serDescripcion = this.serDescripcion;
+        servicio.serUnidad = this.serUnidad;
       });
-    }
+    });
+  }
 
   //Modificación del servicio seleccionado.
   modificarServicio() {
@@ -200,7 +232,6 @@ export class ConsultarServicioComponent implements OnInit {
         } as SweetAlertOptions);    
       });          
     }
-
 
   //Baja fisica del servicio seleccionado.
   desactivarServicio() {
@@ -274,4 +305,5 @@ export class ConsultarServicioComponent implements OnInit {
       } as SweetAlertOptions);    
     });
   }
+
 }

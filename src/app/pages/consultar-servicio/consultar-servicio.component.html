@@ -12,7 +12,7 @@
               </svg>
           </span>
           <input type="text" class="form-control" 
-              placeholder="Nombre de Servicio" (keyup)="esFiltrar($event)">
+              placeholder="Nombre de Servicio a Buscar" (keyup)="esFiltrar($event)">
       </div>
     </div>
 </div>
@@ -20,12 +20,20 @@
 <div class="row">
     <div class="col-2"></div>
     <div class="col-10">
-      <table class="table">
-          <thead>
+      <table class="table" *ngIf="validarFiltrado() == true">
+        <thead>
             <tr>
-              <th scope="col">Cod.</th>
-              <th scope="col">Nombre de Servicio</th>
-              <th scope="col">Unidad de Medida</th>
+             <!-- <th scope="col">Cod.</th> 
+                  <th scope="col">Nombre de Servicio</th>
+                  <th scope="col">Unidad de Medida</th>
+            -->
+              <th (click)="ordenarPor('serId')" [appSort]="ServiciosFiltrados" data-order="desc"
+                  data-name="serId"><a>Cod {{ordenarIcono('serId')}}</a></th>
+              <th (click)="ordenarPor('serDescripcion')" [appSort]="ServiciosFiltrados" data-order="desc"
+                  data-name="serDescripcion"><a>Nombre de Servicio {{ordenarIcono('serDescripcion')}}</a></th>
+              <th (click)="ordenarPor('serUnidad')" [appSort]="ServiciosFiltrados" data-order="desc"
+                  data-name="serUnidad"><a>Unidad de Medida {{ordenarIcono('serUnidad')}}</a></th>             
+              
               <th scope="col">Desactivar</th>
               <td scope="col">Ver Más</td>
             </tr>
@@ -142,14 +150,13 @@
     </form>
     <div class="row">
       <div class="modal-footer text-center col-3">
-          <button type="submit" id="Validar" class="btn btn-success" (click)="desbloquearEditar()">Editar
-          </button>
+          <button *ngIf="mostrarBtnEditarModificacion" type="submit" id="btnEditar" class="btn btn-success" (click)="desbloquearEditar()">Editar</button>
       </div>
-      <div class="modal-footer text-center col-8">
-          <button style="background-color: #0e3c53;" id="Aceptar" type="submit" class="btn text-white"
-              data-bs-toggle="button" data-bs-dismiss="modal"                    
-              (click)="modificarServicio()">Aceptar
-          </button>        
+      <div class="modal-footer text-center col-3">
+          <button *ngIf="mostrarBtnAceptarModificacion" id="btnAceptarModificacion" type="submit" class="btn btn-success"data-bs-toggle="button" data-bs-dismiss="modal"(click)="modificarServicio()">Aceptar</button>  
+      </div>
+      <div class="modal-footer text-center col-3"> 
+          <button style="background-color: #0e3c53;" id="CancelarModificacion" type="button" class="btn text-white"data-bs-dismiss="modal">Cancelar</button>        
       </div>
     </div>
   </div>    
@@ -163,9 +170,16 @@
         <br>
         Unidad: {{unidadSeleccionada}}
     </h6>
-    <div class="modal-footer text-center">
-        <button style="background-color: #0e3c53;" type="submit" class="btn text-white" data-bs-toggle="button"              
-          data-bs-dismiss="modal" (click)="desactivarServicio()">Confirmar</button>
+
+    <div class="row">
+      <div class="modal-footer text-center col-3">
+        <button type="submit" class="btn btn-success" data-bs-toggle="button"              
+        data-bs-dismiss="modal" (click)="desactivarServicio()">Confirmar</button>
+      </div>
+      <div class="modal-footer text-center col-8">
+        <button style="background-color: #0e3c53;" id="Cancelar" type="button" class="btn text-white"
+          data-bs-dismiss="modal">Cancelar</button>        
+      </div>
     </div>
   </div> 
 
@@ -225,14 +239,12 @@
     </form>
     <div class="row">
       <div class="modal-footer text-center col-3">
-          <button type="submit" id="Validar" class="btn btn-success" (click)="agregarServicio()">Agregar
-          </button>
+          <button type="submit" id="Validar" class="btn btn-success" (click)="agregarServicio()">
+            Agregar</button>
       </div>
       <div class="modal-footer text-center col-8">
         <button style="background-color: #0e3c53;" id="Cancelar" type="button" class="btn text-white"
-          data-bs-dismiss="modal"
-          >Cancelar
-        </button>        
+          data-bs-dismiss="modal">Cancelar</button>        
       </div>
     </div>
   </div>    
