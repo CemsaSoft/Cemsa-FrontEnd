@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { ConsultarServicioComponent } from './pages/consultar-servicio/consultar-servicio.component';
 import { ModalComponent } from './shared/modal/modal.component';
 import { SortDirective } from './shared/others/directive/sort.directive';
+import { ConsultarCentralComponent } from './pages/consultar-central/consultar-central.component';
 
 @NgModule({
   //Componentes que va a utilizar el módulo
@@ -15,6 +16,7 @@ import { SortDirective } from './shared/others/directive/sort.directive';
     ConsultarServicioComponent,
     ModalComponent,
     SortDirective,
+    ConsultarCentralComponent,
   ],
   //Para importar otros módulos de angular
   imports: [
