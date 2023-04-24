@@ -144,10 +144,10 @@ export class ConsultarServicioComponent implements OnInit {
       this.titulo = opcion;
       this.bloquearEditar();
     } 
-    if (opcion == 'Desactivar') {
+    if (opcion == 'Eliminar Servicio') {
         this.titulo = opcion;
     }
-    if (opcion == 'Agregar') {
+    if (opcion == 'Agregar Servicio') {
           this.titulo = opcion;
     }
   }

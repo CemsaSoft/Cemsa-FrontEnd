@@ -21,33 +21,34 @@
     <div class="col-2"></div>
     <div class="col-10">
       <table class="table" *ngIf="validarFiltrado() == true">
-        <thead>
+        <thead class="encabezado">
             <tr>
              <!-- <th scope="col">Cod.</th> 
                   <th scope="col">Nombre de Servicio</th>
                   <th scope="col">Unidad de Medida</th>
             -->
               <th (click)="ordenarPor('serId')" [appSort]="ServiciosFiltrados" data-order="desc"
-                  data-name="serId"><a>Cod {{ordenarIcono('serId')}}</a></th>
+                  data-name="serId" style="text-align: center;"><a>Cod {{ordenarIcono('serId')}}</a></th>
               <th (click)="ordenarPor('serDescripcion')" [appSort]="ServiciosFiltrados" data-order="desc"
-                  data-name="serDescripcion"><a>Nombre de Servicio {{ordenarIcono('serDescripcion')}}</a></th>
+                  data-name="serDescripcion" style="text-align: center;"><a>Nombre de Servicio {{ordenarIcono('serDescripcion')}}</a></th>
               <th (click)="ordenarPor('serUnidad')" [appSort]="ServiciosFiltrados" data-order="desc"
-                  data-name="serUnidad"><a>Unidad de Medida {{ordenarIcono('serUnidad')}}</a></th>             
+                  data-name="serUnidad" style="text-align: center;"><a>Unidad de Medida {{ordenarIcono('serUnidad')}}</a></th>             
               
-              <th scope="col">Desactivar</th>
-              <td scope="col">Ver Más</td>
+              <th scope="col" style="text-align: center;">Desactivar</th>
+              <th scope="col" style="text-align: center;">Ver Más</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let servicio of ServiciosFiltrados"
+            <tr *ngFor="let servicio of ServiciosFiltrados let i=index"
+            [ngClass]="{'fila-par': i%2==0, 'fila-impar': i%2==1}"
               (click)="esfilaSeleccionada(servicio)">
-              <th>{{ servicio.serId }}</th>
-              <td>{{ servicio.serDescripcion }}</td>
-              <td>{{ servicio.serUnidad }}</td>
-              <td>
+              <th style="vertical-align: middle" class="align-center">{{ servicio.serId }}</th>
+              <td style="vertical-align: middle">{{ servicio.serDescripcion }}</td>
+              <td style="vertical-align: middle">{{ servicio.serUnidad }}</td>
+              <td class="align-center">
                 <button type="button" class="btn"data-bs-toggle="modal"
-                data-bs-target="#staticBackdrop" (click)="abrirModal('Desactivar')">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="gray"
+                data-bs-target="#staticBackdrop" (click)="abrirModal('Eliminar Servicio')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="gray"
                         class="bi bi-trash" viewBox="0 0 16 16">
                         <path
                             d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
@@ -56,10 +57,10 @@
                     </svg>
                 </button>
               </td>
-              <td>
+              <td class="align-center">
                 <button type="button" class="btn"data-bs-toggle="modal"
                 data-bs-target="#staticBackdrop" (click)="abrirModal('Ver Mas')">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="green"
+                  <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="green"
                       class="bi bi-pencil-square" viewBox="0 0 16 16">
                       <path
                           d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
@@ -79,7 +80,7 @@
   <div class="row">
     <div class="modal-footer text-center col-3">
         <button type="submit" id="btnAgregar" class="btn btn-success" data-bs-toggle="modal"
-        data-bs-target="#staticBackdrop" (click)="abrirModal('Agregar')">Agregar Servicio
+        data-bs-target="#staticBackdrop" (click)="abrirModal('Agregar Servicio')">Agregar Servicio
         </button>
     </div>
   </div>
@@ -165,13 +166,14 @@
   </div>    
   
   <!-- Seccion de Baja de servicio -->
-  <div *ngIf="titulo == 'Desactivar'">
+  <div *ngIf="titulo == 'Eliminar Servicio'">
     <h5>Está seguro que desea dar de baja al Servicio:</h5>
-    <h6 class="colorLetra">ID: {{idSeleccionado}}
-        <br>
-        Descripción: {{despcionSeleccionado}}
-        <br>
-        Unidad: {{unidadSeleccionada}}
+    <h6 class="colorLetra" style="line-height: 1.5;">
+      ID: {{idSeleccionado}}
+      <br>
+      Descripción: {{despcionSeleccionado}}
+      <br>
+      Unidad: {{unidadSeleccionada}}
     </h6>
 
     <div class="row">
@@ -187,7 +189,7 @@
   </div> 
 
   <!-- Seccion de Agregar un Servicio -->
-  <div *ngIf="titulo == 'Agregar'">
+  <div *ngIf="titulo == 'Agregar Servicio'">
     <form [formGroup]="formAgregar" class="row g-3">
         <fieldset id="fieldset">
             <div class="col-md-12">
@@ -249,7 +251,7 @@
         <button style="background-color: #0e3c53;" id="Cancelar" type="button" class="btn text-white"
           data-bs-dismiss="modal">Cancelar</button>        
       </div>
-      <div *ngIf="validarControlesAgregar() == '2' && descripcionA?.value.trim().length > 0 || unidadA?.value.trim().length > 0" class="text-danger">
+      <div *ngIf="validarControlesAgregar() == '2' " class="text-danger">
         Verifique los campos ingresados
       </div>
     </div>
