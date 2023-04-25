@@ -1,0 +1,14 @@
+.fondoNavBar{
+    background-color: #98d782b4;
+}
+
+.navbar-brand{
+    border-color: rgba(255,255,255,.1);
+    border-radius: 20%;
+}
+
+.navbar.fixed-top .nav-link .icon.wp-launcher:hover, .navbar.fixed-top .nav-link .icon.wp-bell:hover, .navbar.fixed-top .nav-link .icon.wp-messages:hover, .navbar.fixed-top .nav-link .icon.wp-menu:hover, .navbar.fixed-top .show>.nav-link .icon.wp-launcher:hover, .navbar.fixed-top .show>.nav-link .icon.wp-bell:hover, .navbar.fixed-top .show>.nav-link .icon.wp-messages:hover, .navbar.fixed-top .show>.nav-link .icon.wp-menu:hover {
+    opacity: 1;
+    background-color: rgba(0,0,0,.1);
+}
+
