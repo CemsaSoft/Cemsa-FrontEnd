@@ -23,19 +23,22 @@
       <table class="table" *ngIf="validarFiltrado() == true">
         <thead class="encabezado">
             <tr>
+            <!--
               <th scope="col">Cod. Central</th> 
               <th scope="col">Cliente</th>
               <th scope="col">Usuario</th>
               <th scope="col">Estado</th>        
-
-            <!--
-              <th (click)="ordenarPor('serId')" [appSort]="ServiciosFiltrados" data-order="desc"
-                  data-name="serId" style="text-align: center;"><a>Cod {{ordenarIcono('serId')}}</a></th>
-              <th (click)="ordenarPor('serDescripcion')" [appSort]="ServiciosFiltrados" data-order="desc"
-                  data-name="serDescripcion" style="text-align: center;"><a>Nombre de Servicio {{ordenarIcono('serDescripcion')}}</a></th>
-              <th (click)="ordenarPor('serUnidad')" [appSort]="ServiciosFiltrados" data-order="desc"
-                  data-name="serUnidad" style="text-align: center;"><a>Unidad de Medida {{ordenarIcono('serUnidad')}}</a></th>             
-              -->
+            -->
+            
+              <th (click)="ordenarPor('cenNro')" [appSort]="CentralConsultaFiltrados" data-order="desc"
+                  data-name="cenNro" style="text-align: center;"><a>Cod. Central {{ordenarIcono('cenNro')}}</a></th>
+              <th (click)="ordenarPor('cliApeNomDen')" [appSort]="CentralConsultaFiltrados" data-order="desc"
+                  data-name="cliApeNomDen" style="text-align: center;"><a>Cliente {{ordenarIcono('cliApeNomDen')}}</a></th>
+              <th (click)="ordenarPor('usuario')" [appSort]="CentralConsultaFiltrados" data-order="desc"
+                  data-name="usuario" style="text-align: center;"><a>Usuario {{ordenarIcono('usuario')}}</a></th>             
+              <th (click)="ordenarPor('estDescripcion')" [appSort]="CentralConsultaFiltrados" data-order="desc"
+                  data-name="estDescripcion" style="text-align: center;"><a>Estado {{ordenarIcono('estDescripcion')}}</a></th>             
+                
               <th scope="col" style="text-align: center;">Desactivar</th>
               <th scope="col" style="text-align: center;">Ver Más</th>
             </tr>

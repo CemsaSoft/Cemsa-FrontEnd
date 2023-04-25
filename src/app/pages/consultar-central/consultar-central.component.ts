@@ -27,6 +27,10 @@ CentralConsultaFiltrados: CentralConsultaClass [] = [];
 
 //VARIABLES DE DATOS
 titulo: string = '';
+propiedadOrdenamiento: string = 'cenNro';
+
+
+tipoOrdenamiento: number = 1;
 
 
 //FORMULARIOS DE AGRUPACION DE DATOS
@@ -54,6 +58,7 @@ titulo: string = '';
       return true;
     }
   }
+
   //Filtro de Central por Nombre.
   esFiltrar(event: Event){
     let txtBuscar = (event.target as HTMLInputElement).value;
@@ -63,4 +68,23 @@ titulo: string = '';
       .toLowerCase();
     this.CentralConsultaFiltrados = [];
   }
+
+  //Metodos para grilla
+  //Almacena en una variable la propiedad por la cual se quiere ordenar la consulta de Central.
+  ordenarPor(propiedad: string) {
+    this.tipoOrdenamiento =
+      propiedad === this.propiedadOrdenamiento ? this.tipoOrdenamiento * -1 : 1;
+    this.propiedadOrdenamiento = propiedad;
+  }
+
+  //En base a la propiedad por la que se quiera ordenar y el tipo de orden muestra un icono.
+  ordenarIcono(propiedad: string) {
+    if (propiedad === this.propiedadOrdenamiento) {
+      return this.tipoOrdenamiento === 1 ? '🠉' : '🠋';
+    } else {
+      return '🠋🠉';
+    }
+  }
+
+  
 }
