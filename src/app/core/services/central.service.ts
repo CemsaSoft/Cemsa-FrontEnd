@@ -14,7 +14,14 @@ export class CentralService {
   }
 
   obtenerCentral(): Observable<any> {
-    return this.http.get(this.url);
+    return this.http.get(this.url + '/listaCentrales');
   }
   
+  modificarEstado(cenNum: number, idEstado: number): Observable<any> {
+    return this.http.post(this.url + '/' + cenNum + '/' + idEstado, null);    
+  }
+  
+  obtenerEstadoCentral(): Observable<any> {
+    return this.http.get(this.url + '/listaEstadosCentrales') ;
+  }
 }

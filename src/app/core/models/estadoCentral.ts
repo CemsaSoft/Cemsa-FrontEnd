@@ -1,4 +1,4 @@
- export class EstadoCentralClass  {
+ export class EstadoCentralConsultaClass  {
 
     estId : number;
     estDescripcion: string;

@@ -10,6 +10,7 @@ import Swal, { SweetAlertOptions } from 'sweetalert2';
 
 //COMPONENTES
 import { CentralConsultaClass } from 'src/app/core/models/centralConsulta';
+import { EstadoCentralConsultaClass } from 'src/app/core/models/estadoCentral';
 
 //SERVICIOS
 import { CentralService } from 'src/app/core/services/central.service';
@@ -24,29 +25,34 @@ export class ConsultarCentralComponent implements OnInit {
 //VARIABLES DE OBJETOS LIST
 CentralConsulta: CentralConsultaClass[] = [];
 CentralConsultaFiltrados: CentralConsultaClass [] = [];
+EstadoCentralConsulta: EstadoCentralConsultaClass[] = [];
 
 //VARIABLES DE DATOS
 titulo: string = '';
 propiedadOrdenamiento: string = 'cenNro';
+cliApeNomDenSeleccionado: string ='';
+usuarioSeleccionada: string = '';
+estDescripcionSeleccionado: string = '';
 
 
 tipoOrdenamiento: number = 1;
-
+cenNroSeleccionado: number=0;
+estIdSeleccionado: number = 0;
 
 //FORMULARIOS DE AGRUPACION DE DATOS
 
   constructor(
     private fb: FormBuilder,
-    private centralRegistrar: CentralService,
-    private centralConsultar: CentralService,   
+    private centralModificarEstado: CentralService,
+    private centralConsultar: CentralService, 
+    private estadoCentralConsulta: CentralService,
     )    
    { }
 
   ngOnInit(): void {
     this.centralConsultar.obtenerCentral().subscribe(data => {
       this.CentralConsulta = data;  
-      this.CentralConsultaFiltrados = data;
-      
+      this.CentralConsultaFiltrados = data;      
   })
   }
 
@@ -59,6 +65,15 @@ tipoOrdenamiento: number = 1;
     }
   }
 
+  //Almacena los datos del servicio que fue seleccionado en la tabla de servicio filtrados dentro de variables locales.
+  esfilaSeleccionada(centralConsulta: CentralConsultaClass) {
+      this.cenNroSeleccionado = centralConsulta.cenNro;
+      this.cliApeNomDenSeleccionado = centralConsulta.cliApeNomDen;
+      this.usuarioSeleccionada = centralConsulta.usuario;
+      this.estDescripcionSeleccionado = centralConsulta.estDescripcion;
+      this.estIdSeleccionado = centralConsulta.estId;
+  }
+
   //Filtro de Central por Nombre.
   esFiltrar(event: Event){
     let txtBuscar = (event.target as HTMLInputElement).value;
@@ -67,6 +82,14 @@ tipoOrdenamiento: number = 1;
       .trim()
       .toLowerCase();
     this.CentralConsultaFiltrados = [];
+    this.CentralConsulta.forEach((centralConsulta) => {
+      if(
+        centralConsulta.cliApeNomDen.toString().toLowerCase().includes(filtro)
+      ){
+        this.CentralConsultaFiltrados.push(centralConsulta);
+      }
+    }
+    );
   }
 
   //Metodos para grilla
@@ -86,5 +109,54 @@ tipoOrdenamiento: number = 1;
     }
   }
 
-  
+    //Permite abrir un Modal u otro en función del titulo pasado como parametro.
+    abrirModal(opcion: string) {
+      if (opcion == 'Editar Estado de Central') {
+        this.titulo = opcion;
+        this.ListarEstadosCentral();
+      }       
+    }
+
+    ListarEstadosCentral()
+    {
+      this.EstadoCentralConsulta = [];
+      this.estadoCentralConsulta.obtenerEstadoCentral().subscribe(data =>
+        {
+          this.EstadoCentralConsulta = data; 
+        })        
+    }
+    
+    onSelectEstado(id: number) {
+      this.estIdSeleccionado = id;
+    }
+
+    ModificarEstadoCentral(estIdSeleccionado: number): void {
+      this.centralModificarEstado.modificarEstado(this.cenNroSeleccionado, estIdSeleccionado).subscribe(
+        result => {
+          Swal.fire({
+            text: 'Se ha actualizado el estado',
+            icon: 'success',
+            position: 'top',
+            showConfirmButton: true,
+            confirmButtonColor: '#0f425b',
+            confirmButtonText: 'Aceptar',
+          } as SweetAlertOptions).then((result) => {
+            if (result.value == true) {
+              return location.reload();
+            }
+          });
+        },
+        error => {
+          Swal.fire({
+            text: 'No es posible modificar el estado de esta central',
+            icon: 'error',
+            position: 'top',
+            showConfirmButton: true,
+            confirmButtonColor: '#0f425b',
+            confirmButtonText: 'Aceptar',
+          } as SweetAlertOptions);    
+        }
+      );
+    }
+    
 }
