@@ -328,5 +328,4 @@ export class ConsultarServicioComponent implements OnInit {
       } as SweetAlertOptions);    
     });
   }
-
 }

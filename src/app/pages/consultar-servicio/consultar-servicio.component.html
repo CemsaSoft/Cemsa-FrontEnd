@@ -167,14 +167,20 @@
   
   <!-- Seccion de Baja de servicio -->
   <div *ngIf="titulo == 'Eliminar Servicio'">
-    <h5>Está seguro que desea dar de baja al Servicio:</h5>
-    <h6 class="colorLetra" style="line-height: 1.5;">
-      ID: {{idSeleccionado}}
-      <br>
-      Descripción: {{despcionSeleccionado}}
-      <br>
-      Unidad: {{unidadSeleccionada}}
-    </h6>
+    <h5>Está seguro que desea dar de baja al Servicio:</h5>    
+    <br>
+    <div class="form-outline input-group mb-3">
+      <span class="input-group-text">Cod. </span>
+      <input type="text" class="form-control"  required [(ngModel)]="idSeleccionado" readonly/>
+    </div>
+    <div class="form-outline input-group mb-3">
+      <span class="input-group-text">Nombre del Servicio </span>
+      <input type="text" class="form-control"  required [(ngModel)]="despcionSeleccionado" readonly/>
+    </div>
+    <div class="form-outline input-group mb-3">
+      <span class="input-group-text">Unidad de Medida </span>
+      <input type="text" class="form-control"  required [(ngModel)]="unidadSeleccionada" readonly/>
+    </div>
 
     <div class="row">
       <div class="modal-footer text-center col-3">
