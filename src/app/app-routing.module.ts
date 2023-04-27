@@ -6,6 +6,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ConsultarServicioComponent } from './pages/consultar-servicio/consultar-servicio.component';
 import { ConsultarCentralComponent} from './pages/consultar-central/consultar-central.component';
 import { HomeComponent } from './pages/home/home.component';
+import { ModificarCentralComponent } from './pages/modificar-central/modificar-central.component';
 
 //RUTAS
 const routes: Routes = [
@@ -14,6 +15,7 @@ const routes: Routes = [
   {path:'home', component: HomeComponent},
   {path:'consultar-servicio', component: ConsultarServicioComponent},
   {path:'consultar-central', component: ConsultarCentralComponent},
+  {path:'modificar-central', component: ModificarCentralComponent},
   {path:'', redirectTo: '/', pathMatch:'full'},
   {path:'**', redirectTo: '/', pathMatch:'full'},
 ];

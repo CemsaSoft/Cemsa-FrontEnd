@@ -305,4 +305,7 @@ formModificar: FormGroup;
   modificarCentral(): void {
 
   }
+  mostrar():void{
+    console.log('entre a mostrar')
+  }
 }

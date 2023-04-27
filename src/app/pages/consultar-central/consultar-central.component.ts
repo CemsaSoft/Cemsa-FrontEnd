@@ -1,20 +1,12 @@
 //SISTEMA
 import { Component, OnInit } from '@angular/core';
 import {
-FormBuilder,
-FormGroup,
-FormControl,
-Validators,
+  FormBuilder,
 } from '@angular/forms';
 import Swal, { SweetAlertOptions } from 'sweetalert2';
 
-  import { Router } from '@angular/router';
-  import { ElementRef, ViewChild } from '@angular/core';
-  import { ConsultarServicioComponent } from '../consultar-servicio/consultar-servicio.component';
-
 //COMPONENTES
 import { CentralConsultaClass } from 'src/app/core/models/centralConsulta';
-import { EstadoCentralConsultaClass } from 'src/app/core/models/estadoCentral';
 
 //SERVICIOS
 import { CentralService } from 'src/app/core/services/central.service';
@@ -25,7 +17,7 @@ import { CentralService } from 'src/app/core/services/central.service';
   styleUrls: ['./consultar-central.component.css']
 })
 
-export class ConsultarCentralComponent implements OnInit  {
+export class ConsultarCentralComponent implements OnInit   {
 
 //VARIABLES DE OBJETOS LIST
 CentralConsulta: CentralConsultaClass[] = [];
@@ -48,16 +40,14 @@ tipoOrdenamiento: number = 1;
 cenNroSeleccionado: number=0;
 estIdSeleccionado: number = 0;
 
-
 //FORMULARIOS DE AGRUPACION DE DATOS
 
   constructor(
     private fb: FormBuilder,
     private centralModificarEstado: CentralService,
     private centralConsultar: CentralService, 
-    private router: Router, private elRef: ElementRef
     )    
-    { }
+  { }
         
     ngOnInit(): void {          
       this.centralConsultar.obtenerCentral().subscribe(data => {
@@ -167,8 +157,6 @@ estIdSeleccionado: number = 0;
 
   // abrir ventna Modificar Central
   modificarCentral(): void {
-    this.router.navigateByUrl('/consultar-servicio');
-    this.elRef.nativeElement.parentElement.removeChild(this.elRef.nativeElement);  
-    console.log("paso por aca");
+      console.log("paso por aca");    
   }
 }
