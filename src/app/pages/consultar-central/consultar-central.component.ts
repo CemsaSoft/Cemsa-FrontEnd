@@ -7,6 +7,7 @@ import Swal, { SweetAlertOptions } from 'sweetalert2';
 
 //COMPONENTES
 import { CentralConsultaClass } from 'src/app/core/models/centralConsulta';
+import { CentralClass } from 'src/app/core/models/central';
 
 //SERVICIOS
 import { CentralService } from 'src/app/core/services/central.service';
@@ -39,6 +40,7 @@ fechaBajaSeleccionado: string = '';
 tipoOrdenamiento: number = 1;
 cenNroSeleccionado: number=0;
 estIdSeleccionado: number = 0;
+CentralSeleccionada: any;
 
 //FORMULARIOS DE AGRUPACION DE DATOS
 
@@ -46,6 +48,7 @@ estIdSeleccionado: number = 0;
     private fb: FormBuilder,
     private centralModificarEstado: CentralService,
     private centralConsultar: CentralService, 
+    private servicioCentral: CentralService,
     )    
   { }
         
@@ -67,6 +70,7 @@ estIdSeleccionado: number = 0;
 
   //Almacena los datos del servicio que fue seleccionado en la tabla de servicio filtrados dentro de variables locales.
   esfilaSeleccionada(centralConsulta: CentralConsultaClass) {
+    this.CentralSeleccionada = centralConsulta;
       this.cenNroSeleccionado = centralConsulta.cenNro;
       this.cliApeNomDenSeleccionado = centralConsulta.cliApeNomDen;
       this.usuarioSeleccionado = centralConsulta.usuario;
@@ -157,6 +161,13 @@ estIdSeleccionado: number = 0;
 
   // abrir ventna Modificar Central
   modificarCentral(): void {
-      console.log("paso por aca");    
+          
+  }
+  enviarDatos(){
+    console.log(this.CentralSeleccionada)
+    console.log("paso por consultar central y los datos son");
+    this.servicioCentral.enviarCentralSeleccionada(this.CentralSeleccionada)
+   
+   
   }
 }
