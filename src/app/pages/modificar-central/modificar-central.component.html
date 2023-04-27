@@ -1,0 +1,158 @@
+
+<head>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="VzLXTJGPSyTLX6d96AxgkKvE/LRb7ECGyTxuwtpjHnVWVZs2gp5RDjeM/tgBnVdM" crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="9+9VLV50ZIoYm6ndV2JzOw1i6jKzJ5uuIbRvL9afckY=" crossorigin=""></script>
+  <script src="ruta/a/tu/archivo.js"></script>
+</head>
+
+<h1 class="text-center">Modificar Central Meteorológica</h1>
+<br>
+
+<div class="row">
+  <div class="col-4"></div>
+    <div class="col-6">
+      <h3> Cliente de la Central: </h3>
+      <br>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-outline input-group mb-3">
+            <span class="input-group-text">Cliente </span>
+            <input type="text" class="form-control" id="cliApeNomDenVM" value="cliApeNomDenVM"
+                formControlName="cliApeNomDenVM" required [(ngModel)]="cliApeNomDenSeleccionado" readonly/>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-outline input-group mb-3">
+            <span class="input-group-text">Usuario </span>
+            <input type="text" class="form-control" id="usuarioVM" value="usuarioVM"
+              formControlName="usuarioVM" required [(ngModel)]="usuarioSeleccionado" readonly/>
+          </div>
+        </div>
+      </div>
+      <h3> Datos de la Central: </h3>
+      <br>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-outline input-group mb-3">
+            <span class="input-group-text">Cod. Central </span>                    
+            <input type="text" class="form-control" id="id" value="id" 
+            formControlName="id" required [(ngModel)]="cenNroSeleccionado" readonly/>                    
+          </div>              
+        </div>
+        <div class="col-md-6">
+          <div class="form-outline input-group mb-3">
+              <span class="input-group-text">IMEI </span>
+              <input type="text" class="form-control" id="imei" value="imei"
+                  formControlName="imei" required [(ngModel)]="imeiSeleccionado"/>
+              <span class="input-group-text" title="{{numerosValidos}}"><svg
+                    xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-question-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                    <path
+                        d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z" />
+                  </svg>
+              </span>
+          </div>
+          <div *ngIf="imei?.invalid && (imei?.dirty || imei?.touched)" class="text-danger">
+            <div *ngIf="imei?.errors?.['required']">
+                La IMEI es requerida.
+            </div>
+            <div *ngIf="imei?.errors?.['pattern']">
+                Solo contener números.
+            </div>
+          </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-outline input-group mb-3">
+          <span class="input-group-text">Fecha de Alta </span>                    
+          <input type="text" class="form-control" id="fechaAlta" value="fechaAlta" 
+          formControlName="fechaAlta" required [(ngModel)]="fechaAltaSeleccionado" readonly/>                    
+        </div>              
+      </div>
+      <div class="col-md-6">
+        <div class="form-outline input-group mb-3">
+          <span class="input-group-text">Fecha de Baja </span>                    
+          <input type="text" class="form-control" id="fechaBaja" value="fechaBaja" 
+          formControlName="fechaBaja" required [(ngModel)]="fechaBajaSeleccionado" readonly/>                    
+        </div>              
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-outline input-group mb-3">
+            <span class="input-group-text">Coordenadas X </span>
+            <input type="text" class="form-control" id="coordenadaX" value="coordenadaX"
+                formControlName="coordenadaX" required [(ngModel)]="coordenadaXSeleccionado" readonly/>
+        </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-outline input-group mb-3">
+          <span class="input-group-text">Coordenadas Y </span>
+          <input type="text" class="form-control" id="coordenadaY" value="coordenadaY"
+              formControlName="coordenadaY" required [(ngModel)]="coordenadaYSeleccionado" readonly/>             
+      </div>          
+    </div>
+    <br>
+    <div id="map" style="height: 400px; "></div> <!--width: 400px;-->
+    <br>
+    <h3> Servicios: </h3>
+    <br>
+    <br>
+    <div class="row">
+      <div class="col-md-6">
+        <h4> Lista de Servicios </h4>
+        <table class="table" *ngIf="validarFiltrado() == true">
+          <thead class="encabezado">
+              <tr>              
+                <th scope="col">Cod.</th> 
+                <th scope="col">Nombre de Servicio</th> 
+              </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let central of CentralConsultaFiltrados; let i=index"
+            [ngClass]="{'fila-par': i%2==0, 'fila-impar': i%2==1}"
+            (click)="esfilaSeleccionada(central)">
+              <th style="vertical-align: middle" class="align-center">{{ central.cenNro }}</th>
+              <td style="vertical-align: middle">{{ central.cliApeNomDen }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-md-6">
+        <h4> Lista de Servicios Activos</h4>
+        <table class="table" *ngIf="validarFiltrado() == true">
+          <thead class="encabezado">
+              <tr>              
+                <th scope="col">Cod.</th> 
+                <th scope="col">Nombre de Servicio</th> 
+              </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let central of CentralConsultaFiltrados; let i=index"
+            [ngClass]="{'fila-par': i%2==0, 'fila-impar': i%2==1}"
+            (click)="esfilaSeleccionada(central)">
+              <th style="vertical-align: middle" class="align-center">{{ central.cenNro }}</th>
+              <td style="vertical-align: middle">{{ central.cliApeNomDen }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>  
+
+    <div class="row">   
+      <div class="modal-footer text-center col-3">
+          <button *ngIf="mostrarBtnEditarModificacion" type="submit" id="btnEditar" class="btn btn-success" (click)="desbloquearEditar()">Editar Dato Central</button>
+      </div>        
+      <div class="modal-footer text-center col-3" *ngIf="validarControlesMod() == '1'">
+          <button *ngIf="mostrarBtnAceptarModificacion" id="btnAceptarModificacion" type="submit" class="btn btn-success"data-bs-toggle="button" data-bs-dismiss="modal"(click)="modificarCentral()">Aceptar</button>  
+      </div>
+      <div *ngIf="validarControlesMod() == '2' && mostrarBtnAceptarModificacion" class="text-danger">
+        Verifique los campos ingresados
+      </div>
+    </div>
+    
+  </div>
+</div>
+

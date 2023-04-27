@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 import Swal, { SweetAlertOptions } from 'sweetalert2';
 
-//COMPONENTES
+//COMPONENTES 
 import { ServicioClass } from 'src/app/core/models/servicio';
 
 //SERVICIOS

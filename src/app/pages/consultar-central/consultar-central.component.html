@@ -22,14 +22,7 @@
     <div class="col-10">
       <table class="table" *ngIf="validarFiltrado() == true">
         <thead class="encabezado">
-            <tr>
-            <!--
-              <th scope="col">Cod. Central</th> 
-              <th scope="col">Cliente</th>
-              <th scope="col">Usuario</th>
-              <th scope="col">Estado</th>        
-            -->
-            
+            <tr>            
               <th (click)="ordenarPor('cenNro')" [appSort]="CentralConsultaFiltrados" data-order="desc"
                   data-name="cenNro" style="text-align: center;"><a>Cod. Central {{ordenarIcono('cenNro')}}</a></th>
               <th (click)="ordenarPor('cliApeNomDen')" [appSort]="CentralConsultaFiltrados" data-order="desc"
@@ -52,25 +45,42 @@
               <td style="vertical-align: middle">{{ central.usuario }}</td>
               <td style="vertical-align: middle">{{ central.estDescripcion }}</td>
               <td class="align-center">
-                <button type="button" class="btn"data-bs-toggle="modal"
-                data-bs-target="#staticBackdrop" (click)="abrirModal('Editar Estado de Central')">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="green"
-                    class="bi bi-pencil-square" viewBox="0 0 16 16">
-                    <path
-                        d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
-                    <path fill-rule="evenodd"
-                        d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
+                <button type="button" class="btn"
+                data-bs-target="#staticBackdrop" (click)="ModificarEstadoCentral(1, 'Disponible')">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-check2-square" viewBox="0 0 16 16">
+                    <path d="M3 14.5A1.5 1.5 0 0 1 1.5 13V3A1.5 1.5 0 0 1 3 1.5h8a.5.5 0 0 1 0 1H3a.5.5 0 0 0-.5.5v10a.5.5 0 0 0 .5.5h10a.5.5 0 0 0 .5-.5V8a.5.5 0 0 1 1 0v5a1.5 1.5 0 0 1-1.5 1.5H3z"/>
+                    <path d="m8.354 10.354 7-7a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0z"/>
                   </svg>
+                </button>
+                <button type="button" class="btn"
+                data-bs-target="#staticBackdrop" (click)="ModificarEstadoCentral(2, 'Bloqueada')">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-file-lock" viewBox="0 0 16 16">
+                    <path d="M8 5a1 1 0 0 1 1 1v1H7V6a1 1 0 0 1 1-1zm2 2.076V6a2 2 0 1 0-4 0v1.076c-.54.166-1 .597-1 1.224v2.4c0 .816.781 1.3 1.5 1.3h3c.719 0 1.5-.484 1.5-1.3V8.3c0-.627-.46-1.058-1-1.224zM6.105 8.125A.637.637 0 0 1 6.5 8h3a.64.64 0 0 1 .395.125c.085.068.105.133.105.175v2.4c0 .042-.02.107-.105.175A.637.637 0 0 1 9.5 11h-3a.637.637 0 0 1-.395-.125C6.02 10.807 6 10.742 6 10.7V8.3c0-.042.02-.107.105-.175z"/>
+                    <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>
+                  </svg>
+                </button>
+                <button type="button" class="btn"
+                data-bs-target="#staticBackdrop" (click)="ModificarEstadoCentral(3, 'Error')">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                  </svg>
+                </button>
+                <button type="button" class="btn"
+                data-bs-target="#staticBackdrop" (click)="ModificarEstadoCentral(4, 'Baja')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="gray"
+                        class="bi bi-trash" viewBox="0 0 16 16">
+                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                        <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                    </svg>
                 </button>
               </td>
               <td class="align-center">
-                <button type="button" class="btn"data-bs-toggle="modal"
-                data-bs-target="#staticBackdrop" >
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-                </svg>
-           
-              </button>
+                <button type="button" class="btn" (click)="modificarCentral()">                  
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                  </svg>           
+                </button>
               </td>
             </tr>
           </tbody>
@@ -78,52 +88,3 @@
     </div>
     <div class="alert alert-primary text-center" role="alert" *ngIf="validarFiltrado() == false">      ¡No se ha encontrado ninguna Central!
   </div>
-
-<app-modal titulo="{{titulo}}">
-
-    <!-- Seccion de Modificar Estado de Central -->
-    <div *ngIf="titulo == 'Editar Estado de Central'">
-      <h5>Modificar Estado de la Central: </h5>
-
-      <div class="col-md-12">
-        <div class="form-outline input-group mb-3">
-          <span class="input-group-text"> Cod. Central </span>                    
-          <input type="text" class="form-control" [(ngModel)]="cenNroSeleccionado" readonly />                    
-        </div>              
-      </div>     
-      <div class="col-md-12">
-        <div class="form-outline input-group mb-3">
-          <span class="input-group-text"> Cliente </span>                    
-          <input type="text" class="form-control" [(ngModel)]="cliApeNomDenSeleccionado" readonly />                    
-        </div>              
-      </div>
-      <div class="col-md-12">
-        <div class="form-outline input-group mb-3">
-          <span class="input-group-text"> Usuario </span>                    
-          <input type="text" class="form-control" [(ngModel)]="usuarioSeleccionada" readonly />                    
-        </div>              
-      </div>
-      
-      <div class="col-md-12">
-        <div class="form-outline input-group mb-3">
-          <span class="input-group-text"> Estado Central </span>
-          <select name="estadosCentrales" id="estadosCentrales" [(ngModel)]="estIdSeleccionado">
-            <option *ngFor="let estadoCentral of EstadoCentralConsulta" [value]="estadoCentral.estId" [selected]="estadoCentral.estId === estIdSeleccionado ? true : false">
-              {{estadoCentral.estDescripcion}}
-            </option>        
-          </select>   
-        </div>        
-      </div>
-  
-      <div class="row">
-        <div class="modal-footer text-center col-3">
-          <button type="submit" class="btn btn-success" data-bs-toggle="button"             
-          data-bs-dismiss="modal" (click)="ModificarEstadoCentral(estIdSeleccionado)">Modificar Estado</button>
-        </div>
-        <div class="modal-footer text-center col-8">
-          <button style="background-color: #0e3c53;" id="Cancelar" type="button" class="btn text-white"
-            data-bs-dismiss="modal">Cancelar</button>        
-        </div>
-      </div>
-    </div> 
-  </app-modal>

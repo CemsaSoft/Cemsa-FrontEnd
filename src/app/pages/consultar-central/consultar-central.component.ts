@@ -1,12 +1,16 @@
 //SISTEMA
 import { Component, OnInit } from '@angular/core';
 import {
-  FormBuilder,
-  FormGroup,
-  FormControl,
-  Validators,
+FormBuilder,
+FormGroup,
+FormControl,
+Validators,
 } from '@angular/forms';
 import Swal, { SweetAlertOptions } from 'sweetalert2';
+
+  import { Router } from '@angular/router';
+  import { ElementRef, ViewChild } from '@angular/core';
+  import { ConsultarServicioComponent } from '../consultar-servicio/consultar-servicio.component';
 
 //COMPONENTES
 import { CentralConsultaClass } from 'src/app/core/models/centralConsulta';
@@ -20,24 +24,30 @@ import { CentralService } from 'src/app/core/services/central.service';
   templateUrl: './consultar-central.component.html',
   styleUrls: ['./consultar-central.component.css']
 })
-export class ConsultarCentralComponent implements OnInit {
+
+export class ConsultarCentralComponent implements OnInit  {
 
 //VARIABLES DE OBJETOS LIST
 CentralConsulta: CentralConsultaClass[] = [];
 CentralConsultaFiltrados: CentralConsultaClass [] = [];
-EstadoCentralConsulta: EstadoCentralConsultaClass[] = [];
 
 //VARIABLES DE DATOS
 titulo: string = '';
 propiedadOrdenamiento: string = 'cenNro';
 cliApeNomDenSeleccionado: string ='';
-usuarioSeleccionada: string = '';
+usuarioSeleccionado: string = '';
 estDescripcionSeleccionado: string = '';
 
+imeiSeleccionado: string = '';
+coordenadaXSeleccionado: string = '';
+coordenadaYSeleccionado: string = '';
+fechaAltaSeleccionado: string = '';
+fechaBajaSeleccionado: string = '';
 
 tipoOrdenamiento: number = 1;
 cenNroSeleccionado: number=0;
 estIdSeleccionado: number = 0;
+
 
 //FORMULARIOS DE AGRUPACION DE DATOS
 
@@ -45,17 +55,17 @@ estIdSeleccionado: number = 0;
     private fb: FormBuilder,
     private centralModificarEstado: CentralService,
     private centralConsultar: CentralService, 
-    private estadoCentralConsulta: CentralService,
+    private router: Router, private elRef: ElementRef
     )    
-   { }
-
-  ngOnInit(): void {
-    this.centralConsultar.obtenerCentral().subscribe(data => {
-      this.CentralConsulta = data;  
-      this.CentralConsultaFiltrados = data;      
-  })
-  }
-
+    { }
+        
+    ngOnInit(): void {          
+      this.centralConsultar.obtenerCentral().subscribe(data => {
+        this.CentralConsulta = data;  
+        this.CentralConsultaFiltrados = data;     
+      });    
+    }
+    
   //Valida que exista alguna Central que responda al filtro.
   validarFiltrado(): Boolean {
     if (this.CentralConsultaFiltrados.length == 0) {
@@ -69,9 +79,14 @@ estIdSeleccionado: number = 0;
   esfilaSeleccionada(centralConsulta: CentralConsultaClass) {
       this.cenNroSeleccionado = centralConsulta.cenNro;
       this.cliApeNomDenSeleccionado = centralConsulta.cliApeNomDen;
-      this.usuarioSeleccionada = centralConsulta.usuario;
+      this.usuarioSeleccionado = centralConsulta.usuario;
       this.estDescripcionSeleccionado = centralConsulta.estDescripcion;
-      this.estIdSeleccionado = centralConsulta.estId;
+      this.estIdSeleccionado = centralConsulta.cenIdEstadoCentral;
+      this.imeiSeleccionado = centralConsulta.cenImei;
+      this.coordenadaXSeleccionado = centralConsulta.cenCoorX;
+      this.coordenadaYSeleccionado = centralConsulta.cenCoorY;
+      this.fechaAltaSeleccionado = new Date(centralConsulta.cenFechaAlta).toLocaleDateString("es-AR");
+      this.fechaBajaSeleccionado = centralConsulta.cenFechaBaja ? new Date(centralConsulta.cenFechaBaja).toLocaleDateString("es-AR") : '';     
   }
 
   //Filtro de Central por Nombre.
@@ -109,54 +124,51 @@ estIdSeleccionado: number = 0;
     }
   }
 
-    //Permite abrir un Modal u otro en función del titulo pasado como parametro.
-    abrirModal(opcion: string) {
-      if (opcion == 'Editar Estado de Central') {
-        this.titulo = opcion;
-        this.ListarEstadosCentral();
-      }       
-    }
+  ModificarEstadoCentral(estIdSeleccionado: number, estado:string): void {
+    Swal.fire({
+      text: '¿Estás seguro que deseas modificar el estado de esta central a "' + estado + '"?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#0f425b',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar'
+    } as SweetAlertOptions).then((result) => {
+      if (result.isConfirmed) {
+        this.centralModificarEstado.modificarEstado(this.cenNroSeleccionado, estIdSeleccionado).subscribe(
+          result => {
+            Swal.fire({
+              text: 'Se ha actualizado el estado a '+ estado,
+              icon: 'success',
+              position: 'top',
+              showConfirmButton: true,
+              confirmButtonColor: '#0f425b',
+              confirmButtonText: 'Aceptar',
+            } as SweetAlertOptions).then((result) => {
+              if (result.value == true) {
+                return location.reload();
+              }
+            });
+          },
+          error => {
+            Swal.fire({
+              text: 'No es posible modificar el estado de esta central',
+              icon: 'error',
+              position: 'top',
+              showConfirmButton: true,
+              confirmButtonColor: '#0f425b',
+              confirmButtonText: 'Aceptar',
+            } as SweetAlertOptions);    
+          }
+        );
+      }
+    });
+  }
 
-    ListarEstadosCentral()
-    {
-      this.EstadoCentralConsulta = [];
-      this.estadoCentralConsulta.obtenerEstadoCentral().subscribe(data =>
-        {
-          this.EstadoCentralConsulta = data; 
-        })        
-    }
-    
-    onSelectEstado(id: number) {
-      this.estIdSeleccionado = id;
-    }
-
-    ModificarEstadoCentral(estIdSeleccionado: number): void {
-      this.centralModificarEstado.modificarEstado(this.cenNroSeleccionado, estIdSeleccionado).subscribe(
-        result => {
-          Swal.fire({
-            text: 'Se ha actualizado el estado',
-            icon: 'success',
-            position: 'top',
-            showConfirmButton: true,
-            confirmButtonColor: '#0f425b',
-            confirmButtonText: 'Aceptar',
-          } as SweetAlertOptions).then((result) => {
-            if (result.value == true) {
-              return location.reload();
-            }
-          });
-        },
-        error => {
-          Swal.fire({
-            text: 'No es posible modificar el estado de esta central',
-            icon: 'error',
-            position: 'top',
-            showConfirmButton: true,
-            confirmButtonColor: '#0f425b',
-            confirmButtonText: 'Aceptar',
-          } as SweetAlertOptions);    
-        }
-      );
-    }
-    
+  // abrir ventna Modificar Central
+  modificarCentral(): void {
+    this.router.navigateByUrl('/consultar-servicio');
+    this.elRef.nativeElement.parentElement.removeChild(this.elRef.nativeElement);  
+    console.log("paso por aca");
+  }
 }
