@@ -14,9 +14,11 @@ import * as L from 'leaflet';
 //COMPONENTES
 import { CentralConsultaClass } from 'src/app/core/models/centralConsulta';
 import { EstadoCentralConsultaClass } from 'src/app/core/models/estadoCentral';
+import { ServicioClass } from 'src/app/core/models/servicio';
 
 //SERVICIOS
 import { CentralService } from 'src/app/core/services/central.service';
+import { ServicioService } from 'src/app/core/services/servicio.service';
 
 @Component({
   selector: 'app-modificar-central',
@@ -27,9 +29,12 @@ export class ModificarCentralComponent implements OnInit {
   @Output() CentralConsultaSeleccionada: any;
 
   //VARIABLES DE OBJETOS LIST
-  CentralConsulta: CentralConsultaClass[] = [];
-  CentralConsultaFiltrados: CentralConsultaClass[] = [];
+  //CentralConsulta: CentralConsultaClass[] = [];
+  //CentralConsultaFiltrados: CentralConsultaClass[] = [];
   EstadoCentralConsulta: EstadoCentralConsultaClass[] = [];
+  Servicios: ServicioClass[] = [];
+  //ServiciosFiltrados: ServicioClass [] = [];
+  ServiciosDeCentral: ServicioClass [] = [];
 
   //VARIABLES DE DATOS
   titulo: string = '';
@@ -52,6 +57,10 @@ export class ModificarCentralComponent implements OnInit {
   cenNroSeleccionado: number = 0;
   estIdSeleccionado: number = 0;
   validadorCamposModif: string = '1';
+  idSeleccionado: number = 0;
+  idListaServiciosSeleccionado: number=0;
+  idListaServiciosCentralSeleccionado: number=0;
+  //tablaActualizadaServicio : boolean = false;
 
   mostrarBtnAceptarModificacion: boolean = false;
   mostrarBtnEditarModificacion: boolean = true;
@@ -64,7 +73,8 @@ export class ModificarCentralComponent implements OnInit {
     private centralModificarEstado: CentralService,
     private centralConsultar: CentralService,
     private estadoCentralConsulta: CentralService,
-    private servicioCentral: CentralService
+    private servicioCentral: CentralService,
+    private servicioConsultar: ServicioService,
   ) {
     this.formModificar = new FormGroup({
       id: new FormControl(null, []),
@@ -74,6 +84,7 @@ export class ModificarCentralComponent implements OnInit {
       ]),
       coordenadaX: new FormControl(null, []),
       coordenadaY: new FormControl(null, []),
+      estadoCentralDescripcion: new FormControl(null, []),
       fechaAlta: new FormControl(null, []),
       fechaBaja: new FormControl(null, []),
       cliApeNomDenVM: new FormControl(null, []),
@@ -94,6 +105,9 @@ export class ModificarCentralComponent implements OnInit {
   get coordenddadaX() {
     return this.formModificar.get('coordenadaX');
   }
+  get estadoCentralDescripcion(){
+    return this.formModificar.get('estadoCentralDescripcion');
+  }
   get fechaAlta() {
     return this.formModificar.get('fechaAlta');
   }
@@ -104,24 +118,51 @@ export class ModificarCentralComponent implements OnInit {
   ngOnInit(): void {
     this.recibirDatosCentral();
     
-    this.centralConsultar.obtenerCentral().subscribe((data) => {
-      this.CentralConsulta = data;
-      this.CentralConsultaFiltrados = data;
-    });
+    this.servicioConsultar.obtenerServicios().subscribe(data => {
+      this.Servicios = data;  
+    })
+
+    ////////////////////////////////
+    //////
+    ////////
+    //Cambiar el 1 por el id de la central seleccionada
+    //this.centralConsultar.obtenerServiciosXCentral(1).subscribe(data => {
+    this.centralConsultar.obtenerServiciosXCentral(this.CentralConsultaSeleccionada.cenNro).subscribe(data => {
+      this.ServiciosDeCentral = data; 
+      
+      // filtra los registros que están en ServiciosDeCentral
+      this.Servicios = this.Servicios.filter(servicio => {
+        return !this.ServiciosDeCentral.some(servicioCentral => servicioCentral.serId === servicio.serId);
+      });
+    })
 
     const mapContainer = document.getElementById('map');
     if (mapContainer) {
       this.inicializarMapa();
     }
   }
+  
   recibirDatosCentral() {
     this.CentralConsultaSeleccionada =
-      this.servicioCentral.recibirPrestamoSeleccionado();
+    this.servicioCentral.recibirCentralSeleccionado();
     console.log("Llegó a modificar Central  y los datos son")
     console.log(this.CentralConsultaSeleccionada);
+    
+    this.cliApeNomDenSeleccionado = this.CentralConsultaSeleccionada.cliApeNomDen;
+    this.cenNroSeleccionado = this.CentralConsultaSeleccionada.cenNro;
+    this.usuarioSeleccionado = this.CentralConsultaSeleccionada.usuario;
+    this.imeiSeleccionado = this.CentralConsultaSeleccionada.cenImei;
+    this.estDescripcionSeleccionado = this.estDescripcionSeleccionado;
+    this.fechaAltaSeleccionado = new Date(this.CentralConsultaSeleccionada.cenFechaAlta).toLocaleDateString("es-AR");
+    this.fechaBajaSeleccionado = this.CentralConsultaSeleccionada.cenFechaBaja ? new Date(this.CentralConsultaSeleccionada.cenFechaBaja).toLocaleDateString("es-AR") : '';     
+
+    this.coordenadaXSeleccionado = this.CentralConsultaSeleccionada.cenCoorX;
+    this.coordenadaYSeleccionado =  this.CentralConsultaSeleccionada.cenCoorY;
   }
 
   inicializarMapa(): void {
+    let self = this;
+    //var map = L.map('map').setView([-31.420083, -64.188776], 10);
     var map = L.map('map').setView([-31.420083, -64.188776], 10);
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(
       map
@@ -140,20 +181,37 @@ export class ModificarCentralComponent implements OnInit {
 
     marker.on('dragend', function (e) {
       var newCoords = e.target.getLatLng();
-      var lat = newCoords.lat;
-      var lng = newCoords.lng;
-      console.log(lat);
-      console.log(lng);
+      self.coordenadaXSeleccionado = newCoords.lat;
+      self.coordenadaYSeleccionado = newCoords.lng;
     });
   }
 
-  //Valida que exista alguna Central que responda al filtro.
-  validarFiltrado(): Boolean {
-    if (this.CentralConsultaFiltrados.length == 0) {
+  //Valida que exista algún servicio que responda al filtro.
+  validarFiltradoServicios(): Boolean {
+    if (this.Servicios.length == 0) {
+      return false;
+    } else {
+      return true;
+    }    
+  }
+
+  //Valida que exista algún servicio que responda al filtro.
+  validarFiltradoServiciosDeCentral(): Boolean {   
+    if (this.ServiciosDeCentral.length == 0) {
       return false;
     } else {
       return true;
     }
+  }
+
+  //Almacena los datos del servicio que fue seleccionado en la tabla de servicio filtrados dentro de variables locales.
+  esfilaSeleccionadaServicio(servicios: ServicioClass) {
+    this.idListaServiciosSeleccionado = servicios.serId;      
+  }
+
+  //Almacena los datos del servicio que fue seleccionado en la tabla de servicio filtrados dentro de variables locales.
+  esfilaSeleccionadaServicioDeCentral(servicios: ServicioClass) {      
+    this.idListaServiciosCentralSeleccionado = servicios.serId;
   }
 
   //Almacena los datos del servicio que fue seleccionado en la tabla de servicio filtrados dentro de variables locales.
@@ -174,23 +232,6 @@ export class ModificarCentralComponent implements OnInit {
       : '';
   }
 
-  //Filtro de Central por Nombre.
-  esFiltrar(event: Event) {
-    let txtBuscar = (event.target as HTMLInputElement).value;
-    let filtro = txtBuscar
-      .replace(/[^\w\s]/g, '')
-      .trim()
-      .toLowerCase();
-    this.CentralConsultaFiltrados = [];
-    this.CentralConsulta.forEach((centralConsulta) => {
-      if (
-        centralConsulta.cliApeNomDen.toString().toLowerCase().includes(filtro)
-      ) {
-        this.CentralConsultaFiltrados.push(centralConsulta);
-      }
-    });
-  }
-
   //Metodos para grilla
   //Almacena en una variable la propiedad por la cual se quiere ordenar la consulta de Central.
   ordenarPor(propiedad: string) {
@@ -208,19 +249,6 @@ export class ModificarCentralComponent implements OnInit {
     }
   }
 
-  //Permite abrir un Modal u otro en función del titulo pasado como parametro.
-  abrirModal(opcion: string) {
-    if (opcion == 'Editar Estado de Central') {
-      this.titulo = opcion;
-      this.ListarEstadosCentral();
-    }
-    if (opcion == 'Ver Mas') {
-      this.titulo = opcion;
-      this.ListarEstadosCentral();
-      this.bloquearEditar();
-    }
-  }
-
   //Bloquea los campos ante una consulta.
   bloquearEditar(): void {
     this.formModificar.get('id')?.disable();
@@ -229,7 +257,7 @@ export class ModificarCentralComponent implements OnInit {
     this.formModificar.get('coordenadaY')?.disable();
     this.formModificar.get('fechaAlta')?.disable();
     this.formModificar.get('fechaBaja')?.disable();
-    this.formModificar.get('estIdSeleccionado')?.disable();
+    this.formModificar.get('estadoCentralDescripcion')?.disable();
     this.formModificar.get('cliApeNomDenVM')?.disable();
     this.formModificar.get('usuarioVM')?.disable();
     this.mostrarBtnAceptarModificacion = false;
@@ -242,7 +270,7 @@ export class ModificarCentralComponent implements OnInit {
     this.formModificar.get('coordenadaX')?.enable();
     this.formModificar.get('coordenadaY')?.enable();
 
-    this.formModificar.get('estIdSeleccionado')?.enable();
+    this.formModificar.get('estadoCentralDescripcion')?.enable();
 
     this.mostrarBtnAceptarModificacion = true;
     this.mostrarBtnEditarModificacion = false;
@@ -314,9 +342,27 @@ export class ModificarCentralComponent implements OnInit {
     });
   }
 
+// Extraer servicios a la central selecciona
+agregarServicio(servicios: ServicioClass): void {  
+  const index = this.Servicios.indexOf(servicios);
+  if (index !== -1) {
+    this.Servicios.splice(index, 1);
+    this.ServiciosDeCentral.push(servicios);
+  }
+  this.validarFiltradoServicios();  
+}
+
+// Extraer servicios a la central selecciona
+extraerServicio(servicios: ServicioClass): void {
+  const index = this.ServiciosDeCentral.indexOf(servicios);
+  if (index !== -1) {
+    this.ServiciosDeCentral.splice(index, 1);
+    this.Servicios.push(servicios);
+  }
+  this.validarFiltradoServiciosDeCentral();  
+}
+
   // abrir ventna Modificar Central
   modificarCentral(): void {}
-  mostrar(): void {
-    console.log('entre a mostrar');
-  }
+
 }

@@ -26,15 +26,25 @@ export class CentralService {
   obtenerEstadoCentral(): Observable<any> {
     return this.http.get(this.url + '/listaEstadosCentrales') ;
   }
+
   enviarCentralSeleccionada(central: CentralConsultaClass):void{
     this.centralSeleccionada=central;
     console.log("Llegó al servicio enviar Central y los datos son:")
     console.log(central)
   }
-  recibirPrestamoSeleccionado():Observable<any>{
+  
+  recibirCentralSeleccionado():Observable<any>{
     console.log("Llegó al servicio enviar Central y los datos son:")
     console.log(this.centralSeleccionada)
-    return this.centralSeleccionada;
-    
+    return this.centralSeleccionada;    
   }
+  
+  obtenerServiciosXCentral(cenNum: number): Observable<any> {
+    return this.http.get(this.url + '/serviciosXCentral/' + cenNum) ;
+  }
+
+  actualizarDatosCentral(central: CentralConsultaClass): Observable<any> {
+    return this.http.get(this.url + '/actualizarDatosCentral/' + central) ;
+  }
+
 }
