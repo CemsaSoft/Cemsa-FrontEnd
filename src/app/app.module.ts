@@ -13,6 +13,7 @@ import { FooterComponent } from './shared/footer/footer.component';
 import { CarouselComponent } from './shared/carousel/carousel.component';
 import { HomeComponent } from './pages/home/home.component';
 import { ModificarCentralComponent } from './pages/modificar-central/modificar-central.component';
+import { ConsultarClienteComponent } from './pages/consultar-cliente/consultar-cliente.component';
 
 @NgModule({
   //Componentes que va a utilizar el módulo
@@ -26,7 +27,7 @@ import { ModificarCentralComponent } from './pages/modificar-central/modificar-c
     FooterComponent,
     CarouselComponent,
     HomeComponent,    
-    ModificarCentralComponent,
+    ModificarCentralComponent, ConsultarClienteComponent,
   ],
   //Para importar otros módulos de angular
   imports: [
