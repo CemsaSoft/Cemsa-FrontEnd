@@ -263,23 +263,10 @@
       </div>  
 
       <div class="row">
-        <div class="modal-footer text-center col-3">
-          <button
-            *ngIf="mostrarBtnEditarModificacion"
-            type="submit"
-            id="btnEditar"
-            class="btn btn-success"
-            (click)="desbloquearEditar()"
-          >
-            Editar Dato Central
-          </button>
-        </div>
         <div
-          class="modal-footer text-center col-3"
-          *ngIf="validarControlesMod() == '1'"
+          class="modal-footer text-center col-3"          
         >
-          <button
-            *ngIf="mostrarBtnAceptarModificacion"
+          <button            
             id="btnAceptarModificacion"
             type="submit"
             class="btn btn-success"
@@ -291,7 +278,7 @@
           </button>
         </div>
         <div
-          *ngIf="validarControlesMod() == '2' && mostrarBtnAceptarModificacion"
+          *ngIf="validarControlesMod() == '2'"
           class="text-danger"
         >
           Verifique los campos ingresados

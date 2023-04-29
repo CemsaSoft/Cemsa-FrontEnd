@@ -102,18 +102,6 @@ export class ModificarCentralComponent implements OnInit {
   get coordenadaY() {
     return this.formModificar.get('coordenadaY');
   }
-  get coordenddadaX() {
-    return this.formModificar.get('coordenadaX');
-  }
-  get estadoCentralDescripcion(){
-    return this.formModificar.get('estadoCentralDescripcion');
-  }
-  get fechaAlta() {
-    return this.formModificar.get('fechaAlta');
-  }
-  get fechaBaja() {
-    return this.formModificar.get('fechaBaja');
-  }
 
   ngOnInit(): void {
     this.recibirDatosCentral();
@@ -122,9 +110,6 @@ export class ModificarCentralComponent implements OnInit {
       this.Servicios = data;  
     })
 
-    ////////////////////////////////
-    //////
-    ////////
     //Cambiar el 1 por el id de la central seleccionada
     //this.centralConsultar.obtenerServiciosXCentral(1).subscribe(data => {
     this.centralConsultar.obtenerServiciosXCentral(this.CentralConsultaSeleccionada.cenNro).subscribe(data => {
@@ -143,16 +128,13 @@ export class ModificarCentralComponent implements OnInit {
   }
   
   recibirDatosCentral() {
-    this.CentralConsultaSeleccionada =
-    this.servicioCentral.recibirCentralSeleccionado();
-    console.log("Llegó a modificar Central  y los datos son")
-    console.log(this.CentralConsultaSeleccionada);
-    
+    this.CentralConsultaSeleccionada = this.servicioCentral.recibirCentralSeleccionado();
+
     this.cliApeNomDenSeleccionado = this.CentralConsultaSeleccionada.cliApeNomDen;
     this.cenNroSeleccionado = this.CentralConsultaSeleccionada.cenNro;
     this.usuarioSeleccionado = this.CentralConsultaSeleccionada.usuario;
     this.imeiSeleccionado = this.CentralConsultaSeleccionada.cenImei;
-    this.estDescripcionSeleccionado = this.estDescripcionSeleccionado;
+    this.estDescripcionSeleccionado = this.CentralConsultaSeleccionada.estDescripcion;
     this.fechaAltaSeleccionado = new Date(this.CentralConsultaSeleccionada.cenFechaAlta).toLocaleDateString("es-AR");
     this.fechaBajaSeleccionado = this.CentralConsultaSeleccionada.cenFechaBaja ? new Date(this.CentralConsultaSeleccionada.cenFechaBaja).toLocaleDateString("es-AR") : '';     
 
@@ -163,11 +145,11 @@ export class ModificarCentralComponent implements OnInit {
   inicializarMapa(): void {
     let self = this;
     //var map = L.map('map').setView([-31.420083, -64.188776], 10);
-    var map = L.map('map').setView([-31.420083, -64.188776], 10);
+    var map = L.map('map').setView([parseFloat(this.coordenadaXSeleccionado), parseFloat(this.coordenadaYSeleccionado)], 10);
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(
       map
     );
-    var marker = L.marker([-31.420083, -64.188776], {
+    var marker = L.marker([parseFloat(this.coordenadaXSeleccionado), parseFloat(this.coordenadaYSeleccionado)], {
       icon: icon({
         iconUrl:
           'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
@@ -214,24 +196,6 @@ export class ModificarCentralComponent implements OnInit {
     this.idListaServiciosCentralSeleccionado = servicios.serId;
   }
 
-  //Almacena los datos del servicio que fue seleccionado en la tabla de servicio filtrados dentro de variables locales.
-  esfilaSeleccionada(centralConsulta: CentralConsultaClass) {
-    this.cenNroSeleccionado = centralConsulta.cenNro;
-    this.cliApeNomDenSeleccionado = centralConsulta.cliApeNomDen;
-    this.usuarioSeleccionado = centralConsulta.usuario;
-    this.estDescripcionSeleccionado = centralConsulta.estDescripcion;
-    this.estIdSeleccionado = centralConsulta.cenIdEstadoCentral;
-    this.imeiSeleccionado = centralConsulta.cenImei;
-    this.coordenadaXSeleccionado = centralConsulta.cenCoorX;
-    this.coordenadaYSeleccionado = centralConsulta.cenCoorY;
-    this.fechaAltaSeleccionado = new Date(
-      centralConsulta.cenFechaAlta
-    ).toLocaleDateString('es-AR');
-    this.fechaBajaSeleccionado = centralConsulta.cenFechaBaja
-      ? new Date(centralConsulta.cenFechaBaja).toLocaleDateString('es-AR')
-      : '';
-  }
-
   //Metodos para grilla
   //Almacena en una variable la propiedad por la cual se quiere ordenar la consulta de Central.
   ordenarPor(propiedad: string) {
@@ -249,33 +213,6 @@ export class ModificarCentralComponent implements OnInit {
     }
   }
 
-  //Bloquea los campos ante una consulta.
-  bloquearEditar(): void {
-    this.formModificar.get('id')?.disable();
-    this.formModificar.get('imei')?.disable();
-    this.formModificar.get('coordenadaX')?.disable();
-    this.formModificar.get('coordenadaY')?.disable();
-    this.formModificar.get('fechaAlta')?.disable();
-    this.formModificar.get('fechaBaja')?.disable();
-    this.formModificar.get('estadoCentralDescripcion')?.disable();
-    this.formModificar.get('cliApeNomDenVM')?.disable();
-    this.formModificar.get('usuarioVM')?.disable();
-    this.mostrarBtnAceptarModificacion = false;
-    this.mostrarBtnEditarModificacion = true;
-  }
-
-  //Desbloquea los campos para su modificación.
-  desbloquearEditar(): void {
-    this.formModificar.get('imei')?.enable();
-    this.formModificar.get('coordenadaX')?.enable();
-    this.formModificar.get('coordenadaY')?.enable();
-
-    this.formModificar.get('estadoCentralDescripcion')?.enable();
-
-    this.mostrarBtnAceptarModificacion = true;
-    this.mostrarBtnEditarModificacion = false;
-  }
-
   //Valida que los campos descripcion y uniddad se encuentren correctamente ingresados.
   validarControlesMod(): string {
     if (this.formModificar.valid == false) {
@@ -283,63 +220,6 @@ export class ModificarCentralComponent implements OnInit {
     } else {
       return (this.validadorCamposModif = '1');
     }
-  }
-
-  ListarEstadosCentral() {
-    this.EstadoCentralConsulta = [];
-    this.estadoCentralConsulta.obtenerEstadoCentral().subscribe((data) => {
-      this.EstadoCentralConsulta = data;
-    });
-  }
-
-  onSelectEstado(id: number) {
-    this.estIdSeleccionado = id;
-  }
-
-  ModificarEstadoCentral(estIdSeleccionado: number, estado: string): void {
-    Swal.fire({
-      text:
-        '¿Estás seguro que deseas modificar el estado de esta central a "' +
-        estado +
-        '"?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#0f425b',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Aceptar',
-      cancelButtonText: 'Cancelar',
-    } as SweetAlertOptions).then((result) => {
-      if (result.isConfirmed) {
-        this.centralModificarEstado
-          .modificarEstado(this.cenNroSeleccionado, estIdSeleccionado)
-          .subscribe(
-            (result) => {
-              Swal.fire({
-                text: 'Se ha actualizado el estado a ' + estado,
-                icon: 'success',
-                position: 'top',
-                showConfirmButton: true,
-                confirmButtonColor: '#0f425b',
-                confirmButtonText: 'Aceptar',
-              } as SweetAlertOptions).then((result) => {
-                if (result.value == true) {
-                  return location.reload();
-                }
-              });
-            },
-            (error) => {
-              Swal.fire({
-                text: 'No es posible modificar el estado de esta central',
-                icon: 'error',
-                position: 'top',
-                showConfirmButton: true,
-                confirmButtonColor: '#0f425b',
-                confirmButtonText: 'Aceptar',
-              } as SweetAlertOptions);
-            }
-          );
-      }
-    });
   }
 
 // Extraer servicios a la central selecciona
@@ -360,9 +240,39 @@ extraerServicio(servicios: ServicioClass): void {
     this.Servicios.push(servicios);
   }
   this.validarFiltradoServiciosDeCentral();  
-}
+ }
 
   // abrir ventna Modificar Central
-  modificarCentral(): void {}
-
+  modificarCentral(): void {
+    this.centralConsultar.actualizarDatosCentral(
+      this.cenNroSeleccionado, 
+      this.formModificar.get('imei')?.value,
+      this.formModificar.get('coordenadaX')?.value,
+      this.formModificar.get('coordenadaY')?.value
+     )
+    .subscribe(() => {
+      Swal.fire({
+        text:
+          'Se Actualizo con éxito los datos de la Central ' + this.cenNroSeleccionado,
+        icon: 'success',
+        position: 'top',
+        showConfirmButton: true,
+        confirmButtonColor: '#0f425b',
+        confirmButtonText: 'Aceptar',
+      } as SweetAlertOptions).then((result) => {
+        if (result.value == true) {
+          return location.reload();
+        }
+      });
+    }, (error) => {
+      Swal.fire({
+        text: 'No es posible modificar datos de esta Central',
+        icon: 'error',
+        position: 'top',
+        showConfirmButton: true,
+        confirmButtonColor: '#0f425b',
+        confirmButtonText: 'Aceptar',
+      } as SweetAlertOptions);    
+    });    
+  }
 }
