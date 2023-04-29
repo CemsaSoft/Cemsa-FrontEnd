@@ -241,7 +241,7 @@
                 </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let servicio of ServiciosDeCentral let i=index"
+              <tr *ngFor="let servicio of ServiciosDeCentralActualizado let i=index"
               [ngClass]="{'fila-par': i%2==0, 'fila-impar': i%2==1}"
               (click)="esfilaSeleccionadaServicioDeCentral(servicio)">
               <th style="vertical-align: middle" class="align-center">{{ servicio.serId }}</th>

@@ -7,6 +7,7 @@ import { ConsultarServicioComponent } from './pages/consultar-servicio/consultar
 import { ConsultarCentralComponent} from './pages/consultar-central/consultar-central.component';
 import { HomeComponent } from './pages/home/home.component';
 import { ModificarCentralComponent } from './pages/modificar-central/modificar-central.component';
+import { RegistrarCentralComponent } from './pages/registrar-central/registrar-central.component';
 
 //RUTAS
 const routes: Routes = [
@@ -16,6 +17,7 @@ const routes: Routes = [
   {path:'consultar-servicio', component: ConsultarServicioComponent},
   {path:'consultar-central', component: ConsultarCentralComponent},
   {path:'modificar-central', component: ModificarCentralComponent},
+  {path:'registrar-central', component: RegistrarCentralComponent},
   {path:'', redirectTo: '/', pathMatch:'full'},
   {path:'**', redirectTo: '/', pathMatch:'full'},
 ];

@@ -19,6 +19,7 @@ import { ServicioClass } from 'src/app/core/models/servicio';
 //SERVICIOS
 import { CentralService } from 'src/app/core/services/central.service';
 import { ServicioService } from 'src/app/core/services/servicio.service';
+import { ServicioxCentralClass } from 'src/app/core/models/serviciosxCentral';
 
 @Component({
   selector: 'app-modificar-central',
@@ -34,7 +35,8 @@ export class ModificarCentralComponent implements OnInit {
   EstadoCentralConsulta: EstadoCentralConsultaClass[] = [];
   Servicios: ServicioClass[] = [];
   //ServiciosFiltrados: ServicioClass [] = [];
-  ServiciosDeCentral: ServicioClass [] = [];
+  ServiciosDeCentralActualizado: ServicioClass [] = [];
+  ServiciosDeCentralOriginal: ServicioClass [] = [];
 
   //VARIABLES DE DATOS
   titulo: string = '';
@@ -106,6 +108,11 @@ export class ModificarCentralComponent implements OnInit {
   ngOnInit(): void {
     this.recibirDatosCentral();
     
+    const mapContainer = document.getElementById('map');
+    if (mapContainer) {
+      this.inicializarMapa();
+    }
+    
     this.servicioConsultar.obtenerServicios().subscribe(data => {
       this.Servicios = data;  
     })
@@ -113,18 +120,14 @@ export class ModificarCentralComponent implements OnInit {
     //Cambiar el 1 por el id de la central seleccionada
     //this.centralConsultar.obtenerServiciosXCentral(1).subscribe(data => {
     this.centralConsultar.obtenerServiciosXCentral(this.CentralConsultaSeleccionada.cenNro).subscribe(data => {
-      this.ServiciosDeCentral = data; 
+      this.ServiciosDeCentralActualizado = data; 
+      this.ServiciosDeCentralOriginal = data;
       
       // filtra los registros que están en ServiciosDeCentral
       this.Servicios = this.Servicios.filter(servicio => {
-        return !this.ServiciosDeCentral.some(servicioCentral => servicioCentral.serId === servicio.serId);
+        return !this.ServiciosDeCentralActualizado.some(servicioCentral => servicioCentral.serId === servicio.serId);
       });
     })
-
-    const mapContainer = document.getElementById('map');
-    if (mapContainer) {
-      this.inicializarMapa();
-    }
   }
   
   recibirDatosCentral() {
@@ -179,7 +182,7 @@ export class ModificarCentralComponent implements OnInit {
 
   //Valida que exista algún servicio que responda al filtro.
   validarFiltradoServiciosDeCentral(): Boolean {   
-    if (this.ServiciosDeCentral.length == 0) {
+    if (this.ServiciosDeCentralActualizado.length == 0) {
       return false;
     } else {
       return true;
@@ -227,16 +230,16 @@ agregarServicio(servicios: ServicioClass): void {
   const index = this.Servicios.indexOf(servicios);
   if (index !== -1) {
     this.Servicios.splice(index, 1);
-    this.ServiciosDeCentral.push(servicios);
+    this.ServiciosDeCentralActualizado.push(servicios);
   }
   this.validarFiltradoServicios();  
 }
 
 // Extraer servicios a la central selecciona
 extraerServicio(servicios: ServicioClass): void {
-  const index = this.ServiciosDeCentral.indexOf(servicios);
+  const index = this.ServiciosDeCentralActualizado.indexOf(servicios);
   if (index !== -1) {
-    this.ServiciosDeCentral.splice(index, 1);
+    this.ServiciosDeCentralActualizado.splice(index, 1);
     this.Servicios.push(servicios);
   }
   this.validarFiltradoServiciosDeCentral();  
@@ -244,6 +247,7 @@ extraerServicio(servicios: ServicioClass): void {
 
   // abrir ventna Modificar Central
   modificarCentral(): void {
+    this.controlServicios();
     this.centralConsultar.actualizarDatosCentral(
       this.cenNroSeleccionado, 
       this.formModificar.get('imei')?.value,
@@ -274,5 +278,55 @@ extraerServicio(servicios: ServicioClass): void {
         confirmButtonText: 'Aceptar',
       } as SweetAlertOptions);    
     });    
+  }
+
+  controlServicios(): void {
+
+    this.centralConsultar.obtenerServiciosXCentral(this.CentralConsultaSeleccionada.cenNro).subscribe(data => {
+      this.ServiciosDeCentralOriginal = data;
+    })
+
+    console.log(this.ServiciosDeCentralOriginal);
+    console.log(this.ServiciosDeCentralActualizado);
+
+    //ServiciosDeCentralActualizado
+    //ServiciosDeCentralOriginal
+    let actualizacionServicio: ServicioxCentralClass[] = [];
+    if (this.ServiciosDeCentralOriginal.length === this.ServiciosDeCentralActualizado.length) {
+      // No se actualizó nada      
+    } else if (this.ServiciosDeCentralOriginal.length > this.ServiciosDeCentralActualizado.length) {
+      // Se dio de baja algún servicio
+      for (const servicio of this.ServiciosDeCentralOriginal) {
+        const servicioActualizado = this.ServiciosDeCentralActualizado.find(s => s.serId === servicio.serId);
+        if (!servicioActualizado) {
+          // Servicio dado de baja
+          actualizacionServicio.push({
+            sxcNroCentral: 1,
+            sxcNroServicio: servicio.serId,
+            sxcEstado: 2,
+            sxcFechaAlta: new Date(new Date().toISOString().substr(0, 10)),
+            sxcFechaBaja: new Date(new Date().toISOString().substr(0, 10)),           
+          });
+        }
+      }
+    } else {
+      // Se dio de alta un nuevo servicio
+      for (const servicio of this.ServiciosDeCentralActualizado) {
+        const servicioAnterior = this.ServiciosDeCentralOriginal.find(s => s.serId === servicio.serId);
+        if (!servicioAnterior) {
+          // Nuevo servicio dado de alta
+          actualizacionServicio.push({
+            sxcNroCentral: 1,
+            sxcNroServicio: servicio.serId,
+            sxcEstado: 1,
+            sxcFechaAlta: new Date(new Date().toISOString().substr(0, 10)),
+            sxcFechaBaja: new Date(new Date().toISOString().substr(0, 10)),   
+          });
+        }
+      }
+    }
+    console.log('datos de servicios');
+    console.log(actualizacionServicio);
+
   }
 }
