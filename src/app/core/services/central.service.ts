@@ -34,8 +34,6 @@ export class CentralService {
   }
   
   recibirCentralSeleccionado():Observable<any>{
-    console.log("Llegó al servicio enviar Central y los datos son:")
-    console.log(this.centralSeleccionada)
     return this.centralSeleccionada;    
   }
   
@@ -43,8 +41,11 @@ export class CentralService {
     return this.http.get(this.url + '/serviciosXCentral/' + cenNum) ;
   }
 
-  actualizarDatosCentral(central: CentralConsultaClass): Observable<any> {
-    return this.http.get(this.url + '/actualizarDatosCentral/' + central) ;
+  actualizarDatosCentral(cenNum: number, cenImei: string, cenCoorX: string, cenCoorY:string): Observable<any> {
+    return this.http.post(this.url + '/actualizarDatosCentral/' + cenNum + '/' + cenImei + '/' + cenCoorX + '/' + cenCoorY, null) ;
   }
 
+  registrarCentral(central: CentralClass): Observable<any> {
+    return this.http.post(this.url + '/registrarCentral/', central) ;
+  }
 }

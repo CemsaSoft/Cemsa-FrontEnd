@@ -1,21 +1,20 @@
 <head>
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-    integrity="VzLXTJGPSyTLX6d96AxgkKvE/LRb7ECGyTxuwtpjHnVWVZs2gp5RDjeM/tgBnVdM"
-    crossorigin=""
-  />
-  <script
-    src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-    integrity="9+9VLV50ZIoYm6ndV2JzOw1i6jKzJ5uuIbRvL9afckY="
-    crossorigin=""
-  ></script>
-  <script src="ruta/a/tu/archivo.js"></script>
-</head>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+      integrity="VzLXTJGPSyTLX6d96AxgkKvE/LRb7ECGyTxuwtpjHnVWVZs2gp5RDjeM/tgBnVdM"
+      crossorigin=""
+    />
+    <script
+      src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+      integrity="9+9VLV50ZIoYm6ndV2JzOw1i6jKzJ5uuIbRvL9afckY="
+      crossorigin=""
+    ></script>
+    <script src="ruta/a/tu/archivo.js"></script>
+  </head>
 
-<h1 class="text-center">Modificar Central Meteorológica</h1>
+<h1 class="text-center">Registar Central Meteorológica</h1>
 <br />
-
 <div class="row">
   
   <div class="col-4"></div>
@@ -23,7 +22,7 @@
     <h3>Cliente de la Central:</h3>
     <br />
     <div class="row">
-    <form [formGroup]="formModificar">
+    <form [formGroup]="formRegistar">
       <div class="col-md-6">
         <div class="form-outline input-group mb-3">
           <span class="input-group-text">Cliente </span>
@@ -60,21 +59,6 @@
     <div class="row">
       <div class="col-md-6">
         <div class="form-outline input-group mb-3">
-          <span class="input-group-text">Cod. Central </span>
-          <input
-            type="text"
-            class="form-control"
-            id="id"
-            value="id"
-            formControlName="id"
-            required
-            [(ngModel)]="cenNroSeleccionado"
-            readonly
-          />
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="form-outline input-group mb-3">
           <span class="input-group-text">IMEI </span>
           <input
             type="text"
@@ -109,53 +93,6 @@
         >
           <div *ngIf="imei?.errors?.['required']">La IMEI es requerida.</div>
           <div *ngIf="imei?.errors?.['pattern']">Solo contener números.</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="form-outline input-group mb-3">
-      <span class="input-group-text">Estado </span>
-      <input
-        type="text"
-        class="form-control"
-        id="estadoCentralDescripcion"
-        value="estadoCentralDescripcion"
-        formControlName="estadoCentralDescripcion"
-        required
-        [(ngModel)]="estDescripcionSeleccionado"
-        readonly
-      />
-    </div>
-
-    <div class="row">
-      <div class="col-md-6">
-        <div class="form-outline input-group mb-3">
-          <span class="input-group-text">Fecha de Alta </span>
-          <input
-            type="text"
-            class="form-control"
-            id="fechaAlta"
-            value="fechaAlta"
-            formControlName="fechaAlta"
-            required
-            [(ngModel)]="fechaAltaSeleccionado"
-            readonly
-          />
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="form-outline input-group mb-3">
-          <span class="input-group-text">Fecha de Baja </span>
-          <input
-            type="text"
-            class="form-control"
-            id="fechaBaja"
-            value="fechaBaja"
-            formControlName="fechaBaja"
-            required
-            [(ngModel)]="fechaBajaSeleccionado"
-            readonly
-          />
         </div>
       </div>
     </div>
@@ -241,7 +178,7 @@
                 </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let servicio of ServiciosDeCentralActualizado let i=index"
+              <tr *ngFor="let servicio of ServiciosNuevos let i=index"
               [ngClass]="{'fila-par': i%2==0, 'fila-impar': i%2==1}"
               (click)="esfilaSeleccionadaServicioDeCentral(servicio)">
               <th style="vertical-align: middle" class="align-center">{{ servicio.serId }}</th>
@@ -272,18 +209,17 @@
             class="btn btn-success"
             data-bs-toggle="button"
             data-bs-dismiss="modal"
-            (click)="modificarCentral()"
+            (click)="registrarCentral()"
           >
             Aceptar
           </button>
         </div>
         <div
-          *ngIf="validarControlesMod() == '2'"
+          *ngIf="validarControlers() == '2'"
           class="text-danger"
         >
           Verifique los campos ingresados
-        </div>
-      
+        </div>      
       </div>
     </div>
   </form>

@@ -1,0 +1,22 @@
+.encabezado {
+    background-color: #006d2c;
+    color: white;
+  }
+  
+  .fila-par {
+    background-color: #c7e9c0;
+  }
+  
+  .fila-impar {
+    background-color: white;
+  }
+  .align-center {
+    text-align: center;
+  }
+  div.row {
+    margin-bottom: 10px;
+  }
+  .colorLetra{
+    color:red;
+  }
+  
