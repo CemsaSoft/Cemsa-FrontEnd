@@ -14,6 +14,7 @@ import { CarouselComponent } from './shared/carousel/carousel.component';
 import { HomeComponent } from './pages/home/home.component';
 import { ModificarCentralComponent } from './pages/modificar-central/modificar-central.component';
 import { ConsultarClienteComponent } from './pages/consultar-cliente/consultar-cliente.component';
+import { MenuComponent } from './shared/menu/menu.component';
 
 @NgModule({
   //Componentes que va a utilizar el módulo
@@ -27,7 +28,7 @@ import { ConsultarClienteComponent } from './pages/consultar-cliente/consultar-c
     FooterComponent,
     CarouselComponent,
     HomeComponent,    
-    ModificarCentralComponent, ConsultarClienteComponent,
+    ModificarCentralComponent, ConsultarClienteComponent, MenuComponent,
   ],
   //Para importar otros módulos de angular
   imports: [
