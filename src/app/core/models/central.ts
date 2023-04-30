@@ -4,7 +4,7 @@ export class CentralClass {
   cenCoorX: string;
   cenCoorY: string;
   cenFechaAlta: Date;
-  cenFechaBaja: Date;
+  cenFechaBaja: Date | null;
   cenIdEstadoCentral: number;
   cenTipoDoc: number;
   cenNroDoc: string;
@@ -15,7 +15,7 @@ export class CentralClass {
     cenCoorX: string,
     cenCoorY: string,
     cenFechaAlta: Date,
-    cenFechaBaja: Date,
+    cenFechaBaja: Date | null,
     cenIdEstadoCentral: number,
     cenTipoDoc: number,
     cenNroDoc: string
@@ -25,7 +25,7 @@ export class CentralClass {
     this.cenCoorX = cenCoorX;
     this.cenCoorY = cenCoorY;
     this.cenFechaAlta = cenFechaAlta;
-    this.cenFechaBaja = cenFechaBaja;
+    this.cenFechaBaja = cenFechaBaja || null;
     this.cenIdEstadoCentral = cenIdEstadoCentral;
     this.cenTipoDoc = cenTipoDoc;
     this.cenNroDoc = cenNroDoc;

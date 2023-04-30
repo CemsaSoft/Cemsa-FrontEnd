@@ -225,25 +225,25 @@ export class ModificarCentralComponent implements OnInit {
     }
   }
 
-// Extraer servicios a la central selecciona
-agregarServicio(servicios: ServicioClass): void {  
-  const index = this.Servicios.indexOf(servicios);
-  if (index !== -1) {
-    this.Servicios.splice(index, 1);
-    this.ServiciosDeCentralActualizado.push(servicios);
+  // Extraer servicios a la central selecciona
+  agregarServicio(servicios: ServicioClass): void {  
+    const index = this.Servicios.indexOf(servicios);
+    if (index !== -1) {
+      this.Servicios.splice(index, 1);
+      this.ServiciosDeCentralActualizado.push(servicios);
+    }
+    this.validarFiltradoServicios();  
   }
-  this.validarFiltradoServicios();  
-}
 
-// Extraer servicios a la central selecciona
-extraerServicio(servicios: ServicioClass): void {
-  const index = this.ServiciosDeCentralActualizado.indexOf(servicios);
-  if (index !== -1) {
-    this.ServiciosDeCentralActualizado.splice(index, 1);
-    this.Servicios.push(servicios);
+  // Extraer servicios a la central selecciona
+  extraerServicio(servicios: ServicioClass): void {
+    const index = this.ServiciosDeCentralActualizado.indexOf(servicios);
+    if (index !== -1) {
+      this.ServiciosDeCentralActualizado.splice(index, 1);
+      this.Servicios.push(servicios);
+    }
+    this.validarFiltradoServiciosDeCentral();  
   }
-  this.validarFiltradoServiciosDeCentral();  
- }
 
   // abrir ventna Modificar Central
   modificarCentral(): void {

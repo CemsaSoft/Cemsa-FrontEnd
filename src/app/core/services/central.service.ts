@@ -44,4 +44,8 @@ export class CentralService {
   actualizarDatosCentral(cenNum: number, cenImei: string, cenCoorX: string, cenCoorY:string): Observable<any> {
     return this.http.post(this.url + '/actualizarDatosCentral/' + cenNum + '/' + cenImei + '/' + cenCoorX + '/' + cenCoorY, null) ;
   }
+
+  registrarCentral(central: CentralClass): Observable<any> {
+    return this.http.post(this.url + '/registrarCentral/', central) ;
+  }
 }
