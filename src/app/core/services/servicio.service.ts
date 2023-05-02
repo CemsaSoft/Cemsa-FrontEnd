@@ -16,6 +16,7 @@ export class ServicioService {
   obtenerServicios(): Observable<any> {
     return this.http.get(this.url);
   }
+
   obtenerServiciosPorId(id: number): Observable<any> {
     return this.http.get(this.url + '/' + id);
   }
@@ -31,4 +32,5 @@ export class ServicioService {
   guardarServicio(servicio: ServicioClass): Observable<any> {
     return this.http.post(this.url, servicio);
   }
+  
 }

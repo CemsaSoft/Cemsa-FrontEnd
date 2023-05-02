@@ -205,8 +205,15 @@
           <table class="table" *ngIf="validarFiltradoServicios() == true">
             <thead class="encabezado">
                 <tr>              
+                  <!--
                   <th scope="col">Cod.</th> 
-                  <th scope="col">Nombre de Servicio</th> 
+                  <th scope="col">Nombre de Servicio</th> -->
+
+                  <th (click)="ordenarServicioPor('serId')" [appSort]="Servicios" data-order="desc"
+                  data-name="serId" style="text-align: center;"><a>Cod. {{ordenarIconoServicio('serId')}}</a></th>            
+                  <th (click)="ordenarServicioPor('serDescripcion')" [appSort]="Servicios" data-order="desc"
+                  data-name="serDescripcion" style="text-align: center;"><a>Nombre de Servicio {{ordenarIconoServicio('serDescripcion')}}</a></th>            
+            
                   <th scope="col">Agregar Serv.</th> 
                 </tr>
             </thead>
@@ -235,8 +242,15 @@
           <table class="table" *ngIf="validarFiltradoServiciosDeCentral() == true">
             <thead class="encabezado">
                 <tr>              
+                  <!--
                   <th scope="col">Cod.</th> 
-                  <th scope="col">Nombre de Servicio</th> 
+                  <th scope="col">Nombre de Servicio</th> -->
+
+                  <th (click)="ordenarServicioCentralPor('serId')" [appSort]="ServiciosDeCentralActualizado" data-order="desc"
+                  data-name="serId" style="text-align: center;"><a>Cod. {{ordenarIconoServicioCentral('serId')}}</a></th>            
+                  <th (click)="ordenarServicioCentralPor('serDescripcion')" [appSort]="ServiciosDeCentralActualizado" data-order="desc"
+                  data-name="serDescripcion" style="text-align: center;"><a>Nombre de Servicio {{ordenarIconoServicioCentral('serDescripcion')}}</a></th>            
+            
                   <th scope="col">Extraer Serv.</th> 
                 </tr>
             </thead>

@@ -3,6 +3,7 @@ import { CentralClass } from '../models/central';
 import { HttpClient} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CentralConsultaClass } from '../models/centralConsulta';
+import { ServicioxCentralClass } from 'src/app/core/models/serviciosxCentral';
 
 @Injectable({
   providedIn: 'root'
@@ -40,12 +41,24 @@ export class CentralService {
   obtenerServiciosXCentral(cenNum: number): Observable<any> {
     return this.http.get(this.url + '/serviciosXCentral/' + cenNum) ;
   }
-
+  
   actualizarDatosCentral(cenNum: number, cenImei: string, cenCoorX: string, cenCoorY:string): Observable<any> {
     return this.http.post(this.url + '/actualizarDatosCentral/' + cenNum + '/' + cenImei + '/' + cenCoorX + '/' + cenCoorY, null) ;
   }
 
   registrarCentral(central: CentralClass): Observable<any> {
-    return this.http.post(this.url + '/registrarCentral/', central) ;
+    return this.http.post(this.url + '/registrarCentral/', central) ;    
+  }
+
+  registrarServiciosCentral(serviciosAgregar: ServicioxCentralClass[]): Observable<any> {    
+    return this.http.post(this.url + '/registrarServiciosCentral/', serviciosAgregar) ;    
+  }
+
+  listaClientes(): Observable<any> {
+    return this.http.get(this.url + '/listaClientes');
+  }
+
+  serviciosXCentralCompleto(cenNum: number): Observable<any> {
+    return this.http.get(this.url + '/serviciosXCentralCompleto/' + cenNum) ;
   }
 }

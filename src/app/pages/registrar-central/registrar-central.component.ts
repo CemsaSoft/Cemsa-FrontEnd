@@ -13,9 +13,9 @@ import * as L from 'leaflet';
 
 //COMPONENTES
 import { CentralClass } from 'src/app/core/models/central';
-import { EstadoCentralConsultaClass } from 'src/app/core/models/estadoCentral';
 import { ServicioClass } from 'src/app/core/models/servicio';
 import { ServicioxCentralClass } from 'src/app/core/models/serviciosxCentral';
+import { CentralClienteConsultaClass } from 'src/app/core/models/centralClienteConsulta';
 
 //SERVICIOS
 import { CentralService } from 'src/app/core/services/central.service';
@@ -31,6 +31,9 @@ export class RegistrarCentralComponent implements OnInit {
   //VARIABLES DE OBJETOS LIST
   Servicios: ServicioClass[] = [];
   ServiciosNuevos: ServicioClass[] = [];
+  ServiciosAgregar: ServicioxCentralClass[] = [];
+  Clientes: CentralClienteConsultaClass[] = [];
+  ClientesFiltrados: CentralClienteConsultaClass[] = [];
 
   //VARIABLES DE DATOS
   cliApeNomDenSeleccionado: string = '';
@@ -41,13 +44,19 @@ export class RegistrarCentralComponent implements OnInit {
   validadorCamposModif: string = '1';
   numerosValidos: string = 'Solo se admiten números';  
   cenNroDocSeleccionado: string = '';
+  propiedadOrdenamientoCliente: string = 'cliTipoDoc';
+  propiedadOrdenamientoServicio: string = 'serId';
+  propiedadOrdenamientoServicioCentral: string = 'serId';
 
   idListaServiciosSeleccionado: number=0;
   idListaServiciosCentralSeleccionado: number=0;
   cenTipoDocSeleccionado: number=0;
+  tipoOrdenamientoCliente: number = 1;
+  tipoOrdenamientoServicio: number = 1;
+  tipoOrdenamientoServicioCentral: number = 1;
 
-    //FORMULARIOS DE AGRUPACION DE DATOS
-    formRegistar: FormGroup;
+  //FORMULARIOS DE AGRUPACION DE DATOS
+  formRegistar: FormGroup;
 
   constructor(
     private servicioConsultar: ServicioService,
@@ -75,7 +84,7 @@ export class RegistrarCentralComponent implements OnInit {
   get coordenadaY() {
     return this.formRegistar.get('coordenadaY');
   }
-
+  
 
   ngOnInit(): void {
 
@@ -88,7 +97,14 @@ export class RegistrarCentralComponent implements OnInit {
       this.Servicios = data;  
     })
 
+    this.centralRegistrar.listaClientes().subscribe(data => {
+      this.Clientes = data;  
+      this.ClientesFiltrados = data;
+    })
 
+    //Coordenadas de Córdoba
+    this.coordenadaXSeleccionado = "-31.420083";
+    this.coordenadaYSeleccionado = "-64.188776";    
   }
 
   inicializarMapa(): void {
@@ -134,6 +150,15 @@ export class RegistrarCentralComponent implements OnInit {
     }
   }
 
+  //Valida que exista algún cliente que responda al filtro.
+  validarFiltradoClientes(): Boolean {   
+    if (this.ClientesFiltrados.length == 0) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   //Almacena los datos del servicio que fue seleccionado en la tabla de servicio filtrados dentro de variables locales.
   esfilaSeleccionadaServicio(servicios: ServicioClass) {
     this.idListaServiciosSeleccionado = servicios.serId;      
@@ -144,6 +169,63 @@ export class RegistrarCentralComponent implements OnInit {
     this.idListaServiciosCentralSeleccionado = servicios.serId;
   }
 
+  //Almacena los datos del servicio que fue seleccionado en la tabla de servicio filtrados dentro de variables locales.
+  esfilaSeleccionadaCliente(cliente: CentralClienteConsultaClass) {      
+    this.cliApeNomDenSeleccionado = cliente.cliApeNomDen;
+    this.usuarioSeleccionado = cliente.usuario;
+    this.cenTipoDocSeleccionado = cliente.cliTipoDoc;
+    this.cenNroDocSeleccionado = cliente.cliNroDoc;
+  }
+
+  //Metodos para grilla
+  //Almacena en una variable la propiedad por la cual se quiere ordenar la consulta de Cliente.
+  ordenarClientePor(propiedad: string) {
+    this.tipoOrdenamientoCliente =
+      propiedad === this.propiedadOrdenamientoCliente ? this.tipoOrdenamientoCliente * -1 : 1;
+    this.propiedadOrdenamientoCliente = propiedad;
+  }
+
+  //En base a la propiedad por la que se quiera ordenar y el tipo de orden muestra un icono.
+  ordenarIconoCliente(propiedad: string) {
+    if (propiedad === this.propiedadOrdenamientoCliente) {
+      return this.tipoOrdenamientoCliente === 1 ? '🠉' : '🠋';
+    } else {
+      return '🠋🠉';
+    }
+  }
+
+  //Almacena en una variable la propiedad por la cual se quiere ordenar la consulta de Servicio.
+  ordenarServicioPor(propiedad: string) {
+    this.tipoOrdenamientoServicio =
+      propiedad === this.propiedadOrdenamientoServicio ? this.tipoOrdenamientoServicio * -1 : 1;
+    this.propiedadOrdenamientoServicio = propiedad;
+  }
+
+  //En base a la propiedad por la que se quiera ordenar y el tipo de orden muestra un icono.
+  ordenarIconoServicio(propiedad: string) {
+    if (propiedad === this.propiedadOrdenamientoServicio) {
+      return this.tipoOrdenamientoServicio === 1 ? '🠉' : '🠋';
+    } else {
+      return '🠋🠉';
+    }
+  }
+
+  //Almacena en una variable la propiedad por la cual se quiere ordenar la consulta de Servicio Central.
+  ordenarServicioCentralPor(propiedad: string) {
+    this.tipoOrdenamientoServicioCentral =
+      propiedad === this.propiedadOrdenamientoServicioCentral ? this.tipoOrdenamientoServicioCentral * -1 : 1;
+    this.propiedadOrdenamientoServicioCentral = propiedad;
+  }
+
+  //En base a la propiedad por la que se quiera ordenar y el tipo de orden muestra un icono.
+  ordenarIconoServicioCentral(propiedad: string) {
+    if (propiedad === this.propiedadOrdenamientoServicioCentral) {
+      return this.tipoOrdenamientoServicioCentral === 1 ? '🠉' : '🠋';
+    } else {
+      return '🠋🠉';
+    }
+  }
+  
   //Valida que los campos descripcion y uniddad se encuentren correctamente ingresados.
   validarControlers(): string {
     if (this.formRegistar.valid == false) {
@@ -171,83 +253,98 @@ export class RegistrarCentralComponent implements OnInit {
       this.Servicios.push(servicios);
     }
     this.validarFiltradoServiciosDeCentral();  
-  }
-
-  // agregarServicio(servicios: ServicioClass): void {  
-  //   const index = this.Servicios.findIndex(s => s.serId === servicios.serId);
-  //   if (index !== -1) {
-  //     const servicioCentral = new ServicioxCentralClass(
-  //       1,
-  //       servicios.serId,
-  //       1,
-  //       new Date(),
-  //       null
-  //     );
-  //     this.Servicios.splice(index, 1);
-  //     this.ServiciosNuevos.push(servicioCentral);
-  //   }
-  //   this.validarFiltradoServicios();  
-  // }
-
-  // extraerServicio(servicios: ServicioClass): void {
-  //   const sxcServicio = new ServicioxCentralClass(
-  //     this.numeroCentralSeleccionada,
-  //     servicios.serId,
-  //     1,
-  //     new Date(),
-  //     null
-  //   );
-  //   const index = this.ServiciosNuevos.indexOf(servicios);
-  //   if (index !== -1) {
-  //     this.ServiciosNuevos.splice(index, 1);
-  //     this.Servicios.push(sxcServicio);
-  //   }
-  //   this.validarFiltradoServiciosDeCentral();
-  // }
-
+  } 
+  
   // Registar Central
   registrarCentral(): void {
+    let nroCentralNew: number = 0;
     let Central: CentralClass = new CentralClass(
       0,
-      this.formRegistar.get('imei')?.value,
-      this.formRegistar.get('coordenadaX')?.value,
-      this.formRegistar.get('coordenadaY')?.value,
+      this.imeiSeleccionado,
+      this.coordenadaXSeleccionado,
+      this.coordenadaYSeleccionado,
       new Date(),
-      null,
+      null,      
       1,
-      //this.cenTipoDocSeleccionado,
-      //this.cenNroDocSeleccionado
-      1,  
-      "1"
+      this.cenTipoDocSeleccionado,
+      this.cenNroDocSeleccionado      
     );
-    this.centralRegistrar.registrarCentral(Central).subscribe((data) => {
-      console.log(data);
-      Swal.fire({
-        text:
-          'La Central del Cliente: ' + 
-          this.formRegistar.get('cliApeNomDenSeleccionado')?.value +           
-          ' se ha registrado con éxito con el número de Central: ' +
-          data.cenNro,
-        icon: 'success',
-        position: 'top',
-        showConfirmButton: true,
-        confirmButtonColor: '#0f425b',
-        confirmButtonText: 'Aceptar',
-      } as SweetAlertOptions).then((result) => {
-        if (result.value == true) {
-          return location.reload();
+    console.log(Central);
+      this.centralRegistrar.registrarCentral(Central).subscribe((data) => {
+        nroCentralNew = data.cenNro;
+        console.log(data);
+        Swal.fire({
+          text:
+            'La Central del Cliente: ' + 
+            this.cliApeNomDenSeleccionado +           
+            ' se ha registrado con éxito con el número de Central: ' +
+            data.cenNro,
+          icon: 'success',
+          position: 'top',
+          showConfirmButton: true,
+          confirmButtonColor: '#0f425b',
+          confirmButtonText: 'Aceptar',
+        } as SweetAlertOptions).then((result) => {
+          if (result.value == true) {
+            return location.reload();
+          }
+        });
+
+        // Agregar los servicios para insertar en la base de datos
+        this.ServiciosAgregar = [];
+        for (const servicios of this.ServiciosNuevos) {
+          const sxc = new ServicioxCentralClass(
+            nroCentralNew, // Coloca aquí el número de central
+            servicios.serId,
+            1, // Aquí coloco 1 como estado por defecto disponible
+            new Date(), // Aquí coloco la fecha actual
+            null,
+          );
+          this.ServiciosAgregar.push(sxc);
+        }  
+        console.log(this.ServiciosAgregar);
+        if (this.ServiciosAgregar.length > 0) {
+          this.centralRegistrar.registrarServiciosCentral(this.ServiciosAgregar ).subscribe((data) => {
+            console.log(data);
+            Swal.fire({
+              text:
+              'La Central del Cliente: ' + 
+              this.cliApeNomDenSeleccionado +           
+              ' se ha registrado con éxito con el número de Central: ' +
+              nroCentralNew,
+              icon: 'success',
+              position: 'top',
+              showConfirmButton: true,
+              confirmButtonColor: '#0f425b',
+              confirmButtonText: 'Aceptar',
+            } as SweetAlertOptions).then((result) => {
+              if (result.value == true) {
+                return location.reload();
+              }
+            });
+          }, (error) => {
+            Swal.fire({
+              text: 'No es posible Agregar los Servicios a la Central',
+              icon: 'error',
+              position: 'top',
+              showConfirmButton: true,
+              confirmButtonColor: '#0f425b',
+              confirmButtonText: 'Aceptar',
+            } as SweetAlertOptions);    
+          });
         }
-      });
-    }, (error) => {
-      Swal.fire({
-        text: 'No es posible Agregar esta Central',
-        icon: 'error',
-        position: 'top',
-        showConfirmButton: true,
-        confirmButtonColor: '#0f425b',
-        confirmButtonText: 'Aceptar',
-      } as SweetAlertOptions);    
-    });
+      }, (error) => {
+        Swal.fire({
+          text: 'No es posible Agregar esta Central',
+          icon: 'error',
+          position: 'top',
+          showConfirmButton: true,
+          confirmButtonColor: '#0f425b',
+          confirmButtonText: 'Aceptar',
+        } as SweetAlertOptions);    
+      });      
   }
 
+  seleccionarCliente(cliente: CentralClienteConsultaClass): void {
+  }
 }

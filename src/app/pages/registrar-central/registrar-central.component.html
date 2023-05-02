@@ -15,11 +15,62 @@
 
 <h1 class="text-center">Registar Central Meteorológica</h1>
 <br />
+
+<div class="row">
+  <div class="col-2"></div>
+  <div class="col-10">
+    <h3>Lista de Cliente:</h3>
+    <table class="table" *ngIf="validarFiltradoClientes() == true">
+      <thead class="encabezado">
+          <tr>        
+            <!--
+            <th scope="col">Tipo Doc.</th>             
+            <th scope="col">Num. Doc.</th> 
+            <th scope="col">Cliente</th> 
+            <th scope="col">Usuario</th> -->      
+
+            <th (click)="ordenarClientePor('cliTipoDoc')" [appSort]="ClientesFiltrados" data-order="desc"
+            data-name="cliTipoDoc" style="text-align: center;"><a>Tipo Doc. {{ordenarIconoCliente('cliTipoDoc')}}</a></th>            
+            <th (click)="ordenarClientePor('cliNroDoc')" [appSort]="ClientesFiltrados" data-order="desc"
+            data-name="cliNroDoc" style="text-align: center;"><a>Num. Doc. {{ordenarIconoCliente('cliNroDoc')}}</a></th>            
+            <th (click)="ordenarClientePor('cliApeNomDen')" [appSort]="ClientesFiltrados" data-order="desc"
+            data-name="cliApeNomDen" style="text-align: center;"><a>Cliente {{ordenarIconoCliente('cliApeNomDen')}}</a></th>            
+            <th (click)="ordenarClientePor('usuario')" [appSort]="ClientesFiltrados" data-order="desc"
+            data-name="usuario" style="text-align: center;"><a>Usuario {{ordenarIconoCliente('usuario')}}</a></th>
+
+            <th scope="col">Seleccionar</th> 
+          </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let cliente of ClientesFiltrados let i=index"
+        [ngClass]="{'fila-par': i%2==0, 'fila-impar': i%2==1}"
+        (click)="esfilaSeleccionadaCliente(cliente)">
+        <th style="vertical-align: middle" class="align-center">{{ cliente.cliTipoDoc }}</th>
+        <td style="vertical-align: middle">{{ cliente.cliNroDoc }}</td>
+        <td style="vertical-align: middle">{{ cliente.cliApeNomDen }}</td>
+        <td style="vertical-align: middle">{{ cliente.usuario }}</td>
+        <td class="align-center">
+          <button type="button" class="btn"
+          data-bs-target="#staticBackdrop" (click)="seleccionarCliente(cliente)">
+          <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-box-arrow-down" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M3.5 10a.5.5 0 0 1-.5-.5v-8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 0 0 1h2A1.5 1.5 0 0 0 14 9.5v-8A1.5 1.5 0 0 0 12.5 0h-9A1.5 1.5 0 0 0 2 1.5v8A1.5 1.5 0 0 0 3.5 11h2a.5.5 0 0 0 0-1h-2z"/>
+            <path fill-rule="evenodd" d="M7.646 15.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 14.293V5.5a.5.5 0 0 0-1 0v8.793l-2.146-2.147a.5.5 0 0 0-.708.708l3 3z"/>
+          </svg>
+          </button>
+        </tr>
+      </tbody>
+    </table>
+    <div class="alert alert-primary text-center" role="alert" *ngIf="validarFiltradoClientes() == false">
+      No tiene Clientes Activos
+    </div>
+  </div>
+</div>
+
 <div class="row">
   
   <div class="col-4"></div>
   <div class="col-6">
-    <h3>Cliente de la Central:</h3>
+    <h3>Cliente Seleccionado para la Central:</h3>
     <br />
     <div class="row">
     <form [formGroup]="formRegistar">
@@ -141,9 +192,16 @@
           <h4> Lista de Servicios </h4>
           <table class="table" *ngIf="validarFiltradoServicios() == true">
             <thead class="encabezado">
-                <tr>              
+                <tr>     
+                  <!--
                   <th scope="col">Cod.</th> 
-                  <th scope="col">Nombre de Servicio</th> 
+                  <th scope="col">Nombre de Servicio</th> -->
+
+                  <th (click)="ordenarServicioPor('serId')" [appSort]="Servicios" data-order="desc"
+                  data-name="serId" style="text-align: center;"><a>Cod. {{ordenarIconoServicio('serId')}}</a></th>            
+                  <th (click)="ordenarServicioPor('serDescripcion')" [appSort]="Servicios" data-order="desc"
+                  data-name="serDescripcion" style="text-align: center;"><a>Nombre de Servicio {{ordenarIconoServicio('serDescripcion')}}</a></th>            
+            
                   <th scope="col">Agregar Serv.</th> 
                 </tr>
             </thead>
@@ -172,8 +230,15 @@
           <table class="table" *ngIf="validarFiltradoServiciosDeCentral() == true">
             <thead class="encabezado">
                 <tr>              
+                  <!--
                   <th scope="col">Cod.</th> 
-                  <th scope="col">Nombre de Servicio</th> 
+                  <th scope="col">Nombre de Servicio</th> -->
+
+                  <th (click)="ordenarServicioCentralPor('serId')" [appSort]="ServiciosNuevos" data-order="desc"
+                  data-name="serId" style="text-align: center;"><a>Cod. {{ordenarIconoServicioCentral('serId')}}</a></th>            
+                  <th (click)="ordenarServicioCentralPor('serDescripcion')" [appSort]="ServiciosNuevos" data-order="desc"
+                  data-name="serDescripcion" style="text-align: center;"><a>Nombre de Servicio {{ordenarIconoServicioCentral('serDescripcion')}}</a></th>            
+            
                   <th scope="col">Extraer Serv.</th> 
                 </tr>
             </thead>
