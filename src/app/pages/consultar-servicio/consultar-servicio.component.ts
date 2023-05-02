@@ -1,9 +1,9 @@
 //SISTEMA
 import { Component, OnInit } from '@angular/core';
 import {
-  UntypedFormBuilder,
-  UntypedFormGroup,
-  UntypedFormControl,
+  FormBuilder,
+  FormGroup,
+  FormControl,
   Validators,
 } from '@angular/forms';
 import Swal, { SweetAlertOptions } from 'sweetalert2';
@@ -44,31 +44,31 @@ export class ConsultarServicioComponent implements OnInit {
   mostrarBtnEditarModificacion : boolean = true;
 
   //FORMULARIOS DE AGRUPACION DE DATOS
-  formModificar: UntypedFormGroup;
-  formAgregar: UntypedFormGroup;
+  formModificar: FormGroup;
+  formAgregar: FormGroup;
 
   constructor(
-    private fb: UntypedFormBuilder,
+    private fb: FormBuilder,
     private servicioRegistrar: ServicioService,
     private servicioConsultar: ServicioService) 
     { 
       this.formModificar = this.fb.group({
-        id: new UntypedFormControl(null, []),
-        descripcion: new UntypedFormControl(null, [
+        id: new FormControl(null, []),
+        descripcion: new FormControl(null, [
           Validators.required,
           Validators.pattern("^[A-Z][A-ZÑa-zñáéíóúÁÉÍÓÚ'° ]+$"),
         ]),
-        unidad: new UntypedFormControl(null, [
+        unidad: new FormControl(null, [
           Validators.required,
           Validators.pattern("^[A-Z][A-ZÑa-zñáéíóúÁÉÍÓÚ'° ]+$"),
         ]),
       }),
       this.formAgregar = this.fb.group({
-        descripcionA: new UntypedFormControl(null, [
+        descripcionA: new FormControl(null, [
           Validators.required,
           Validators.pattern("^[A-Z][A-ZÑa-zñáéíóúÁÉÍÓÚ'° ]+$"),
         ]),
-        unidadA: new UntypedFormControl(null, [
+        unidadA: new FormControl(null, [
           Validators.required,
           Validators.pattern("^[A-Z][A-ZÑa-zñáéíóúÁÉÍÓÚ'° ]+$"),
         ]),

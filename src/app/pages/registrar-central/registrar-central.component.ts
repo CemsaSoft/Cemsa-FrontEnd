@@ -2,8 +2,8 @@
 import { Component, OnInit, Output } from '@angular/core';
 import {
   FormBuilder,
-  UntypedFormGroup,
-  UntypedFormControl,
+  FormGroup,
+  FormControl,
   Validators,
 } from '@angular/forms';
 import Swal, { SweetAlertOptions } from 'sweetalert2';
@@ -56,22 +56,22 @@ export class RegistrarCentralComponent implements OnInit {
   tipoOrdenamientoServicioCentral: number = 1;
 
   //FORMULARIOS DE AGRUPACION DE DATOS
-  formRegistar: UntypedFormGroup;
+  formRegistar: FormGroup;
 
   constructor(
     private servicioConsultar: ServicioService,
     private centralRegistrar: CentralService,
   ) { 
-    this.formRegistar = new UntypedFormGroup({
-      id: new UntypedFormControl(null, []),
-      imei: new UntypedFormControl(null, [
+    this.formRegistar = new FormGroup({
+      id: new FormControl(null, []),
+      imei: new FormControl(null, [
         Validators.required,
         Validators.pattern("^[A-Z][A-ZÑa-zñáéíóúÁÉÍÓÚ'° ]+$"),
       ]),
-      coordenadaX: new UntypedFormControl(null, []),
-      coordenadaY: new UntypedFormControl(null, []),
-      cliApeNomDenVM: new UntypedFormControl(null, []),
-      usuarioVM: new UntypedFormControl(null, []),      
+      coordenadaX: new FormControl(null, []),
+      coordenadaY: new FormControl(null, []),
+      cliApeNomDenVM: new FormControl(null, []),
+      usuarioVM: new FormControl(null, []),      
     });
   }
 
