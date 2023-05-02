@@ -1,7 +1,7 @@
 //SISTEMA
 import { Component, OnInit } from '@angular/core';
 import {
-  FormBuilder,
+  UntypedFormBuilder,
 } from '@angular/forms';
 import Swal, { SweetAlertOptions } from 'sweetalert2';
 
@@ -45,7 +45,7 @@ CentralSeleccionada: any;
 //FORMULARIOS DE AGRUPACION DE DATOS
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private centralModificarEstado: CentralService,
     private centralConsultar: CentralService, 
     private servicioCentral: CentralService,

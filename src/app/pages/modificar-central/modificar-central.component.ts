@@ -1,9 +1,9 @@
 //SISTEMA
 import { Component, OnInit, Output } from '@angular/core';
 import {
-  FormBuilder,
-  FormGroup,
-  FormControl,
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  UntypedFormControl,
   Validators,
 } from '@angular/forms';
 import Swal, { SweetAlertOptions } from 'sweetalert2';
@@ -74,30 +74,30 @@ export class ModificarCentralComponent implements OnInit {
   mostrarBtnEditarModificacion: boolean = true;
 
   //FORMULARIOS DE AGRUPACION DE DATOS
-  formModificar: FormGroup;
+  formModificar: UntypedFormGroup;
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private centralModificarEstado: CentralService,
     private centralConsultar: CentralService,
     private estadoCentralConsulta: CentralService,
     private servicioCentral: CentralService,
     private servicioConsultar: ServicioService,
   ) {
-    this.formModificar = new FormGroup({
-      id: new FormControl(null, []),
-      imei: new FormControl(null, [
+    this.formModificar = new UntypedFormGroup({
+      id: new UntypedFormControl(null, []),
+      imei: new UntypedFormControl(null, [
         Validators.required,
         Validators.pattern("^[A-Z][A-ZÑa-zñáéíóúÁÉÍÓÚ'° ]+$"),
       ]),
-      coordenadaX: new FormControl(null, []),
-      coordenadaY: new FormControl(null, []),
-      estadoCentralDescripcion: new FormControl(null, []),
-      fechaAlta: new FormControl(null, []),
-      fechaBaja: new FormControl(null, []),
-      cliApeNomDenVM: new FormControl(null, []),
-      usuarioVM: new FormControl(null, []),
-      estIdSeleccionado: new FormControl(),
+      coordenadaX: new UntypedFormControl(null, []),
+      coordenadaY: new UntypedFormControl(null, []),
+      estadoCentralDescripcion: new UntypedFormControl(null, []),
+      fechaAlta: new UntypedFormControl(null, []),
+      fechaBaja: new UntypedFormControl(null, []),
+      cliApeNomDenVM: new UntypedFormControl(null, []),
+      usuarioVM: new UntypedFormControl(null, []),
+      estIdSeleccionado: new UntypedFormControl(),
     });
   }
 
