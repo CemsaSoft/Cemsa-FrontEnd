@@ -83,8 +83,8 @@ CentralSeleccionada: any;
       this.fechaBajaSeleccionado = centralConsulta.cenFechaBaja ? new Date(centralConsulta.cenFechaBaja).toLocaleDateString("es-AR") : '';     
   }
 
-  //Filtro de Central por Nombre.
-  esFiltrar(event: Event){
+  //Filtro de Central por Nombre Cliente o Usuario.
+  esFiltrar(event: Event, campo: string) {
     let txtBuscar = (event.target as HTMLInputElement).value;
     let filtro = txtBuscar
       .replace(/[^\w\s]/g, '')
@@ -92,14 +92,15 @@ CentralSeleccionada: any;
       .toLowerCase();
     this.CentralConsultaFiltrados = [];
     this.CentralConsulta.forEach((centralConsulta) => {
-      if(
-        centralConsulta.cliApeNomDen.toString().toLowerCase().includes(filtro)
-      ){
+      if (
+        (campo === 'cliente' && centralConsulta.cliApeNomDen.toString().toLowerCase().includes(filtro)) ||
+        (campo === 'usuario' && centralConsulta.usuario.toString().toLowerCase().includes(filtro))
+      ) {
         this.CentralConsultaFiltrados.push(centralConsulta);
       }
-    }
-    );
+    });
   }
+
 
   //Metodos para grilla
   //Almacena en una variable la propiedad por la cual se quiere ordenar la consulta de Central.

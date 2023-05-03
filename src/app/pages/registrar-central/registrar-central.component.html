@@ -19,6 +19,71 @@
 <div class="row">
   <div class="col-2"></div>
   <div class="col-10">
+    <h3>Filtros:</h3>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por Tipo de Documento">
+          <span class="input-group-text">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+              class="bi bi-search" viewBox="0 0 16 16">
+              <path
+                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+            </svg>
+          </span>
+          <input type="text" class="form-control" placeholder="Filtrar por Tipo de Documento" (keyup)="esFiltrar($event , 'tipo')">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por Numero de Documento">
+          <span class="input-group-text">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+              class="bi bi-search" viewBox="0 0 16 16">
+              <path
+                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+            </svg>
+          </span>
+          <input type="text" class="form-control" placeholder="Filtrar por Numero de Documento" (keyup)="esFiltrar($event , 'numero')">
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por Nombre de Cliente">
+          <span class="input-group-text">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+              class="bi bi-search" viewBox="0 0 16 16">
+              <path
+                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+            </svg>
+          </span>
+          <input type="text" class="form-control" placeholder="Filtrar por Nombre del Cliente" (keyup)="esFiltrar($event , 'cliente')">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por Nombre de Usuario">
+          <span class="input-group-text">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+              class="bi bi-search" viewBox="0 0 16 16">
+              <path
+                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+            </svg>
+          </span>
+          <input type="text" class="form-control" placeholder="Filtrar por Nombre del Usuario" (keyup)="esFiltrar($event , 'usuario')">
+        </div>
+      </div>
+    </div>
+    
+
+  </div>
+</div>
+
+
+<br />
+<div class="row">
+  <div class="col-2"></div>
+  <div class="col-10">
     <h3>Lista de Cliente:</h3>
     <table class="table" *ngIf="validarFiltradoClientes() == true">
       <thead class="encabezado">
@@ -51,7 +116,7 @@
         <td style="vertical-align: middle">{{ cliente.usuario }}</td>
         <td class="align-center">
           <button type="button" class="btn"
-          data-bs-target="#staticBackdrop" (click)="seleccionarCliente(cliente)">
+          data-bs-target="#staticBackdrop">
           <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-box-arrow-down" viewBox="0 0 16 16">
             <path fill-rule="evenodd" d="M3.5 10a.5.5 0 0 1-.5-.5v-8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 0 0 1h2A1.5 1.5 0 0 0 14 9.5v-8A1.5 1.5 0 0 0 12.5 0h-9A1.5 1.5 0 0 0 2 1.5v8A1.5 1.5 0 0 0 3.5 11h2a.5.5 0 0 0 0-1h-2z"/>
             <path fill-rule="evenodd" d="M7.646 15.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 14.293V5.5a.5.5 0 0 0-1 0v8.793l-2.146-2.147a.5.5 0 0 0-.708.708l3 3z"/>
@@ -88,7 +153,10 @@
             readonly
           />
         </div>
+        <div class="text-danger" >
+        <div *ngIf="cliApeNomDenVM?.errors?.['required']">La Cliente es requerido - Seleccione un Cliente de la lista.</div> 
       </div>
+    </div>
       <div class="col-md-6">
         <div class="form-outline input-group mb-3">
           <span class="input-group-text">Usuario </span>
@@ -103,8 +171,12 @@
             readonly
           />
         </div>
+        <div class="text-danger" >
+        <div *ngIf="usuarioVM?.errors?.['required']">El Usuario es requerido - Seleccione un Usuario de la lista.</div>  
       </div>
-  
+    </div>
+    
+    <br />
     <h3>Datos de la Central:</h3>
     <br />
     <div class="row">
@@ -142,8 +214,8 @@
           *ngIf="imei?.invalid && (imei?.dirty || imei?.touched)"
           class="text-danger"
         >
-          <div *ngIf="imei?.errors?.['required']">La IMEI es requerida.</div>
-          <div *ngIf="imei?.errors?.['pattern']">Solo contener números.</div>
+          <div *ngIf="imei?.errors?.['required']">El IMEI es requerido.</div>
+          <div *ngIf="imei?.errors?.['pattern']">Debe ingresar solamente 15 números.</div>
         </div>
       </div>
     </div>
@@ -276,14 +348,8 @@
             data-bs-dismiss="modal"
             (click)="registrarCentral()"
           >
-            Aceptar
+            Agregar Central
           </button>
-        </div>
-        <div
-          *ngIf="validarControlers() == '2'"
-          class="text-danger"
-        >
-          Verifique los campos ingresados
         </div>      
       </div>
     </div>

@@ -41,8 +41,8 @@ export class RegistrarCentralComponent implements OnInit {
   imeiSeleccionado: string = '';
   coordenadaXSeleccionado: string = '';
   coordenadaYSeleccionado: string = '';
-  validadorCamposModif: string = '1';
-  numerosValidos: string = 'Solo se admiten números';  
+  //validadorCamposModif: string = '1';
+  numerosValidos: string = 'Solo se admiten 15 números';  
   cenNroDocSeleccionado: string = '';
   propiedadOrdenamientoCliente: string = 'cliTipoDoc';
   propiedadOrdenamientoServicio: string = 'serId';
@@ -66,15 +66,25 @@ export class RegistrarCentralComponent implements OnInit {
       id: new FormControl(null, []),
       imei: new FormControl(null, [
         Validators.required,
-        Validators.pattern("^[A-Z][A-ZÑa-zñáéíóúÁÉÍÓÚ'° ]+$"),
+        Validators.pattern("^[0-9]{15}$"),
       ]),
       coordenadaX: new FormControl(null, []),
       coordenadaY: new FormControl(null, []),
-      cliApeNomDenVM: new FormControl(null, []),
-      usuarioVM: new FormControl(null, []),      
+      cliApeNomDenVM: new FormControl(null, [
+        Validators.required,
+      ]),
+      usuarioVM: new FormControl(null, [
+        Validators.required,
+      ]),      
     });
   }
 
+  get cliApeNomDenVM() {
+    return this.formRegistar.get('cliApeNomDenVM');
+  }
+  get usuarioVM() {
+    return this.formRegistar.get('usuarioVM');
+  }
   get imei() {
     return this.formRegistar.get('imei');
   }
@@ -226,14 +236,26 @@ export class RegistrarCentralComponent implements OnInit {
     }
   }
   
-  //Valida que los campos descripcion y uniddad se encuentren correctamente ingresados.
-  validarControlers(): string {
-    if (this.formRegistar.valid == false) {
-      return (this.validadorCamposModif = '2');
-    } else {
-      return (this.validadorCamposModif = '1');
+    //Filtro de Central por Nombre Cliente o Usuario.
+    esFiltrar(event: Event, campo: string) {
+      let txtBuscar = (event.target as HTMLInputElement).value;
+      let filtro = txtBuscar
+        .replace(/[^\w\s]/g, '')
+        .trim()
+        .toLowerCase();
+      this.ClientesFiltrados = [];
+      this.Clientes.forEach((clienteConsulta) => {
+        if (
+          (campo === 'tipo' && clienteConsulta.cliTipoDoc.toString().toLowerCase().includes(filtro)) ||
+          (campo === 'numero' && clienteConsulta.cliNroDoc.toString().toLowerCase().includes(filtro)) ||
+          (campo === 'cliente' && clienteConsulta.cliApeNomDen.toString().toLowerCase().includes(filtro)) ||
+          (campo === 'usuario' && clienteConsulta.usuario.toString().toLowerCase().includes(filtro))
+        ) {
+          this.ClientesFiltrados.push(clienteConsulta);
+        }
+      });
     }
-  }
+  
 
   // Extraer servicios a la central selecciona
   agregarServicio(servicios: ServicioClass): void {  
@@ -257,94 +279,113 @@ export class RegistrarCentralComponent implements OnInit {
   
   // Registar Central
   registrarCentral(): void {
-    let nroCentralNew: number = 0;
-    let Central: CentralClass = new CentralClass(
-      0,
-      this.imeiSeleccionado,
-      this.coordenadaXSeleccionado,
-      this.coordenadaYSeleccionado,
-      new Date(),
-      null,      
-      1,
-      this.cenTipoDocSeleccionado,
-      this.cenNroDocSeleccionado      
-    );
-    console.log(Central);
-      this.centralRegistrar.registrarCentral(Central).subscribe((data) => {
-        nroCentralNew = data.cenNro;
-        console.log(data);
-        Swal.fire({
-          text:
-            'La Central del Cliente: ' + 
-            this.cliApeNomDenSeleccionado +           
-            ' se ha registrado con éxito con el número de Central: ' +
-            data.cenNro,
-          icon: 'success',
-          position: 'top',
-          showConfirmButton: true,
-          confirmButtonColor: '#0f425b',
-          confirmButtonText: 'Aceptar',
-        } as SweetAlertOptions).then((result) => {
-          if (result.value == true) {
-            return location.reload();
-          }
-        });
 
-        // Agregar los servicios para insertar en la base de datos
-        this.ServiciosAgregar = [];
-        for (const servicios of this.ServiciosNuevos) {
-          const sxc = new ServicioxCentralClass(
-            nroCentralNew, // Coloca aquí el número de central
-            servicios.serId,
-            1, // Aquí coloco 1 como estado por defecto disponible
-            new Date(), // Aquí coloco la fecha actual
-            null,
-          );
-          this.ServiciosAgregar.push(sxc);
-        }  
-        console.log(this.ServiciosAgregar);
-        if (this.ServiciosAgregar.length > 0) {
-          this.centralRegistrar.registrarServiciosCentral(this.ServiciosAgregar ).subscribe((data) => {
-            console.log(data);
-            Swal.fire({
-              text:
+    //Verifica que este completo el formulario y que no tenga errores.
+    if (this.formRegistar.valid == false) {
+      Swal.fire({
+        title: 'Error',
+        text: `Verificar los datos ingresados:
+    
+          ${(this.cliApeNomDenVM?.invalid && this.cliApeNomDenVM.errors?.['required']) || (this.usuarioVM?.invalid && this.usuarioVM.errors?.['required']) ? '*El Cliente / Usuario es requerido - Seleccione un Clilente/Usuario de la lista' : ''}
+          
+          ${this.imei?.invalid && this.imei.errors?.['required'] ? '\n* El IMEI es requerido' : ''}
+          
+          ${this.imei?.invalid && this.imei.errors?.['pattern'] ? '\n*Debe ingresar solamente 15 números' : ''}`,
+        icon: 'warning',
+        confirmButtonColor: '#0f425b',
+        confirmButtonText: 'Aceptar',
+        footer: 'Por favor, corrija los errores e inténtelo de nuevo.'
+      }); 
+    
+    } else {
+
+      let nroCentralNew: number = 0;
+      let Central: CentralClass = new CentralClass(
+        0,
+        this.imeiSeleccionado,
+        this.coordenadaXSeleccionado,
+        this.coordenadaYSeleccionado,
+        new Date(),
+        null,      
+        1,
+        this.cenTipoDocSeleccionado,
+        this.cenNroDocSeleccionado      
+      );
+      console.log(Central);
+        this.centralRegistrar.registrarCentral(Central).subscribe((data) => {
+          nroCentralNew = data.cenNro;
+          console.log(data);
+          Swal.fire({
+            text:
               'La Central del Cliente: ' + 
               this.cliApeNomDenSeleccionado +           
               ' se ha registrado con éxito con el número de Central: ' +
-              nroCentralNew,
-              icon: 'success',
-              position: 'top',
-              showConfirmButton: true,
-              confirmButtonColor: '#0f425b',
-              confirmButtonText: 'Aceptar',
-            } as SweetAlertOptions).then((result) => {
-              if (result.value == true) {
-                return location.reload();
-              }
-            });
-          }, (error) => {
-            Swal.fire({
-              text: 'No es posible Agregar los Servicios a la Central',
-              icon: 'error',
-              position: 'top',
-              showConfirmButton: true,
-              confirmButtonColor: '#0f425b',
-              confirmButtonText: 'Aceptar',
-            } as SweetAlertOptions);    
+              data.cenNro,
+            icon: 'success',
+            position: 'top',
+            showConfirmButton: true,
+            confirmButtonColor: '#0f425b',
+            confirmButtonText: 'Aceptar',
+          } as SweetAlertOptions).then((result) => {
+            if (result.value == true) {
+              return location.reload();
+            }
           });
-        }
-      }, (error) => {
-        Swal.fire({
-          text: 'No es posible Agregar esta Central',
-          icon: 'error',
-          position: 'top',
-          showConfirmButton: true,
-          confirmButtonColor: '#0f425b',
-          confirmButtonText: 'Aceptar',
-        } as SweetAlertOptions);    
-      });      
-  }
 
-  seleccionarCliente(cliente: CentralClienteConsultaClass): void {
+          // Agregar los servicios para insertar en la base de datos
+          this.ServiciosAgregar = [];
+          for (const servicios of this.ServiciosNuevos) {
+            const sxc = new ServicioxCentralClass(
+              nroCentralNew, // Coloca aquí el número de central
+              servicios.serId,
+              1, // Aquí coloco 1 como estado por defecto disponible
+              new Date(), // Aquí coloco la fecha actual
+              null,
+            );
+            this.ServiciosAgregar.push(sxc);
+          }  
+          console.log(this.ServiciosAgregar);
+          if (this.ServiciosAgregar.length > 0) {
+            this.centralRegistrar.registrarServiciosCentral(this.ServiciosAgregar ).subscribe((data) => {
+              console.log(data);
+              Swal.fire({
+                text:
+                'La Central del Cliente: ' + 
+                this.cliApeNomDenSeleccionado +           
+                ' se ha registrado con éxito con el número de Central: ' +
+                nroCentralNew,
+                icon: 'success',
+                position: 'top',
+                showConfirmButton: true,
+                confirmButtonColor: '#0f425b',
+                confirmButtonText: 'Aceptar',
+              } as SweetAlertOptions).then((result) => {
+                if (result.value == true) {
+                  return location.reload();
+                }
+              });
+            }, (error) => {
+              Swal.fire({
+                text: 'No es posible Agregar los Servicios a la Central',
+                icon: 'error',
+                position: 'top',
+                showConfirmButton: true,
+                confirmButtonColor: '#0f425b',
+                confirmButtonText: 'Aceptar',
+              } as SweetAlertOptions);    
+            });
+          }
+        }, (error) => {
+          Swal.fire({
+            text: 'No es posible Agregar esta Central',
+            icon: 'error',
+            position: 'top',
+            showConfirmButton: true,
+            confirmButtonColor: '#0f425b',
+            confirmButtonText: 'Aceptar',
+          } as SweetAlertOptions);    
+        });   
+    }   
   }
+  
 }

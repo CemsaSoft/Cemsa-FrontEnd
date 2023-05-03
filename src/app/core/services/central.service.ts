@@ -61,4 +61,8 @@ export class CentralService {
   serviciosXCentralCompleto(cenNum: number): Observable<any> {
     return this.http.get(this.url + '/serviciosXCentralCompleto/' + cenNum) ;
   }
+
+  actualizarServiciosCentral(serviciosActualizar: ServicioxCentralClass[]): Observable<any> {    
+    return this.http.post(this.url + '/actualizarServiciosCentral/', serviciosActualizar) ;    
+  }
 }

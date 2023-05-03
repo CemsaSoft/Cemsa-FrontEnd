@@ -135,7 +135,7 @@ export class ModificarCentralComponent implements OnInit {
 
     this.centralConsultar.serviciosXCentralCompleto(this.CentralConsultaSeleccionada.cenNro).subscribe(data => {
       this.ServiciosDeCentralOriginal = data;  
-      this.actualizacionServicio=data; 
+      //this.actualizacionServicio=data; 
     })
 
   }
@@ -220,9 +220,9 @@ export class ModificarCentralComponent implements OnInit {
   //En base a la propiedad por la que se quiera ordenar y el tipo de orden muestra un icono.
   ordenarIconoServicio(propiedad: string) {
     if (propiedad === this.propiedadOrdenamientoServicio) {
-      return this.tipoOrdenamientoServicio === 1 ? '🠉' : '🠋';
+      return this.tipoOrdenamientoServicio === 1 ? '??' : '??';
     } else {
-      return '🠋🠉';
+      return '????';
     }
   }
 
@@ -236,9 +236,9 @@ export class ModificarCentralComponent implements OnInit {
   //En base a la propiedad por la que se quiera ordenar y el tipo de orden muestra un icono.
   ordenarIconoServicioCentral(propiedad: string) {
     if (propiedad === this.propiedadOrdenamientoServicioCentral) {
-      return this.tipoOrdenamientoServicioCentral === 1 ? '🠉' : '🠋';
+      return this.tipoOrdenamientoServicioCentral === 1 ? '??' : '??';
     } else {
-      return '🠋🠉';
+      return '????';
     }
   }
 
@@ -256,24 +256,8 @@ export class ModificarCentralComponent implements OnInit {
     const index = this.Servicios.indexOf(servicios);
     if (index !== -1) {
       this.Servicios.splice(index, 1);
-      this.ServiciosDeCentralActualizado.push(servicios);
-
-      const servicioOriginal = this.actualizacionServicio.find(s => s.sxcNroServicio === servicios.serId);
-      if (servicioOriginal) {
-        servicioOriginal.sxcEstado = 1;
-        servicioOriginal.sxcFechaBaja = null;
-      } 
-      else {
-        const nuevoServicio = new ServicioxCentralClass(
-          this.CentralConsultaSeleccionada.cenNro, 
-          servicios.serId, 
-          1, 
-          new Date(), 
-          null);
-        this.actualizacionServicio.push(nuevoServicio);
-      }
+      this.ServiciosDeCentralActualizado.push(servicios);      
     }
-    console.log(this.actualizacionServicio);
     this.validarFiltradoServicios();  
   }
 
@@ -282,21 +266,7 @@ export class ModificarCentralComponent implements OnInit {
     const index = this.ServiciosDeCentralActualizado.indexOf(servicios);
     if (index !== -1) {
       this.ServiciosDeCentralActualizado.splice(index, 1);
-      this.Servicios.push(servicios);
-
-      const servicioOriginal = this.ServiciosDeCentralOriginal.find(s => s.sxcNroServicio === servicios.serId);
-      if (servicioOriginal) {
-        servicioOriginal.sxcEstado = 2;
-        servicioOriginal.sxcFechaBaja = new Date();
-        
-      }
-      else{
-        this.actualizacionServicio.splice(index, 1);
-      }      
-      console.log('Lista actualizada');
-      console.log(this.actualizacionServicio);
-      console.log('Lista de servicios original');
-      console.log(this.ServiciosDeCentralOriginal);
+      this.Servicios.push(servicios);      
     }
     this.validarFiltradoServiciosDeCentral();  
   }
@@ -304,6 +274,32 @@ export class ModificarCentralComponent implements OnInit {
   // abrir ventna Modificar Central
   modificarCentral(): void {
     this.controlServicios();
+    this.centralConsultar.actualizarServiciosCentral(
+      this.actualizacionServicio)
+      .subscribe(() => {
+          Swal.fire({
+            text:
+              'Se Actualizo con éxito los datos de la Central ' + this.cenNroSeleccionado,
+            icon: 'success',
+            position: 'top',
+            showConfirmButton: true,
+            confirmButtonColor: '#0f425b',
+            confirmButtonText: 'Aceptar',
+          } as SweetAlertOptions).then((result) => {
+            if (result.value == true) {
+              return location.reload();
+            }
+          });
+        }, (error) => {
+          Swal.fire({
+            text: 'No es posible modificar datos de esta Central',
+            icon: 'error',
+            position: 'top',
+            showConfirmButton: true,
+            confirmButtonColor: '#0f425b',
+            confirmButtonText: 'Aceptar',
+          } as SweetAlertOptions);    
+        });    
 
     // this.centralConsultar.actualizarDatosCentral(
     //   this.cenNroSeleccionado, 
@@ -336,122 +332,43 @@ export class ModificarCentralComponent implements OnInit {
     //   } as SweetAlertOptions);    
     // });    
   }
-
   controlServicios(): void {
-          
-    console.log('Servicios Actualizados: ');
-    console.log(this.ServiciosDeCentralActualizado);
-
-    //ServiciosDeCentralActualizado
-    //ServiciosDeCentralOriginal
-    console.log('Central nro: ');
-    console.log(this.CentralConsultaSeleccionada.cenNro);
-
-    console.log('Servicios Original de la Central: ');
-    console.log(this.ServiciosDeCentralOriginal);    
-
-   // let actualizacionServicio: ServicioxCentralClass[] = [];
-
-    // // verificar si el servicio original está en el array de servicios actualizados
-    // this.ServiciosDeCentralOriginal.forEach((servicioOriginal) => {
-    //   const servicioActualizado = this.ServiciosDeCentralActualizado.some((servicioActualizado) => {
-    //     return servicioOriginal.sxcNroServicio === servicioActualizado.serId;
-    //   });            
-    //   if (!servicioActualizado) {
-    //     const nuevoServicio = new ServicioxCentralClass(
-    //       this.CentralConsultaSeleccionada.cenNro, 
-    //       servicioOriginal.sxcNroServicio,
-    //       2, 
-    //       servicioOriginal.sxcFechaAlta,
-    //       new Date(),        
-    //     );        
-    //     actualizacionServicio.push(nuevoServicio);
-    //   }
-    // });
-    
-    // for (const servicio of this.ServiciosDeCentralOriginal) {
-    //   if (!this.ServiciosDeCentralActualizado.find(s => s.serId === servicio.sxcNroServicio)) {        
-    //     actualizacionServicio.push(new ServicioxCentralClass(
-    //       servicio.sxcNroCentral,
-    //       servicio.sxcNroServicio,
-    //       1,
-    //       new Date(),
-    //       null
-    //     ));
-    //   }
-    // }
-    
-    for (const servicioOriginal of this.ServiciosDeCentralActualizado) {
-      const servicioActualizado = this.ServiciosDeCentralOriginal.find(s => s.sxcNroServicio === servicioOriginal.serId);
-      if (!servicioActualizado) {
-        const nuevaActualizacionServicio = new ServicioxCentralClass(
-          this.CentralConsultaSeleccionada.cenNro, 
-          servicioOriginal.serId,
-          1,
-          new Date(),
-          null
-        );
-        this.actualizacionServicio.push(nuevaActualizacionServicio);
-       } 
-    }    
-
-
-
-    this.ServiciosDeCentralOriginal.forEach((servicioOriginal) => {
-      const servicioActualizado = this.ServiciosDeCentralActualizado.some((servicioActualizado) => {
-        return servicioOriginal.sxcNroServicio === servicioActualizado.serId;
-      });            
-      if (!servicioActualizado) {
+    this.actualizacionServicio = [];
+    for (const servicios of this.ServiciosDeCentralActualizado) {
+      const servicioOriginal = this.ServiciosDeCentralOriginal.find(s => s.sxcNroServicio === servicios.serId );
+      if (!servicioOriginal) {
         const nuevoServicio = new ServicioxCentralClass(
           this.CentralConsultaSeleccionada.cenNro, 
-          servicioOriginal.sxcNroServicio,
-          2, 
-          servicioOriginal.sxcFechaAlta,
-          new Date(),        
-        );        
-        this.actualizacionServicio.push(nuevoServicio);
+          servicios.serId, 
+          1, 
+          new Date(), 
+          null);
+        this.actualizacionServicio.push(nuevoServicio);      
       }
-    });
-    
-
-    console.log('servicios para actualizados: ');
-    console.log(this.actualizacionServicio);
-  
-    // if (this.ServiciosDeCentralOriginal.length === this.ServiciosDeCentralActualizado.length) {
-    //   // No se actualizó nada      
-    // } else if (this.ServiciosDeCentralOriginal.length > this.ServiciosDeCentralActualizado.length) {
-    //   // Se dio de baja algún servicio
-    //   for (const servicio of this.ServiciosDeCentralOriginal) {
-    //     const servicioActualizado = this.ServiciosDeCentralActualizado.find(s => s.serId === servicio.serId);
-    //     if (!servicioActualizado) {
-    //       // Servicio dado de baja
-    //       actualizacionServicio.push({
-    //         sxcNroCentral: 1,
-    //         sxcNroServicio: servicio.serId,
-    //         sxcEstado: 2,
-    //         sxcFechaAlta: new Date(new Date().toISOString().substr(0, 10)),
-    //         sxcFechaBaja: new Date(new Date().toISOString().substr(0, 10)),           
-    //       });
-    //     }
-    //   }
-    // } else {
-    //   // Se dio de alta un nuevo servicio
-    //   for (const servicio of this.ServiciosDeCentralActualizado) {
-    //     const servicioAnterior = this.ServiciosDeCentralOriginal.find(s => s.serId === servicio.serId);
-    //     if (!servicioAnterior) {
-    //       // Nuevo servicio dado de alta
-    //       actualizacionServicio.push({
-    //         sxcNroCentral: 1,
-    //         sxcNroServicio: servicio.serId,
-    //         sxcEstado: 1,
-    //         sxcFechaAlta: new Date(new Date().toISOString().substr(0, 10)),
-    //         sxcFechaBaja: new Date(new Date().toISOString().substr(0, 10)),   
-    //       });
-    //     }
-    //   }
-    // }
-    // console.log('datos de servicios');
-    // console.log(actualizacionServicio);
-
+      const servicioOriginal2 = this.ServiciosDeCentralOriginal.find(s => s.sxcNroServicio === servicios.serId && s.sxcEstado ===2);
+      if (servicioOriginal2) {
+        const nuevoServicio = new ServicioxCentralClass(
+          this.CentralConsultaSeleccionada.cenNro, 
+          servicios.serId, 
+          1, 
+          servicioOriginal2.sxcFechaAlta, 
+          null);
+        this.actualizacionServicio.push(nuevoServicio);      
+      }
+    }
+    for (const servicios of this.ServiciosDeCentralOriginal) {
+      const servicioOriginal = this.ServiciosDeCentralActualizado.find(s => s.serId === servicios.sxcNroServicio && servicios.sxcEstado===1);
+      if (!servicioOriginal && servicios.sxcEstado===1) {
+        const nuevoServicio = new ServicioxCentralClass(
+          this.CentralConsultaSeleccionada.cenNro, 
+          servicios.sxcNroServicio, 
+          2, 
+          servicios.sxcFechaAlta, 
+          new Date());
+        this.actualizacionServicio.push(nuevoServicio);      
+      }    
+    }
+    console.log('Servicios a insertar en la base de datos: ');
+    console.log(this.actualizacionServicio);    
   }
 }
