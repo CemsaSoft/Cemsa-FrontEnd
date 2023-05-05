@@ -15,9 +15,7 @@
 
 <h1 class="text-center">Modificar Central Meteorológica</h1>
 <br />
-
-<div class="row">
-  
+<div class="row">  
   <div class="col-4"></div>
   <div class="col-6">
     <h3>Cliente de la Central:</h3>
@@ -33,10 +31,9 @@
             id="cliApeNomDenVM"
             value="cliApeNomDenVM"
             formControlName="cliApeNomDenVM"
-            required
-            [(ngModel)]="cliApeNomDenSeleccionado"
+            required            
             readonly
-          />
+          /> 
         </div>
       </div>
       <div class="col-md-6">
@@ -48,8 +45,7 @@
             id="usuarioVM"
             value="usuarioVM"
             formControlName="usuarioVM"
-            required
-            [(ngModel)]="usuarioSeleccionado"
+            required            
             readonly
           />
         </div>
@@ -68,7 +64,6 @@
             value="id"
             formControlName="id"
             required
-            [(ngModel)]="cenNroSeleccionado"
             readonly
           />
         </div>
@@ -82,8 +77,7 @@
             id="imei"
             value="imei"
             formControlName="imei"
-            required
-            [(ngModel)]="imeiSeleccionado"
+            required            
           />
           <span class="input-group-text" title="{{ numerosValidos }}"
             ><svg
@@ -107,8 +101,8 @@
           *ngIf="imei?.invalid && (imei?.dirty || imei?.touched)"
           class="text-danger"
         >
-          <div *ngIf="imei?.errors?.['required']">La IMEI es requerida.</div>
-          <div *ngIf="imei?.errors?.['pattern']">Solo contener números.</div>
+          <div *ngIf="imei?.errors?.['required']">El IMEI es requerido.</div>
+          <div *ngIf="imei?.errors?.['pattern']">Debe ingresar solamente 15 números.</div>
         </div>
       </div>
     </div>
@@ -122,7 +116,6 @@
         value="estadoCentralDescripcion"
         formControlName="estadoCentralDescripcion"
         required
-        [(ngModel)]="estDescripcionSeleccionado"
         readonly
       />
     </div>
@@ -138,7 +131,6 @@
             value="fechaAlta"
             formControlName="fechaAlta"
             required
-            [(ngModel)]="fechaAltaSeleccionado"
             readonly
           />
         </div>
@@ -152,8 +144,7 @@
             id="fechaBaja"
             value="fechaBaja"
             formControlName="fechaBaja"
-            required
-            [(ngModel)]="fechaBajaSeleccionado"
+            required            
             readonly
           />
         </div>
@@ -170,8 +161,7 @@
             id="coordenadaX"
             value="coordenadaX"
             formControlName="coordenadaX"
-            required
-            [(ngModel)]="coordenadaXSeleccionado"
+            required            
             readonly
           />
         </div>
@@ -185,8 +175,7 @@
             id="coordenadaY"
             value="coordenadaY"
             formControlName="coordenadaY"
-            required
-            [(ngModel)]="coordenadaYSeleccionado"
+            required            
             readonly
           />
         </div>
@@ -208,12 +197,10 @@
                   <!--
                   <th scope="col">Cod.</th> 
                   <th scope="col">Nombre de Servicio</th> -->
-
                   <th (click)="ordenarServicioPor('serId')" [appSort]="Servicios" data-order="desc"
                   data-name="serId" style="text-align: center;"><a>Cod. {{ordenarIconoServicio('serId')}}</a></th>            
                   <th (click)="ordenarServicioPor('serDescripcion')" [appSort]="Servicios" data-order="desc"
-                  data-name="serDescripcion" style="text-align: center;"><a>Nombre de Servicio {{ordenarIconoServicio('serDescripcion')}}</a></th>            
-            
+                  data-name="serDescripcion" style="text-align: center;"><a>Nombre de Servicio {{ordenarIconoServicio('serDescripcion')}}</a></th>                        
                   <th scope="col">Agregar Serv.</th> 
                 </tr>
             </thead>
@@ -245,12 +232,10 @@
                   <!--
                   <th scope="col">Cod.</th> 
                   <th scope="col">Nombre de Servicio</th> -->
-
                   <th (click)="ordenarServicioCentralPor('serId')" [appSort]="ServiciosDeCentralActualizado" data-order="desc"
                   data-name="serId" style="text-align: center;"><a>Cod. {{ordenarIconoServicioCentral('serId')}}</a></th>            
                   <th (click)="ordenarServicioCentralPor('serDescripcion')" [appSort]="ServiciosDeCentralActualizado" data-order="desc"
-                  data-name="serDescripcion" style="text-align: center;"><a>Nombre de Servicio {{ordenarIconoServicioCentral('serDescripcion')}}</a></th>            
-            
+                  data-name="serDescripcion" style="text-align: center;"><a>Nombre de Servicio {{ordenarIconoServicioCentral('serDescripcion')}}</a></th>                        
                   <th scope="col">Extraer Serv.</th> 
                 </tr>
             </thead>
@@ -277,27 +262,28 @@
       </div>  
 
       <div class="row">
-        <div
-          class="modal-footer text-center col-3"          
-        >
+        <div class="col-md-6">          
           <button            
             id="btnAceptarModificacion"
             type="submit"
             class="btn btn-success"
-            data-bs-toggle="button"
-            data-bs-dismiss="modal"
+            data-bs-toggle="button"                        
             (click)="modificarCentral()"
           >
-            Aceptar
+            Modificar Central
           </button>
         </div>
-        <div
-          *ngIf="validarControlesMod() == '2'"
-          class="text-danger"
+        <div class="col-md-6">          
+          <button            
+          id="btnVolver"
+          type="submit"
+          class="btn btn-success"
+          data-bs-toggle="button"                        
+          routerLink="/consultar-central"
         >
-          Verifique los campos ingresados
-        </div>
-      
+          Volver
+        </button>
+        </div>      
       </div>
     </div>
   </form>

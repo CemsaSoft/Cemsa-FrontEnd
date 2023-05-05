@@ -101,7 +101,6 @@ CentralSeleccionada: any;
     });
   }
 
-
   //Metodos para grilla
   //Almacena en una variable la propiedad por la cual se quiere ordenar la consulta de Central.
   ordenarPor(propiedad: string) {
@@ -160,15 +159,9 @@ CentralSeleccionada: any;
     });
   }
 
-  // abrir ventna Modificar Central
-  modificarCentral(): void {
-          
-  }
   enviarDatos(){
-    console.log(this.CentralSeleccionada)
-    console.log("paso por consultar central y los datos son");
-    this.servicioCentral.enviarCentralSeleccionada(this.CentralSeleccionada)
-   
-   
+    //console.log(this.CentralSeleccionada)
+    //console.log("paso por consultar central y los datos son");
+    this.servicioCentral.enviarCentralSeleccionada(this.CentralSeleccionada)  
   }
 }

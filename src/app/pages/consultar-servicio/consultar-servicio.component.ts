@@ -34,9 +34,10 @@ export class ConsultarServicioComponent implements OnInit {
   unidadSeleccionada: string = '';
   despcionSeleccionado: string = '';
   propiedadOrdenamiento: string = 'serId';
-  caracteresValidos: string =
-    "La primera letra del nombre debe ser Mayúscula, y no se admiten: 1-9 ! # $ % & ' ( ) * + , - . / : ; < = > ¿? @ [  ] ^ _` { | } ~";
-
+  caracteresValidosNombreServicio: string =
+    "La primera letra del Nombre del Servicio debe ser Mayúscula, más de 3 caracteres y no se admiten: ! # $ % & ' ( ) * + , - . : ; < = > ¿? @ [  ] ^ _` { | } ~";
+    caracteresValidosUnidad: string =
+    "No se admiten: ! # $ % & ' ( ) * + , - . : ; < = > ¿? @ [  ] ^ _` { | } ~";
   idSeleccionado: number = 0;
   tipoOrdenamiento: number = 1;
 
@@ -56,21 +57,21 @@ export class ConsultarServicioComponent implements OnInit {
         id: new FormControl(null, []),
         descripcion: new FormControl(null, [
           Validators.required,
-          Validators.pattern("^[A-Z][A-ZÑa-zñáéíóúÁÉÍÓÚ'° ]+$"),
+          Validators.pattern("^[A-Z][A-ZÑa-zñáéíóúÁÉÍÓÚ'° 0-9/]{2,}$"),
         ]),
         unidad: new FormControl(null, [
           Validators.required,
-          Validators.pattern("^[A-Z][A-ZÑa-zñáéíóúÁÉÍÓÚ'° ]+$"),
+          Validators.pattern("^[A-Za-zÑñáéíóúÁÉÍÓÚ'°0-9/ ]{1,}$"),
         ]),
       }),
       this.formAgregar = this.fb.group({
         descripcionA: new FormControl(null, [
           Validators.required,
-          Validators.pattern("^[A-Z][A-ZÑa-zñáéíóúÁÉÍÓÚ'° ]+$"),
+          Validators.pattern("^[A-Z][A-ZÑa-zñáéíóúÁÉÍÓÚ'° 0-9/]{2,}$"),
         ]),
         unidadA: new FormControl(null, [
           Validators.required,
-          Validators.pattern("^[A-Z][A-ZÑa-zñáéíóúÁÉÍÓÚ'° ]+$"),
+          Validators.pattern("^[A-Za-zÑñáéíóúÁÉÍÓÚ'°0-9/ ]{1,}$"),
         ]),
       }
     );
@@ -83,22 +84,34 @@ export class ConsultarServicioComponent implements OnInit {
     })
   }
 
+  set id(valor: any) {
+    this.formModificar.get('id')?.setValue(valor);
+  }
+  set descripcion(valor: any) {
+    this.formModificar.get('descripcion')?.setValue(valor);
+  }
+  set unidad(valor: any) {
+    this.formModificar.get('unidad')?.setValue(valor);
+  }
+  set descripcionA(valor: any) {
+    this.formAgregar.get('descripcionA')?.setValue(valor);
+  }
+  set unidadA(valor: any) {
+    this.formAgregar.get('unidadA')?.setValue(valor);
+  }
+
   get id() {
     return this.formModificar.get('id');
   }
-
   get descripcion() {
     return this.formModificar.get('descripcion');
   }
-
   get unidad() {
     return this.formModificar.get('unidad');
   }
-
   get descripcionA() {
     return this.formAgregar.get('descripcionA');
   }
-
   get unidadA() {
     return this.formAgregar.get('unidadA');
   }
@@ -136,6 +149,9 @@ export class ConsultarServicioComponent implements OnInit {
     this.idSeleccionado = servicios.serId;
     this.despcionSeleccionado = servicios.serDescripcion;
     this.unidadSeleccionada = servicios.serUnidad;
+    this.id = servicios.serId;
+    this.descripcion = servicios.serDescripcion;
+    this.unidad = servicios.serUnidad;
   }
 
   //Permite abrir un Modal u otro en función del titulo pasado como parametro.
@@ -152,14 +168,14 @@ export class ConsultarServicioComponent implements OnInit {
     }
   }
 
-    //Valida que los campos descripcion y uniddad se encuentren correctamente ingresados.
-    validarControlesMod(): string {
-      if (this.formModificar.valid == false) {
-        return (this.validadorCamposModif = '2');
-      } else {
-        return (this.validadorCamposModif = '1');
-      }
+  //Valida que los campos descripcion y uniddad se encuentren correctamente ingresados.
+  validarControlesMod(): string {
+    if (this.formModificar.valid == false) {
+      return (this.validadorCamposModif = '2');
+    } else {
+      return (this.validadorCamposModif = '1');
     }
+  }
 
   //Valida que los campos descripcion y uniddad se encuentren correctamente ingresados.
   validarControlesAgregar(): string {
@@ -217,6 +233,23 @@ export class ConsultarServicioComponent implements OnInit {
 
   //Modificación del servicio seleccionado.
   modificarServicio() {
+
+    //Verifica que este completo el formulario y que no tenga errores.
+    if (this.formModificar.valid == false) {      
+      Swal.fire({
+        title: 'Error',
+        text: `Verificar los datos ingresados:              
+          ${this.descripcion?.invalid && this.descripcion.errors?.['required'] ? '\n* La descripción es requerida.' : ''}          
+          ${this.descripcion?.invalid && this.descripcion.errors?.['pattern'] ? '\n* La primera letra debe ser mayúscula y no debe contener caracteres especiales. Además, debe tener más de 3 caracteres.' : ''}
+          ${this.unidad?.invalid && this.unidad.errors?.['required'] ? '\n* La unidad es requerida.' : ''}          
+          ${this.unidad?.invalid && this.unidad.errors?.['pattern'] ? '\n* La unidad no debe contener caracteres especiales.' : ''}`,      
+        icon: 'warning',
+        confirmButtonColor: '#0f425b',
+        confirmButtonText: 'Aceptar',
+        footer: 'Por favor, corrija los errores e inténtelo de nuevo.'
+      });     
+    } else {
+
     let Servicios: ServicioClass = new ServicioClass(
       this.idSeleccionado,
       this.formModificar.get('descripcion')?.value,
@@ -255,6 +288,7 @@ export class ConsultarServicioComponent implements OnInit {
         } as SweetAlertOptions);    
       });          
     }
+  }
 
   //Baja fisica del servicio seleccionado.
   desactivarServicio() {
@@ -292,13 +326,28 @@ export class ConsultarServicioComponent implements OnInit {
 
   //Agregar un servicio
   agregarServicio(): void {
+    //Verifica que este completo el formulario y que no tenga errores.
+    if (this.formAgregar.valid == false) {      
+      Swal.fire({
+        title: 'Error',
+        text: `Verificar los datos ingresados:              
+          ${this.descripcionA?.invalid && this.descripcionA.errors?.['required'] ? '\n* La descripción es requerida.' : ''}          
+          ${this.descripcionA?.invalid && this.descripcionA.errors?.['pattern'] ? '\n* La primera letra debe ser mayúscula y no debe contener caracteres especiales. Además, debe tener más de 3 caracteres.' : ''}
+          ${this.unidadA?.invalid && this.unidadA.errors?.['required'] ? '\n* La unidad es requerida.' : ''}          
+          ${this.unidadA?.invalid && this.unidadA.errors?.['pattern'] ? '\n* La unidad no debe contener caracteres especiales.' : ''}`,      
+        icon: 'warning',
+        confirmButtonColor: '#0f425b',
+        confirmButtonText: 'Aceptar',
+        footer: 'Por favor, corrija los errores e inténtelo de nuevo.'
+      });     
+    } else {
+      
     let Servicios: ServicioClass = new ServicioClass(
       0,
       this.formAgregar.get('descripcionA')?.value,
       this.formAgregar.get('unidadA')?.value,
     );
-    this.servicioRegistrar.guardarServicio(Servicios).subscribe((data) => {
-      console.log(data);
+    this.servicioRegistrar.guardarServicio(Servicios).subscribe((data) => {      
       Swal.fire({
         text:
           'El Servicio ' + 
@@ -327,5 +376,6 @@ export class ConsultarServicioComponent implements OnInit {
         confirmButtonText: 'Aceptar',
       } as SweetAlertOptions);    
     });
+    }
   }
 }

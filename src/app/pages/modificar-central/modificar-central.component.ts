@@ -1,18 +1,19 @@
 //SISTEMA
-import { Component, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import {
   FormBuilder,
   FormGroup,
   FormControl,
   Validators,
 } from '@angular/forms';
+
 import Swal, { SweetAlertOptions } from 'sweetalert2';
 
 import { Map, Marker, icon } from 'leaflet';
 import * as L from 'leaflet';
 
 //COMPONENTES
-import { CentralConsultaClass } from 'src/app/core/models/centralConsulta';
 import { EstadoCentralConsultaClass } from 'src/app/core/models/estadoCentral';
 import { ServicioClass } from 'src/app/core/models/servicio';
 
@@ -30,48 +31,37 @@ export class ModificarCentralComponent implements OnInit {
   @Output() CentralConsultaSeleccionada: any;
 
   //VARIABLES DE OBJETOS LIST
-  //CentralConsulta: CentralConsultaClass[] = [];
-  //CentralConsultaFiltrados: CentralConsultaClass[] = [];
   EstadoCentralConsulta: EstadoCentralConsultaClass[] = [];
   Servicios: ServicioClass[] = [];
-  //ServiciosFiltrados: ServicioClass [] = [];
   ServiciosDeCentralActualizado: ServicioClass [] = [];
   ServiciosDeCentralOriginal: ServicioxCentralClass [] = [];
-
   actualizacionServicio: ServicioxCentralClass[] = [];
 
   //VARIABLES DE DATOS
   titulo: string = '';
-  //propiedadOrdenamiento: string = 'cenNro';
   propiedadOrdenamientoServicio: string = 'serId';
   propiedadOrdenamientoServicioCentral: string = 'serId';
   cliApeNomDenSeleccionado: string = '';
   usuarioSeleccionado: string = '';
   estDescripcionSeleccionado: string = '';
-
   imeiSeleccionado: string = '';
   coordenadaXSeleccionado: string = '';
   coordenadaYSeleccionado: string = '';
   fechaAltaSeleccionado: string = '';
   fechaBajaSeleccionado: string = '';
-
-  caracteresValidos: string =
-    "La primera letra del nombre debe ser Mayúscula, y no se admiten: 1-9 ! # $ % & ' ( ) * + , - . / : ; < = > ¿? @ [  ] ^ _` { | } ~";
-  numerosValidos: string = 'Solo se admiten números';
-
-  //tipoOrdenamiento: number = 1;
+  numerosValidos: string = 'Solo se admiten 15 números';  
+  ruta: string = '';
+  
   cenNroSeleccionado: number = 0;
   estIdSeleccionado: number = 0;
   validadorCamposModif: string = '1';
   idSeleccionado: number = 0;
   idListaServiciosSeleccionado: number=0;
   idListaServiciosCentralSeleccionado: number=0;
-  //tablaActualizadaServicio : boolean = false;
   tipoOrdenamientoServicio: number = 1;
   tipoOrdenamientoServicioCentral: number = 1;
 
-  mostrarBtnAceptarModificacion: boolean = false;
-  mostrarBtnEditarModificacion: boolean = true;
+  modificarExitoso: boolean = false;
 
   //FORMULARIOS DE AGRUPACION DE DATOS
   formModificar: FormGroup;
@@ -82,13 +72,14 @@ export class ModificarCentralComponent implements OnInit {
     private centralConsultar: CentralService,
     private estadoCentralConsulta: CentralService,
     private servicioCentral: CentralService,
-    private servicioConsultar: ServicioService,
+    private servicioConsultar: ServicioService, 
+    private router: Router   
   ) {
     this.formModificar = new FormGroup({
       id: new FormControl(null, []),
       imei: new FormControl(null, [
         Validators.required,
-        Validators.pattern("^[A-Z][A-ZÑa-zñáéíóúÁÉÍÓÚ'° ]+$"),
+        Validators.pattern("^[0-9]{15}$"),
       ]),
       coordenadaX: new FormControl(null, []),
       coordenadaY: new FormControl(null, []),
@@ -97,8 +88,36 @@ export class ModificarCentralComponent implements OnInit {
       fechaBaja: new FormControl(null, []),
       cliApeNomDenVM: new FormControl(null, []),
       usuarioVM: new FormControl(null, []),
-      estIdSeleccionado: new FormControl(),
+      estIdSeleccionado: new FormControl(null, []),
     });
+  }
+
+  set cliApeNomDenVM(valor: any) {
+    this.formModificar.get('cliApeNomDenVM')?.setValue(valor);
+  }
+  set usuarioVM(valor: any) {
+    this.formModificar.get('usuarioVM')?.setValue(valor);
+  }
+  set id(valor: any) {
+    this.formModificar.get('id')?.setValue(valor);
+  }
+  set imei(valor: any) {
+    this.formModificar.get('imei')?.setValue(valor);
+  }
+  set estadoCentralDescripcion(valor: any) {
+    this.formModificar.get('estadoCentralDescripcion')?.setValue(valor);
+  }
+  set fechaAlta(valor: any) {
+    this.formModificar.get('fechaAlta')?.setValue(valor);
+  }
+  set fechaBaja(valor: any) {
+    this.formModificar.get('fechaBaja')?.setValue(valor);
+  }
+  set coordenadaX(valor: any) {
+    this.formModificar.get('coordenadaX')?.setValue(valor);
+  }
+  set coordenadaY(valor: any) {
+    this.formModificar.get('coordenadaY')?.setValue(valor);
   }
 
   get imei() {
@@ -123,11 +142,8 @@ export class ModificarCentralComponent implements OnInit {
       this.Servicios = data;  
     })
 
-    //Cambiar el 1 por el id de la central seleccionada
-    //this.centralConsultar.obtenerServiciosXCentral(1).subscribe(data => {
     this.centralConsultar.obtenerServiciosXCentral(this.CentralConsultaSeleccionada.cenNro).subscribe(data => {
       this.ServiciosDeCentralActualizado = data; 
-      // filtra los registros que están en ServiciosDeCentral
       this.Servicios = this.Servicios.filter(servicio => {
         return !this.ServiciosDeCentralActualizado.some(servicioCentral => servicioCentral.serId === servicio.serId);
       });
@@ -135,13 +151,17 @@ export class ModificarCentralComponent implements OnInit {
 
     this.centralConsultar.serviciosXCentralCompleto(this.CentralConsultaSeleccionada.cenNro).subscribe(data => {
       this.ServiciosDeCentralOriginal = data;  
-      //this.actualizacionServicio=data; 
     })
+
 
   }
   
   recibirDatosCentral() {
     this.CentralConsultaSeleccionada = this.servicioCentral.recibirCentralSeleccionado();
+
+    if (this.CentralConsultaSeleccionada == undefined) {
+      location.href = '/consultar-central';      
+    }
 
     this.cliApeNomDenSeleccionado = this.CentralConsultaSeleccionada.cliApeNomDen;
     this.cenNroSeleccionado = this.CentralConsultaSeleccionada.cenNro;
@@ -150,9 +170,18 @@ export class ModificarCentralComponent implements OnInit {
     this.estDescripcionSeleccionado = this.CentralConsultaSeleccionada.estDescripcion;
     this.fechaAltaSeleccionado = new Date(this.CentralConsultaSeleccionada.cenFechaAlta).toLocaleDateString("es-AR");
     this.fechaBajaSeleccionado = this.CentralConsultaSeleccionada.cenFechaBaja ? new Date(this.CentralConsultaSeleccionada.cenFechaBaja).toLocaleDateString("es-AR") : '';     
-
     this.coordenadaXSeleccionado = this.CentralConsultaSeleccionada.cenCoorX;
     this.coordenadaYSeleccionado =  this.CentralConsultaSeleccionada.cenCoorY;
+    
+    this.cliApeNomDenVM = this.cliApeNomDenSeleccionado;
+    this.usuarioVM = this.usuarioSeleccionado;
+    this.id = this.cenNroSeleccionado;
+    this.imei = this.imeiSeleccionado;
+    this.estadoCentralDescripcion = this.estDescripcionSeleccionado;
+    this.fechaAlta = this.fechaAltaSeleccionado;
+    this.fechaBaja = this.fechaBajaSeleccionado;
+    this.coordenadaX = this.coordenadaXSeleccionado;
+    this.coordenadaY = this.coordenadaYSeleccionado;
   }
 
   inicializarMapa(): void {
@@ -178,6 +207,8 @@ export class ModificarCentralComponent implements OnInit {
       var newCoords = e.target.getLatLng();
       self.coordenadaXSeleccionado = newCoords.lat;
       self.coordenadaYSeleccionado = newCoords.lng;
+      self.coordenadaX = newCoords.lat;
+      self.coordenadaY = newCoords.lng;
     });
   }
 
@@ -220,9 +251,9 @@ export class ModificarCentralComponent implements OnInit {
   //En base a la propiedad por la que se quiera ordenar y el tipo de orden muestra un icono.
   ordenarIconoServicio(propiedad: string) {
     if (propiedad === this.propiedadOrdenamientoServicio) {
-      return this.tipoOrdenamientoServicio === 1 ? '??' : '??';
+      return this.tipoOrdenamientoServicio === 1 ? '🠉' : '🠋';
     } else {
-      return '????';
+      return '🠋🠉';
     }
   }
 
@@ -236,18 +267,9 @@ export class ModificarCentralComponent implements OnInit {
   //En base a la propiedad por la que se quiera ordenar y el tipo de orden muestra un icono.
   ordenarIconoServicioCentral(propiedad: string) {
     if (propiedad === this.propiedadOrdenamientoServicioCentral) {
-      return this.tipoOrdenamientoServicioCentral === 1 ? '??' : '??';
+      return this.tipoOrdenamientoServicioCentral === 1 ? '🠉' : '🠋';
     } else {
-      return '????';
-    }
-  }
-
-  //Valida que los campos descripcion y uniddad se encuentren correctamente ingresados.
-  validarControlesMod(): string {
-    if (this.formModificar.valid == false) {
-      return (this.validadorCamposModif = '2');
-    } else {
-      return (this.validadorCamposModif = '1');
+      return '🠋🠉';
     }
   }
 
@@ -270,26 +292,27 @@ export class ModificarCentralComponent implements OnInit {
     }
     this.validarFiltradoServiciosDeCentral();  
   }
-
+  
   // abrir ventna Modificar Central
   modificarCentral(): void {
+
+    //Verifica que este completo el formulario y que no tenga errores.
+    if (this.imei?.valid == false) {      
+      Swal.fire({
+        title: 'Error',
+        text: `Verificar los datos ingresados:              
+          ${this.imei?.invalid && this.imei.errors?.['required'] ? '\n* El IMEI es requerido' : ''}          
+          ${this.imei?.invalid && this.imei.errors?.['pattern'] ? '\n*Debe ingresar solamente 15 números' : ''}`,
+        icon: 'warning',
+        confirmButtonColor: '#0f425b',
+        confirmButtonText: 'Aceptar',
+        footer: 'Por favor, corrija los errores e inténtelo de nuevo.'
+      });     
+    } else {
+
     this.controlServicios();
-    this.centralConsultar.actualizarServiciosCentral(
-      this.actualizacionServicio)
-      .subscribe(() => {
-          Swal.fire({
-            text:
-              'Se Actualizo con éxito los datos de la Central ' + this.cenNroSeleccionado,
-            icon: 'success',
-            position: 'top',
-            showConfirmButton: true,
-            confirmButtonColor: '#0f425b',
-            confirmButtonText: 'Aceptar',
-          } as SweetAlertOptions).then((result) => {
-            if (result.value == true) {
-              return location.reload();
-            }
-          });
+    this.centralConsultar.actualizarServiciosCentral(this.actualizacionServicio).subscribe(() => {
+        
         }, (error) => {
           Swal.fire({
             text: 'No es posible modificar datos de esta Central',
@@ -300,37 +323,39 @@ export class ModificarCentralComponent implements OnInit {
             confirmButtonText: 'Aceptar',
           } as SweetAlertOptions);    
         });    
-
-    // this.centralConsultar.actualizarDatosCentral(
-    //   this.cenNroSeleccionado, 
-    //   this.formModificar.get('imei')?.value,
-    //   this.formModificar.get('coordenadaX')?.value,
-    //   this.formModificar.get('coordenadaY')?.value
-    //  )
-    // .subscribe(() => {
-    //   Swal.fire({
-    //     text:
-    //       'Se Actualizo con éxito los datos de la Central ' + this.cenNroSeleccionado,
-    //     icon: 'success',
-    //     position: 'top',
-    //     showConfirmButton: true,
-    //     confirmButtonColor: '#0f425b',
-    //     confirmButtonText: 'Aceptar',
-    //   } as SweetAlertOptions).then((result) => {
-    //     if (result.value == true) {
-    //       return location.reload();
-    //     }
-    //   });
-    // }, (error) => {
-    //   Swal.fire({
-    //     text: 'No es posible modificar datos de esta Central',
-    //     icon: 'error',
-    //     position: 'top',
-    //     showConfirmButton: true,
-    //     confirmButtonColor: '#0f425b',
-    //     confirmButtonText: 'Aceptar',
-    //   } as SweetAlertOptions);    
-    // });    
+      this.centralConsultar.actualizarDatosCentral(
+      this.cenNroSeleccionado, 
+      this.formModificar.get('imei')?.value,
+      this.formModificar.get('coordenadaX')?.value,
+      this.formModificar.get('coordenadaY')?.value
+     )
+    .subscribe(() => {
+      this.modificarExitoso = true;
+      Swal.fire({
+        text:
+          'Se Actualizo con éxito los datos de la Central ' + this.cenNroSeleccionado,
+        icon: 'success',
+        position: 'top',
+        showConfirmButton: true,
+        confirmButtonColor: '#0f425b',
+        confirmButtonText: 'Aceptar',
+      } as SweetAlertOptions).then((result) => {
+        if (result.value == true) {
+          return location.reload();
+        }
+      });
+      this.router.navigate(['/consultar-central']);  
+    }, (error) => {
+      Swal.fire({
+        text: 'No es posible modificar datos de esta Central',
+        icon: 'error',
+        position: 'top',
+        showConfirmButton: true,
+        confirmButtonColor: '#0f425b',
+        confirmButtonText: 'Aceptar',
+      } as SweetAlertOptions);    
+    });   
+      } 
   }
   controlServicios(): void {
     this.actualizacionServicio = [];
@@ -368,7 +393,7 @@ export class ModificarCentralComponent implements OnInit {
         this.actualizacionServicio.push(nuevoServicio);      
       }    
     }
-    console.log('Servicios a insertar en la base de datos: ');
-    console.log(this.actualizacionServicio);    
+    //console.log('Servicios a insertar en la base de datos: ');
+    //console.log(this.actualizacionServicio);    
   }
 }

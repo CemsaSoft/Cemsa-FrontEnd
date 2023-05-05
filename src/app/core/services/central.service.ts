@@ -30,8 +30,8 @@ export class CentralService {
 
   enviarCentralSeleccionada(central: CentralConsultaClass):void{
     this.centralSeleccionada=central;
-    console.log("Llegó al servicio enviar Central y los datos son:")
-    console.log(central)
+    //console.log("Llegó al servicio enviar Central y los datos son:")
+    //console.log(central)
   }
   
   recibirCentralSeleccionado():Observable<any>{

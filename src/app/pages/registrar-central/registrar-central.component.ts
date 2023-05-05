@@ -79,6 +79,21 @@ export class RegistrarCentralComponent implements OnInit {
     });
   }
 
+  set cliApeNomDenVM(valor: any) {
+    this.formRegistar.get('cliApeNomDenVM')?.setValue(valor);
+  }
+  set usuarioVM(valor: any) {
+    this.formRegistar.get('usuarioVM')?.setValue(valor);
+  }
+  set imei(valor: any) {
+    this.formRegistar.get('imei')?.setValue(valor);
+  }
+  set coordenadaX(valor: any) {
+    this.formRegistar.get('coordenadaX')?.setValue(valor);
+  }
+  set coordenadaY(valor: any) {
+    this.formRegistar.get('coordenadaY')?.setValue(valor);
+  }
   get cliApeNomDenVM() {
     return this.formRegistar.get('cliApeNomDenVM');
   }
@@ -114,7 +129,9 @@ export class RegistrarCentralComponent implements OnInit {
 
     //Coordenadas de Córdoba
     this.coordenadaXSeleccionado = "-31.420083";
+    this.coordenadaX = this.coordenadaXSeleccionado;
     this.coordenadaYSeleccionado = "-64.188776";    
+    this.coordenadaY = this.coordenadaYSeleccionado;
   }
 
   inicializarMapa(): void {
@@ -139,6 +156,8 @@ export class RegistrarCentralComponent implements OnInit {
       var newCoords = e.target.getLatLng();
       self.coordenadaXSeleccionado = newCoords.lat;
       self.coordenadaYSeleccionado = newCoords.lng;
+      self.coordenadaX = newCoords.lat;
+      self.coordenadaY = newCoords.lng;
     });
   }
   
@@ -185,6 +204,8 @@ export class RegistrarCentralComponent implements OnInit {
     this.usuarioSeleccionado = cliente.usuario;
     this.cenTipoDocSeleccionado = cliente.cliTipoDoc;
     this.cenNroDocSeleccionado = cliente.cliNroDoc;
+    this.cliApeNomDenVM = this.cliApeNomDenSeleccionado;
+    this.usuarioVM = this.usuarioSeleccionado;
   }
 
   //Metodos para grilla
@@ -236,26 +257,25 @@ export class RegistrarCentralComponent implements OnInit {
     }
   }
   
-    //Filtro de Central por Nombre Cliente o Usuario.
-    esFiltrar(event: Event, campo: string) {
-      let txtBuscar = (event.target as HTMLInputElement).value;
-      let filtro = txtBuscar
-        .replace(/[^\w\s]/g, '')
-        .trim()
-        .toLowerCase();
-      this.ClientesFiltrados = [];
-      this.Clientes.forEach((clienteConsulta) => {
-        if (
-          (campo === 'tipo' && clienteConsulta.cliTipoDoc.toString().toLowerCase().includes(filtro)) ||
-          (campo === 'numero' && clienteConsulta.cliNroDoc.toString().toLowerCase().includes(filtro)) ||
-          (campo === 'cliente' && clienteConsulta.cliApeNomDen.toString().toLowerCase().includes(filtro)) ||
-          (campo === 'usuario' && clienteConsulta.usuario.toString().toLowerCase().includes(filtro))
-        ) {
-          this.ClientesFiltrados.push(clienteConsulta);
-        }
-      });
-    }
-  
+  //Filtro de Central por Nombre Cliente o Usuario.
+  esFiltrar(event: Event, campo: string) {
+    let txtBuscar = (event.target as HTMLInputElement).value;
+    let filtro = txtBuscar
+      .replace(/[^\w\s]/g, '')
+      .trim()
+      .toLowerCase();
+    this.ClientesFiltrados = [];
+    this.Clientes.forEach((clienteConsulta) => {
+      if (
+        (campo === 'tipo' && clienteConsulta.cliTipoDoc.toString().toLowerCase().includes(filtro)) ||
+        (campo === 'numero' && clienteConsulta.cliNroDoc.toString().toLowerCase().includes(filtro)) ||
+        (campo === 'cliente' && clienteConsulta.cliApeNomDen.toString().toLowerCase().includes(filtro)) ||
+        (campo === 'usuario' && clienteConsulta.usuario.toString().toLowerCase().includes(filtro))
+      ) {
+        this.ClientesFiltrados.push(clienteConsulta);
+      }
+    });
+  }
 
   // Extraer servicios a la central selecciona
   agregarServicio(servicios: ServicioClass): void {  
@@ -302,7 +322,7 @@ export class RegistrarCentralComponent implements OnInit {
       let nroCentralNew: number = 0;
       let Central: CentralClass = new CentralClass(
         0,
-        this.imeiSeleccionado,
+        this.formRegistar.get('imei')?.value,
         this.coordenadaXSeleccionado,
         this.coordenadaYSeleccionado,
         new Date(),
@@ -310,11 +330,9 @@ export class RegistrarCentralComponent implements OnInit {
         1,
         this.cenTipoDocSeleccionado,
         this.cenNroDocSeleccionado      
-      );
-      console.log(Central);
+      );      
         this.centralRegistrar.registrarCentral(Central).subscribe((data) => {
-          nroCentralNew = data.cenNro;
-          console.log(data);
+          nroCentralNew = data.cenNro;          
           Swal.fire({
             text:
               'La Central del Cliente: ' + 
@@ -343,11 +361,10 @@ export class RegistrarCentralComponent implements OnInit {
               null,
             );
             this.ServiciosAgregar.push(sxc);
-          }  
-          console.log(this.ServiciosAgregar);
+          }            
           if (this.ServiciosAgregar.length > 0) {
             this.centralRegistrar.registrarServiciosCentral(this.ServiciosAgregar ).subscribe((data) => {
-              console.log(data);
+              
               Swal.fire({
                 text:
                 'La Central del Cliente: ' + 

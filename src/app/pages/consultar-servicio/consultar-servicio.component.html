@@ -3,7 +3,7 @@
 <div class="row">
     <div class="col-4"></div>
     <div class="col-5">
-      <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar">
+      <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por Nombre de Servicio">
           <span class="input-group-text">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                   class="bi bi-search" viewBox="0 0 16 16">
@@ -16,7 +16,7 @@
       </div>
     </div>
 </div>
-
+<br>
 <div class="row">
     <div class="col-2"></div>
     <div class="col-10">
@@ -96,7 +96,7 @@
               <div class="form-outline input-group mb-3">
                 <span class="input-group-text">Cod.</span>                    
                 <input type="text" class="form-control" id="id" value="id" 
-                formControlName="id" required [(ngModel)]="idSeleccionado" />                    
+                formControlName="id" />                    
               </div>              
             </div>
 
@@ -104,8 +104,8 @@
                 <div class="form-outline input-group mb-3">
                     <span class="input-group-text">Nombre de Servicio</span>
                     <input type="text" class="form-control" id="descripcion" value="descripcion"
-                        formControlName="descripcion" required [(ngModel)]="despcionSeleccionado"/>
-                    <span class="input-group-text" title="{{caracteresValidos}}"><svg
+                        formControlName="descripcion" required />
+                    <span class="input-group-text" title="{{caracteresValidosNombreServicio}}"><svg
                           xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                           class="bi bi-question-circle" viewBox="0 0 16 16">
                           <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
@@ -119,8 +119,7 @@
                       La descripción es requerida.
                   </div>
                   <div *ngIf="descripcion?.errors?.['pattern']">
-                      La primera letra debe ser mayúscula y no debe contener números ni caracteres especiales.
-                  </div>
+                    La primera letra debe ser mayúscula y no debe contener caracteres especiales. Además, debe tener más de 3 caracteres. </div>
                 </div>
             </div>
 
@@ -128,8 +127,8 @@
               <div class="form-outline input-group mb-3">
                   <span class="input-group-text">Unidad de Medida</span>
                   <input type="text" class="form-control" id="unidad" value="unidad"
-                      formControlName="unidad" required [(ngModel)]="unidadSeleccionada" />
-                  <span class="input-group-text" title="{{caracteresValidos}}"><svg
+                      formControlName="unidad" />
+                  <span class="input-group-text" title="{{caracteresValidosUnidad}}"><svg
                           xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                           class="bi bi-question-circle" viewBox="0 0 16 16">
                           <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
@@ -143,7 +142,7 @@
                     La unidad es requerida.
                 </div>
                 <div *ngIf="unidad?.errors?.['pattern']">
-                    La primera letra debe ser mayúscula y no debe contener números ni caracteres especiales.
+                    No debe contener caracteres especiales.
                 </div>
               </div>             
             </div>
@@ -153,13 +152,13 @@
       <div class="modal-footer text-center col-3">
           <button *ngIf="mostrarBtnEditarModificacion" type="submit" id="btnEditar" class="btn btn-success" (click)="desbloquearEditar()">Editar</button>
       </div>
-      <div class="modal-footer text-center col-3" *ngIf="validarControlesMod() == '1'">
-          <button *ngIf="mostrarBtnAceptarModificacion" id="btnAceptarModificacion" type="submit" class="btn btn-success"data-bs-toggle="button" data-bs-dismiss="modal"(click)="modificarServicio()">Aceptar</button>  
+      <div class="modal-footer text-center col-3">
+          <button *ngIf="mostrarBtnAceptarModificacion" id="btnAceptarModificacion" type="submit" class="btn btn-success" (click)="modificarServicio()">Aceptar</button>
       </div>
       <div class="modal-footer text-center col-3"> 
           <button style="background-color: #0e3c53;" id="CancelarModificacion" type="button" class="btn text-white"data-bs-dismiss="modal">Cancelar</button>        
       </div>
-      <div *ngIf="validarControlesMod() == '2' && mostrarBtnAceptarModificacion" class="text-danger">
+      <div *ngIf="validarControlesMod() == '2' && mostrarBtnAceptarModificacion==true" class="text-danger">
         Verifique los campos ingresados
       </div>
     </div>
@@ -203,7 +202,7 @@
                     <span class="input-group-text">Nombre de Servicio</span>
                     <input type="text" class="form-control" id="descripcionA"
                         formControlName="descripcionA" placeholder="Ingrese una descripción"/>
-                    <span class="input-group-text" title="{{caracteresValidos}}"><svg
+                    <span class="input-group-text" title="{{caracteresValidosNombreServicio}}"><svg
                           xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                           class="bi bi-question-circle" viewBox="0 0 16 16">
                           <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
@@ -217,8 +216,7 @@
                       La descripción es requerida.
                   </div>
                   <div *ngIf="descripcionA?.errors?.['pattern']">
-                      La primera letra debe ser mayúscula y no debe contener números ni caracteres especiales.
-                  </div>
+                    La primera letra debe ser mayúscula y no debe contener caracteres especiales. Además, debe tener más de 3 caracteres.                  </div>
                 </div>
             </div>
             <div class="col-md-12">
@@ -226,7 +224,7 @@
                   <span class="input-group-text">Unidad de Medida</span>
                   <input type="text" class="form-control" id="unidadA"
                       formControlName="unidadA" placeholder="Ingrese una unidad"/>
-                  <span class="input-group-text" title="{{caracteresValidos}}"><svg
+                  <span class="input-group-text" title="{{caracteresValidosUnidad}}"><svg
                           xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                           class="bi bi-question-circle" viewBox="0 0 16 16">
                           <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
@@ -240,7 +238,7 @@
                     La unidad es requerida.
                 </div>
                 <div *ngIf="unidadA?.errors?.['pattern']">
-                    La primera letra debe ser mayúscula y no debe contener números ni caracteres especiales.
+                    No debe contener caracteres especiales.
                 </div>
               </div>             
             </div>
@@ -249,7 +247,7 @@
         </fieldset>
     </form>
     <div class="row">
-      <div class="modal-footer text-center col-3" *ngIf="validarControlesAgregar() == '1'">
+      <div class="modal-footer text-center col-3">
           <button type="submit" id="Validar" class="btn btn-success" (click)="agregarServicio()">
             Agregar</button>
       </div>
