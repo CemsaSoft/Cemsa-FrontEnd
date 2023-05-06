@@ -8,6 +8,8 @@
   cliApeNomDen : string;
   cliEmail : string;
   cliTelefono : string;
+  usuario: string;
+  tdDescripcion: string ;       
 
     constructor(
       cliTipoDoc : number,
@@ -18,6 +20,8 @@
       cliApeNomDen : string,
       cliEmail : string,
       cliTelefono : string,
+      usuario: string,
+      tdDescripcion: string,    
     ) {
       this.cliTipoDoc = cliTipoDoc;
       this.cliNroDoc = cliNroDoc;
@@ -27,5 +31,7 @@
       this.cliApeNomDen = cliApeNomDen;
       this.cliEmail = cliEmail;
       this.cliTelefono = cliTelefono;
+      this.usuario = usuario;
+      this.tdDescripcion = tdDescripcion;    
     }
   }

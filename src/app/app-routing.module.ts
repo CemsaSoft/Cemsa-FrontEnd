@@ -8,6 +8,7 @@ import { ConsultarCentralComponent} from './pages/consultar-central/consultar-ce
 import { HomeComponent } from './pages/home/home.component';
 import { ModificarCentralComponent } from './pages/modificar-central/modificar-central.component';
 import { RegistrarCentralComponent } from './pages/registrar-central/registrar-central.component';
+import { ConsultarClienteComponent } from './pages/consultar-cliente/consultar-cliente.component';
 
 //RUTAS
 const routes: Routes = [
@@ -18,6 +19,7 @@ const routes: Routes = [
   {path:'consultar-central', component: ConsultarCentralComponent},
   {path:'modificar-central', component: ModificarCentralComponent},
   {path:'registrar-central', component: RegistrarCentralComponent},
+  {path:'consultar-cliente', component: ConsultarClienteComponent},
   {path:'', redirectTo: '/', pathMatch:'full'},
   {path:'**', redirectTo: '/', pathMatch:'full'},
 ];

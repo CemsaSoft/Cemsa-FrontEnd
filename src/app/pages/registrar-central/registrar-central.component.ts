@@ -44,7 +44,7 @@ export class RegistrarCentralComponent implements OnInit {
   //validadorCamposModif: string = '1';
   numerosValidos: string = 'Solo se admiten 15 números';  
   cenNroDocSeleccionado: string = '';
-  propiedadOrdenamientoCliente: string = 'cliTipoDoc';
+  propiedadOrdenamientoCliente: string = 'tdDescripcion';
   propiedadOrdenamientoServicio: string = 'serId';
   propiedadOrdenamientoServicioCentral: string = 'serId';
 
@@ -267,7 +267,7 @@ export class RegistrarCentralComponent implements OnInit {
     this.ClientesFiltrados = [];
     this.Clientes.forEach((clienteConsulta) => {
       if (
-        (campo === 'tipo' && clienteConsulta.cliTipoDoc.toString().toLowerCase().includes(filtro)) ||
+        (campo === 'tipo' && clienteConsulta.tdDescripcion.toString().toLowerCase().includes(filtro)) ||
         (campo === 'numero' && clienteConsulta.cliNroDoc.toString().toLowerCase().includes(filtro)) ||
         (campo === 'cliente' && clienteConsulta.cliApeNomDen.toString().toLowerCase().includes(filtro)) ||
         (campo === 'usuario' && clienteConsulta.usuario.toString().toLowerCase().includes(filtro))
