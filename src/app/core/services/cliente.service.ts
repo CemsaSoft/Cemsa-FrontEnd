@@ -17,5 +17,21 @@ export class ClienteService {
   listaClientes(): Observable<any> {
     return this.http.get(this.url + '/listaClientes');
   }
+  
+  obtenerTipoDoc(): Observable<any> {
+    return this.http.get(this.url + '/listaTipoDoc');
+  }
 
+  modificarEstado(accion: number, tipoDoc: number, nroDoc: string): Observable<any> {    
+    const body = { accion, tipoDoc, nroDoc };
+    return this.http.post(this.url + '/modificarEstado', body);     
+  }
+
+  blanquearPassword(usrID: number): Observable<any> {            
+    return this.http.post(this.url + '/blanquearPassword/' + usrID, null);     
+  }
+
+  actualizarCliente(cliente: ClienteClass): Observable<any> {
+    return this.http.post(this.url + '/actualizarCliente  ', cliente) ;    
+  }
 }
