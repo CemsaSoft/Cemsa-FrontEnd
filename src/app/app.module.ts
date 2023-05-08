@@ -16,21 +16,27 @@ import { ModificarCentralComponent } from './pages/modificar-central/modificar-c
 import { ConsultarClienteComponent } from './pages/consultar-cliente/consultar-cliente.component';
 import { MenuComponent } from './shared/menu/menu.component';
 import { RegistrarCentralComponent } from './pages/registrar-central/registrar-central.component';
-
+import { IngresarUsuarioComponent } from './pages/ingresar-usuario/ingresar-usuario.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptorService } from './core/interceptors/auth-interceptor.service';
+//import { TextMaskModule } from 'angular2-text-mask';// npm i angular2-text-mask
 @NgModule({
   //Componentes que va a utilizar el módulo
   declarations: [
     AppComponent,
-    ConsultarServicioComponent,
+    NavbarComponent,
+    FooterComponent,
+    HomeComponent, 
+    MenuComponent,
+    CarouselComponent,
     ModalComponent,
     SortDirective,
     ConsultarCentralComponent,
-    NavbarComponent,
-    FooterComponent,
-    CarouselComponent,
-    HomeComponent,    
-    ModificarCentralComponent, ConsultarClienteComponent, RegistrarCentralComponent,
-    ModificarCentralComponent, ConsultarClienteComponent, MenuComponent,
+    ConsultarServicioComponent,
+    ModificarCentralComponent, 
+    RegistrarCentralComponent,
+    ConsultarClienteComponent, 
+    IngresarUsuarioComponent,
   ],
   //Para importar otros módulos de angular
   imports: [
@@ -41,7 +47,13 @@ import { RegistrarCentralComponent } from './pages/registrar-central/registrar-c
     ReactiveFormsModule,
   ],
   // Inyección de dependencias
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorService,
+      multi: true,
+    }
+  ],
   bootstrap: [AppComponent] //Indicamos aquí el Componente principal de donde empezará la aplicación
 })
 export class AppModule { }

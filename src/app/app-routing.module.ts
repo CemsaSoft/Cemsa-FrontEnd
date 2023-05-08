@@ -9,17 +9,18 @@ import { HomeComponent } from './pages/home/home.component';
 import { ModificarCentralComponent } from './pages/modificar-central/modificar-central.component';
 import { RegistrarCentralComponent } from './pages/registrar-central/registrar-central.component';
 import { ConsultarClienteComponent } from './pages/consultar-cliente/consultar-cliente.component';
+import { IngresarUsuarioComponent } from './pages/ingresar-usuario/ingresar-usuario.component';
+import { RouteguardsGuard } from './routeguards.guard';
 
 //RUTAS
 const routes: Routes = [
   //Aquí configuramos las rutas, indicamos en el path la ruta, seguido de los componentes que mostrará esa ruta
-  {path:'', component: HomeComponent},
-  {path:'home', component: HomeComponent},
-  {path:'consultar-servicio', component: ConsultarServicioComponent},
-  {path:'consultar-central', component: ConsultarCentralComponent},
-  {path:'modificar-central', component: ModificarCentralComponent},
-  {path:'registrar-central', component: RegistrarCentralComponent},
-  {path:'consultar-cliente', component: ConsultarClienteComponent},
+  {path: '', component: IngresarUsuarioComponent},
+  {path:'home', component: HomeComponent, canActivate: [RouteguardsGuard]},
+  {path:'consultar-servicio', component: ConsultarServicioComponent, canActivate: [RouteguardsGuard]},
+  {path:'consultar-central', component: ConsultarCentralComponent, canActivate: [RouteguardsGuard]},
+  {path:'modificar-central', component: ModificarCentralComponent, canActivate: [RouteguardsGuard]},
+  {path:'registrar-central', component: RegistrarCentralComponent, canActivate: [RouteguardsGuard]},
   {path:'', redirectTo: '/', pathMatch:'full'},
   {path:'**', redirectTo: '/', pathMatch:'full'},
 ];
