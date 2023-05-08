@@ -1,0 +1,67 @@
+<div class="container-fluid">
+    <div class="abs-center">
+        <div class="row mx-auto p-2">
+
+            <!-- Logo de Citenik Bank -->
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                <a href="#" id="imagen"><img src="./assets/candado.png" alt="Ingresar"></a>
+            </div>
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                <h3 class="text-white">Ingresar</h3>
+                <div class="card">
+                    <div class="card-body">
+                        <form [formGroup]="formInicio" class="row">
+                            
+                            <!-- Campo Usuario -->
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                <div class="form-outline input-group mb-3">
+                                    <span class="input-group-text">Usuario</span>
+                                    <input type="text" id="usuario" class="form-control" value="Usuario" formControlName="usuario"
+                                        required />                                    
+                                </div>
+
+                                <!-- Validaciones Usuario -->
+                                <div *ngIf="usuario?.invalid && (usuario?.dirty || usuario?.touched)"
+                                    class="text-danger">
+                                    <div *ngIf="usuario?.errors?.['required']">
+                                        El usuario es requerido.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Campo Contraseña -->
+                            <div class="col-md-12">
+                                <div class="form-outline input-group mb-3">
+                                    <span class="input-group-text">Contraseña</span>
+                                    <input type="password" class="form-control" value="Password"
+                                        formControlName="password" required />
+                                </div>
+
+                                <!-- Validaciones Contraseña -->
+                                <div *ngIf="password?.invalid && (password?.dirty || password?.touched)"
+                                    class="text-danger">
+                                    <div *ngIf="password?.errors?.['required']">
+                                        La contraseña es requerida.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Validaciones de Campos -->
+                            <div *ngIf="esInicioValido == 2" class="text-danger">
+                                <p>Usuario y/o contraseña incorrectos</p>
+                            </div>
+
+                            <!-- Validaciones Boton Ingresar -->
+                            <div class="col-8"></div>
+                            <div class="col-4">
+                                <button class="btn text-white" style="background-color: #0e3c53;" type="button"
+                                    (click)="login()" [routerLink]="[redireccionar()]" *ngIf="validarIngresar(usuario?.value, password?.value) == true">Ingresar 
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
