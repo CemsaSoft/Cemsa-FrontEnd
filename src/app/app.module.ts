@@ -19,6 +19,7 @@ import { RegistrarCentralComponent } from './pages/registrar-central/registrar-c
 import { IngresarUsuarioComponent } from './pages/ingresar-usuario/ingresar-usuario.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptorService } from './core/interceptors/auth-interceptor.service';
+import { RegistrarClienteComponent } from './pages/registrar-cliente/registrar-cliente.component';
 //import { TextMaskModule } from 'angular2-text-mask';// npm i angular2-text-mask
 @NgModule({
   //Componentes que va a utilizar el módulo
@@ -37,6 +38,7 @@ import { AuthInterceptorService } from './core/interceptors/auth-interceptor.ser
     RegistrarCentralComponent,
     ConsultarClienteComponent, 
     IngresarUsuarioComponent,
+    RegistrarClienteComponent
   ],
   //Para importar otros módulos de angular
   imports: [

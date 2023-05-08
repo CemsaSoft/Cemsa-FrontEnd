@@ -11,6 +11,7 @@ import { RegistrarCentralComponent } from './pages/registrar-central/registrar-c
 import { ConsultarClienteComponent } from './pages/consultar-cliente/consultar-cliente.component';
 import { IngresarUsuarioComponent } from './pages/ingresar-usuario/ingresar-usuario.component';
 import { RouteguardsGuard } from './routeguards.guard';
+import { RegistrarClienteComponent } from './pages/registrar-cliente/registrar-cliente.component';
 
 //RUTAS
 const routes: Routes = [
@@ -21,6 +22,8 @@ const routes: Routes = [
   {path:'consultar-central', component: ConsultarCentralComponent, canActivate: [RouteguardsGuard]},
   {path:'modificar-central', component: ModificarCentralComponent, canActivate: [RouteguardsGuard]},
   {path:'registrar-central', component: RegistrarCentralComponent, canActivate: [RouteguardsGuard]},
+  {path:'consultar-cliente', component: ConsultarClienteComponent, canActivate: [RouteguardsGuard]},
+  {path:'registrar-cliente', component: RegistrarClienteComponent, canActivate: [RouteguardsGuard]},
   {path:'', redirectTo: '/', pathMatch:'full'},
   {path:'**', redirectTo: '/', pathMatch:'full'},
 ];
