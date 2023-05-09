@@ -31,7 +31,11 @@ export class ClienteService {
     return this.http.post(this.url + '/blanquearPassword/' + usrID, null);     
   }
 
-  actualizarCliente(cliente: ClienteClass): Observable<any> {
-    return this.http.post(this.url + '/actualizarCliente  ', cliente) ;    
+  actualizarCliente(cliente: ClienteClass, usuario: string): Observable<any> {
+    return this.http.post(this.url + '/actualizarCliente/' + usuario, cliente) ;    
+  }
+
+  registarCliente(cliente: ClienteClass, usuario: string): Observable<any> {
+    return this.http.post(this.url + '/registarCliente/' + usuario, cliente) ;    
   }
 }

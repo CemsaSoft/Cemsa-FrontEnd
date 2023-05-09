@@ -12,7 +12,6 @@ import Swal, { SweetAlertOptions } from 'sweetalert2';
 //COMPONENTES
 import { ClienteClass } from 'src/app/core/models/cliente';
 import { ClienteConsultaClass } from 'src/app/core/models/clienteConsulta';
-import { TipoDocumentoClass } from 'src/app/core/models/tipoDocumento';
 
 //SERVICIOS
 import { ClienteService } from 'src/app/core/services/cliente.service';
@@ -27,7 +26,6 @@ export class ConsultarClienteComponent implements OnInit {
   //VARIABLES DE OBJETOS LIST
   Clientes: ClienteConsultaClass[] = [];
   ClientesFiltrados: ClienteConsultaClass[] = [];
-  TipoDocumento: TipoDocumentoClass[] = [];
 
   //VARIABLES DE DATOS
   propiedadOrdenamientoCliente: string = 'tdDescripcion'; 
@@ -40,7 +38,15 @@ export class ConsultarClienteComponent implements OnInit {
   cliFechaAltaSeleccionado: string = ''; 
   fechaBajaSeleccionado: string = ''; 
   numerosValidos: string = 'Solo se admiten 15 números';  
-  
+  caracteresValidosCliente: string =
+  "La primera letra del Nombre del Cliente debe ser Mayúscula, más de 3 caracteres y no se admiten caracteres especiales: / ! # $ % & ' ( ) * + , - . : ; < = > ¿? @ [  ] ^ _` { | } ~";
+  caracteresValidosUsuario: string =
+  "El Nombre del Usuario debe tener más de 3 caracteres y no se admiten caracteres especiales: / ! # $ % & ' ( ) * + , - . : ; < = > ¿? @ [  ] ^ _` { | } ~";
+  caracteresValidosEmail: string =
+  "Ingrese un correo electrónico válido. Los caracteres permitidos son letras, números, puntos, guiones y guiones bajos.";
+  telefonoValido: string =
+  "Ingrese un número de teléfono válido. Los formatos permitidos son: '1234567890', '123-4567890', '1234-567890' o '1234-56-7890'";
+
   cliTipoDocSeleccionado : number = 0;
   cliIdUsuarioSeleccionado : number = 0;
   tipoOrdenamientoCliente: number = 1;
@@ -56,12 +62,22 @@ export class ConsultarClienteComponent implements OnInit {
     this.formModificar = new FormGroup({
       tipoDocumento: new FormControl(null, []),
       nroDoc: new FormControl(null, []),
-      cliApeNomDen: new FormControl(null, []),
-      usuario: new FormControl(null, []),   
+      cliApeNomDen: new FormControl(null, [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.pattern('^[a-zA-Z0-9 ]*$'),
+        Validators.pattern('^[A-Z].*$')
+      ]),
+      usuario: new FormControl(null, [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.pattern('^[a-zA-Z0-9 ]*$'),        
+      ]),   
       fechaAlta: new FormControl(null, []),   
       fechaBaja: new FormControl(null, []),   
-      email: new FormControl(null, []),
-      telefono: new FormControl(null, []),
+      email: new FormControl(null, [Validators.email]),
+      telefono: new FormControl(null, [Validators.pattern(/^[\d]{2,4}-?[\d]{6,8}$/)]),
+
     });
   }
 
@@ -69,10 +85,6 @@ export class ConsultarClienteComponent implements OnInit {
     this.clienteConsultar.listaClientes().subscribe(data => {
       this.Clientes = data;  
       this.ClientesFiltrados = data;
-    })
-    this.clienteConsultar.obtenerTipoDoc().subscribe(data => {
-      this.TipoDocumento = data;  
-      this.tipoDocumento = this.TipoDocumento.reduce((min, current) => current.tdId < min ? current.tdId : min, this.TipoDocumento[0].tdId);
     })
   }
   
@@ -136,8 +148,7 @@ export class ConsultarClienteComponent implements OnInit {
   }
 
   //Almacena los datos del servicio que fue seleccionado en la tabla de servicio filtrados dentro de variables locales.
-  esfilaSeleccionadaCliente(cliente: ClienteConsultaClass) {      
-
+  esfilaSeleccionadaCliente(cliente: ClienteConsultaClass) {     
     this.cliNroDocSeleccionado = cliente.cliNroDoc;
     this.cliApeNomDenSeleccionado = cliente.cliApeNomDen;
     this.cliEmailSeleccionado = cliente.cliEmail;
@@ -152,7 +163,7 @@ export class ConsultarClienteComponent implements OnInit {
     this.cliFechaAltaDate = new Date(cliente.cliFechaAlta);
     this.fechaBajaSeleccionado = cliente.fechaBaja ? new Date(cliente.fechaBaja).toLocaleDateString("es-AR") : '';     
 
-    this.tipoDocumento = this.cliTipoDocSeleccionado;
+    this.tipoDocumento = this.tdDescripcionSeleccionado;
     this.nroDoc = this.cliNroDocSeleccionado;
     this.cliApeNomDen = this.cliApeNomDenSeleccionado
     this.usuario = this.usuarioSeleccionado   
@@ -294,42 +305,66 @@ export class ConsultarClienteComponent implements OnInit {
   }
 
   modificarCliente(): void {
-    let Cliente: ClienteClass = new ClienteClass(
-      this.cliTipoDocSeleccionado,
-      this.cliNroDocSeleccionado,
-      this.cliIdUsuarioSeleccionado,
-      this.cliFechaAltaDate,
-      new Date(this.fechaBajaSeleccionado),      
-      this.formModificar.get('cliApeNomDen')?.value,
-      this.formModificar.get('email')?.value,
-      this.formModificar.get('telefono')?.value,
-    );
-    console.log(Cliente);
-    this.clienteConsultar.actualizarCliente(Cliente).subscribe(
-      result => {
+    if (!this.usuarioSeleccionado){
+      Swal.fire({
+        text: 'Debe Seleccionar un Cliente',
+        icon: 'error',
+        position: 'top',
+        showConfirmButton: true,
+        confirmButtonColor: '#0f425b',
+        confirmButtonText: 'Aceptar',
+      } as SweetAlertOptions);
+    }
+    else {
+      //Verifica que este completo el formulario y que no tenga errores.
+      if (this.formModificar.valid == false) {      
         Swal.fire({
-          text: 'Se ha actualizado el Cliente: '+ this.formModificar.get('cliApeNomDen')?.value,
-          icon: 'success',
-          position: 'top',
-          showConfirmButton: true,
+          title: 'Error',
+          text: 'Verificar los datos ingresados.',              
+            
+          icon: 'warning',
           confirmButtonColor: '#0f425b',
           confirmButtonText: 'Aceptar',
-        } as SweetAlertOptions).then((result) => {
-          if (result.value == true) {
-            return location.reload();
+          footer: 'Por favor, corrija los errores e inténtelo de nuevo.'
+        });     
+      } else {
+        let Cliente: ClienteClass = new ClienteClass(
+          this.cliTipoDocSeleccionado,
+          this.cliNroDocSeleccionado,
+          this.cliIdUsuarioSeleccionado,
+          this.cliFechaAltaDate,
+          new Date(this.fechaBajaSeleccionado),      
+          this.formModificar.get('cliApeNomDen')?.value,
+          this.formModificar.get('email')?.value,
+          this.formModificar.get('telefono')?.value,
+        );        
+        this.clienteConsultar.actualizarCliente(Cliente, this.formModificar.get('usuario')?.value).subscribe(
+          result => {
+            Swal.fire({
+              text: 'Se ha actualizado el Cliente: '+ this.formModificar.get('cliApeNomDen')?.value,
+              icon: 'success',
+              position: 'top',
+              showConfirmButton: true,
+              confirmButtonColor: '#0f425b',
+              confirmButtonText: 'Aceptar',
+            } as SweetAlertOptions).then((result) => {
+              if (result.value == true) {
+                return location.reload();
+              }
+            });
+          },
+          error => {
+            Swal.fire({
+              text: 'No es posible Actualizar el Cliente',
+              icon: 'error',
+              position: 'top',
+              showConfirmButton: true,
+              confirmButtonColor: '#0f425b',
+              confirmButtonText: 'Aceptar',
+            } as SweetAlertOptions);    
           }
-        });
-      },
-      error => {
-        Swal.fire({
-          text: 'No es posible Actualizar el Cliente',
-          icon: 'error',
-          position: 'top',
-          showConfirmButton: true,
-          confirmButtonColor: '#0f425b',
-          confirmButtonText: 'Aceptar',
-        } as SweetAlertOptions);    
+        );
       }
-    );
+    }
   }
 }

@@ -29,12 +29,12 @@
               <input
                 type="text"
                 class="form-control"
-                id="nroDoc"
-                value="nroDoc"
-                formControlName="nroDoc"
+                id="nroDocumento"
+                value="nroDocumento"
+                formControlName="nroDocumento"
                 required
               />
-              <span class="input-group-text" title="{{ numerosValidos }}">
+              <span class="input-group-text" title="Ingresar Número de Documento">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
@@ -53,8 +53,8 @@
               </span>
             </div>
             <div class="text-danger">
-              <!--<div *ngIf="usuarioVM?.errors?.['required']">El Usuario es requerido - Seleccione un Usuario de la lista.</div>  -->     
-            </div>
+              <div *ngIf="!validarNumeroDocumento()"> {{ msjErrorDoc }}</div>
+            </div>            
           </div>
         </div>
   
@@ -70,7 +70,7 @@
                 formControlName="cliApeNomDen"
                 required
               />
-              <span class="input-group-text" title="{{ numerosValidos }}">
+              <span class="input-group-text" title="{{ caracteresValidosCliente }}">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
@@ -88,9 +88,12 @@
                 </svg>
               </span>
             </div>
-            <div class="text-danger">
-              <!--<div *ngIf="cliApeNomDenVM?.errors?.['required']">La Cliente es requerido - Seleccione un Cliente de la lista.</div> --> 
-            </div>
+            <div *ngIf="cliApeNomDen?.invalid && (cliApeNomDen?.dirty || cliApeNomDen?.touched)"
+            class="text-danger">
+              <div *ngIf="cliApeNomDen?.errors?.['required']">El Cliente es requerido.</div>
+              <div *ngIf="cliApeNomDen?.errors?.['pattern']">La primera letra del Nombre del Cliente debe ser Mayúscula, no se admiten caracteres.</div>
+              <div *ngIf="cliApeNomDen?.errors?.['minlength']">El Nombre del Cliente debe tener al menos 3 caracteres.</div>
+            </div>              
           </div>
           <div class="col-md-6">
             <div class="form-outline input-group mb-3">
@@ -103,7 +106,7 @@
                 formControlName="usuario"
                 required
               />
-              <span class="input-group-text" title="{{ numerosValidos }}">
+              <span class="input-group-text" title="{{ caracteresValidosUsuario }}">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
@@ -121,9 +124,12 @@
                 </svg>
               </span>
             </div>
-            <div class="text-danger">
-              <!--<div *ngIf="usuarioVM?.errors?.['required']">El Usuario es requerido - Seleccione un Usuario de la lista.</div>  -->     
-            </div>
+            <div *ngIf="usuario?.invalid && (usuario?.dirty || usuario?.touched)"
+            class="text-danger">
+              <div *ngIf="usuario?.errors?.['required']">El Usuario es requerido.</div>
+              <div *ngIf="usuario?.errors?.['pattern']">El Nombre del Usuario no admiten caracteres.</div>
+              <div *ngIf="usuario?.errors?.['minlength']">El Nombre del Usuario debe tener al menos 3 caracteres.</div>
+            </div>  
           </div>          
   
           <div class="row">
@@ -138,20 +144,64 @@
                   formControlName="email"
                   required
                 />
+                <span class="input-group-text" title="{{ caracteresValidosEmail }}">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    class="bi bi-question-circle"
+                    viewBox="0 0 16 16"
+                  >
+                    <path
+                      d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"
+                    />
+                    <path
+                      d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"
+                    />
+                  </svg>
+                </span>
+              </div>
+              <div *ngIf="email?.invalid && (email?.dirty || email?.touched)"
+                class="text-danger">
+                <div *ngIf="email?.errors?.['email']">El correo electrónico es inválido.</div>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-outline input-group mb-3">
                 <span class="input-group-text">Telefono </span>
                 <input
-                  type="text"
-                  class="form-control"
-                  id="telefono"
-                  value="telefono"
-                  formControlName="telefono"
-                  required      
-                />
+                type="text"
+                class="form-control"
+                id="telefono"
+                value="telefono"
+                formControlName="telefono"
+                required      
+              />
+              <span class="input-group-text" title="{{ telefonoValido }}">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-question-circle"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"
+                  />
+                  <path
+                    d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"
+                  />
+                </svg>
+              </span>
+            </div>
+            <div *ngIf="telefono?.invalid && (telefono?.dirty || telefono?.touched)"
+              class="text-danger">
+              <div *ngIf="telefono?.errors?.['pattern']">
+                El número de teléfono es inválido. Los formatos permitidos son: '1234567890', '123-4567890', '1234-567890' o '1234-56-7890'
               </div>
+            </div>              
             </div>
           </div>
   
@@ -160,4 +210,17 @@
     </div>
   </form>
   <br>  
-  
+
+  <div class="row">
+    <div class="col-2"></div>
+    <div class="col-10">
+      <div class="row">
+        <div class="col-md-6">
+          <button type="submit" class="btn btn-success" data-bs-toggle="button"                        
+            (click)="registarCliente()"> Registar Cliente
+          </button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
