@@ -5,63 +5,33 @@
                 <h3>Menú CeMSA</h3>
             </div>
             <ul class="list-unstyled components">
-              
                 <li>
-                    <a href="registrar-cliente" data-toggle="collapse" aria-expanded="false"
-                        class="dropdown-toggle"><b>Registrar Clientes</b></a>
-                    <ul class="collapse list-unstyled" id="central">
-                        <li>
-                            <a href="alta-cliente">Registrar</a>
-                        </li>
-                        <li>
-                            <a href="consultar-cliente">Consultar</a>
-                        </li>
+                    <a class="d-flex justify-content-between align-items-center text-decoration-none"
+                        href="home" ><b>Home</b></a>
+                </li>
+                <li>
+                    <a data-bs-toggle="collapse" data-bs-target="#cliente-collapse" aria-expanded="false" class="dropdown-toggle d-flex justify-content-between align-items-center text-decoration-none">
+                        <b>Clientes</b></a>
+                    <ul class="collapse list-unstyled" id="cliente-collapse">
+                        <li><a href="registrar-cliente" >Registrar</a></li>
+                        <li><a href="consultar-cliente" >Consultar</a></li>                      
+                    </ul>                    
+                </li>
+                <li>
+                    <a data-bs-toggle="collapse" data-bs-target="#central-collapse" aria-expanded="false" class="dropdown-toggle d-flex justify-content-between align-items-center text-decoration-none">
+                        <b>Central</b></a>
+                    <ul class="collapse list-unstyled" id="central-collapse">
+                        <li><a href="registrar-central" >Registrar</a></li>
+                        <li><a href="consultar-central" >Consultar</a></li>                      
+                    </ul>                    
+                </li>
+                <li>
+                    <a data-bs-toggle="collapse" data-bs-target="#servicio-collapse" aria-expanded="false" class="dropdown-toggle d-flex justify-content-between align-items-center text-decoration-none">
+                      <b>Servicio</b></a>
+                    <ul class="collapse list-unstyled" id="servicio-collapse">                    
+                        <li><a href="consultar-servicio">Consultar</a></li>                      
                     </ul>
-                </li>
-                <li>
-                    <a href="consultar-cliente" data-toggle="collapse" aria-expanded="false"
-                        class="dropdown-toggle"><b>Consultar Clientes</b></a>
-                    <ul class="collapse list-unstyled" id="central">
-                        <li>
-                            <a href="alta-cliente">Registrar</a>
-                        </li>
-                        <li>
-                            <a href="consultar-cliente">Consultar</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="consultar-central" data-toggle="collapse" aria-expanded="false"
-                        class="dropdown-toggle"><b>Consultar Central</b></a>
-                    <ul class="collapse list-unstyled" id="modificar">
-                        <li>
-                            <a href="alta-central">Registrar</a>
-                        </li>
-                        <li>
-                            <a href="modificar-central">Modificar</a>
-
-                        </li>
-                        <li>
-                            <a href="consultar-central">Consultar</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="modificar-central" data-toggle="collapse" aria-expanded="false"
-                        class="dropdown-toggle"><b>Modificar Central</b></a>
-                </li>
-                <li>
-                    <a href="consultar-servicio" data-toggle="collapse" aria-expanded="false"
-                        class="dropdown-toggle"><b> Consultar Servicios</b></a>
-                    <ul class="collapse list-unstyled" id="servicios">
-                        <li>
-                            <a href="alta-servicio">Registrar</a>
-                        </li>
-                        <li>
-                            <a href="consultar-servicio">Consultar</a>
-                        </li>
-                    </ul>
-                </li>
+                  </li>                  
             </ul>
             <ul class="list-unstyled CTAs">
                 <li>
@@ -71,5 +41,4 @@
                 </li>
             </ul>
         </nav>
-    </div>
 </div>

@@ -52,7 +52,7 @@ a[aria-expanded="true"] {
     color: #fff;
     background: #0a2252b4;
 }
-a[data-toggle="collapse"] {
+a[data-bs-toggle="collapse"] {
     position: relative;
 }
 .dropdown-toggle::after {
@@ -64,6 +64,8 @@ a[data-toggle="collapse"] {
 }
 
 ul ul a {
+    font-size: 1em;
+    font-weight: bold;
     font-size: 0.9em !important;
     padding-left: 30px !important;
     background: #d94c10b4;
