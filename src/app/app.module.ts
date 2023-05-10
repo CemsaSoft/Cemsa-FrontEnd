@@ -14,12 +14,13 @@ import { CarouselComponent } from './shared/carousel/carousel.component';
 import { HomeComponent } from './pages/home/home.component';
 import { ModificarCentralComponent } from './pages/modificar-central/modificar-central.component';
 import { ConsultarClienteComponent } from './pages/consultar-cliente/consultar-cliente.component';
-import { MenuComponent } from './shared/menu/menu.component';
+import { MenuAdminComponent } from './shared/menu-admin/menu-admin.component';
 import { RegistrarCentralComponent } from './pages/registrar-central/registrar-central.component';
 import { IngresarUsuarioComponent } from './pages/ingresar-usuario/ingresar-usuario.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptorService } from './core/interceptors/auth-interceptor.service';
 import { RegistrarClienteComponent } from './pages/registrar-cliente/registrar-cliente.component';
+import { MenuClienteComponent } from './shared/menu-cliente/menu-cliente.component';
 //import { TextMaskModule } from 'angular2-text-mask';// npm i angular2-text-mask
 @NgModule({
   //Componentes que va a utilizar el módulo
@@ -28,7 +29,7 @@ import { RegistrarClienteComponent } from './pages/registrar-cliente/registrar-c
     NavbarComponent,
     FooterComponent,
     HomeComponent, 
-    MenuComponent,
+    MenuAdminComponent,
     CarouselComponent,
     ModalComponent,
     SortDirective,
@@ -38,7 +39,8 @@ import { RegistrarClienteComponent } from './pages/registrar-cliente/registrar-c
     RegistrarCentralComponent,
     ConsultarClienteComponent, 
     IngresarUsuarioComponent,
-    RegistrarClienteComponent
+    RegistrarClienteComponent,
+    MenuClienteComponent
   ],
   //Para importar otros módulos de angular
   imports: [

@@ -14,19 +14,32 @@ import { RouteguardsGuard } from './routeguards.guard';
 import { RegistrarClienteComponent } from './pages/registrar-cliente/registrar-cliente.component';
 
 //RUTAS
-const routes: Routes = [
-  //Aquí configuramos las rutas, indicamos en el path la ruta, seguido de los componentes que mostrará esa ruta
-  {path: '', component: IngresarUsuarioComponent},
-  {path:'home', component: HomeComponent, canActivate: [RouteguardsGuard]},
-  {path:'consultar-servicio', component: ConsultarServicioComponent, canActivate: [RouteguardsGuard]},
-  {path:'consultar-central', component: ConsultarCentralComponent, canActivate: [RouteguardsGuard]},
-  {path:'modificar-central', component: ModificarCentralComponent, canActivate: [RouteguardsGuard]},
-  {path:'registrar-central', component: RegistrarCentralComponent, canActivate: [RouteguardsGuard]},
-  {path:'consultar-cliente', component: ConsultarClienteComponent, canActivate: [RouteguardsGuard]},
-  {path:'registrar-cliente', component: RegistrarClienteComponent, canActivate: [RouteguardsGuard]},
-  {path:'', redirectTo: '/', pathMatch:'full'},
-  {path:'**', redirectTo: '/', pathMatch:'full'},
-];
+let routes: Routes = [];
+
+if (localStorage.getItem('rol') === '1') 
+{
+   routes = [
+    //Aquí configuramos las rutas, indicamos en el path la ruta, seguido de los componentes que mostrará esa ruta
+    {path: '', component: IngresarUsuarioComponent},
+    {path:'home', component: HomeComponent, canActivate: [RouteguardsGuard]},
+    {path:'consultar-servicio', component: ConsultarServicioComponent, canActivate: [RouteguardsGuard]},
+    {path:'consultar-central', component: ConsultarCentralComponent, canActivate: [RouteguardsGuard]},
+    {path:'modificar-central', component: ModificarCentralComponent, canActivate: [RouteguardsGuard]},
+    {path:'registrar-central', component: RegistrarCentralComponent, canActivate: [RouteguardsGuard]},
+    {path:'consultar-cliente', component: ConsultarClienteComponent, canActivate: [RouteguardsGuard]},
+    {path:'registrar-cliente', component: RegistrarClienteComponent, canActivate: [RouteguardsGuard]},
+    {path:'', redirectTo: '/', pathMatch:'full'},
+    {path:'**', redirectTo: '/', pathMatch:'full'},
+  ];
+} else {
+   routes = [
+    //Aquí configuramos las rutas, indicamos en el path la ruta, seguido de los componentes que mostrará esa ruta
+    {path: '', component: IngresarUsuarioComponent},
+    {path:'home', component: HomeComponent, canActivate: [RouteguardsGuard]},
+    {path:'', redirectTo: '/', pathMatch:'full'},
+    {path:'**', redirectTo: '/', pathMatch:'full'},
+  ];
+}
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

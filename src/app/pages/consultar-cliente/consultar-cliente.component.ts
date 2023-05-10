@@ -303,7 +303,6 @@ export class ConsultarClienteComponent implements OnInit {
       });
     }
   }
-
   modificarCliente(): void {
     if (!this.usuarioSeleccionado){
       Swal.fire({
@@ -321,41 +320,56 @@ export class ConsultarClienteComponent implements OnInit {
         Swal.fire({
           title: 'Error',
           text: 'Verificar los datos ingresados.',              
-            
+              
           icon: 'warning',
           confirmButtonColor: '#0f425b',
           confirmButtonText: 'Aceptar',
           footer: 'Por favor, corrija los errores e inténtelo de nuevo.'
         });     
       } else {
-        let Cliente: ClienteClass = new ClienteClass(
-          this.cliTipoDocSeleccionado,
-          this.cliNroDocSeleccionado,
-          this.cliIdUsuarioSeleccionado,
-          this.cliFechaAltaDate,
-          new Date(this.fechaBajaSeleccionado),      
-          this.formModificar.get('cliApeNomDen')?.value,
-          this.formModificar.get('email')?.value,
-          this.formModificar.get('telefono')?.value,
-        );        
-        this.clienteConsultar.actualizarCliente(Cliente, this.formModificar.get('usuario')?.value).subscribe(
+        const usuario = this.formModificar.get('usuario')?.value;        
+        this.clienteConsultar.verificarUsuarioMod(usuario, this.cliIdUsuarioSeleccionado).subscribe(
           result => {
-            Swal.fire({
-              text: 'Se ha actualizado el Cliente: '+ this.formModificar.get('cliApeNomDen')?.value,
-              icon: 'success',
-              position: 'top',
-              showConfirmButton: true,
-              confirmButtonColor: '#0f425b',
-              confirmButtonText: 'Aceptar',
-            } as SweetAlertOptions).then((result) => {
-              if (result.value == true) {
-                return location.reload();
+            let Cliente: ClienteClass = new ClienteClass(
+              this.cliTipoDocSeleccionado,
+              this.cliNroDocSeleccionado,
+              this.cliIdUsuarioSeleccionado,
+              this.cliFechaAltaDate,
+              new Date(this.fechaBajaSeleccionado),      
+              this.formModificar.get('cliApeNomDen')?.value,
+              this.formModificar.get('email')?.value,
+              this.formModificar.get('telefono')?.value,
+            );        
+            this.clienteConsultar.actualizarCliente(Cliente, usuario).subscribe(
+              result => {
+                Swal.fire({
+                  text: 'Se ha actualizado el Cliente: '+ this.formModificar.get('cliApeNomDen')?.value,
+                  icon: 'success',
+                  position: 'top',
+                  showConfirmButton: true,
+                  confirmButtonColor: '#0f425b',
+                  confirmButtonText: 'Aceptar',
+                } as SweetAlertOptions).then((result) => {
+                  if (result.value == true) {
+                    return location.reload();
+                  }
+                });
+              },
+              error => {
+                Swal.fire({
+                  text: 'No es posible Actualizar el Cliente',
+                  icon: 'error',
+                  position: 'top',
+                  showConfirmButton: true,
+                  confirmButtonColor: '#0f425b',
+                  confirmButtonText: 'Aceptar',
+                } as SweetAlertOptions);    
               }
-            });
+            );
           },
           error => {
             Swal.fire({
-              text: 'No es posible Actualizar el Cliente',
+              text: error.error,
               icon: 'error',
               position: 'top',
               showConfirmButton: true,
@@ -366,5 +380,5 @@ export class ConsultarClienteComponent implements OnInit {
         );
       }
     }
-  }
+  } 
 }

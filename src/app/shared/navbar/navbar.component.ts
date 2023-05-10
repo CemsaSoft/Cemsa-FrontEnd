@@ -8,13 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavbarComponent implements OnInit {
   token = localStorage.getItem('token') || null;
-  usuario: string = 'Admin';
+  rol: any = 0;
+
 
   constructor() { }
   //constructor(private servicioUsuario: UsuarioService) {}
   esActivado: boolean = false;
 
-  ngOnInit(): void {}
+  ngOnInit () : void {
+    this.rol = localStorage.getItem('rol');
+  }
+
   redirigir(){
     // if(this.servicioUsuario.obtenerToken() != null){
     //   location.href = "/home"

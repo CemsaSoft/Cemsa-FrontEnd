@@ -156,7 +156,6 @@ export class RegistrarClienteComponent implements OnInit {
       Swal.fire({
         title: 'Error',
         text: 'Verificar los datos ingresados.',              
-          
         icon: 'warning',
         confirmButtonColor: '#0f425b',
         confirmButtonText: 'Aceptar',
@@ -172,8 +171,7 @@ export class RegistrarClienteComponent implements OnInit {
         this.formRegistar.get('cliApeNomDen')?.value,
         this.formRegistar.get('email')?.value,
         this.formRegistar.get('telefono')?.value,
-      );        
-      console.log(Cliente);
+      );          
       this.clienteConsultar.registarCliente(Cliente, this.formRegistar.get('usuario')?.value).subscribe(
         result => {
           Swal.fire({
@@ -190,16 +188,28 @@ export class RegistrarClienteComponent implements OnInit {
           });
         },
         error => {
-          Swal.fire({
-            text: 'No es posible Registar el Cliente',
-            icon: 'error',
-            position: 'top',
-            showConfirmButton: true,
-            confirmButtonColor: '#0f425b',
-            confirmButtonText: 'Aceptar',
-          } as SweetAlertOptions);    
+          if (error.status === 400) { // si es un error BadRequest
+            Swal.fire({
+              text: error.error,
+              icon: 'error',
+              position: 'top',
+              showConfirmButton: true,
+              confirmButtonColor: '#0f425b',
+              confirmButtonText: 'Aceptar',
+            } as SweetAlertOptions);  
+          } else { // si es cualquier otro tipo de error
+            Swal.fire({
+              text: 'No es posible Registar el Cliente',
+              icon: 'error',
+              position: 'top',
+              showConfirmButton: true,
+              confirmButtonColor: '#0f425b',
+              confirmButtonText: 'Aceptar',
+            } as SweetAlertOptions);    
+          }
         }
       );
     }
   }
+  
 }

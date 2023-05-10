@@ -49,6 +49,9 @@ export class IngresarUsuarioComponent implements OnInit {
       if (data.result != '') {
         this.servicioUsuario.limpiarToken();
         this.servicioUsuario.guardarToken(data.result);
+        localStorage.setItem('rol', data.rol);
+        localStorage.setItem('usuario', data.usu);
+        // 0 es cliente -- 1 es administrador        
         this.esInicioValido = 1;
       } else {
         this.esInicioValido = 2;

@@ -32,10 +32,14 @@ export class ClienteService {
   }
 
   actualizarCliente(cliente: ClienteClass, usuario: string): Observable<any> {
-    return this.http.post(this.url + '/actualizarCliente/' + usuario, cliente) ;    
+    return this.http.post(this.url + '/actualizarCliente/' + usuario, cliente);    
   }
 
   registarCliente(cliente: ClienteClass, usuario: string): Observable<any> {
-    return this.http.post(this.url + '/registarCliente/' + usuario, cliente) ;    
+    return this.http.post(this.url + '/registarCliente/' + usuario, cliente);    
+  }
+
+  verificarUsuarioMod(usuario: string, idUsuario: number): Observable<any> {    
+    return this.http.post(this.url + '/verificarUsuarioMod/' + usuario + "/" + idUsuario, null );   
   }
 }
