@@ -12,6 +12,8 @@ import { ConsultarClienteComponent } from './pages/consultar-cliente/consultar-c
 import { IngresarUsuarioComponent } from './pages/ingresar-usuario/ingresar-usuario.component';
 import { RouteguardsGuard } from './routeguards.guard';
 import { RegistrarClienteComponent } from './pages/registrar-cliente/registrar-cliente.component';
+import { ConsultarFumigacionesComponent } from './pages/consultar-fumigaciones/consultar-fumigaciones.component';
+
 
 //RUTAS
 let routes: Routes = [];
@@ -34,13 +36,16 @@ if (localStorage.getItem('rol') === '1')
 } else {
    routes = [
     //Aquí configuramos las rutas, indicamos en el path la ruta, seguido de los componentes que mostrará esa ruta
-    {path: '', component: IngresarUsuarioComponent},
     {path:'home', component: HomeComponent, canActivate: [RouteguardsGuard]},
+    {path:'consultar-fumigaciones', component: ConsultarFumigacionesComponent, canActivate: [RouteguardsGuard]},
+    {path: '', component: IngresarUsuarioComponent},
     {path:'', redirectTo: '/', pathMatch:'full'},
     {path:'**', redirectTo: '/', pathMatch:'full'},
+    
+
   ];
 }
-
+console.log(routes);
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]

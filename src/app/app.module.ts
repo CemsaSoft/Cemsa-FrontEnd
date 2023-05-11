@@ -21,6 +21,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptorService } from './core/interceptors/auth-interceptor.service';
 import { RegistrarClienteComponent } from './pages/registrar-cliente/registrar-cliente.component';
 import { MenuClienteComponent } from './shared/menu-cliente/menu-cliente.component';
+import { ConsultarFumigacionesComponent } from './pages/consultar-fumigaciones/consultar-fumigaciones.component';
 //import { TextMaskModule } from 'angular2-text-mask';// npm i angular2-text-mask
 @NgModule({
   //Componentes que va a utilizar el módulo
@@ -40,7 +41,8 @@ import { MenuClienteComponent } from './shared/menu-cliente/menu-cliente.compone
     ConsultarClienteComponent, 
     IngresarUsuarioComponent,
     RegistrarClienteComponent,
-    MenuClienteComponent
+    MenuClienteComponent,
+    ConsultarFumigacionesComponent
   ],
   //Para importar otros módulos de angular
   imports: [

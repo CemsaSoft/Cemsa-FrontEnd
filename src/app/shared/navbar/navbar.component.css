@@ -2,7 +2,13 @@
     background-color: #98d782b4;
 }
 
+.navbar {
+    padding: 0 10px;
+}
+
 .navbar-brand{
+    padding: 0;
+    margin: 0;
     border-color: rgba(255,255,255,.1);
     border-radius: 20%;
 }
@@ -12,3 +18,15 @@
     background-color: rgba(0,0,0,.1);
 }
 
+.dropdown-toggle {
+    margin-right: 0;
+}
+  
+.dropdown-menu {
+    right: 0;
+    left: auto;
+}
+
+.right-aligned {
+    text-align: right;
+}

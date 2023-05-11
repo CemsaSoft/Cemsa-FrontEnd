@@ -1,11 +1,12 @@
 <nav class="navbar navbar-expand-lg fondoNavBar">
     <div class="container-fluid">
         <div class="row">
+            
             <div class="col-3">
                 <button class="navbar-brand" type="button" data-bs-toggle="offcanvas"
                     data-bs-target="#navbarToggleExternalContentAdmin" aria-controls="navbarToggleExternalContentAdmin"
                     aria-expanded="false" aria-label="Toggle navigation" *ngIf="rol === '1' && token != null">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
                         class="bi bi-house" viewBox="0 0 16 16">
                         <path
                             d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5ZM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5 5 5Z" />
@@ -16,7 +17,7 @@
             <button class="navbar-brand" type="button" data-bs-toggle="offcanvas"
                 data-bs-target="#navbarToggleExternalContentCliente" aria-controls="navbarToggleExternalContentCliente"
                 aria-expanded="false" aria-label="Toggle navigation" *ngIf="rol === '0' && token != null">
-                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
                     class="bi bi-house" viewBox="0 0 16 16">
                     <path
                         d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5ZM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5 5 5Z" />
@@ -24,12 +25,30 @@
             </button>
             
             </div>
-            <div class="col-5">
+            <div class="col-3">
                 <a class="navbar-brand" (click)="redirigir()">
-                    <img src="./favicon.ico" alt="Logo" width="50" height="40"
+                    <img src="./favicon.ico" alt="Logo" width="32" height="32"
                         class="d-inline-block align-text-top">
                     CeMSA
                 </a>
+            </div>
+            <div class="col-3">
+                <!-- <div class="offcanvas offcanvas-md offcanvas-start navbarNuestra" tabindex="-10" id="navbarToggleExternalContentAdmin"> -->
+                <div class="dropdown">
+                    <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
+                        <strong></strong>
+                    </a>
+                    <ul class="dropdown-menu text-small shadow">
+                        <li><a class="dropdown-item" href="#">CLIENTE</a></li>
+                        <li><a class="dropdown-item" href="#">Usuario</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#">Mi Cuenta</a></li>
+                        <li><a class="dropdown-item" href="#">Contraseña</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#">Cerrar Sesión</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
