@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-// import { UsuarioService } from 'src/app/core/services/usuario.service';
+import { UsuarioService } from 'src/app/core/services/usuario.service';
 
 @Component({
   selector: 'app-navbar',
@@ -11,8 +11,7 @@ export class NavbarComponent implements OnInit {
   rol: any = 0;
 
 
-  constructor() { }
-  //constructor(private servicioUsuario: UsuarioService) {}
+  constructor(private servicioUsuario: UsuarioService) {}
   esActivado: boolean = false;
 
   ngOnInit () : void {
@@ -20,8 +19,8 @@ export class NavbarComponent implements OnInit {
   }
 
   redirigir(){
-    // if(this.servicioUsuario.obtenerToken() != null){
-    //   location.href = "/home"
-    // }
+    if(this.servicioUsuario.obtenerToken() != null){
+      location.href = "/home"
+    }
   }
 }
