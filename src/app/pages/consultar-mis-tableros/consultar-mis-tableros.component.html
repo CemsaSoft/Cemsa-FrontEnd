@@ -1,0 +1,62 @@
+<h1 class="text-center">Consultar Mis Tableros</h1>
+<br>
+
+<div class="row">
+    <div class="col-3"></div>
+    <div class="col-6 search-container">
+      <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por Código de Central">
+        <span class="input-group-text">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+            class="bi bi-search" viewBox="0 0 16 16">
+            <path
+              d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+          </svg>
+        </span>
+        <input type="text" class="form-control" placeholder="Filtrar por Código de Central" (keyup)="esFiltrar($event , 'codigo')">
+      </div>
+    </div>
+  </div>
+
+
+
+<div class="row">
+    <div class="col-1"></div>
+    <div class="col-10">
+      <h4>Seleccionar Central para ver Mis Tableros</h4>
+      <table class="table">
+        <thead class="encabezado">
+            <tr>            
+              <th (click)="ordenarPor('cenNro')" [appSort]="CentralConsultaFiltrados" data-order="desc"
+                  data-name="cenNro" style="text-align: center;"><a>Cod. Central {{ordenarIcono('cenNro')}}</a></th>
+              <th (click)="ordenarPor('cenImei')" [appSort]="CentralConsultaFiltrados" data-order="desc"
+                  data-name="cenImei" style="text-align: center;"><a>IMEI {{ordenarIcono('cenImei')}}</a></th>
+              <th (click)="ordenarPor('cenCoorX')" [appSort]="CentralConsultaFiltrados" data-order="desc"
+                  data-name="cenCoorX" style="text-align: center;"><a>Coordenada X {{ordenarIcono('cenCoorX')}}</a></th>             
+              <th (click)="ordenarPor('cenCoorY')" [appSort]="CentralConsultaFiltrados" data-order="desc"
+                  data-name="cenCoorY" style="text-align: center;"><a>Coordenada Y {{ordenarIcono('cenCoorY')}}</a></th>             
+                          
+              <th scope="col" style="text-align: center;">Seleccionar</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let central of CentralConsultaFiltrados; let i=index"
+            [ngClass]="{'fila-par': i%2==0, 'fila-impar': i%2==1}"
+            (click)="esfilaSeleccionada(central)">
+              <th style="vertical-align: middle" class="align-center">{{ central.cenNro }}</th>
+              <td style="vertical-align: middle" class="align-center">{{ central.cenImei }}</td>
+              <td style="vertical-align: middle" class="align-center">{{ central.cenCoorX }}</td>
+              <td style="vertical-align: middle" class="align-center">{{ central.cenCoorY }}</td>              
+              <td class="align-center">
+                <button type="button" class="btn" (click)="esfilaSeleccionada(central); seleccionarCentral()" title="Ver Más Opciones">     
+                  <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-box-arrow-down" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M3.5 10a.5.5 0 0 1-.5-.5v-8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 0 0 1h2A1.5 1.5 0 0 0 14 9.5v-8A1.5 1.5 0 0 0 12.5 0h-9A1.5 1.5 0 0 0 2 1.5v8A1.5 1.5 0 0 0 3.5 11h2a.5.5 0 0 0 0-1h-2z"/>
+                    <path fill-rule="evenodd" d="M7.646 15.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 14.293V5.5a.5.5 0 0 0-1 0v8.793l-2.146-2.147a.5.5 0 0 0-.708.708l3 3z"/>
+                  </svg>        
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+    </div>
+    <div class="alert alert-primary text-center" role="alert" *ngIf="validarFiltrado() == false">      ¡No se ha encontrado ninguna Central!
+  </div>
