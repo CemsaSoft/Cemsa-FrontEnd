@@ -15,6 +15,7 @@ import { RegistrarClienteComponent } from './pages/registrar-cliente/registrar-c
 import { ConsultarFumigacionesComponent } from './pages/consultar-fumigaciones/consultar-fumigaciones.component';
 import { ModificarPasswordComponent } from './pages/modificar-password/modificar-password.component';
 import { ConsultarCuentaComponent } from './pages/consultar-cuenta/consultar-cuenta.component';
+import { ConsultarCentralesClienteComponent } from './pages/consultar-centrales-cliente/consultar-centrales-cliente.component';
 
 //RUTAS
 let routes: Routes = [];
@@ -44,6 +45,7 @@ if (localStorage.getItem('rol') === '1')
     {path:'consultar-fumigaciones', component: ConsultarFumigacionesComponent, canActivate: [RouteguardsGuard]},
     {path:'modificar-password', component: ModificarPasswordComponent, canActivate: [RouteguardsGuard]},
     {path:'consultar-cuenta', component: ConsultarCuentaComponent, canActivate: [RouteguardsGuard]},
+    {path:'consultar-central-cliente', component: ConsultarCentralesClienteComponent, canActivate: [RouteguardsGuard]},
     {path: '', component: IngresarUsuarioComponent},
     {path: '', redirectTo: '/', pathMatch:'full'},
     {path:'**', redirectTo: '/', pathMatch:'full'},

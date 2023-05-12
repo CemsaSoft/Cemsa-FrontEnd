@@ -1,0 +1,117 @@
+<h1 class="text-center">Consultar Central Meteorológica</h1>
+<br>
+
+<div class="row">
+    <div class="col-3"></div>
+    <div class="col-6 search-container">
+      <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por Código de Central">
+        <span class="input-group-text">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+            class="bi bi-search" viewBox="0 0 16 16">
+            <path
+              d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+          </svg>
+        </span>
+        <input type="text" class="form-control" placeholder="Filtrar por Código de Central" (keyup)="esFiltrar($event , 'codigo')">
+      </div>
+    </div>
+  </div>
+  
+
+<div class="row">
+    <div class="col-1"></div>
+    <div class="col-10">
+      <table class="table">
+        <thead class="encabezado">
+            <tr>            
+              <th (click)="ordenarPor('cenNro')" [appSort]="CentralConsultaFiltrados" data-order="desc"
+                  data-name="cenNro" style="text-align: center;"><a>Cod. Central {{ordenarIcono('cenNro')}}</a></th>
+              <th (click)="ordenarPor('cenImei')" [appSort]="CentralConsultaFiltrados" data-order="desc"
+                  data-name="cenImei" style="text-align: center;"><a>IMEI {{ordenarIcono('cenImei')}}</a></th>
+              <th (click)="ordenarPor('cenCoorX')" [appSort]="CentralConsultaFiltrados" data-order="desc"
+                  data-name="cenCoorX" style="text-align: center;"><a>Coordenada X {{ordenarIcono('cenCoorX')}}</a></th>             
+              <th (click)="ordenarPor('cenCoorY')" [appSort]="CentralConsultaFiltrados" data-order="desc"
+                  data-name="cenCoorY" style="text-align: center;"><a>Coordenada Y {{ordenarIcono('cenCoorY')}}</a></th>             
+                          
+              <th scope="col" style="text-align: center;">Ver Más</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let central of CentralConsultaFiltrados; let i=index"
+            [ngClass]="{'fila-par': i%2==0, 'fila-impar': i%2==1}"
+            (click)="esfilaSeleccionada(central)">
+              <th style="vertical-align: middle" class="align-center">{{ central.cenNro }}</th>
+              <td style="vertical-align: middle" class="align-center">{{ central.cenImei }}</td>
+              <td style="vertical-align: middle" class="align-center">{{ central.cenCoorX }}</td>
+              <td style="vertical-align: middle" class="align-center">{{ central.cenCoorY }}</td>              
+              <td class="align-center">
+                <button type="button" class="btn" (click)="esfilaSeleccionada(central); seleccionarCentral()" title="Ver Más Opciones"
+                >     
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                  </svg>           
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+    </div>
+    <div class="alert alert-primary text-center" role="alert" *ngIf="validarFiltrado() == false">      ¡No se ha encontrado ninguna Central!
+  </div>
+
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+      integrity="VzLXTJGPSyTLX6d96AxgkKvE/LRb7ECGyTxuwtpjHnVWVZs2gp5RDjeM/tgBnVdM"
+      crossorigin=""
+    />
+    <script
+      src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+      integrity="9+9VLV50ZIoYm6ndV2JzOw1i6jKzJ5uuIbRvL9afckY="
+      crossorigin=""
+    ></script>
+    <script src="ruta/a/tu/archivo.js"></script>
+  </head>
+
+ <br />
+ <div class="row">  
+    <div class="col-3"></div>
+    <div class="col-6">
+        <h4> Ubicacion de la Central:</h4>
+        <div id="map" style="height: 400px"></div>      
+    </div>
+ </div>
+<br />
+
+<div class="row">  
+    <div class="col-3"></div>
+        <div class="col-md-6">
+            <h4> Lista de Servicios Activos:</h4>
+            <table class="table" *ngIf="validarFiltradoServiciosDeCentral() == true">
+              <thead class="encabezado">
+                  <tr>                         
+                    <!-- <th scope="col">Cod.</th> 
+                    <th scope="col">Nombre de Servicio</th>
+                    <th scope="col">Unidad</th>  -->
+                    <th (click)="ordenarServicioCentralPor('serId')" [appSort]="ServiciosDeCentral" data-order="desc"
+                    data-name="serId" style="text-align: center;"><a>Cod. {{ordenarIconoServicioCentral('serId')}}</a></th>            
+                    <th (click)="ordenarServicioCentralPor('serDescripcion')" [appSort]="ServiciosDeCentral" data-order="desc"
+                    data-name="serDescripcion" style="text-align: center;"><a>Nombre de Servicio {{ordenarIconoServicioCentral('serDescripcion')}}</a></th>                        
+                    <th (click)="ordenarServicioCentralPor('serUnidad')" [appSort]="ServiciosDeCentral" data-order="desc"
+                    data-name="serUnidad" style="text-align: center;"><a>Nombre de Servicio {{ordenarIconoServicioCentral('serUnidad')}}</a></th>                                            
+                  </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let servicio of ServiciosDeCentral let i=index"
+                [ngClass]="{'fila-par': i%2==0, 'fila-impar': i%2==1}">
+                <th style="vertical-align: middle" class="align-center">{{ servicio.serId }}</th>
+                <td style="vertical-align: middle" class="align-center">{{ servicio.serDescripcion }}</td>  
+                <td style="vertical-align: middle" class="align-center">{{ servicio.serUnidad }}</td>                
+              </tbody>
+            </table>
+        <div class="alert alert-primary text-center" role="alert" *ngIf="validarFiltradoServiciosDeCentral() == false">
+            No tiene Servicios Activos
+        </div>
+    </div>
+</div>

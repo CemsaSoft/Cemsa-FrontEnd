@@ -19,6 +19,10 @@ export class CentralService {
   obtenerCentral(): Observable<any> {
     return this.http.get(this.url + '/listaCentrales');
   }
+
+  listaCentralesCliente(idUsuario: number): Observable<any> {
+    return this.http.get(this.url + '/obtenerCentralCliente/' + idUsuario);
+  }
   
   modificarEstado(cenNum: number, idEstado: number): Observable<any> {
     return this.http.post(this.url + '/' + cenNum + '/' + idEstado, null);    

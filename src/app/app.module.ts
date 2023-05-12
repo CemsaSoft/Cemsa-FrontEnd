@@ -25,6 +25,7 @@ import { ConsultarFumigacionesComponent } from './pages/consultar-fumigaciones/c
 import { MenuUsuarioComponent } from './shared/menu-usuario/menu-usuario.component';
 import { ModificarPasswordComponent } from './pages/modificar-password/modificar-password.component';
 import { ConsultarCuentaComponent } from './pages/consultar-cuenta/consultar-cuenta.component';
+import { ConsultarCentralesClienteComponent } from './pages/consultar-centrales-cliente/consultar-centrales-cliente.component';
 //import { TextMaskModule } from 'angular2-text-mask';// npm i angular2-text-mask
 @NgModule({
   //Componentes que va a utilizar el módulo
@@ -48,7 +49,8 @@ import { ConsultarCuentaComponent } from './pages/consultar-cuenta/consultar-cue
     ConsultarFumigacionesComponent,
     MenuUsuarioComponent,
     ModificarPasswordComponent,
-    ConsultarCuentaComponent
+    ConsultarCuentaComponent,
+    ConsultarCentralesClienteComponent
   ],
   //Para importar otros módulos de angular
   imports: [
