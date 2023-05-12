@@ -22,6 +22,9 @@ import { AuthInterceptorService } from './core/interceptors/auth-interceptor.ser
 import { RegistrarClienteComponent } from './pages/registrar-cliente/registrar-cliente.component';
 import { MenuClienteComponent } from './shared/menu-cliente/menu-cliente.component';
 import { ConsultarFumigacionesComponent } from './pages/consultar-fumigaciones/consultar-fumigaciones.component';
+import { MenuUsuarioComponent } from './shared/menu-usuario/menu-usuario.component';
+import { ModificarPasswordComponent } from './pages/modificar-password/modificar-password.component';
+import { ConsultarCuentaComponent } from './pages/consultar-cuenta/consultar-cuenta.component';
 //import { TextMaskModule } from 'angular2-text-mask';// npm i angular2-text-mask
 @NgModule({
   //Componentes que va a utilizar el módulo
@@ -42,7 +45,10 @@ import { ConsultarFumigacionesComponent } from './pages/consultar-fumigaciones/c
     IngresarUsuarioComponent,
     RegistrarClienteComponent,
     MenuClienteComponent,
-    ConsultarFumigacionesComponent
+    ConsultarFumigacionesComponent,
+    MenuUsuarioComponent,
+    ModificarPasswordComponent,
+    ConsultarCuentaComponent
   ],
   //Para importar otros módulos de angular
   imports: [

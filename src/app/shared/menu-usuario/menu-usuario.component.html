@@ -1,0 +1,35 @@
+<div class="offcanvas offcanvas-md offcanvas-end navbarNuestra" tabindex="-10" id="navbarToggleExternalContentUsuario">
+
+    <div class="accordion" id="accordionExample">
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <h3>{{usuario}}</h3>
+            </div>
+            <div class="sidebar-header">
+                <h5>{{cliente}}</h5>
+            </div>
+            <ul class="list-unstyled components">                
+                <li>
+                    <a data-bs-toggle="collapse" data-bs-target="#central-collapse" aria-expanded="false" class="dropdown-toggle d-flex justify-content-between align-items-center text-decoration-none">
+                        <b>Mi Cuenta</b></a>
+                    <ul class="collapse list-unstyled" id="central-collapse">
+                        <li><a href="consultar-cuenta">Consultar</a></li>                                            
+                    </ul>                    
+                </li>
+                <li>
+                    <a data-bs-toggle="collapse" data-bs-target="#fumigacion-collapse" aria-expanded="false" class="dropdown-toggle d-flex justify-content-between align-items-center text-decoration-none">
+                      <b>Contraseña</b></a>
+                    <ul class="collapse list-unstyled" id="fumigacion-collapse">   
+                        <li><a href="modificar-password">Cambiar Contraseña</a></li>                 
+                    </ul>
+                  </li>                  
+            </ul>
+            <ul class="list-unstyled CTAs">
+                <li>
+                    <a href="#" class="cerrarSesion" (click)=" cerrarSesion()">
+                        <h5>Cerrar Sesión</h5>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+</div>

@@ -13,7 +13,8 @@ import { IngresarUsuarioComponent } from './pages/ingresar-usuario/ingresar-usua
 import { RouteguardsGuard } from './routeguards.guard';
 import { RegistrarClienteComponent } from './pages/registrar-cliente/registrar-cliente.component';
 import { ConsultarFumigacionesComponent } from './pages/consultar-fumigaciones/consultar-fumigaciones.component';
-
+import { ModificarPasswordComponent } from './pages/modificar-password/modificar-password.component';
+import { ConsultarCuentaComponent } from './pages/consultar-cuenta/consultar-cuenta.component';
 
 //RUTAS
 let routes: Routes = [];
@@ -30,7 +31,10 @@ if (localStorage.getItem('rol') === '1')
     {path:'registrar-central', component: RegistrarCentralComponent, canActivate: [RouteguardsGuard]},
     {path:'consultar-cliente', component: ConsultarClienteComponent, canActivate: [RouteguardsGuard]},
     {path:'registrar-cliente', component: RegistrarClienteComponent, canActivate: [RouteguardsGuard]},
-    {path:'', redirectTo: '/', pathMatch:'full'},
+    {path:'modificar-password', component: ModificarPasswordComponent, canActivate: [RouteguardsGuard]},
+    {path:'consultar-cuenta', component: ConsultarCuentaComponent, canActivate: [RouteguardsGuard]},
+
+    {path: '', redirectTo: '/', pathMatch:'full'},
     {path:'**', redirectTo: '/', pathMatch:'full'},
   ];
 } else {
@@ -38,11 +42,11 @@ if (localStorage.getItem('rol') === '1')
     //Aquí configuramos las rutas, indicamos en el path la ruta, seguido de los componentes que mostrará esa ruta
     {path:'home', component: HomeComponent, canActivate: [RouteguardsGuard]},
     {path:'consultar-fumigaciones', component: ConsultarFumigacionesComponent, canActivate: [RouteguardsGuard]},
+    {path:'modificar-password', component: ModificarPasswordComponent, canActivate: [RouteguardsGuard]},
+    {path:'consultar-cuenta', component: ConsultarCuentaComponent, canActivate: [RouteguardsGuard]},
     {path: '', component: IngresarUsuarioComponent},
-    {path:'', redirectTo: '/', pathMatch:'full'},
+    {path: '', redirectTo: '/', pathMatch:'full'},
     {path:'**', redirectTo: '/', pathMatch:'full'},
-    
-
   ];
 }
 console.log(routes);

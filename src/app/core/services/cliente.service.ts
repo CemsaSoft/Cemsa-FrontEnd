@@ -42,4 +42,17 @@ export class ClienteService {
   verificarUsuarioMod(usuario: string, idUsuario: number): Observable<any> {    
     return this.http.post(this.url + '/verificarUsuarioMod/' + usuario + "/" + idUsuario, null );   
   }
+
+  obtenerCliente(idUsuario: number): Observable<string> {    
+    return this.http.post(this.url + '/obtenerCliente/' + idUsuario , null, { responseType: 'text' });   
+  }
+  
+  actualizarPassword(idUsuario: number, password: string, newPassword: string): Observable<any> {    
+    const body = { idUsuario, password, newPassword };
+    return this.http.post(this.url + '/actualizarPassword', body);     
+  }
+
+  obtenerCuenta(idUsuario: number): Observable<any> {
+    return this.http.get(this.url + '/obtenerCuenta/' + idUsuario);
+  }  
 }

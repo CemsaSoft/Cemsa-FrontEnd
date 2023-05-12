@@ -7,6 +7,8 @@ import { UsuarioClass } from 'src/app/core/models/usuario';
 
 //SERVICIOS
 import { UsuarioService } from 'src/app/core/services/usuario.service';
+import { ClienteService } from 'src/app/core/services/cliente.service';
+
 @Component({
   selector: 'app-ingresar-usuario',
   templateUrl: './ingresar-usuario.component.html',
@@ -21,7 +23,8 @@ export class IngresarUsuarioComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private servicioUsuario: UsuarioService
+    private servicioUsuario: UsuarioService,
+    private servicioCliente: ClienteService,
   ) {
     this.formInicio = this.fb.group({
       usuario: [null, [Validators.required]],
@@ -44,13 +47,24 @@ export class IngresarUsuarioComponent implements OnInit {
   login(): any {
     let usuario: UsuarioClass = {id: 0, usuario: this.formInicio.get('usuario')?.value, password: this.formInicio.get('password')?.value};
     this.servicioUsuario.iniciarSesion(usuario).subscribe((data) => {
-      
+      console.log("data:");
       console.log(data)
       if (data.result != '') {
         this.servicioUsuario.limpiarToken();
         this.servicioUsuario.guardarToken(data.result);
         localStorage.setItem('rol', data.rol);
         localStorage.setItem('usuario', data.usu);
+        localStorage.setItem('idUsuario', data.idUsuario);
+
+        this.servicioCliente.obtenerCliente(data.idUsuario).subscribe(
+          c => {
+            localStorage.setItem('cliente', c);            
+          },
+          error => {
+            console.log(error);
+          }
+        );
+
         // 0 es cliente -- 1 es administrador        
         this.esInicioValido = 1;
       } else {

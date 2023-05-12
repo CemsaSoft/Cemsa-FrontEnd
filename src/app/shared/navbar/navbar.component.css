@@ -18,15 +18,3 @@
     background-color: rgba(0,0,0,.1);
 }
 
-.dropdown-toggle {
-    margin-right: 0;
-}
-  
-.dropdown-menu {
-    right: 0;
-    left: auto;
-}
-
-.right-aligned {
-    text-align: right;
-}
