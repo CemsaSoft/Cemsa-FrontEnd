@@ -7,9 +7,11 @@ import Swal, { SweetAlertOptions } from 'sweetalert2';
 
 //COMPONENTES
 import { CentralConsultaClass } from 'src/app/core/models/centralConsulta';
+import { MedicionesClass } from 'src/app/core/models/mediciones';
 
 //SERVICIOS
 import { CentralService } from 'src/app/core/services/central.service';
+import { MedicionesService } from 'src/app/core/services/mediciones.service';
 
 @Component({
   selector: 'app-consultar-paneles-monitoreo',
@@ -23,6 +25,7 @@ export class ConsultarPanelesMonitoreoComponent implements OnInit {
 //VARIABLES DE OBJETOS LIST
 CentralConsulta: CentralConsultaClass[] = [];
 CentralConsultaFiltrados: CentralConsultaClass [] = [];
+Mediciones : MedicionesClass[] = []; 
 
 //VARIABLES DE DATOS
 propiedadOrdenamiento: string = 'cenNro';
@@ -35,6 +38,7 @@ isCollapsed1 = false;
 
 constructor(
   private centralConsultar: CentralService, 
+  private medicionesConsultar: MedicionesService, 
 ) { }
 
   ngOnInit(): void {
@@ -42,6 +46,12 @@ constructor(
     this.centralConsultar.listaCentralesCliente(this.idUsuario).subscribe(data => {
       this.CentralConsulta = data;  
       this.CentralConsultaFiltrados = data;
+    });
+
+    this.medicionesConsultar.obtenerMediciones(1).subscribe(data => {
+      this.Mediciones = data; 
+      console.log("Mediciones");
+      console.log(this.Mediciones);
     });
   }
 
