@@ -1,5 +1,26 @@
-<h1 class="text-center">Consultar Mis Tableros</h1>
+<h1 class="text-center">Consultar Mis Paneles De Monitoreo</h1>
 <br>
+
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">Seleccionar Central para ver Mis Paneles de Monitoreo</h4>            
+            <button type="button" class="btn-unstyled" (click)="toggleCollapse1()">
+              <svg *ngIf="!isCollapsed1" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+              </svg>
+              <svg *ngIf="isCollapsed1" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 16 16">
+                <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="card-body" [ngClass]="{'collapse': isCollapsed1}">
+
+
 
 <div class="row">
     <div class="col-3"></div>
@@ -20,9 +41,8 @@
 
 
 <div class="row">
-    <div class="col-1"></div>
-    <div class="col-10">
-      <h4>Seleccionar Central para ver Mis Tableros</h4>
+  <div class=".col-xxl-4"></div>
+  <div class="col-12">      
       <table class="table">
         <thead class="encabezado">
             <tr>            
@@ -60,3 +80,11 @@
     </div>
     <div class="alert alert-primary text-center" role="alert" *ngIf="validarFiltrado() == false">      ¡No se ha encontrado ninguna Central!
   </div>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<br/>

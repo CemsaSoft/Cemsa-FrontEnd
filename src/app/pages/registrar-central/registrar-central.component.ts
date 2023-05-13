@@ -55,6 +55,12 @@ export class RegistrarCentralComponent implements OnInit {
   tipoOrdenamientoServicio: number = 1;
   tipoOrdenamientoServicioCentral: number = 1;
 
+
+  isCollapsed1 = false;
+  isCollapsed2 = false;
+  isCollapsed3 = false;
+  isCollapsed4 = false;
+
   //FORMULARIOS DE AGRUPACION DE DATOS
   formRegistar: FormGroup;
 
@@ -77,6 +83,22 @@ export class RegistrarCentralComponent implements OnInit {
         Validators.required,
       ]),      
     });
+  }
+
+  toggleCollapse1() {
+    this.isCollapsed1 = !this.isCollapsed1;
+  }
+
+  toggleCollapse2() {
+    this.isCollapsed2 = !this.isCollapsed2;
+  }
+
+  toggleCollapse3() {
+    this.isCollapsed3 = !this.isCollapsed3;
+  }
+
+  toggleCollapse4() {
+    this.isCollapsed4 = !this.isCollapsed4;
   }
 
   set cliApeNomDenVM(valor: any) {
@@ -110,9 +132,7 @@ export class RegistrarCentralComponent implements OnInit {
     return this.formRegistar.get('coordenadaY');
   }
   
-
   ngOnInit(): void {
-
     const mapContainer = document.getElementById('map');
     if (mapContainer) {
       this.inicializarMapa();
@@ -206,6 +226,8 @@ export class RegistrarCentralComponent implements OnInit {
     this.cenNroDocSeleccionado = cliente.cliNroDoc;
     this.cliApeNomDenVM = this.cliApeNomDenSeleccionado;
     this.usuarioVM = this.usuarioSeleccionado;
+    
+    this.isCollapsed1 = !this.isCollapsed1;
   }
 
   //Metodos para grilla

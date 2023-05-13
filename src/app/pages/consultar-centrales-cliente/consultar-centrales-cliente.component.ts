@@ -38,6 +38,10 @@ idUsuario: any = 0;
 coordenadaXSeleccionado: string = '';
 coordenadaYSeleccionado: string = '';
 
+isCollapsed1 = false;
+isCollapsed2 = false;
+isCollapsed3 = false;
+
 map: L.Map | undefined;
 marker: L.Marker | undefined;
 
@@ -61,6 +65,18 @@ marker: L.Marker | undefined;
 
     this.map = L.map('map').setView([-31.420083, -64.188776], 10);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(this.map);
+  }
+
+  toggleCollapse1() {
+    this.isCollapsed1 = !this.isCollapsed1;
+  }
+
+  toggleCollapse2() {
+    this.isCollapsed2 = !this.isCollapsed2;
+  }
+
+  toggleCollapse3() {
+    this.isCollapsed3 = !this.isCollapsed3;
   }
 
   //Valida que exista alguna Central que responda al filtro.
@@ -155,5 +171,6 @@ marker: L.Marker | undefined;
     this.centralConsultar.obtenerServiciosXCentral(this.centralNroSeleccionada).subscribe(data => {
       this.ServiciosDeCentral = data; 
     })
+    this.isCollapsed1 = !this.isCollapsed1;
   }
 }

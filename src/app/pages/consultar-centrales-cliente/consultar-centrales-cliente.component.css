@@ -23,3 +23,19 @@
   .search-container {
     margin-bottom: 20px;
   }
+
+
+ 
+  .card-header {
+    background-color: #2E8B57; /* verde oscuro */
+    color: #FFF; /* texto en blanco */
+    font-weight: bold; /* texto en negrita */
+  }
+  .card-body {
+    border: 1px solid #2E8B57; /* borde verde claro */
+    padding: 20px; /* espacio interno */
+  }
+  .btn-unstyled {
+    border: none;
+  }
+  

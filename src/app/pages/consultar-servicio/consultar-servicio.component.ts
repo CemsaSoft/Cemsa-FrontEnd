@@ -37,7 +37,7 @@ export class ConsultarServicioComponent implements OnInit {
   caracteresValidosNombreServicio: string =
     "La primera letra del Nombre del Servicio debe ser Mayúscula, más de 3 caracteres y no se admiten: ! # $ % & ' ( ) * + , - . : ; < = > ¿? @ [  ] ^ _` { | } ~";
     caracteresValidosUnidad: string =
-    "No se admiten: ! # $ % & ' ( ) * + , - . : ; < = > ¿? @ [  ] ^ _` { | } ~";
+    "No se admiten: ! # $ & ' ( ) * + , - . : ; < = > ¿? @ [  ] ^ _` { | } ~";
   idSeleccionado: number = 0;
   tipoOrdenamiento: number = 1;
 
@@ -61,7 +61,7 @@ export class ConsultarServicioComponent implements OnInit {
         ]),
         unidad: new FormControl(null, [
           Validators.required,
-          Validators.pattern("^[A-Za-zÑñáéíóúÁÉÍÓÚ'°0-9/ ]{1,}$"),
+          Validators.pattern("^[A-Za-zÑñáéíóúÁÉÍÓÚ'°0-9/%ºª ]{1,}$"),
         ]),
       }),
       this.formAgregar = this.fb.group({
@@ -71,7 +71,7 @@ export class ConsultarServicioComponent implements OnInit {
         ]),
         unidadA: new FormControl(null, [
           Validators.required,
-          Validators.pattern("^[A-Za-zÑñáéíóúÁÉÍÓÚ'°0-9/ ]{1,}$"),
+          Validators.pattern("^[A-Za-zÑñáéíóúÁÉÍÓÚ'°0-9/%ºª ]{1,}$"),
         ]),
       }
     );
