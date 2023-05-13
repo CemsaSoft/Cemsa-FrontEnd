@@ -36,24 +36,22 @@
         <div class="card-body" [ngClass]="{'collapse': isCollapsed1}">
 
 
-          <div class="row">
-            <div class="col-3"></div>
-            <div class="col-6 search-container">
-              <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por Código de Central">
-                <span class="input-group-text">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                    class="bi bi-search" viewBox="0 0 16 16">
-                    <path
-                      d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-                  </svg>
-                </span>
-                <input type="text" class="form-control" placeholder="Filtrar por Código de Central" (keyup)="esFiltrar($event , 'codigo')">
-              </div>
+        <div class="row">
+          <div class="col-6 search-container">
+            <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por Código de Central">
+              <span class="input-group-text">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                  class="bi bi-search" viewBox="0 0 16 16">
+                  <path
+                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                </svg>
+              </span>
+              <input type="text" class="form-control" placeholder="Filtrar por Código de Central" (keyup)="esFiltrar($event , 'codigo')">
             </div>
           </div>
+        </div>
                   
         <div class="row">
-            <div class=".col-xxl-4"></div>
             <div class="col-12">
               <table class="table">
                 <thead class="encabezado">
@@ -65,35 +63,34 @@
                       <th (click)="ordenarPor('cenCoorX')" [appSort]="CentralConsultaFiltrados" data-order="desc"
                           data-name="cenCoorX" style="text-align: center;"><a>Coordenada X {{ordenarIcono('cenCoorX')}}</a></th>             
                       <th (click)="ordenarPor('cenCoorY')" [appSort]="CentralConsultaFiltrados" data-order="desc"
-                          data-name="cenCoorY" style="text-align: center;"><a>Coordenada Y {{ordenarIcono('cenCoorY')}}</a></th>             
-                                  
+                          data-name="cenCoorY" style="text-align: center;"><a>Coordenada Y {{ordenarIcono('cenCoorY')}}</a></th>                                               
                       <th scope="col" style="text-align: center;">Ver Más</th>
                     </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let central of CentralConsultaFiltrados; let i=index"
-                    [ngClass]="{'fila-par': i%2==0, 'fila-impar': i%2==1}"
-                    (click)="esfilaSeleccionada(central)">
-                      <th style="vertical-align: middle" class="align-center">{{ central.cenNro }}</th>
-                      <td style="vertical-align: middle" class="align-center">{{ central.cenImei }}</td>
-                      <td style="vertical-align: middle" class="align-center">{{ central.cenCoorX }}</td>
-                      <td style="vertical-align: middle" class="align-center">{{ central.cenCoorY }}</td>              
-                      <td class="align-center">
-                        <button type="button" class="btn" (click)="esfilaSeleccionada(central); seleccionarCentral()" title="Ver Más Opciones"
-                        >     
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-                          </svg>           
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let central of CentralConsultaFiltrados; let i=index"
+                  [ngClass]="{'fila-par': i%2==0, 'fila-impar': i%2==1}"
+                  (click)="esfilaSeleccionada(central)">
+                    <th style="vertical-align: middle" class="align-center">{{ central.cenNro }}</th>
+                    <td style="vertical-align: middle" class="align-center">{{ central.cenImei }}</td>
+                    <td style="vertical-align: middle" class="align-center">{{ central.cenCoorX }}</td>
+                    <td style="vertical-align: middle" class="align-center">{{ central.cenCoorY }}</td>              
+                    <td class="align-center">
+                      <button type="button" class="btn" (click)="esfilaSeleccionada(central); seleccionarCentral()" title="Ver Más Opciones">     
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                          <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                        </svg>           
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-            <div class="alert alert-primary text-center" role="alert" *ngIf="validarFiltrado() == false">      ¡No se ha encontrado ninguna Central!
-          </div>
-        
+            <div class="alert alert-primary text-center" role="alert" *ngIf="validarFiltrado() == false">      
+              ¡No se ha encontrado ninguna Central!
+            </div>            
         </div>
+        
       </div>
     </div>
   </div>
@@ -118,8 +115,7 @@
         </div>
         <div class="card-body" [ngClass]="{'collapse': isCollapsed2}">
 
-          <div class="row">  
-            <div class="col-12"></div>
+          <div class="row">              
             <div class="col-12">
                 <div id="map" style="height: 400px"></div>      
             </div>
