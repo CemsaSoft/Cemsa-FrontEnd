@@ -14,7 +14,6 @@
   </head>
 
 <h1 class="text-center">Registar Central Meteorológica</h1>
-<br />
 
 
 <div class="container mt-5">
@@ -162,6 +161,7 @@
         <div class="card-body" [ngClass]="{'collapse': isCollapsed2}">
                 
             <form [formGroup]="formRegistar">
+              <div class="row g-3">
               <div class="col-md-6">
                 <div class="form-outline input-group mb-3">
                   <span class="input-group-text">Cliente </span>
@@ -180,6 +180,7 @@
                     <div *ngIf="usuarioVM?.errors?.['required']">El Usuario es requerido - Seleccione un Usuario de la lista.</div>  
                 </div>
               </div>
+            </div>
             </form>
       
         </div>

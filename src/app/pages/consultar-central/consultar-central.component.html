@@ -1,8 +1,9 @@
 <h1 class="text-center">Consultar Central Meteorológica</h1>
-<br>
-<div class="row">
-  <div class="col-4"></div>
-  <div class="col-5 search-container">
+<br> 
+
+<div class="row justify-content-center">
+  <div class="col-3"></div>
+  <div class="col-6 search-container">
     <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por Nombre de Cliente">
       <span class="input-group-text">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -14,8 +15,8 @@
       <input type="text" class="form-control" placeholder="Filtrar por Nombre del Cliente" (keyup)="esFiltrar($event , 'cliente')">
     </div>
   </div>
-  <div class="col-4"></div>
-  <div class="col-5 search-container">
+  <div class="col-3"></div>
+  <div class="col-6 search-container">
     <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por Nombre de Usuario">
       <span class="input-group-text">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -31,7 +32,7 @@
 
 
 <div class="row">
-    <div class="col-2"></div>
+    <div class="col-1"></div>
     <div class="col-10">
       <table class="table" *ngIf="validarFiltrado() == true">
         <thead class="encabezado">

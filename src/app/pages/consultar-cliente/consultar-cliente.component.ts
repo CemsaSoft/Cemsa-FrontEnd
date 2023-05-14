@@ -53,6 +53,9 @@ export class ConsultarClienteComponent implements OnInit {
   
   cliFechaAltaDate: Date = new Date(); 
 
+  isCollapsed1 = false;
+  isCollapsed2 = false;  
+
   //FORMULARIOS DE AGRUPACION DE DATOS
   formModificar: FormGroup;
 
@@ -81,6 +84,14 @@ export class ConsultarClienteComponent implements OnInit {
     });
   }
 
+  toggleCollapse1() {
+    this.isCollapsed1 = !this.isCollapsed1;
+  }
+
+  toggleCollapse2() {
+    this.isCollapsed2 = !this.isCollapsed2;
+  }
+  
   ngOnInit(): void {      
     this.clienteConsultar.listaClientes().subscribe(data => {
       this.Clientes = data;  
@@ -170,7 +181,9 @@ export class ConsultarClienteComponent implements OnInit {
     this.fechaAlta = this.cliFechaAltaSeleccionado;  
     this.fechaBaja = this.fechaBajaSeleccionado;  
     this.email = this.cliEmailSeleccionado;
-    this.telefono= this.cliTelefonoSeleccionado;        
+    this.telefono= this.cliTelefonoSeleccionado;    
+    
+    this.isCollapsed1 = !this.isCollapsed1;
   }
 
   //Metodos para grilla

@@ -55,7 +55,6 @@ export class RegistrarCentralComponent implements OnInit {
   tipoOrdenamientoServicio: number = 1;
   tipoOrdenamientoServicioCentral: number = 1;
 
-
   isCollapsed1 = false;
   isCollapsed2 = false;
   isCollapsed3 = false;

@@ -18,6 +18,7 @@ import { ConsultarCuentaComponent } from './pages/consultar-cuenta/consultar-cue
 import { ConsultarCentralesClienteComponent } from './pages/consultar-centrales-cliente/consultar-centrales-cliente.component';
 import { ConsultarPanelesMonitoreoComponent } from './pages/consultar-paneles-monitoreo/consultar-paneles-monitoreo.component';
 import { ConsultarMedicionesActualesComponent } from './pages/consultar-mediciones-actuales/consultar-mediciones-actuales.component';
+import { RegistrarServicioComponent } from './pages/registrar-servicio/registrar-servicio.component';
 
 //RUTAS
 let routes: Routes = [];
@@ -29,6 +30,7 @@ if (localStorage.getItem('rol') === '1')
     {path: '', component: IngresarUsuarioComponent},
     {path:'home', component: HomeComponent, canActivate: [RouteguardsGuard]},
     {path:'consultar-servicio', component: ConsultarServicioComponent, canActivate: [RouteguardsGuard]},
+    {path:'registrar-servicio', component: RegistrarServicioComponent, canActivate: [RouteguardsGuard]},
     {path:'consultar-central', component: ConsultarCentralComponent, canActivate: [RouteguardsGuard]},
     {path:'modificar-central', component: ModificarCentralComponent, canActivate: [RouteguardsGuard]},
     {path:'registrar-central', component: RegistrarCentralComponent, canActivate: [RouteguardsGuard]},
