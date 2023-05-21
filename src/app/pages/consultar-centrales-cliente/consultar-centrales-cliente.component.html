@@ -161,6 +161,8 @@
                             data-name="serDescripcion" style="text-align: center;"><a>Nombre de Servicio {{ordenarIconoServicioCentral('serDescripcion')}}</a></th>                        
                             <th (click)="ordenarServicioCentralPor('serUnidad')" [appSort]="ServiciosDeCentral" data-order="desc"
                             data-name="serUnidad" style="text-align: center;"><a>Nombre de Servicio {{ordenarIconoServicioCentral('serUnidad')}}</a></th>                                            
+                            <th (click)="ordenarServicioCentralPor('estDescripcion')" [appSort]="ServiciosDeCentral" data-order="desc"
+                            data-name="estDescripcion" style="text-align: center;"><a>Estado {{ordenarIconoServicioCentral('estDescripcion')}}</a></th>                                            
                           </tr>
                       </thead>
                       <tbody>
@@ -169,6 +171,7 @@
                         <th style="vertical-align: middle" class="align-center">{{ servicio.serId }}</th>
                         <td style="vertical-align: middle" class="align-center">{{ servicio.serDescripcion }}</td>  
                         <td style="vertical-align: middle" class="align-center">{{ servicio.serUnidad }}</td>                
+                        <td style="vertical-align: middle" class="align-center">{{ servicio.estDescripcion }}</td>      
                       </tbody>
                     </table>
                 <div class="alert alert-primary text-center" role="alert" *ngIf="validarFiltradoServiciosDeCentral() == false">

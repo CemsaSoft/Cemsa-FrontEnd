@@ -53,6 +53,19 @@
               </div>             
             </div>                                      
             
+            <div class="col-md-12 ">
+              <div class="form-outline input-group mb-3">
+                <span class="input-group-text">Tipo Grafico</span> 
+                <select name="tipoGraficoA" id="tipoGraficoA" value="tipoGraficoA" formControlName="tipoGraficoA" style="width: 525px;">
+                  <option value="1">Humedad de Suelo</option>
+                  <option value="2">Humedad del Ambiente</option>
+                  <option value="3">Temperatura</option>
+                  <option value="4">Velocidad del Viento</option>
+                  <option value="5">Dirección del Viento</option>
+                </select>           
+              </div>
+            </div>
+
             <div class="col-12 text-center">
               <button type="submit" id="Validar" class="btn btn-success" (click)="agregarServicio()">
                 Agregar

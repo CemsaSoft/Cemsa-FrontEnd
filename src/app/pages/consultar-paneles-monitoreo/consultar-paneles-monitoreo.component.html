@@ -86,4 +86,188 @@
 </div>
 </div>
 
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">Paneles de Monitoreo</h4>            
+            <button type="button" class="btn-unstyled" (click)="toggleCollapse2()">
+              <svg *ngIf="!isCollapsed2" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+              </svg>
+              <svg *ngIf="isCollapsed2" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 16 16">
+                <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="card-body" [ngClass]="{'collapse': isCollapsed2}">
+
+          <h4> Seleccione los Servicios a Monitorear:  </h4>
+          <div class="row">
+            <div class="col-md-6">
+              <h4> Servicios Disponibles </h4>
+              <table class="table" *ngIf="validarFiltradoServicios() == true">
+                <thead class="encabezado">
+                    <tr>     
+                      <th (click)="ordenarServicioPor('serId')" [appSort]="ServiciosCentral" data-order="desc"
+                      data-name="serId" style="text-align: center;"><a>Cod. {{ordenarIconoServicio('serId')}}</a></th>            
+                      <th (click)="ordenarServicioPor('serDescripcion')" [appSort]="ServiciosCentral" data-order="desc"
+                      data-name="serDescripcion" style="text-align: center;"><a>Nombre de Servicio {{ordenarIconoServicio('serDescripcion')}}</a></th>                        
+                      <th scope="col">Agregar Serv.</th> 
+                    </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let servicio of ServiciosCentral let i=index"
+                  [ngClass]="{'fila-par': i%2==0, 'fila-impar': i%2==1}"
+                  (click)="esfilaSeleccionadaServicio(servicio)">
+                  <th style="vertical-align: middle" class="align-center">{{ servicio.serId }}</th>
+                  <td style="vertical-align: middle">{{ servicio.serDescripcion }}</td>
+                  <td class="align-center">
+                    <button type="button" class="btn"
+                    data-bs-target="#staticBackdrop" (click)="agregarServicio(servicio)" title="Agregar Servicio">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-node-plus" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M11 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM6.025 7.5a5 5 0 1 1 0 1H4A1.5 1.5 0 0 1 2.5 10h-1A1.5 1.5 0 0 1 0 8.5v-1A1.5 1.5 0 0 1 1.5 6h1A1.5 1.5 0 0 1 4 7.5h2.025zM11 5a.5.5 0 0 1 .5.5v2h2a.5.5 0 0 1 0 1h-2v2a.5.5 0 0 1-1 0v-2h-2a.5.5 0 0 1 0-1h2v-2A.5.5 0 0 1 11 5zM1.5 7a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1z"/>
+                      </svg>
+                    </button>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="alert alert-primary text-center" role="alert" *ngIf="validarFiltradoServicios() == false">
+                No hay Servicios disposable
+              </div>
+            </div>
+            <div class="col-md-6">
+              <h4> Servicios a Graficar </h4>
+              <table class="table" *ngIf="validarFiltradoServiciosGraficar() == true">
+                <thead class="encabezado">
+                    <tr>              
+                      <th (click)="ordenarServicioGraficarPor('serId')" [appSort]="ServiciosGraficar" data-order="desc"
+                      data-name="serId" style="text-align: center;"><a>Cod. {{ordenarIconoServicioGraficar('serId')}}</a></th>            
+                      <th (click)="ordenarServicioGraficarPor('serDescripcion')" [appSort]="ServiciosGraficar" data-order="desc"
+                      data-name="serDescripcion" style="text-align: center;"><a>Nombre de Servicio {{ordenarIconoServicioGraficar('serDescripcion')}}</a></th>                        
+                      <th scope="col">Extraer Serv.</th> 
+                    </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let servicio of ServiciosGraficar let i=index"
+                  [ngClass]="{'fila-par': i%2==0, 'fila-impar': i%2==1}"
+                  (click)="esfilaSeleccionadaServicioGraficar(servicio)">
+                  <th style="vertical-align: middle" class="align-center">{{ servicio.serId }}</th>
+                  <td style="vertical-align: middle">{{ servicio.serDescripcion }}</td>
+                  <td class="align-center">
+                    <button type="button" class="btn"
+                    data-bs-target="#staticBackdrop" (click)="extraerServicio(servicio)" title="Extrar Servicio">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-node-minus" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M11 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM6.025 7.5a5 5 0 1 1 0 1H4A1.5 1.5 0 0 1 2.5 10h-1A1.5 1.5 0 0 1 0 8.5v-1A1.5 1.5 0 0 1 1.5 6h1A1.5 1.5 0 0 1 4 7.5h2.025zM1.5 7a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zM8 8a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5A.5.5 0 0 1 8 8z"/>
+                      </svg>
+                    </button>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="alert alert-primary text-center" role="alert" *ngIf="validarFiltradoServiciosGraficar() == false">
+                No tiene Servicios Activos para Graficar
+              </div>
+            </div>
+          </div> 
+
+          <h4> Seleccione el periodo a monitorear: </h4>
+
+<body>
+  <div class="container">
+    <h3>Lista de opciones</h3>
+    <ul class="list-group">
+      <li class="list-group-item">
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="opcion" id="opcionA" value="opcionA">
+          <label class="form-check-label" for="opcionA">Última semana</label>
+        </div>
+      </li>
+      <li class="list-group-item">
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="opcion" id="opcionB" value="opcionB">
+          <label class="form-check-label" for="opcionB">Últimos 15 días</label>
+        </div>
+      </li>
+      <li class="list-group-item">
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="opcion" id="opcionD" value="opcionD">
+          <label class="form-check-label" for="opcionD">Último mes</label>
+        </div>
+      </li>
+      <li class="list-group-item">
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="opcion" id="opcionC" value="opcionC">
+          <label class="form-check-label" for="opcionC">Personalizar</label>
+        </div>
+      </li>
+    </ul>
+  </div>
+</body>
+
+
+<head>
+  <title>Switches con opción única de "Sí" en Bootstrap</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container">
+    <h3>Switch Sí/No</h3>
+    <div class="custom-control custom-switch">
+      <input type="checkbox" class="custom-control-input" id="op1" checked>
+      <label class="custom-control-label" for="op1">Última semana</label>
+    </div>
+    <div class="custom-control custom-switch">
+      <input type="checkbox" class="custom-control-input" id="op2" >
+      <label class="custom-control-label" for="op2">Últimos 15 días</label>
+    </div>
+    <div class="custom-control custom-switch">
+      <input type="checkbox" class="custom-control-input" id="op3">
+      <label class="custom-control-label" for="op3">Último mes</label>
+    </div>
+    <div class="custom-control custom-switch">
+      <input type="checkbox" class="custom-control-input" id="op4" >
+      <label class="custom-control-label" for="op4">Personalizar</label>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+
+
+
+<body>
+  <div class="container">
+    <h3>Opción única de "Sí"</h3>
+    <div class="custom-control custom-radio">
+      <input type="radio" class="custom-control-input" id="radio1" name="radioOptions" checked>
+      <label class="custom-control-label" for="radio1">Última semana</label>
+    </div>
+    <div class="custom-control custom-radio">
+      <input type="radio" class="custom-control-input" id="radio2" name="radioOptions">
+      <label class="custom-control-label" for="radio2">Últimos 15 días</label>
+    </div>
+    <div class="custom-control custom-radio">
+      <input type="radio" class="custom-control-input" id="radio3" name="radioOptions">
+      <label class="custom-control-label" for="radio3">Último mes</label>
+    </div>
+    <div class="custom-control custom-radio">
+      <input type="radio" class="custom-control-input" id="radio4" name="radioOptions">
+      <label class="custom-control-label" for="radio4">Personalizar</label>
+    </div>
+  </div>
+</body>
+
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 <br/>

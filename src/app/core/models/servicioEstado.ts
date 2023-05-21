@@ -1,18 +1,18 @@
- export class ServicioClass  {
+ export class ServicioEstadoClass  {
     serId : number;
     serDescripcion: string;
     serUnidad: string;
-    serTipoGrafico: number;
+    estDescripcion: string;
   
     constructor(
         serId: number,
         serDescripcion: string,
         serUnidad: string,
-        serTipoGrafico:number,
+        estDescripcion: string,
     ) {
       this.serId = serId;
       this.serDescripcion = serDescripcion;
       this.serUnidad = serUnidad;
-      this.serTipoGrafico = serTipoGrafico;
+      this.estDescripcion = estDescripcion;
     }
   }

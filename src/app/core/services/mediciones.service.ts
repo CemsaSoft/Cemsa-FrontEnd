@@ -16,5 +16,8 @@ export class MedicionesService {
   obtenerMediciones(medNro: number): Observable<any> {
     return this.http.get(this.url + '/obtenerMediciones/' + medNro);
   }
-    
+  
+  obtenerUltimaMedicionesXCentral(medNro: number): Observable<any> {
+    return this.http.get(this.url + '/obtenerUltimaMedicionesXCentral/' + medNro);
+  }
 }

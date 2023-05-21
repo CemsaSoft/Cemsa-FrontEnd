@@ -34,6 +34,8 @@
                   data-name="serDescripcion" style="text-align: center;"><a>Nombre de Servicio {{ordenarIcono('serDescripcion')}}</a></th>
               <th (click)="ordenarPor('serUnidad')" [appSort]="ServiciosFiltrados" data-order="desc"
                   data-name="serUnidad" style="text-align: center;"><a>Unidad de Medida {{ordenarIcono('serUnidad')}}</a></th>             
+              <th (click)="ordenarPor('serUnidad')" [appSort]="ServiciosFiltrados" data-order="desc"
+                  data-name="serUnidad" style="text-align: center;"><a>Tipo Grafico {{ordenarIcono('serUnidad')}}</a></th>             
               
               <th scope="col" style="text-align: center;">Desactivar</th>
               <th scope="col" style="text-align: center;">Ver Más</th>
@@ -46,6 +48,7 @@
               <th style="vertical-align: middle" class="align-center">{{ servicio.serId }}</th>
               <td style="vertical-align: middle">{{ servicio.serDescripcion }}</td>
               <td style="vertical-align: middle">{{ servicio.serUnidad }}</td>
+              <td style="vertical-align: middle">{{ getTipoGraficoTexto(servicio.serTipoGrafico)}}</td>
               <td class="align-center">
                 <button type="button" class="btn"data-bs-toggle="modal"
                 data-bs-target="#staticBackdrop" (click)="abrirModal('Eliminar Servicio')" title="Eliminar Servicio">
@@ -145,7 +148,20 @@
                 <div *ngIf="unidad?.errors?.['pattern']">
                     No debe contener caracteres especiales.
                 </div>
-              </div>             
+              </div>          
+            </div>
+
+            <div class="col-md-12 ">
+              <div class="form-outline input-group mb-3">
+                <span class="input-group-text">Tipo Grafico</span> 
+                <select name="tipoGrafico" id="tipoGrafico" value="tipoGrafico" formControlName="tipoGrafico" style="width: 320px;">
+                  <option value="1">Humedad de Suelo</option>
+                  <option value="2">Humedad del Ambiente</option>
+                  <option value="3">Temperatura</option>
+                  <option value="4">Velocidad del Viento</option>
+                  <option value="5">Dirección del Viento</option>
+                </select>           
+              </div>
             </div>
         </fieldset>
     </form>
@@ -244,7 +260,19 @@
               </div>             
             </div>
            
-            
+            <div class="col-md-12 ">
+              <div class="form-outline input-group mb-3">
+                <span class="input-group-text">Tipo Grafico</span> 
+                <select name="tipoGraficoA" id="tipoGraficoA" value="tipoGraficoA" formControlName="tipoGraficoA" style="width: 320px;">
+                  <option value="1">Humedad de Suelo</option>
+                  <option value="2">Humedad del Ambiente</option>
+                  <option value="3">Temperatura</option>
+                  <option value="4">Velocidad del Viento</option>
+                  <option value="5">Dirección del Viento</option>
+                </select>           
+              </div>
+            </div>
+
         </fieldset>
     </form>
     <div class="row">

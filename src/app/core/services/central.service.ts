@@ -43,7 +43,11 @@ export class CentralService {
   }
   
   obtenerServiciosXCentral(cenNum: number): Observable<any> {
-    return this.http.get(this.url + '/serviciosXCentral/' + cenNum) ;
+    return this.http.get(this.url + '/obtenerServiciosXCentral/' + cenNum) ;
+  }
+
+  obtenerServicioXCentralEstado(cenNum: number): Observable<any> {
+    return this.http.get(this.url + '/obtenerServicioXCentralEstado/' + cenNum) ;
   }
   
   actualizarDatosCentral(cenNum: number, cenImei: string, cenCoorX: string, cenCoorY:string): Observable<any> {
