@@ -20,17 +20,18 @@ import { MedicionesService } from 'src/app/core/services/mediciones.service';
 import { ServicioService } from 'src/app/core/services/servicio.service';
 
 @Component({
-  selector: 'app-consultar-paneles-monitoreo',
-  templateUrl: './consultar-paneles-monitoreo.component.html',
-  styleUrls: ['./consultar-paneles-monitoreo.component.css']
+  selector: 'app-consultar-reportes',
+  templateUrl: './consultar-reportes.component.html',
+  styleUrls: ['./consultar-reportes.component.css']
 })
-
-export class ConsultarPanelesMonitoreoComponent implements OnInit {
+export class ConsultarReportesComponent implements OnInit {
   
 //VARIABLES DE OBJETOS LIST
 CentralConsulta: CentralConsultaClass[] = [];
 CentralConsultaFiltrados: CentralConsultaClass [] = [];
-Mediciones : MedicionesClass[] = []; 
+Mediciones: MedicionesClass[] = []; 
+MedMin: MedicionesClass[] = []; 
+MedMax: MedicionesClass[] = [];
 ServiciosCentral: ServicioClass[] = [];
 ServiciosGraficar: ServicioClass[] = [];
 
@@ -49,21 +50,20 @@ idListaServiciosGraficarSeleccionado: number=0;
 
 isCollapsed1 = false;
 isCollapsed2 = false;
-op1 = true; op2 = false; op3 = false; op4 = false;
-op1G = true; op2G = false;
-ingresoDireViento = false;
+op1 = true; op2 = false; op3 = false; op4 = false; op5 = false; op6 = false; op7 = false;
 
 //FORMS PARA LA AGRUPACIÓN DE DATOS
-formGraficar: FormGroup;
+formReporte: FormGroup;
 
   constructor(
     private centralConsultar: CentralService, 
     private medicionesConsultar: MedicionesService, 
     private servicioConsultar: ServicioService,
   ) { 
-    this.formGraficar = new FormGroup({
+    this.formReporte = new FormGroup({
       fecha_desde: new FormControl(null, []),
       fecha_hasta: new FormControl(null, []),
+      promedio: new FormControl(null, []),
     });
   }
 
@@ -127,6 +127,14 @@ formGraficar: FormGroup;
     //   option && myChart.setOption(option);
     //   });
 
+  }
+
+  set promedio(valor: any) {
+    this.formReporte.get('promedio')?.setValue(valor);
+  }
+  
+  get promedio() {
+    return this.formReporte.get('promedio');
   }
 
   graficoNuevo(): void {
@@ -359,18 +367,14 @@ formGraficar: FormGroup;
 
   // valida para que un solo selector de frecuencia este seleccionado a la vez
   selOp(event: any) {
-    this.op1 = this.op2 = this.op3 = this.op4 = false;
+    this.op1 = this.op2 = this.op3 = this.op4 = this.op5 = this.op6 = this.op7 =false;
     if (event.target.id === 'op1') { this.op1 = event.target.checked; } 
     if (event.target.id === 'op2') { this.op2 = event.target.checked; }
     if (event.target.id === 'op3') { this.op3 = event.target.checked; } 
     if (event.target.id === 'op4') { this.op4 = event.target.checked; }    
-  }
-
-  // valida para que un solo selector de tipo de representar los servicios este seleccionado a la vez
-  selOpG(event: any) {
-    this.op1G = this.op2G = false;
-    if (event.target.id === 'op1G') { this.op1G = event.target.checked; } 
-    if (event.target.id === 'op2G') { this.op2G = event.target.checked; }     
+    if (event.target.id === 'op5') { this.op5 = event.target.checked; }   
+    if (event.target.id === 'op6') { this.op6 = event.target.checked; }   
+    if (event.target.id === 'op7') { this.op7 = event.target.checked; }   
   }
   
   //Valida que exista alguna Central que responda al filtro.
@@ -400,6 +404,24 @@ formGraficar: FormGroup;
     }
   }
   
+  //Valida que exista alguna medicion Minima que responda al filtro.
+  validarMedMin(): Boolean {   
+    if (this.MedMin.length == 0) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+    //Valida que exista alguna medicion Maxima que responda al filtro.
+    validarMedMax(): Boolean {   
+      if (this.MedMax.length == 0) {
+        return false;
+      } else {
+        return true;
+      }
+    }
+
   //Almacena los datos del servicio que fue seleccionado en la tabla de servicio filtrados dentro de variables locales.
   esfilaSeleccionada(centralConsulta: CentralConsultaClass) {
     this.centralNroSeleccionada = centralConsulta.cenNro;
@@ -483,18 +505,27 @@ formGraficar: FormGroup;
 
   // Extraer servicios a la central selecciona
   agregarServicio(servicios: ServicioClass): void { 
-    if (servicios.serTipoGrafico==5)  { this.ingresoDireViento = true; }
-    const index = this.ServiciosCentral.indexOf(servicios);
-    if (index !== -1) {
-      this.ServiciosCentral.splice(index, 1);
-      this.ServiciosGraficar.push(servicios);
-    }
-    this.validarFiltradoServicios();        
+    if (this.ServiciosGraficar.length <1){
+      const index = this.ServiciosCentral.indexOf(servicios);
+      if (index !== -1) {
+        this.ServiciosCentral.splice(index, 1);
+        this.ServiciosGraficar.push(servicios);
+      }
+      this.validarFiltradoServicios();   
+    } else {
+      Swal.fire({
+        title: 'Error',
+        text: 'Solo se permite ingresar un solo Servicio.',
+        icon: 'warning',
+        confirmButtonColor: '#0f425b',
+        confirmButtonText: 'Aceptar',
+        footer: 'Por favor, extrae el Servicio actual antes de ingresar uno nuevo.'
+      });
+    }     
   }
 
   // Extraer servicios a la central selecciona
   extraerServicio(servicios: ServicioClass): void {
-    if (servicios.serTipoGrafico==5)  { this.ingresoDireViento = false; }
     const index = this.ServiciosGraficar.indexOf(servicios);
     if (index !== -1) {
       this.ServiciosGraficar.splice(index, 1);
@@ -504,22 +535,25 @@ formGraficar: FormGroup;
   } 
 
   seleccionarCentral(): void {
-    this.ingresoDireViento = false;
     this.isCollapsed1 = !this.isCollapsed1;
     this.ServiciosGraficar = [];
     this.centralConsultar.obtenerServicioXCentralEstado(this.centralNroSeleccionada).subscribe(data => {
-      this.ServiciosCentral = data; 
-    })    
+      this.ServiciosCentral = data.filter((servicio: { serTipoGrafico: number; }) => servicio.serTipoGrafico != 5);
+    });
+    
   }
 
-  graficar(): void {
+  GenerarReporte(): void {
     var hoy = new Date();
     var desde = new Date();
     var hasta = new Date();
     if (this.op1) { desde.setDate(desde.getDate() - 7); }
     if (this.op2) { desde.setDate(desde.getDate() - 15); }
     if (this.op3) { desde.setMonth(desde.getMonth() - 1); }
-    if (this.op4) {
+    if (this.op4) { desde.setMonth(desde.getMonth() - 3); }
+    if (this.op5) { desde.setMonth(desde.getMonth() - 6); }
+    if (this.op6) { desde.setMonth(desde.getMonth() - 12); }
+    if (this.op7) {
       var fechaDesde = document.getElementById('desde') as HTMLInputElement;
       var fechaSeleccionada = new Date(fechaDesde.value);
       fechaSeleccionada.setDate(fechaSeleccionada.getDate() + 1); // Sumar un día
@@ -546,9 +580,7 @@ formGraficar: FormGroup;
 
     if (this.ServiciosGraficar.length === 0) {
       mostrarError('Debe seleccionar al menos un servicio para graficar.', 'Ingrese un Servicio para Graficar.');
-    } else if (!this.op1G && !this.op2G) {
-      mostrarError('Por favor, ingrese un tipo de visualización de los Servicios.', 'Por favor, introduzca un tipo de visualización de los Servicios.');
-    } else if (!this.op1 && !this.op2 && !this.op3 && !this.op4) {
+    } else if (!this.op1 && !this.op2 && !this.op3 && !this.op4 && !this.op5 && !this.op6 && !this.op7 ) {
       mostrarError('Por favor, ingrese un periodo a monitorear.', 'Por favor, introduzca un periodo a monitorear.');
     }else if (isNaN(desde.getTime())) {
       mostrarError('Ingrese una fecha de desde válida.', 'Por favor, ingrese una fecha de hasta válida para generar el gráfico.');
@@ -568,22 +600,43 @@ formGraficar: FormGroup;
       contenedor.removeChild(contenedor.firstChild);
     }   
 
-    this.medicionesConsultar.obtenerMediciones(this.centralNroSeleccionada, desde, hasta).subscribe(data => {
-      this.Mediciones = data; 
+    this.medicionesConsultar.obtenerMediciones(this.centralNroSeleccionada, desde, hasta)      
+      .subscribe(data => { this.Mediciones = data.filter((medicion: { medSer: number; }) => medicion.medSer === this.ServiciosGraficar[0].serId); 
+
+      // saco los valores minimo de las mediciones
+      const valoresMax = this.Mediciones.map(medicion => medicion.medValor);
+      const valorMaximo = Math.max(...valoresMax);
+      this.MedMax = this.Mediciones.filter(medicion => medicion.medValor === valorMaximo);
+
+      // const formatter = new Intl.DateTimeFormat('es', {
+      //   year: 'numeric',
+      //   month: '2-digit',
+      //   day: '2-digit',
+      //   hour: '2-digit',
+      //   minute: '2-digit'
+      // });
+      
+      // const formattedMedMax = this.MedMax.map(medicion => {
+      //   const formattedDate = formatter.format(medicion.medFechaHoraSms);
+      //   return { ...medicion, medFechaHoraSms: formattedDate.replace(/-/g, '/') };
+      // });
+      
+      
+      
+            
+      // saco los valores minimo de las mediciones
+      const valoresMin = this.Mediciones.map(medicion => medicion.medValor);
+      const valorMinimo = Math.min(...valoresMin);
+      this.MedMin = this.Mediciones.filter(medicion => medicion.medValor === valorMinimo);
+    
+      // saco el promedio de las mediciones
+      const valoresPorm = this.Mediciones.map(medicion => medicion.medValor);
+      const p = valoresPorm.reduce((sum, val) => sum + val, 0) / valoresPorm.length;
+      this.promedio = p.toFixed(2).toString();
 
       const contenedor = document.getElementById('contenedor-graficos')!;
-
-      if ( (this.op1G && this.ServiciosGraficar.length > 1) || (this.op1G && !this.ingresoDireViento && this.ServiciosGraficar.length === 1) ) {
-        createAndRenderChart(contenedor, this.Mediciones, 1, this.ServiciosGraficar, 1);
-      }
-      if (this.op1G && this.ingresoDireViento) {       
-        createAndRenderChart(contenedor, this.Mediciones, 2, this.ServiciosGraficar, 2);
-      }
-      if (!this.op1G ) { 
-        for (let i = 0; i < this.ServiciosGraficar.length; i++) {
-          createAndRenderChart(contenedor, this.Mediciones, i, [this.ServiciosGraficar[i]], 3);
-        }
-      }
+      createAndRenderChart(contenedor, this.Mediciones, 1, this.ServiciosGraficar, 1);
+      
     });    
 
     function createAndRenderChart(container: HTMLElement, mediciones: any[], i: number, servicios: any[], nroIf: number): void {
@@ -632,17 +685,7 @@ formGraficar: FormGroup;
               .filter(servicio => servicio.serTipoGrafico !== 5)
               .map(servicio => servicio.serDescripcion);
             series = filterSeries(servicios, mediciones, servicio => servicio.serTipoGrafico !== 5);
-            break;
-          case 2:
-            dataLegend = servicios
-              .filter(servicio => servicio.serTipoGrafico === 5)
-              .map(servicio => servicio.serDescripcion);
-            series = filterSeries(servicios, mediciones, servicio => servicio.serTipoGrafico === 5);
-            break;
-          case 3:
-            dataLegend = servicios.map(servicio => servicio.serDescripcion);
-            series = filterSeries(servicios, mediciones, servicio => servicio.serId === servicio.serId);
-            break;
+            break;         
         }      
         return { dataLegend, series };
       }

@@ -19,6 +19,7 @@ import { ConsultarCentralesClienteComponent } from './pages/consultar-centrales-
 import { ConsultarPanelesMonitoreoComponent } from './pages/consultar-paneles-monitoreo/consultar-paneles-monitoreo.component';
 import { ConsultarMedicionesActualesComponent } from './pages/consultar-mediciones-actuales/consultar-mediciones-actuales.component';
 import { RegistrarServicioComponent } from './pages/registrar-servicio/registrar-servicio.component';
+import { ConsultarReportesComponent } from './pages/consultar-reportes/consultar-reportes.component';
 
 //RUTAS
 let routes: Routes = [];
@@ -52,6 +53,7 @@ if (localStorage.getItem('rol') === '1')
     {path:'consultar-central-cliente', component: ConsultarCentralesClienteComponent, canActivate: [RouteguardsGuard]},
     {path:'consultar-paneles-monitoreo', component: ConsultarPanelesMonitoreoComponent, canActivate: [RouteguardsGuard]},
     {path:'consultar-mediciones-actuales', component: ConsultarMedicionesActualesComponent, canActivate: [RouteguardsGuard]},
+    {path:'consultar-reportes', component: ConsultarReportesComponent, canActivate: [RouteguardsGuard]},
 
     {path: '', component: IngresarUsuarioComponent},
     {path: '', redirectTo: '/', pathMatch:'full'},

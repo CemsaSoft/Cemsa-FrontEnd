@@ -1,4 +1,3 @@
-
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <h1 class="text-center">Consultar Mis Paneles De Monitoreo</h1>
 
@@ -94,7 +93,7 @@
       <div class="card">
         <div class="card-header">
           <div class="d-flex justify-content-between align-items-center">
-            <h4 class="mb-0">Paneles de Monitoreo</h4>            
+            <h4 class="mb-0">Paneles de Reportes</h4>            
             <button type="button" class="btn-unstyled" (click)="toggleCollapse2()">
               <svg *ngIf="!isCollapsed2" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
                 <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
@@ -107,7 +106,7 @@
         </div>
         <div class="card-body" [ngClass]="{'collapse': isCollapsed2}">
 
-          <h4> Seleccione los Servicios a Monitorear:  </h4>
+          <h4> Seleccione el Servicio para Generar Reporte:  </h4>
           <br>
 
           <div class="row">
@@ -144,7 +143,7 @@
               </div>
             </div>
             <div class="col-md-6">
-              <h4> Servicios a Graficar </h4>
+              <h4> Servicio a Generar Reporte </h4>
               <table class="table" *ngIf="validarFiltradoServiciosGraficar() == true">
                 <thead class="encabezado">
                     <tr>              
@@ -172,30 +171,16 @@
                 </tbody>
               </table>
               <div class="alert alert-primary text-center" role="alert" *ngIf="validarFiltradoServiciosGraficar() == false">
-                No tiene Servicios Activos para Graficar
+                No tiene Servicios Activos para Generar Reporte
               </div>
             </div>
           </div> 
 
+          
           <br>
-          <h4> Visualización de los Servicios: </h4>
+          <h4> Seleccione el periodo para Generar Reporte: </h4>
           <br>
-  
-          <div class="container">
-              <div class="custom-control custom-switch mb-3">
-                <input type="checkbox" class="custom-control-input" id="op1G" [checked]="op1G" (change)="selOpG($event)">
-                <label class="custom-control-label" for="op1G">Todos los Servicios en un solo Gráfico</label>
-              </div>            
-              <div class="custom-control custom-switch mb-3">
-                <input type="checkbox" class="custom-control-input" id="op2G" [checked]="op2G" (change)="selOpG($event)">
-                <label class="custom-control-label" for="op2G">Cada Servicio en un Gráfico</label>
-              </div>           
-          </div>
-
-          <br>
-          <h4> Seleccione el periodo a monitorear: </h4>
-          <br>
-          <form [formGroup]="formGraficar">     
+          <form [formGroup]="formReporte">     
           <div class="container">
               <div class="custom-control custom-switch mb-3">
                 <input type="checkbox" class="custom-control-input" id="op1" [checked]="op1" (change)="selOp($event)">
@@ -209,11 +194,23 @@
                 <input type="checkbox" class="custom-control-input" id="op3" [checked]="op3" (change)="selOp($event)">
                 <label class="custom-control-label" for="op3">Último mes</label>
               </div>
+              <div class="custom-control custom-switch mb-3">
+                <input type="checkbox" class="custom-control-input" id="op4" [checked]="op4" (change)="selOp($event)">
+                <label class="custom-control-label" for="op4">Último 3 mes</label>
+              </div>
+              <div class="custom-control custom-switch mb-3">
+                <input type="checkbox" class="custom-control-input" id="op5" [checked]="op5" (change)="selOp($event)">
+                <label class="custom-control-label" for="op5">Último 6 mes</label>
+              </div>
+              <div class="custom-control custom-switch mb-3">
+                <input type="checkbox" class="custom-control-input" id="op6" [checked]="op6" (change)="selOp($event)">
+                <label class="custom-control-label" for="op6">Último año</label>
+              </div>
               <div class="row">
                 <div class="col">
                   <div class="custom-control custom-switch mb-3">
-                    <input type="checkbox" class="custom-control-input" id="op4" [checked]="op4" (change)="selOp($event)">
-                    <label class="custom-control-label" for="op4">Personalizar</label>
+                    <input type="checkbox" class="custom-control-input" id="op7" [checked]="op7" (change)="selOp($event)">
+                    <label class="custom-control-label" for="op7">Personalizar</label>
                   </div>
                 </div>    
                   <div class="col">
@@ -230,15 +227,63 @@
                   </div>                
               </div>            
           </div>
-          </form>
 
           <br>             
           <div class="col-12 text-center">
             <button type="submit" class="btn btn-success" data-bs-toggle="button"                        
-              (click)="graficar()"> Gráficar
+              (click)="GenerarReporte()"> Generar Reportes
             </button>
           </div>     
-          
+
+          <br>
+          <h4> Datos Estadisticos: </h4>
+          <br>
+
+          <div class="col-md-6">
+            <h4> Máximo Valor: </h4>
+            <table class="table" *ngIf="validarMedMax() == true">
+              <thead class="encabezado">
+                  <tr>              
+                    <th style="text-align: center;" scope="col">Valor</th> 
+                    <th style="text-align: center;" scope="col">Fecha</th> 
+                  </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let medMax of MedMax let i=index"
+                [ngClass]="{'fila-par': i%2==0, 'fila-impar': i%2==1}" >
+                <th style="vertical-align: middle" class="align-center">{{ medMax.medValor }}</th>                  
+                <td style="vertical-align: middle" class="align-center">{{ medMax.medFechaHoraSms | date: 'yyyy-MM-dd HH:mm' }}</td>
+              </tbody>
+            </table>
+          </div>
+          <br>
+          <div class="col-md-6">
+            <h4> Mínimo Valor: </h4>
+            <table class="table" *ngIf="validarMedMin() == true">
+              <thead class="encabezado">
+                  <tr>              
+                    <th style="text-align: center;" scope="col">Valor</th> 
+                    <th style="text-align: center;" scope="col">Fecha</th> 
+                  </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let medMin of MedMin let i=index"
+                [ngClass]="{'fila-par': i%2==0, 'fila-impar': i%2==1}" >
+                <th style="vertical-align: middle" class="align-center">{{ medMin.medValor }}</th>
+                <td style="vertical-align: middle" class="align-center">{{ medMin.medFechaHoraSms | date: 'yyyy-MM-dd HH:mm' }}</td>
+              </tbody>
+            </table>
+          </div>
+          <br>
+          <div class="col-md-6">
+            <div class="form-outline input-group mb-3">
+              <span class="input-group-text">Promedio </span>
+              <input type="text" class="form-control" id="promedio" value="promedio" formControlName="promedio" required readonly />            
+            </div>
+          </div>
+          </form>
+
+
           <br>
           <h4> Grafico: </h4>
           <br>
