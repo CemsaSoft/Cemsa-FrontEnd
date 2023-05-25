@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<h1 class="text-center">Consultar Mis Paneles De Monitoreo</h1>
+<h1 class="text-center">Consultar Reportes</h1>
 
 <div class="container mt-5">
   <div class="row justify-content-center">
@@ -281,8 +281,7 @@
               <input type="text" class="form-control" id="promedio" value="promedio" formControlName="promedio" required readonly />            
             </div>
           </div>
-          </form>
-
+        
 
           <br>
           <h4> Grafico: </h4>
@@ -290,6 +289,22 @@
           <div id="contenedor-graficos"></div>
           <!-- <div id="grafico2" style="width: 1000px; height: 500px;"></div> -->
 
+          <br>
+          <br>
+          <div class="col-xxl-4">
+            <h4>Ingrese un Comentario:</h4>
+            <div class="form-outline input-group mb-3">
+              <textarea class="form-control comentario-input" id="comentario" formControlName="comentario"></textarea>
+            </div>
+          </div>
+          
+          <div class="col-12 text-center">
+            <button type="submit" class="btn btn-success" data-bs-toggle="button"                        
+              (click)="reportePDF()"> Generar Reportes PDF
+            </button>
+          </div>
+
+        </form>
         </div>
       </div>
     </div>
