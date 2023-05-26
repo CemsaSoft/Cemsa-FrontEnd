@@ -1,0 +1,41 @@
+.encabezado {
+    background-color: #006d2c;
+    color: white;
+  }
+  
+  .fila-par {
+    background-color: #c7e9c0;
+  }
+  
+  .fila-impar {
+    background-color: white;
+  }
+  .align-center {
+    text-align: center;
+  }
+  div.row {
+    margin-bottom: 10px;
+  }
+  .colorLetra{
+    color:red;
+  }
+  
+  .search-container {
+    margin-bottom: 20px;
+  }
+
+
+ 
+  .card-header {
+    background-color: #2E8B57; /* verde oscuro */
+    color: #FFF; /* texto en blanco */
+    font-weight: bold; /* texto en negrita */
+  }
+  .card-body {
+    border: 1px solid #2E8B57; /* borde verde claro */
+    padding: 20px; /* espacio interno */
+  }
+  .btn-unstyled {
+    border: none;
+  }
+  
