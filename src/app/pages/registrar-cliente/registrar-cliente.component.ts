@@ -93,7 +93,7 @@ export class RegistrarClienteComponent implements OnInit {
     this.formRegistar.get('telefono')?.setValue(valor);
   }
   
-  get tipoDocumentoç() {
+  get tipoDocumento() {
     return this.formRegistar.get('tipoDocumento');
   }
   get nroDocumento() {

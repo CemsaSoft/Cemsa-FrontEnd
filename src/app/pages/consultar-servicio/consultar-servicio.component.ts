@@ -335,11 +335,10 @@ export class ConsultarServicioComponent implements OnInit {
     .subscribe(() => {
       Swal.fire({
         text:
-          'El servicio ' +
+          'Se ha eliminado con éxito el servicio  ' +
           this.despcionSeleccionado +
-          ' con Cod.: ' +
-          this.idSeleccionado +
-          ' ha sido eleminado con éxito.',
+          ' identificado con el código ' +
+          this.idSeleccionado,
         icon: 'success',
         position: 'top',
         showConfirmButton: true,

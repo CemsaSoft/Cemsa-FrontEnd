@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
-import { CentralClass } from '../models/central';
 import { HttpClient} from '@angular/common/http';
 import { Observable } from 'rxjs';
-// import { CentralConsultaClass } from '../models/centralConsulta';
-// import { ServicioxCentralClass } from 'src/app/core/models/serviciosxCentral';
+import { FumigacionesClass } from '../models/fumigaciones';
 
 @Injectable({
   providedIn: 'root'
@@ -20,4 +18,15 @@ export class FumigacionesService {
     return this.http.get(this.url + '/obtenerFumigacionesDeCentral/' + cenNum);
   }
   
+  eliminarFumigacion(fumId: number): Observable<any> {
+    return this.http.delete(this.url + '/eliminarFumigacion/' + fumId);   
+  }
+
+  modificarFumigacion(fumigacion: FumigacionesClass): Observable<any> {
+    return this.http.post(this.url + '/modificarFumigacion/', fumigacion );  
+  }
+
+  registrarFumigacion(fumigacion: FumigacionesClass): Observable<any> {
+    return this.http.post(this.url + '/registrarFumigacion/', fumigacion);
+  }
 }
