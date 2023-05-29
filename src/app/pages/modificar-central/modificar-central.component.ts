@@ -142,7 +142,7 @@ export class ModificarCentralComponent implements OnInit {
       this.Servicios = data;  
     })
 
-    this.centralConsultar.obtenerServiciosXCentral(this.CentralConsultaSeleccionada.cenNro).subscribe(data => {
+    this.centralConsultar.obtenerServicioXCentral(this.CentralConsultaSeleccionada.cenNro).subscribe(data => {
       this.ServiciosDeCentralActualizado = data; 
       this.Servicios = this.Servicios.filter(servicio => {
         return !this.ServiciosDeCentralActualizado.some(servicioCentral => servicioCentral.serId === servicio.serId);

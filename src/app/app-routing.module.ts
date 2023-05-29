@@ -21,8 +21,8 @@ import { ConsultarMedicionesActualesComponent } from './pages/consultar-medicion
 import { RegistrarServicioComponent } from './pages/registrar-servicio/registrar-servicio.component';
 import { ConsultarReportesComponent } from './pages/consultar-reportes/consultar-reportes.component';
 import { RegistrarFumigacionComponent } from './pages/registrar-fumigacion/registrar-fumigacion.component';
-import { RegistrarAlarmaComponent } from './pages/registrar-alarma/registrar-alarma.component';
-import { ConsultarAlarmaComponent } from './pages/consultar-alarma/consultar-alarma.component';
+import { RegistrarAlarmaConfigComponent } from './pages/registrar-alarma-config/registrar-alarma-config.component';
+import { ConsultarAlarmaConfigComponent } from './pages/consultar-alarma-config/consultar-alarma-config.component';
 
 //RUTAS
 let routes: Routes = [];
@@ -58,8 +58,8 @@ if (localStorage.getItem('rol') === '1')
     {path:'consultar-paneles-monitoreo', component: ConsultarPanelesMonitoreoComponent, canActivate: [RouteguardsGuard]},
     {path:'consultar-mediciones-actuales', component: ConsultarMedicionesActualesComponent, canActivate: [RouteguardsGuard]},
     {path:'consultar-reportes', component: ConsultarReportesComponent, canActivate: [RouteguardsGuard]},
-    {path:'consultar-alarma', component: ConsultarAlarmaComponent, canActivate: [RouteguardsGuard]},
-    {path:'registrar-alarma', component: RegistrarAlarmaComponent, canActivate: [RouteguardsGuard]},
+    {path:'consultar-alarma-config', component: ConsultarAlarmaConfigComponent, canActivate: [RouteguardsGuard]},
+    {path:'registrar-alarma-config', component: RegistrarAlarmaConfigComponent, canActivate: [RouteguardsGuard]},
 
     {path: '', component: IngresarUsuarioComponent},
     {path: '', redirectTo: '/', pathMatch:'full'},

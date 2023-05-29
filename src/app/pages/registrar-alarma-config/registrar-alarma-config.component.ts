@@ -16,11 +16,11 @@ import { CentralConsultaClass } from 'src/app/core/models/centralConsulta';
 import { CentralService } from 'src/app/core/services/central.service';
 
 @Component({
-  selector: 'app-consultar-alarma',
-  templateUrl: './consultar-alarma.component.html',
-  styleUrls: ['./consultar-alarma.component.css']
+  selector: 'app-registrar-alarma-config',
+  templateUrl: './registrar-alarma-config.component.html',
+  styleUrls: ['./registrar-alarma-config.component.css']
 })
-export class ConsultarAlarmaComponent implements OnInit {
+export class RegistrarAlarmaConfigComponent implements OnInit {
   //VARIABLES DE OBJETOS LIST
   CentralConsulta: CentralConsultaClass[] = [];
   CentralConsultaFiltrados: CentralConsultaClass [] = [];
@@ -241,4 +241,4 @@ export class ConsultarAlarmaComponent implements OnInit {
   //   }
   // );
     }
-}
+  }

@@ -301,7 +301,6 @@ export class ConsultarFumigacionesComponent implements OnInit {
       new Date(),
       this.formModificar.get('observacion')?.value,      
     );
-    console.log(Fumigaciones);
     this.fumigacionesConsulta
       .modificarFumigacion(Fumigaciones)  
       .subscribe(() => {
