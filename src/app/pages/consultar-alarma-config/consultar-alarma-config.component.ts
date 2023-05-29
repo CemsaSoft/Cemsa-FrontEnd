@@ -288,6 +288,7 @@ export class ConsultarAlarmaConfigComponent implements OnInit {
         this.centralConsultar.obtenerServicioXCentral(this.centralNroSeleccionada).subscribe(data => {
           this.ServiciosCentralA = data.filter((servicio: { serTipoGrafico: number; }) => servicio.serTipoGrafico != 5)
           
+          //Verifico que la central tenga servicios
           function mostrarError(mensaje: string, footer: string): Promise<void> {
             return new Promise<void>((resolve) => {
               Swal.fire({
@@ -301,8 +302,7 @@ export class ConsultarAlarmaConfigComponent implements OnInit {
                 resolve();
               });
             });
-          }
-          
+          }          
           if (this.ServiciosCentralA.length == 0) {
             mostrarError('La Central Seleccionada No tiene Servicios asignados', 'Por favor, comunicar con su Administrados, para que le agregue servicios a su central.')
               .then(() => {
@@ -310,9 +310,7 @@ export class ConsultarAlarmaConfigComponent implements OnInit {
               });
           } else {
             this.nombreServicioA = this.ServiciosCentralA[0].serId;   
-          }
-          
-
+          }       
         });        
     }
   }
@@ -526,97 +524,91 @@ export class ConsultarAlarmaConfigComponent implements OnInit {
     }
   }
 
-  //Agregar una Fumgacion 
+  //Agregar una Alarma Configuracion 
   agregarAlarmaConfig(): void {
-  //   const hoy = new Date();
-  //   const fecha = document.getElementById('fechaRealizacionA') as HTMLInputElement;
-  //   const fechaSeleccionada = new Date(fecha.value);
-  //   fechaSeleccionada.setDate(fechaSeleccionada.getDate() + 1); // Sumar un día
-  //   fechaSeleccionada.setHours(0, 0, 0, 0);
-  //   const fechaRealiz = fechaSeleccionada;
-
-  //   function mostrarError(mensaje: string, footer: string) {
-  //     Swal.fire({
-  //       title: 'Error',
-  //       text: mensaje,
-  //       icon: 'warning',
-  //       confirmButtonColor: '#0f425b',
-  //       confirmButtonText: 'Aceptar',
-  //       footer: footer
-  //     });
-  //   }
-
-  //   const esFechaPosterior = fechaRealiz > hoy;
-  //   const esFechaMenor = fechaRealiz < new Date(hoy.getTime() - 7 * 24 * 60 * 60 * 1000);
     
-  //   function validarFechaRealizacion(fechaRealiz: Date) {      
-  //     if (isNaN(fechaRealiz.getTime())) {
-  //       mostrarError('Ingrese una fecha de realización de la fumigación válida.', 'Por favor, ingrese una fecha de realización de la fumigación válida para generar el registro de la fumigación.');
-  //       return false;
-  //     }else if (esFechaPosterior || esFechaMenor) {
-  //       if (esFechaPosterior) {
-  //         mostrarError('La fecha de realización de la fumigación no puede ser posterior a la fecha actual.', 'Por favor, cambie la fecha de realización de la fumigación.');
-  //       } else {
-  //         mostrarError('La fecha de realización de la fumigación no puede ser 7 días de la fecha actual.', 'Por favor, cambie la fecha de realización de la fumigación.');
-  //       }
-  //       return false;
-  //     } 
-  //     return true;
-  //   }
-
-  //   if (!validarFechaRealizacion(fechaRealiz)) {
-  //     return;
-  //   }
-
-  //   if (!this.formAgregar.valid) {
-  //     Swal.fire({
-  //       title: 'Error',
-  //       text: `Verificar los datos ingresados:                        
-  //           ${this.observacionA?.invalid && this.observacionA.errors?.['pattern'] ? '\n* Observación no debe contener caracteres especiales.' : ''}`,
-  //       icon: 'warning',
-  //       confirmButtonColor: '#0f425b',
-  //       confirmButtonText: 'Aceptar',
-  //       footer: 'Por favor, corrija los errores e inténtelo de nuevo.'
-  //     });
-  //     return;
-  //   }
-    
-  //   let fumigaciones: FumigacionesClass = new FumigacionesClass(
-  //     0,
-  //     this.formAgregar.get('nroCentralA')?.value,
-  //     new Date(this.formAgregar.get('fechaRealizacionA')?.value,),
-  //     new Date(this.formAgregar.get('fechaRealizacionA')?.value,),
-  //     this.formAgregar.get('observacionA')?.value,
-  //   );
-
-  //   this.fumigacionesConsulta.registrarFumigacion(fumigaciones).subscribe(
-  //     (data) => {
-  //       Swal.fire({
-  //         text: 'La fumigacion ha sido registrado con éxito con el número de Cod.: ' + data.fumId,
-  //         icon: 'success',
-  //         position: 'top',
-  //         showConfirmButton: true,
-  //         confirmButtonColor: '#0f425b',
-  //         confirmButtonText: 'Aceptar',
-  //       }).then((result) => {
-  //         if (result.value) {
-  //           window.scrollTo(0, 0); 
-  //           location.reload();  
-  //           window.scrollTo(0, 0);    
-  //           return;     
-  //       }
-  //     });
-  //   },
-  //   (error) => {
-  //     Swal.fire({
-  //       text: 'No es posible Agregar esta fumigacion',
-  //       icon: 'error',
-  //       position: 'top',
-  //       showConfirmButton: true,
-  //       confirmButtonColor: '#0f425b',
-  //       confirmButtonText: 'Aceptar',
-  //     });
-  //   }
-  // );
+    //Verifica que este completo el formulario y que no tenga errores.
+    function mostrarError(mensaje: string, footer: string) {
+      Swal.fire({
+        title: 'Error',
+        text: mensaje,
+        icon: 'warning',
+        confirmButtonColor: '#0f425b',
+        confirmButtonText: 'Aceptar',
+        footer: footer
+      });
     }
+
+    let cfgValorSuperiorA = this.formAgregar.get('cfgValorSuperiorAA')?.value;
+    let cfgValorInferiorA = this.formAgregar.get('cfgValorInferiorAA')?.value;
+    
+    if (typeof cfgValorSuperiorA === 'string') {
+      cfgValorSuperiorA = cfgValorSuperiorA.replace(',', '.');
+    }    
+    if (typeof cfgValorInferiorA === 'string') {
+      cfgValorInferiorA = cfgValorInferiorA.replace(',', '.');
+    }
+
+    if (this.nombreAlarmaA?.invalid && this.nombreAlarmaA.errors?.['required'] ) {
+      mostrarError('Debe ingresar un nombre de alarma', 'Por favor, introduzca un nombre de alarma.');
+    } else if (this.nombreAlarmaA?.invalid && this.nombreAlarmaA.errors?.['pattern'] ) {
+      mostrarError('El nombre no debe contener caracteres especiales.', 'Por favor, corrija el nombre e inténtelo de nuevo.');
+    } else if (this.cfgValorSuperiorAA?.invalid && this.cfgValorSuperiorAA.errors?.['required'] ) {
+      mostrarError('Debe ingresar un límite superior', 'Por favor, introduzca un límite superior.');    
+    } else if (this.cfgValorSuperiorAA?.invalid && this.cfgValorSuperiorAA.errors?.['pattern'] ) {
+      mostrarError('El límite superior no es valido', 'Por favor, corrija el límite superior e inténtelo de nuevo.');        
+    } else if (this.cfgValorInferiorAA?.invalid && this.cfgValorInferiorAA.errors?.['required'] ) {
+      mostrarError('Debe ingresar un límite inferior', 'Por favor, introduzca un límite límite.');
+    } else if (this.cfgValorSuperiorAA?.invalid && this.cfgValorSuperiorAA.errors?.['pattern'] ) {
+      mostrarError('El límite inferior no es valido', 'Por favor, corrija el límite inferior e inténtelo de nuevo.');    
+    } else if (cfgValorInferiorA >= cfgValorSuperiorA) {
+      mostrarError('El valor del límete inferior debe ser menor que límite superior', 'Por favor, cambie el limite');  
+    } else if (this.cfgObservacionA?.invalid && this.cfgObservacionA.errors?.['pattern'] ) {
+      mostrarError('La observación no debe contener caracteres especiales.', 'Por favor, Por favor, corrija la observación e inténtelo de nuevo.');
+    } else {
+    
+    let alarmaC: AlarmaConfigClass = new AlarmaConfigClass(
+      0,
+      this.formAgregar.get('nroCentralA')?.value,
+      this.formAgregar.get('nombreServicioA')?.value,
+      this.formAgregar.get('nombreAlarmaA')?.value,
+      new Date(),
+      new Date(),
+      cfgValorSuperiorA,
+      cfgValorInferiorA,
+      this.formAgregar.get('cfgObservacionA')?.value
+    );
+    console.log(alarmaC);
+    this.alarmaConfigConsula
+      .registrarAlarmaConfig(alarmaC)  
+      .subscribe(() => {
+        Swal.fire({
+          text:
+          'Se ha registrado con éxito la Configuración de esta Alarma, para la central número ' +
+          this.formAgregar.get('nroCentralA')?.value,
+          icon: 'success',
+          position: 'top',
+          showConfirmButton: true,
+          confirmButtonColor: '#0f425b',
+          confirmButtonText: 'Aceptar',
+        } as SweetAlertOptions).then((result) => {
+          if (result.value == true) {
+            window.scrollTo(0, 0); 
+            location.reload();  
+            window.scrollTo(0, 0);    
+            return;     
+          }
+        });
+    }, (error) => {
+        Swal.fire({
+          text: 'No es posible agregar esta Configuración de Alarma',
+          icon: 'error',
+          position: 'top',
+          showConfirmButton: true,
+          confirmButtonColor: '#0f425b',
+          confirmButtonText: 'Aceptar',
+        } as SweetAlertOptions);    
+      });          
+    }
+  }
 }

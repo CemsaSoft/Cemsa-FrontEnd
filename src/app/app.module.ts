@@ -33,6 +33,7 @@ import { ConsultarReportesComponent } from './pages/consultar-reportes/consultar
 import { RegistrarFumigacionComponent } from './pages/registrar-fumigacion/registrar-fumigacion.component';
 import { RegistrarAlarmaConfigComponent } from './pages/registrar-alarma-config/registrar-alarma-config.component';
 import { ConsultarAlarmaConfigComponent } from './pages/consultar-alarma-config/consultar-alarma-config.component';
+import { ConsultarAlarmaComponent } from './pages/consultar-alarma/consultar-alarma.component';
 
 //import { TextMaskModule } from 'angular2-text-mask';// npm i angular2-text-mask
 @NgModule({
@@ -65,7 +66,8 @@ import { ConsultarAlarmaConfigComponent } from './pages/consultar-alarma-config/
     ConsultarReportesComponent,
     RegistrarFumigacionComponent,
     RegistrarAlarmaConfigComponent,
-    ConsultarAlarmaConfigComponent
+    ConsultarAlarmaConfigComponent,
+    ConsultarAlarmaComponent
   ],
   //Para importar otros módulos de angular
   imports: [

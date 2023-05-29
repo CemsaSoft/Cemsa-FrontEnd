@@ -26,4 +26,8 @@ export class AlarmaConfigService {
     return this.http.post(this.url + '/modificarAlarmaConfig/', alarma );  
   }
 
+  registrarAlarmaConfig(alarma: AlarmaConfigClass): Observable<any> {
+    return this.http.post(this.url + '/registrarAlarmaConfig/', alarma );  
+  }
+  
 }
