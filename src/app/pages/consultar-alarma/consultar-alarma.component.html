@@ -1,1 +1,67 @@
-<p>consultar-alarma works!</p>
+<h1 class="text-center">Consultar Alarmas</h1>
+<br>
+
+<div class="row">
+    <div class="col-3"></div>
+    <div class="col-6 search-container">
+      <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por Nombre de Servicio">
+        <span class="input-group-text">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+            class="bi bi-search" viewBox="0 0 16 16">
+            <path 
+              d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+          </svg>
+        </span>
+        <input type="text" class="form-control" placeholder="Nombre de Servicio a Buscar"> <!-- (keyup)="esFiltrar($event)">-->
+      </div>
+    </div>
+  </div>
+<br/>
+
+<div class="row">
+    <div class="col-1"></div>
+    <div class="col-10">
+      <table class="table" *ngIf="validarFiltradoAlarma() == true">
+        <thead class="encabezado">
+            <tr>
+              <th (click)="ordenarPor('almId')" [appSort]="AlarmaConsultaFiltrados" data-order="desc"
+                  data-name="almId" style="text-align: center;"><a>Alarma Nro. {{ordenarIcono('almId')}}</a></th>
+              <th (click)="ordenarPor('almIdMedicion')" [appSort]="AlarmaConsultaFiltrados" data-order="desc"
+                  data-name="almIdMedicion" style="text-align: center;"><a>Med. Nro. {{ordenarIcono('almIdMedicion')}}</a></th>
+              <th (click)="ordenarPor('cenNro')" [appSort]="AlarmaConsultaFiltrados" data-order="desc"
+                  data-name="cenNro" style="text-align: center;"><a>Central Nro. {{ordenarIcono('cenNro')}}</a></th>
+              <th (click)="ordenarPor('serDescripcion')" [appSort]="AlarmaConsultaFiltrados" data-order="desc"
+                  data-name="serDescripcion" style="text-align: center;"><a>Servicio {{ordenarIcono('serDescripcion')}}</a></th>
+              <th (click)="ordenarPor('almMensaje')" [appSort]="AlarmaConsultaFiltrados" data-order="desc"
+                  data-name="almMensaje" style="text-align: center;"><a>Mensaje {{ordenarIcono('almMensaje')}}</a></th>             
+              <th (click)="ordenarPor('medValor')" [appSort]="AlarmaConsultaFiltrados" data-order="desc"
+                  data-name="medValor" style="text-align: center;"><a>Valor Medición {{ordenarIcono('medValor')}}</a></th>             
+              <th (click)="ordenarPor('almFechaHoraBD')" [appSort]="AlarmaConsultaFiltrados" data-order="desc"
+                  data-name="almFechaHoraBD" style="text-align: center;"><a>Fecha Medición {{ordenarIcono('almFechaHoraBD')}}</a></th>             
+              <th (click)="ordenarPor('almVisto')" [appSort]="AlarmaConsultaFiltrados" data-order="desc"
+                  data-name="almVisto" style="text-align: center;"><a>almVisto {{ordenarIcono('almVisto')}}</a></th>                     
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let alarma of AlarmaConsultaFiltrados let i=index"
+            [ngClass]="{'fila-par': i%2==0, 'fila-impar': i%2==1}"
+              (click)="esfilaSeleccionadaAlarma(alarma)">
+              <th style="vertical-align: middle" class="align-center">{{ alarma.almId }}</th>
+              <td style="vertical-align: middle">{{ alarma.almIdMedicion }}</td>
+              <td style="vertical-align: middle">{{ alarma.cenNro }}</td>
+              <td style="vertical-align: middle">{{ alarma.serDescripcion }}</td>
+              <td style="vertical-align: middle">{{ alarma.almMensaje }}</td>
+              <td style="vertical-align: middle">{{ alarma.medValor }}</td>
+              <td style="vertical-align: middle">{{ alarma.almFechaHoraBD | date: 'yyyy-MM-dd' }}</td>
+              <td style="vertical-align: middle">{{ alarma.almVisto }}</td>
+    
+            </tr>
+          </tbody>
+        </table>
+    </div>
+    <div class="alert alert-primary text-center" role="alert" *ngIf="validarFiltradoAlarma() == false">
+      ¡No se ha encontrado ninguna alarma!
+  </div>
+
+</div>
+
