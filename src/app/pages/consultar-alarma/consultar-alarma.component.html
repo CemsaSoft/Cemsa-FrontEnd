@@ -1,21 +1,123 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
 <h1 class="text-center">Consultar Alarmas</h1>
 <br>
 
-<div class="row">
-    <div class="col-3"></div>
-    <div class="col-6 search-container">
-      <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por Nombre de Servicio">
-        <span class="input-group-text">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-            class="bi bi-search" viewBox="0 0 16 16">
-            <path 
-              d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-          </svg>
-        </span>
-        <input type="text" class="form-control" placeholder="Nombre de Servicio a Buscar"> <!-- (keyup)="esFiltrar($event)">-->
-      </div>
-    </div>
+<div class="d-flex justify-content-center">
+  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-10 col-xl-10">
+    <div class="card">
+      <div class="card-body">
+        <br>
+          <h3>Filtros:</h3>
+          <form [formGroup]="formfiltro">
+            <div class="row">
+              <div class="col-4">
+                <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por número de Alarma">
+                  <span class="input-group-text">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                      class="bi bi-search" viewBox="0 0 16 16">
+                      <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                    </svg>
+                  </span>
+                  <input formControlName="nroAlarma" type="text" class="form-control" placeholder="Buscar por número de Alarma" (keyup)="esFiltrar($event, 'nroAlarma')">
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por número de Central">
+                  <span class="input-group-text">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                      class="bi bi-search" viewBox="0 0 16 16">
+                      <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                    </svg>
+                  </span>
+                  <input formControlName="nroCentral" type="text" class="form-control" placeholder="Buscar por número de Central" (keyup)="esFiltrar($event, 'nroCentral')">
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por número de Medición">
+                  <span class="input-group-text">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                      class="bi bi-search" viewBox="0 0 16 16">
+                      <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                    </svg>
+                  </span>
+                  <input formControlName="nroMed" type="text" class="form-control" placeholder="Buscar por número de Medición" (keyup)="esFiltrar($event, 'nroMed')">
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-4">
+                <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por nombre de Servicio">
+                  <span class="input-group-text">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                      class="bi bi-search" viewBox="0 0 16 16">
+                      <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                    </svg>
+                  </span>
+                  <input formControlName="nombreServ" type="text" class="form-control" placeholder="Buscar por nombre de Servicio" (keyup)="esFiltrar($event, 'nombreServ')">
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por descripción Mensaje" >
+                  <span class="input-group-text">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                      class="bi bi-search" viewBox="0 0 16 16">
+                      <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                    </svg>
+                  </span>
+                  <input formControlName="nombreMensaje" type="text" class="form-control" placeholder="Buscar por descripción Mensaje" (keyup)="esFiltrar($event, 'nombreMensaje')">
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por valor de Medición">
+                  <span class="input-group-text">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                      class="bi bi-search" viewBox="0 0 16 16">
+                      <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                    </svg>
+                  </span>
+                  <input formControlName="valorMed" type="text" class="form-control" placeholder="Buscar por valor de Medición" (keyup)="esFiltrar($event, 'valorMed')">
+                </div>
+              </div>
+            </div>
+
+            <br>
+
+            <div class="row align-items-center justify-content-center text-center"> <!-- Contenedor principal -->
+              <div class="col ">
+                <div class="custom-control custom-switch mb-3">
+                  <input type="checkbox" class="custom-control-input" id="op1" (change)="filtroFecha($event)">
+                  <label class="custom-control-label" for="op1">Filtar por Fecha</label>
+                </div>                 
+              </div>
+              <div class="col-4">
+                <div class="form-outline input-group mb-2" >
+                  <span class="input-group-text">Desde</span>
+                  <input type="date" id="fecha_desde" class="form-control" formControlName="fecha_desde">
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="form-outline input-group mb-2">
+                  <span class="input-group-text">Hasta</span>
+                  <input type="date" id="fecha_hasta" class="form-control" formControlName="fecha_hasta">
+                </div>             
+              </div>   
+              <div class="col">
+                <button type="submit" class="btn btn-success" data-bs-toggle="button" 
+                  (click)="filtarXFechas()" [disabled]="!habilitarBoton">
+                  Aplicar Filtro
+                </button>
+              </div>      
+            </div>
+
+          </form>
+
+       </div>
+    </div>  
+  </div>  
   </div>
+
 <br/>
 
 <div class="row">
@@ -24,7 +126,7 @@
       <table class="table" *ngIf="validarFiltradoAlarma() == true">
         <thead class="encabezado">
             <tr>
-              <th (click)="ordenarPor('almId')" [appSort]="AlarmaConsultaFiltrados" data-order="desc"
+              <th (click)="ordenarPor('almId')" [appSort]="AlarmaConsultaFiltrados" data-order="asc"
                   data-name="almId" style="text-align: center;"><a>Alarma Nro. {{ordenarIcono('almId')}}</a></th>
               <th (click)="ordenarPor('almIdMedicion')" [appSort]="AlarmaConsultaFiltrados" data-order="desc"
                   data-name="almIdMedicion" style="text-align: center;"><a>Med. Nro. {{ordenarIcono('almIdMedicion')}}</a></th>
@@ -44,17 +146,18 @@
           </thead>
           <tbody>
             <tr *ngFor="let alarma of AlarmaConsultaFiltrados let i=index"
-            [ngClass]="{'fila-par': i%2==0, 'fila-impar': i%2==1}"
-              (click)="esfilaSeleccionadaAlarma(alarma)">
+              [ngClass]="{'fila-par': i%2==0, 'fila-impar': i%2==1}"
+              (click)="esfilaSeleccionadaAlarma(alarma)"
+              [ngStyle]="{'font-weight': alarma.almVisto ? 'normal' : 'bold'}"
+              >              
               <th style="vertical-align: middle" class="align-center">{{ alarma.almId }}</th>
               <td style="vertical-align: middle">{{ alarma.almIdMedicion }}</td>
               <td style="vertical-align: middle">{{ alarma.cenNro }}</td>
               <td style="vertical-align: middle">{{ alarma.serDescripcion }}</td>
               <td style="vertical-align: middle">{{ alarma.almMensaje }}</td>
               <td style="vertical-align: middle">{{ alarma.medValor }}</td>
-              <td style="vertical-align: middle">{{ alarma.almFechaHoraBD | date: 'yyyy-MM-dd' }}</td>
-              <td style="vertical-align: middle">{{ alarma.almVisto }}</td>
-    
+              <td style="vertical-align: middle">{{ alarma.almFechaHoraBD | date: 'dd-MM-yyyy' }}</td>
+              <td style="vertical-align: middle">{{ alarma.almVisto }}</td>    
             </tr>
           </tbody>
         </table>

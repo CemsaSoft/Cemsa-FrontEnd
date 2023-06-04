@@ -63,6 +63,8 @@
                           data-name="cenCoorX" style="text-align: center;"><a>Coordenada X {{ordenarIcono('cenCoorX')}}</a></th>             
                       <th (click)="ordenarPor('cenCoorY')" [appSort]="CentralConsultaFiltrados" data-order="desc"
                           data-name="cenCoorY" style="text-align: center;"><a>Coordenada Y {{ordenarIcono('cenCoorY')}}</a></th>                                               
+                      <th (click)="ordenarPor('estDescripcion')" [appSort]="CentralConsultaFiltrados" data-order="desc"
+                          data-name="estDescripcion" style="text-align: center;"><a>Estado Central {{ordenarIcono('estDescripcion')}}</a></th>                                                                   
                       <th scope="col" style="text-align: center;">Ver Más</th>
                     </tr>
                 </thead>
@@ -74,6 +76,7 @@
                     <td style="vertical-align: middle" class="align-center">{{ central.cenImei }}</td>
                     <td style="vertical-align: middle" class="align-center">{{ central.cenCoorX }}</td>
                     <td style="vertical-align: middle" class="align-center">{{ central.cenCoorY }}</td>              
+                    <td style="vertical-align: middle" class="align-center">{{ central.estDescripcion }}</td> 
                     <td class="align-center">
                       <button type="button" class="btn" (click)="esfilaSeleccionada(central); seleccionarCentral()" title="Ver Más Opciones">     
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient} from '@angular/common/http';
 import { Observable } from 'rxjs';
-//import { AlarmaConfigClass } from '../models/alarmaConfig';
+import { AlarmaClass } from '../models/alarma';
 
 @Injectable({
   providedIn: 'root'
@@ -14,9 +14,12 @@ export class AlarmaService {
     console.log ("El servicio está corriendo");
   }
 
-  obtenerAlarmasCliente(idUsuario: number): Observable<any> {
-    return this.http.get(this.url + '/obtenerAlarmasCliente/' + idUsuario);
+  obtenerAlarmasClienteModificaEstado(idUsuario: number): Observable<any> {
+    return this.http.get(this.url + '/obtenerAlarmasClienteModificaEstado/' + idUsuario);
   }  
-  
+    
+  obtenerCantAlarmasCliente(idUsuario: number): Observable<any> {
+    return this.http.get(this.url + '/obtenerCantAlarmasCliente/' + idUsuario);
+  }  
   
 }

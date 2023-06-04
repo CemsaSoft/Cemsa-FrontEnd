@@ -32,8 +32,7 @@ export class ConsultarFumigacionesComponent implements OnInit {
   propiedadOrdenamiento: string = "cenNro";
   propiedadOrdenamientoFum: string = "fumId";
   titulo: string = '';
-  caracteresValidosObservacion: string = "No se admiten: ! # $ & ' ( ) * + , - . : ; < = > ¿? @ [  ] ^ _` { | } ~";
-                                         
+  caracteresValidosObservacion: string = "No se admiten: ! # $ & ' ( ) * + , - . : ; < = > ¿? @ [  ] ^ _` { | } ~";                                        
 
   tipoOrdenamiento: number = 1;
   tipoOrdenamientoFum: number = 1;
