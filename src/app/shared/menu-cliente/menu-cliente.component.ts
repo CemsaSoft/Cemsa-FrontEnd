@@ -20,5 +20,10 @@ export class MenuClienteComponent implements OnInit {
   
   cerrarSesion(): void {
     this.servicioUsuario.limpiarToken();
+
+    localStorage.setItem('rol', "0");
+    localStorage.setItem('usuario', "");
+    localStorage.setItem('idUsuario', "");
+    localStorage.setItem('cliente', ""); 
   }
 }

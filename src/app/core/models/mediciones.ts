@@ -6,7 +6,8 @@ export class MedicionesClass  {
   medFechaHoraSms: Date;
   medFechaHoraBd: Date;
   medObservacion: string;
-    
+  serDescripcion: string;
+
   constructor(
     medId: number,
     medNro: number,
@@ -15,6 +16,7 @@ export class MedicionesClass  {
     medFechaHoraSms: Date,
     medFechaHoraBd: Date,
     medObservacion: string,
+    serDescripcion: string,
   ) {
     this.medId = medId;
     this.medNro = medNro;
@@ -23,5 +25,6 @@ export class MedicionesClass  {
     this.medFechaHoraSms = medFechaHoraSms;
     this.medFechaHoraBd = medFechaHoraBd;
     this.medObservacion = medObservacion;
+    this.serDescripcion = serDescripcion;
   }
 }

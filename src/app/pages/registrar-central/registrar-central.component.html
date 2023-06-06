@@ -34,7 +34,8 @@
           </div>
         </div>
         <div class="card-body" [ngClass]="{'collapse': isCollapsed1}">
-
+          
+          <form [formGroup]="formfiltro">
           <div class="row">            
             <div class="col-12">
               <h3>Filtros:</h3>          
@@ -48,7 +49,7 @@
                           d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
                       </svg>
                     </span>
-                    <input type="text" class="form-control" placeholder="Filtrar por Tipo de Documento" (keyup)="esFiltrar($event , 'tipo')">
+                    <input formControlName="tipo" type="text" class="form-control" placeholder="Filtrar por Tipo de Documento" (keyup)="esFiltrar($event)">
                   </div>
                 </div>
                 <div class="col-md-6">
@@ -60,7 +61,7 @@
                           d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
                       </svg>
                     </span>
-                    <input type="text" class="form-control" placeholder="Filtrar por Numero de Documento" (keyup)="esFiltrar($event , 'numero')">
+                    <input formControlName="numero" type="text" class="form-control" placeholder="Filtrar por Numero de Documento" (keyup)="esFiltrar($event)">
                   </div>
                 </div>
               </div>
@@ -75,7 +76,7 @@
                           d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
                       </svg>
                     </span>
-                    <input type="text" class="form-control" placeholder="Filtrar por Nombre del Cliente" (keyup)="esFiltrar($event , 'cliente')">
+                    <input formControlName="cliente" type="text" class="form-control" placeholder="Filtrar por Nombre del Cliente" (keyup)="esFiltrar($event)">
                   </div>
                 </div>
                 <div class="col-md-6">
@@ -87,13 +88,14 @@
                           d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
                       </svg>
                     </span>
-                    <input type="text" class="form-control" placeholder="Filtrar por Nombre del Usuario" (keyup)="esFiltrar($event , 'usuario')">
+                    <input formControlName="usuario" type="text" class="form-control" placeholder="Filtrar por Nombre del Usuario" (keyup)="esFiltrar($event)">
                   </div>
                 </div>
               </div>                        
             </div>
           </div>
-          
+          </form>
+
           <div class="row">            
             <div class="col-12">                 
               <table class="table" *ngIf="validarFiltradoClientes() == true">

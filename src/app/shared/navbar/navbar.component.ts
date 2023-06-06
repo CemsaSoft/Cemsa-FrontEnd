@@ -32,10 +32,13 @@ export class NavbarComponent implements OnInit {
     this.rol = localStorage.getItem('rol');
     this.idUsuario = localStorage.getItem('idUsuario');    
 
-    this.alarmaConsultar.obtenerCantAlarmasCliente(this.idUsuario).subscribe(data => {
-      this.cantAlarma = data.length;
-    });    
-    console.log(this.rol );
+    if (this.idUsuario !=0) {
+      this.alarmaConsultar.obtenerCantAlarmasCliente(this.idUsuario).subscribe(data => {
+        this.cantAlarma = data.length;
+      });    
+    }
+
+
   }
 
   redirigir(){

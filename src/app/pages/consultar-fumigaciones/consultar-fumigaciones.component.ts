@@ -317,7 +317,7 @@ export class ConsultarFumigacionesComponent implements OnInit {
         } as SweetAlertOptions).then((result) => {
           if (result.value == true) {
             window.scrollTo(0, 0); 
-            //location.reload();  
+            location.reload();  
             window.scrollTo(0, 0);    
             return;     
           }

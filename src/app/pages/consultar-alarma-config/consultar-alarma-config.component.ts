@@ -450,7 +450,9 @@ export class ConsultarAlarmaConfigComponent implements OnInit {
       cfgValorInferiorA = cfgValorInferiorA.replace(',', '.');
     }
 
-    if (this.nombreAlarma?.invalid && this.nombreAlarma.errors?.['required'] ) {
+    if (!(this.centralNroSeleccionada !=0 )) {
+      mostrarError('Debe ingresar una central', 'Por favor, seleccione una Central.');
+    } else if (this.nombreAlarma?.invalid && this.nombreAlarma.errors?.['required'] ) {
       mostrarError('Debe ingresar un nombre de alarma', 'Por favor, introduzca un nombre de alarma.');
     } else if (this.nombreAlarma?.invalid && this.nombreAlarma.errors?.['pattern'] ) {
       mostrarError('El nombre no debe contener caracteres especiales.', 'Por favor, corrija el nombre e inténtelo de nuevo.');

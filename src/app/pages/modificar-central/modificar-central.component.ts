@@ -140,7 +140,7 @@ export class ModificarCentralComponent implements OnInit {
     
     this.servicioConsultar.obtenerServicios().subscribe(data => {
       this.Servicios = data;  
-    })
+    
 
     this.centralConsultar.obtenerServicioXCentral(this.CentralConsultaSeleccionada.cenNro).subscribe(data => {
       this.ServiciosDeCentralActualizado = data; 
@@ -149,7 +149,9 @@ export class ModificarCentralComponent implements OnInit {
       });
     })
 
-    this.centralConsultar.serviciosXCentralCompleto(this.CentralConsultaSeleccionada.cenNro).subscribe(data => {
+    })
+
+  this.centralConsultar.serviciosXCentralCompleto(this.CentralConsultaSeleccionada.cenNro).subscribe(data => {
       this.ServiciosDeCentralOriginal = data;  
     })
 

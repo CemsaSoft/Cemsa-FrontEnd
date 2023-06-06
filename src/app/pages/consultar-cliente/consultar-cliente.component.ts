@@ -58,6 +58,7 @@ export class ConsultarClienteComponent implements OnInit {
 
   //FORMULARIOS DE AGRUPACION DE DATOS
   formModificar: FormGroup;
+  formfiltro: FormGroup;
 
   constructor(
     private clienteConsultar: ClienteService,    
@@ -80,8 +81,14 @@ export class ConsultarClienteComponent implements OnInit {
       fechaBaja: new FormControl(null, []),   
       email: new FormControl(null, [Validators.email]),
       telefono: new FormControl(null, [Validators.pattern(/^[\d]{2,4}-?[\d]{6,8}$/)]),
-
     });
+
+    this.formfiltro = new FormGroup({
+      tipo: new FormControl(null, []),
+      numero: new FormControl(null, []),
+      cliente: new FormControl(null, []),
+      usuario: new FormControl(null, []),
+    });   
   }
 
   toggleCollapse1() {
@@ -203,23 +210,25 @@ export class ConsultarClienteComponent implements OnInit {
     }
   }
 
-  //Filtro de Central por Nombre Cliente o Usuario.
-  esFiltrar(event: Event, campo: string) {
-    let txtBuscar = (event.target as HTMLInputElement).value;
-    let filtro = txtBuscar
-      .replace(/[^\w\s]/g, '')
-      .trim()
-      .toLowerCase();
-    this.ClientesFiltrados = [];
-    this.Clientes.forEach((clienteConsulta) => {
-      if (
-        (campo === 'tipo' && clienteConsulta.tdDescripcion.toString().toLowerCase().includes(filtro)) ||
-        (campo === 'numero' && clienteConsulta.cliNroDoc.toString().toLowerCase().includes(filtro)) ||
-        (campo === 'cliente' && clienteConsulta.cliApeNomDen.toString().toLowerCase().includes(filtro)) ||
-        (campo === 'usuario' && clienteConsulta.usuario.toString().toLowerCase().includes(filtro))
-      ) {
-        this.ClientesFiltrados.push(clienteConsulta);
-      }
+  //Filtro de Cliente por Tipo, numero, Nombre Cliente o Usuario.
+  esFiltrar(event: Event) {
+    const filtronTipo = (this.formfiltro.get('tipo') as FormControl).value?.toLowerCase();
+    const filtroNumero = (this.formfiltro.get('numero') as FormControl).value?.toLowerCase();
+    const filtroCliente = (this.formfiltro.get('cliente') as FormControl).value?.toLowerCase();
+    const filtronUsuario = (this.formfiltro.get('usuario') as FormControl).value?.toLowerCase();
+
+    this.ClientesFiltrados = this.Clientes.filter((cli) => {
+      const valorTdDescripcion= cli.tdDescripcion.toString().toLowerCase();
+      const valorCliNroDoc = cli.cliNroDoc.toString().toLowerCase();
+      const valorCliApeNomDen = cli.cliApeNomDen.toString().toLowerCase();
+      const valorUsuario = cli.usuario.toString().toLowerCase();
+
+      return (
+        (!filtronTipo || valorTdDescripcion.includes(filtronTipo)) &&
+        (!filtroNumero || valorCliNroDoc.includes(filtroNumero)) &&
+        (!filtroCliente || valorCliApeNomDen.includes(filtroCliente)) &&
+        (!filtronUsuario || valorUsuario.includes(filtronUsuario))
+      );
     });
   }
 

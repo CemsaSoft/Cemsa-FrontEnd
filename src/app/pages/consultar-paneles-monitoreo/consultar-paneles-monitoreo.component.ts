@@ -30,7 +30,9 @@ export class ConsultarPanelesMonitoreoComponent implements OnInit {
 //VARIABLES DE OBJETOS LIST
 CentralConsulta: CentralConsultaClass[] = [];
 CentralConsultaFiltrados: CentralConsultaClass [] = [];
-Mediciones : MedicionesClass[] = []; 
+Mediciones: MedicionesClass[] = []; 
+MedicionesTabla: MedicionesClass[] = []; 
+MedicionesTablaFiltrados: MedicionesClass[] = []; 
 ServiciosCentral: ServicioClass[] = [];
 ServiciosGraficar: ServicioClass[] = [];
 
@@ -38,11 +40,13 @@ ServiciosGraficar: ServicioClass[] = [];
 propiedadOrdenamiento: string = 'cenNro';
 propiedadOrdenamientoServicio: string = 'serId';
 propiedadOrdenamientoServicioGraficar: string = 'serId';
+propiedadOrdenamientoMedicion: string = 'medId';
 
 tipoOrdenamiento: number = 1;
 centralNroSeleccionada: number=0;
 tipoOrdenamientoServicio: number = 1;
 tipoOrdenamientoServicioGraficar: number = 1;
+tipoOrdenamientoMedicion: number = 1;
 idUsuario: any = 0;
 idListaServiciosSeleccionado: number=0;
 idListaServiciosGraficarSeleccionado: number=0;
@@ -51,17 +55,27 @@ isCollapsed1 = false;
 isCollapsed2 = false;
 op1 = true; op2 = false; op3 = false; op4 = false;
 op1G = true; op2G = false;
+op1T = true;
 ingresoDireViento = false;
+public habilitarBoton: boolean = false;
 
 //FORMS PARA LA AGRUPACIÓN DE DATOS
 formGraficar: FormGroup;
+formfiltro: FormGroup;
 
   constructor(
     private centralConsultar: CentralService, 
     private medicionesConsultar: MedicionesService, 
-    private servicioConsultar: ServicioService,
   ) { 
     this.formGraficar = new FormGroup({
+      fecha_desde: new FormControl(null, []),
+      fecha_hasta: new FormControl(null, []),
+    });
+
+    this.formfiltro = new FormGroup({
+      medId: new FormControl(null, []),
+      serDescripcion: new FormControl(null, []),
+      medValor: new FormControl(null, []),
       fecha_desde: new FormControl(null, []),
       fecha_hasta: new FormControl(null, []),
     });
@@ -99,9 +113,23 @@ formGraficar: FormGroup;
     if (event.target.id === 'op2G') { this.op2G = event.target.checked; }     
   }
   
+  // valida para msotrar tabla con mediciones
+  selOpT(event: any) {
+    this.op1T = !this.op1T; 
+  }
+
   //Valida que exista alguna Central que responda al filtro.
   validarFiltrado(): Boolean {
     if (this.CentralConsultaFiltrados.length == 0) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  //Valida que exista alguna Medicion que responda al filtro.
+  validarFiltradoMedicion(): Boolean {
+    if (this.MedicionesTablaFiltrados.length == 0) {
       return false;
     } else {
       return true;
@@ -158,6 +186,112 @@ formGraficar: FormGroup;
     });
   }
 
+  //Filtro de Mediciones
+  esFiltrarMedicion(event: Event) {
+    const filtroMedId = (this.formfiltro.get('medId') as FormControl).value?.toLowerCase();
+    const filtroSerDescripcion = (this.formfiltro.get('serDescripcion') as FormControl).value?.toLowerCase();
+    const filtroMedValor = (this.formfiltro.get('medValor') as FormControl).value?.toLowerCase();
+  
+    this.MedicionesTablaFiltrados = this.MedicionesTabla.filter((medicion) => {
+      const valorMedId = medicion.medId.toString().toLowerCase();
+      const valorSerDescripcion = medicion.serDescripcion.toString().toLowerCase();
+      const valorMedValor = medicion.medValor.toString().toLowerCase();
+  
+      return (
+        (!filtroMedId || valorMedId.includes(filtroMedId)) &&
+        (!filtroSerDescripcion || valorSerDescripcion.includes(filtroSerDescripcion)) &&
+        (!filtroMedValor || valorMedValor.includes(filtroMedValor))
+      );
+    });
+  }
+  
+  // valida para que un solo selector de frecuencia este seleccionado a la vez
+  filtroFecha(event: any) {
+    if (event.target.checked === true) {
+      this.formfiltro.get('medId')?.disable();
+      this.formfiltro.get('serDescripcion')?.disable();
+      this.formfiltro.get('medValor')?.disable();
+      this.formfiltro.get('fecha_desde')?.enable();
+      this.formfiltro.get('fecha_hasta')?.enable();
+      this.habilitarBoton = true;
+    }
+    else {
+      this.formfiltro.get('medId')?.enable();      
+      this.formfiltro.get('serDescripcion')?.enable();
+      this.formfiltro.get('medValor')?.enable();
+      this.formfiltro.get('fecha_desde')?.disable();
+      this.formfiltro.get('fecha_hasta')?.disable();
+      this.habilitarBoton = false;
+    }
+  }
+
+
+  //filtro de Alarma por Fecha
+  filtarXFechas(){
+    var hoy = new Date();
+    var desde = new Date();
+    var hasta = new Date();
+
+    var fechaDesde = document.getElementById('fecha_desde') as HTMLInputElement;
+    var fechaSeleccionada = new Date(fechaDesde.value);
+    fechaSeleccionada.setDate(fechaSeleccionada.getDate() + 1); // Sumar un día
+    fechaSeleccionada.setHours(0, 0, 0, 0);
+    desde = fechaSeleccionada;
+
+    var fechaHasta = document.getElementById('fecha_hasta') as HTMLInputElement;
+    fechaSeleccionada = new Date(fechaHasta.value);
+    fechaSeleccionada.setDate(fechaSeleccionada.getDate() + 1); // Sumar un día
+    fechaSeleccionada.setHours(0, 0, 0, 0);
+    hasta = fechaSeleccionada;      
+
+    function mostrarError(mensaje: string, footer: string) {
+      Swal.fire({
+        title: 'Error',
+        text: mensaje,
+        icon: 'warning',
+        confirmButtonColor: '#0f425b',
+        confirmButtonText: 'Aceptar',
+        footer: footer
+      });
+    }
+
+    if (isNaN(desde.getTime())) {
+      mostrarError('Ingrese una fecha de desde válida.', 'Por favor, ingrese una fecha de hasta válida para generar el filtro.');
+    } else if (isNaN(hasta.getTime())) {
+      mostrarError('Ingrese una fecha de hasta válida.', 'Por favor, ingrese una fecha de hasta válida para generar el filtro.');
+    } else if (desde > hasta) {
+      mostrarError('La fecha "desde" es posterior a la fecha "hasta".', 'Por favor, cambie el rango de fechas seleccionado para generar el filtro.');
+    } else if (hasta > hoy) {
+      mostrarError('La fecha "desde" no puede ser posterior a la fecha actual.', 'Por favor, cambie el rango de fechas seleccionado para generar el filtro.');
+    } else {
+      
+      hasta.setDate(hasta.getDate() + 1); // Sumar un día al valor de 'hasta'
+
+      const filtroMedId = (this.formfiltro.get('medId') as FormControl).value?.toLowerCase();
+      const filtroSerDescripcion = (this.formfiltro.get('serDescripcion') as FormControl).value?.toLowerCase();
+      const filtroMedValor = (this.formfiltro.get('medValor') as FormControl).value?.toLowerCase();
+  
+      this.MedicionesTablaFiltrados = this.MedicionesTabla.filter((medicion) => {
+      const valorMedId = medicion.medId.toString().toLowerCase();
+      const valorSerDescripcion = medicion.serDescripcion.toString().toLowerCase();
+      const valorMedValor = medicion.medValor.toString().toLowerCase();
+      const fechaAlarma = new Date(medicion.medFechaHoraSms);
+
+      return (
+          (!filtroMedId || valorMedId.includes(filtroMedId)) &&
+          (!filtroSerDescripcion || valorSerDescripcion.includes(filtroSerDescripcion)) &&
+          (!filtroMedValor || valorMedValor.includes(filtroMedValor)) &&
+          (fechaAlarma >= desde && fechaAlarma < hasta)
+        );
+      });
+
+      // this.MedicionesTablaFiltrados = this.MedicionesTabla.filter((medicion) => {
+      //   const fechaAlarma = new Date(medicion.medFechaHoraSms);
+      //   return fechaAlarma >= desde && fechaAlarma < hasta;
+      // });
+    }
+  }
+
   //Metodos para grilla
   //Almacena en una variable la propiedad por la cual se quiere ordenar la consulta de Central.
   ordenarPor(propiedad: string) {
@@ -205,6 +339,22 @@ formGraficar: FormGroup;
     } else {
       return '🠋🠉';
     }
+  }
+
+  //En base a la propiedad por la que se quiera ordenar y el tipo de orden muestra un icono.
+  ordenarIconoMedicion(propiedad: string) {
+    if (propiedad === this.propiedadOrdenamientoMedicion) {
+      return this.tipoOrdenamientoMedicion === 1 ? '🠉' : '🠋';
+    } else {
+      return '🠋🠉';
+    }
+  }
+
+  //Almacena en una variable la propiedad por la cual se quiere ordenar la consulta de Medicion.
+  ordenarMedicionPor(propiedad: string) {
+    this.tipoOrdenamientoMedicion =
+      propiedad === this.propiedadOrdenamientoMedicion ? this.tipoOrdenamientoMedicion * -1 : 1;
+    this.propiedadOrdenamientoMedicion = propiedad;
   }
 
   // Extraer servicios a la central selecciona
@@ -298,7 +448,9 @@ formGraficar: FormGroup;
 
     this.medicionesConsultar.obtenerMediciones(this.centralNroSeleccionada, desde, hasta).subscribe(data => {
       this.Mediciones = data; 
-
+      this.MedicionesTabla = data; 
+      this.MedicionesTablaFiltrados = data;
+      console.log(this.MedicionesTabla );
       const contenedor = document.getElementById('contenedor-graficos')!;
 
       if ( (this.op1G && this.ServiciosGraficar.length > 1) || (this.op1G && !this.ingresoDireViento && this.ServiciosGraficar.length === 1) ) {

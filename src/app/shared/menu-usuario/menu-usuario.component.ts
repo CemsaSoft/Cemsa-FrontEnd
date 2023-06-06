@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 //SERVICIOS
 import { UsuarioService } from 'src/app/core/services/usuario.service';
+import { ClienteService } from 'src/app/core/services/cliente.service';
 
 @Component({
   selector: 'app-menu-usuario',
@@ -15,15 +16,21 @@ export class MenuUsuarioComponent implements OnInit {
 
   constructor(
     private servicioUsuario: UsuarioService,
+    private servicioCliente: ClienteService,
   ) { }
 
   ngOnInit(): void {
     this.usuario = localStorage.getItem('usuario');
-    this.cliente = localStorage.getItem('cliente');
-    this.idUsuario = localStorage.getItem('idUsuario');      
+    this.idUsuario = localStorage.getItem('idUsuario');    
+    this.cliente = localStorage.getItem('cliente');    
   }
 
   cerrarSesion(): void {
     this.servicioUsuario.limpiarToken();
+
+    localStorage.setItem('rol', "0");
+    localStorage.setItem('usuario', "");
+    localStorage.setItem('idUsuario', "");
+    localStorage.setItem('cliente', "");  
   }
 }

@@ -22,70 +22,67 @@
         <div class="card-body" [ngClass]="{'collapse': isCollapsed1}">
 
 
+          <div class="row">
+              <div class="col-3"></div>
+              <div class="col-6 search-container">
+                <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por Código de Central">
+                  <span class="input-group-text">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                      class="bi bi-search" viewBox="0 0 16 16">
+                      <path
+                        d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                    </svg>
+                  </span>
+                  <input type="text" class="form-control" placeholder="Filtrar por Código de Central" (keyup)="esFiltrar($event , 'codigo')">
+                </div>
+              </div>
+            </div>
 
-<div class="row">
-    <div class="col-3"></div>
-    <div class="col-6 search-container">
-      <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por Código de Central">
-        <span class="input-group-text">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-            class="bi bi-search" viewBox="0 0 16 16">
-            <path
-              d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-          </svg>
-        </span>
-        <input type="text" class="form-control" placeholder="Filtrar por Código de Central" (keyup)="esFiltrar($event , 'codigo')">
+          <div class="row">
+            <div class=".col-xxl-4"></div>
+            <div class="col-12">      
+                <table class="table">
+                  <thead class="encabezado">
+                      <tr>            
+                        <th (click)="ordenarPor('cenNro')" [appSort]="CentralConsultaFiltrados" data-order="desc"
+                            data-name="cenNro" style="text-align: center;"><a>Cod. Central {{ordenarIcono('cenNro')}}</a></th>
+                        <th (click)="ordenarPor('cenImei')" [appSort]="CentralConsultaFiltrados" data-order="desc"
+                            data-name="cenImei" style="text-align: center;"><a>IMEI {{ordenarIcono('cenImei')}}</a></th>
+                        <th (click)="ordenarPor('cenCoorX')" [appSort]="CentralConsultaFiltrados" data-order="desc"
+                            data-name="cenCoorX" style="text-align: center;"><a>Coordenada X {{ordenarIcono('cenCoorX')}}</a></th>             
+                        <th (click)="ordenarPor('cenCoorY')" [appSort]="CentralConsultaFiltrados" data-order="desc"
+                            data-name="cenCoorY" style="text-align: center;"><a>Coordenada Y {{ordenarIcono('cenCoorY')}}</a></th>             
+                                    
+                        <th scope="col" style="text-align: center;">Seleccionar</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let central of CentralConsultaFiltrados; let i=index"
+                      [ngClass]="{'fila-par': i%2==0, 'fila-impar': i%2==1}"
+                      (click)="esfilaSeleccionada(central)">
+                        <th style="vertical-align: middle" class="align-center">{{ central.cenNro }}</th>
+                        <td style="vertical-align: middle" class="align-center">{{ central.cenImei }}</td>
+                        <td style="vertical-align: middle" class="align-center">{{ central.cenCoorX }}</td>
+                        <td style="vertical-align: middle" class="align-center">{{ central.cenCoorY }}</td>              
+                        <td class="align-center">
+                          <button type="button" class="btn" (click)="esfilaSeleccionada(central); seleccionarCentral()" title="Ver Más Opciones">     
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-box-arrow-down" viewBox="0 0 16 16">
+                              <path fill-rule="evenodd" d="M3.5 10a.5.5 0 0 1-.5-.5v-8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 0 0 1h2A1.5 1.5 0 0 0 14 9.5v-8A1.5 1.5 0 0 0 12.5 0h-9A1.5 1.5 0 0 0 2 1.5v8A1.5 1.5 0 0 0 3.5 11h2a.5.5 0 0 0 0-1h-2z"/>
+                              <path fill-rule="evenodd" d="M7.646 15.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 14.293V5.5a.5.5 0 0 0-1 0v8.793l-2.146-2.147a.5.5 0 0 0-.708.708l3 3z"/>
+                            </svg>        
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+              </div>
+              <div class="alert alert-primary text-center" role="alert" *ngIf="validarFiltrado() == false">      ¡No se ha encontrado ninguna Central!
+            </div>
+
+        </div>
       </div>
     </div>
   </div>
-
-
-
-<div class="row">
-  <div class=".col-xxl-4"></div>
-  <div class="col-12">      
-      <table class="table">
-        <thead class="encabezado">
-            <tr>            
-              <th (click)="ordenarPor('cenNro')" [appSort]="CentralConsultaFiltrados" data-order="desc"
-                  data-name="cenNro" style="text-align: center;"><a>Cod. Central {{ordenarIcono('cenNro')}}</a></th>
-              <th (click)="ordenarPor('cenImei')" [appSort]="CentralConsultaFiltrados" data-order="desc"
-                  data-name="cenImei" style="text-align: center;"><a>IMEI {{ordenarIcono('cenImei')}}</a></th>
-              <th (click)="ordenarPor('cenCoorX')" [appSort]="CentralConsultaFiltrados" data-order="desc"
-                  data-name="cenCoorX" style="text-align: center;"><a>Coordenada X {{ordenarIcono('cenCoorX')}}</a></th>             
-              <th (click)="ordenarPor('cenCoorY')" [appSort]="CentralConsultaFiltrados" data-order="desc"
-                  data-name="cenCoorY" style="text-align: center;"><a>Coordenada Y {{ordenarIcono('cenCoorY')}}</a></th>             
-                          
-              <th scope="col" style="text-align: center;">Seleccionar</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let central of CentralConsultaFiltrados; let i=index"
-            [ngClass]="{'fila-par': i%2==0, 'fila-impar': i%2==1}"
-            (click)="esfilaSeleccionada(central)">
-              <th style="vertical-align: middle" class="align-center">{{ central.cenNro }}</th>
-              <td style="vertical-align: middle" class="align-center">{{ central.cenImei }}</td>
-              <td style="vertical-align: middle" class="align-center">{{ central.cenCoorX }}</td>
-              <td style="vertical-align: middle" class="align-center">{{ central.cenCoorY }}</td>              
-              <td class="align-center">
-                <button type="button" class="btn" (click)="esfilaSeleccionada(central); seleccionarCentral()" title="Ver Más Opciones">     
-                  <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-box-arrow-down" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M3.5 10a.5.5 0 0 1-.5-.5v-8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 0 0 1h2A1.5 1.5 0 0 0 14 9.5v-8A1.5 1.5 0 0 0 12.5 0h-9A1.5 1.5 0 0 0 2 1.5v8A1.5 1.5 0 0 0 3.5 11h2a.5.5 0 0 0 0-1h-2z"/>
-                    <path fill-rule="evenodd" d="M7.646 15.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 14.293V5.5a.5.5 0 0 0-1 0v8.793l-2.146-2.147a.5.5 0 0 0-.708.708l3 3z"/>
-                  </svg>        
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-    </div>
-    <div class="alert alert-primary text-center" role="alert" *ngIf="validarFiltrado() == false">      ¡No se ha encontrado ninguna Central!
-  </div>
-
-</div>
-</div>
-</div>
-</div>
 </div>
 
 <div class="container mt-5">
@@ -177,21 +174,35 @@
             </div>
           </div> 
 
-          <br>
-          <h4> Visualización de los Servicios: </h4>
-          <br>
-  
-          <div class="container">
-              <div class="custom-control custom-switch mb-3">
-                <input type="checkbox" class="custom-control-input" id="op1G" [checked]="op1G" (change)="selOpG($event)">
-                <label class="custom-control-label" for="op1G">Todos los Servicios en un solo Gráfico</label>
-              </div>            
-              <div class="custom-control custom-switch mb-3">
-                <input type="checkbox" class="custom-control-input" id="op2G" [checked]="op2G" (change)="selOpG($event)">
-                <label class="custom-control-label" for="op2G">Cada Servicio en un Gráfico</label>
-              </div>           
+          <div>
+            <div style="display: flex;">
+              <div style="flex: 1;">
+                <h4>Visualización de los Servicios:</h4>
+                <br>
+                <div class="container">
+                  <div class="custom-control custom-switch mb-3">
+                    <input type="checkbox" class="custom-control-input" id="op1G" [checked]="op1G" (change)="selOpG($event)">
+                    <label class="custom-control-label" for="op1G">Todos los Servicios en un solo Gráfico</label>
+                  </div>
+                  <div class="custom-control custom-switch mb-3">
+                    <input type="checkbox" class="custom-control-input" id="op2G" [checked]="op2G" (change)="selOpG($event)">
+                    <label class="custom-control-label" for="op2G">Cada Servicio en un Gráfico</label>
+                  </div>
+                </div>
+              </div>
+              <div style="flex: 1;">
+                <h4>Visualización de los Servicios en Tabla:</h4>
+                <br>
+                <div class="container">
+                  <div class="custom-control custom-switch mb-3">
+                    <input type="checkbox" class="custom-control-input" id="op1T" [checked]="op1T" (change)="selOpT($event)">
+                    <label class="custom-control-label" for="op1T">Sí</label>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-
+          
           <br>
           <h4> Seleccione el periodo a monitorear: </h4>
           <br>
@@ -235,15 +246,125 @@
           <br>             
           <div class="col-12 text-center">
             <button type="submit" class="btn btn-success" data-bs-toggle="button"                        
-              (click)="graficar()"> Gráficar
+              (click)="graficar()"> Gráficar y Visualizar
             </button>
           </div>     
           
+          <div  *ngIf="op1T">
+            <br>
+            <h4> Tabla: </h4>
+            <br>
+                  <br>
+                    <h5>Filtros:</h5>
+                    <form [formGroup]="formfiltro">
+                      <div class="row">
+                        <div class="col-4">
+                          <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por número de Medición">
+                            <span class="input-group-text">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-search" viewBox="0 0 16 16">
+                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                              </svg>
+                            </span>
+                            <input formControlName="medId" type="text" class="form-control" placeholder="Buscar por número de Medición" (keyup)="esFiltrarMedicion($event)">
+                          </div>
+                        </div>
+                        <div class="col-4">
+                          <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por nombre de Servicio">
+                            <span class="input-group-text">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-search" viewBox="0 0 16 16">
+                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                              </svg>
+                            </span>
+                            <input formControlName="serDescripcion" type="text" class="form-control" placeholder="Buscar por nombre de Servicio" (keyup)="esFiltrarMedicion($event)">
+                          </div>
+                        </div>
+                        <div class="col-4">
+                          <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por valor de Medición">
+                            <span class="input-group-text">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-search" viewBox="0 0 16 16">
+                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                              </svg>
+                            </span>
+                            <input formControlName="medValor" type="text" class="form-control" placeholder="Buscar por valor de Medición" (keyup)="esFiltrarMedicion($event)">
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <br>
+
+                      <div class="row align-items-center justify-content-center text-center"> 
+                        <div class="col ">
+                          <div class="custom-control custom-switch mb-3">
+                            <input type="checkbox" class="custom-control-input" id="opFF" (change)="filtroFecha($event)">
+                            <label class="custom-control-label" for="opFF">Filtar por Fecha</label>
+                          </div>                 
+                        </div>
+                        <div class="col-4">
+                          <div class="form-outline input-group mb-2" >
+                            <span class="input-group-text">Desde</span>
+                            <input type="date" id="fecha_desde" class="form-control" formControlName="fecha_desde">
+                          </div>
+                        </div>
+                        <div class="col-4">
+                          <div class="form-outline input-group mb-2">
+                            <span class="input-group-text">Hasta</span>
+                            <input type="date" id="fecha_hasta" class="form-control" formControlName="fecha_hasta">
+                          </div>             
+                        </div>   
+                        <div class="col">
+                          <button type="submit" class="btn btn-success" data-bs-toggle="button" 
+                            (click)="filtarXFechas()" [disabled]="!habilitarBoton">
+                            Aplicar Filtro
+                          </button>
+                        </div>      
+                      </div>
+
+                    </form>          
+            <br>
+
+            <div class="row" >
+              <div class=".col-xxl-4"></div>
+              <div class="col-12">      
+                  <table class="table">
+                    <thead class="encabezado">
+                        <tr>            
+                          <th (click)="ordenarMedicionPor('medId')" [appSort]="MedicionesTablaFiltrados" data-order="desc"
+                              data-name="medId" style="text-align: center;"><a>Num. Medición {{ordenarIconoMedicion('medId')}}</a></th>
+                          <th (click)="ordenarMedicionPor('serDescripcion')" [appSort]="MedicionesTablaFiltrados" data-order="desc"
+                              data-name="serDescripcion" style="text-align: center;"><a>Servicio {{ordenarIconoMedicion('serDescripcion')}}</a></th>
+                          <th (click)="ordenarMedicionPor('medValor')" [appSort]="MedicionesTablaFiltrados" data-order="desc"
+                              data-name="medValor" style="text-align: center;"><a>Valor {{ordenarIconoMedicion('medValor')}}</a></th>
+                          <th (click)="ordenarMedicionPor('medFechaHoraSms')" [appSort]="MedicionesTablaFiltrados" data-order="desc"
+                              data-name="medFechaHoraSms" style="text-align: center;"><a>Fecha Medición {{ordenarIconoMedicion('medFechaHoraSms')}}</a></th>             
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let medicion of MedicionesTablaFiltrados; let i=index"
+                        [ngClass]="{'fila-par': i%2==0, 'fila-impar': i%2==1}"
+                        >
+                          <th style="vertical-align: middle" class="align-center">{{ medicion.medId }}</th>
+                          <td style="vertical-align: middle" class="align-center">{{ medicion.serDescripcion }}</td>
+                          <td style="vertical-align: middle" class="align-center">{{ medicion.medValor }}</td>
+                          <td style="vertical-align: middle" class="align-center">{{ medicion.medFechaHoraSms | date: 'yyyy-MM-dd hh:mm' }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+              </div>
+              <div class="alert alert-primary text-center" role="alert" *ngIf="validarFiltradoMedicion() == false">
+                ¡No se ha encontrado ninguna Medición!
+              </div>
+            </div>  
+          </div>  
+
           <br>
           <h4> Grafico: </h4>
           <br>
           <div id="contenedor-graficos"></div>
           <!-- <div id="grafico2" style="width: 1000px; height: 500px;"></div> -->
+
 
         </div>
       </div>

@@ -19,7 +19,8 @@
           </div>
         </div>
         <div class="card-body" [ngClass]="{'collapse': isCollapsed1}">
-
+          
+        <form [formGroup]="formfiltro">
           <div class="row">            
             <div class="col-12">
               <h3>Filtros:</h3>
@@ -46,10 +47,11 @@
                       </svg>
                     </span>
                     <input
+                      formControlName="tipo"
                       type="text"
                       class="form-control"
                       placeholder="Filtrar por Tipo de Documento"
-                      (keyup)="esFiltrar($event, 'tipo')"
+                      (keyup)="esFiltrar($event)"
                     />
                   </div>
                 </div>
@@ -75,10 +77,11 @@
                       </svg>
                     </span>
                     <input
+                      formControlName="numero"
                       type="text"
                       class="form-control"
                       placeholder="Filtrar por Numero de Documento"
-                      (keyup)="esFiltrar($event, 'numero')"
+                      (keyup)="esFiltrar($event)"
                     />
                   </div>
                 </div>
@@ -107,10 +110,11 @@
                       </svg>
                     </span>
                     <input
+                      formControlName="cliente"
                       type="text"
                       class="form-control"
                       placeholder="Filtrar por Nombre del Cliente"
-                      (keyup)="esFiltrar($event, 'cliente')"
+                      (keyup)="esFiltrar($event)"
                     />
                   </div>
                 </div>
@@ -136,16 +140,18 @@
                       </svg>
                     </span>
                     <input
+                      formControlName="usuario"
                       type="text"
                       class="form-control"
                       placeholder="Filtrar por Nombre del Usuario"
-                      (keyup)="esFiltrar($event, 'usuario')"
+                      (keyup)="esFiltrar($event)"
                     />
                   </div>
                 </div>
               </div>
             </div>
           </div>
+        </form>
           
           <div class="row">            
             <div class="col-12">

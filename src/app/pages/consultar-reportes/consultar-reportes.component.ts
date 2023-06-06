@@ -38,11 +38,14 @@ MedMin: MedicionesClass[] = [];
 MedMax: MedicionesClass[] = [];
 ServiciosCentral: ServicioClass[] = [];
 ServiciosGraficar: ServicioClass[] = [];
+MedicionesTabla: MedicionesClass[] = []; 
+MedicionesTablaFiltrados: MedicionesClass[] = []; 
 
 //VARIABLES DE DATOS
 propiedadOrdenamiento: string = 'cenNro';
 propiedadOrdenamientoServicio: string = 'serId';
 propiedadOrdenamientoServicioGraficar: string = 'serId';
+propiedadOrdenamientoMedicion: string = 'medId';
 coorXSeleccionada: string = '';
 coorYSeleccionada: string = '';
 
@@ -50,6 +53,7 @@ tipoOrdenamiento: number = 1;
 centralNroSeleccionada: number=0;
 tipoOrdenamientoServicio: number = 1;
 tipoOrdenamientoServicioGraficar: number = 1;
+tipoOrdenamientoMedicion: number = 1;
 idUsuario: any = 0;
 idListaServiciosSeleccionado: number=0;
 idListaServiciosGraficarSeleccionado: number=0;
@@ -57,9 +61,13 @@ idListaServiciosGraficarSeleccionado: number=0;
 isCollapsed1 = false;
 isCollapsed2 = false;
 op1 = true; op2 = false; op3 = false; op4 = false; op5 = false; op6 = false; op7 = false;
+op1T = true;
+public habilitarBoton: boolean = false;
+public habilitarBotonPDF: boolean = false;
 
 //FORMS PARA LA AGRUPACIÓN DE DATOS
 formReporte: FormGroup;
+formfiltro: FormGroup;
 
   constructor(
     private centralConsultar: CentralService, 
@@ -70,7 +78,15 @@ formReporte: FormGroup;
       fecha_desde: new FormControl(null, []),
       fecha_hasta: new FormControl(null, []),
       promedio: new FormControl(null, []),
+      cantMed: new FormControl(null, []),
       comentario: new FormControl(null, []),
+    });
+    this.formfiltro = new FormGroup({
+      medId: new FormControl(null, []),
+      serDescripcion: new FormControl(null, []),
+      medValor: new FormControl(null, []),
+      fecha_desde: new FormControl(null, []),
+      fecha_hasta: new FormControl(null, []),
     });
   }
 
@@ -85,172 +101,307 @@ formReporte: FormGroup;
 
   reportePDF():void {
 
-    var desde = new Date();
-    var hasta = new Date();
-    if (this.op1) { desde.setDate(desde.getDate() - 7); }
-    if (this.op2) { desde.setDate(desde.getDate() - 15); }
-    if (this.op3) { desde.setMonth(desde.getMonth() - 1); }
-    if (this.op4) { desde.setMonth(desde.getMonth() - 3); }
-    if (this.op5) { desde.setMonth(desde.getMonth() - 6); }
-    if (this.op6) { desde.setMonth(desde.getMonth() - 12); }
-    if (this.op7) {
-      var fechaDesde = document.getElementById('desde') as HTMLInputElement;
-      var fechaSeleccionada = new Date(fechaDesde.value);
-      fechaSeleccionada.setDate(fechaSeleccionada.getDate() + 1); // Sumar un día
-      fechaSeleccionada.setHours(0, 0, 0, 0);
-      desde = fechaSeleccionada;
+      var desde = new Date();
+      var hasta = new Date();
+      if (this.op1) { desde.setDate(desde.getDate() - 7); }
+      if (this.op2) { desde.setDate(desde.getDate() - 15); }
+      if (this.op3) { desde.setMonth(desde.getMonth() - 1); }
+      if (this.op4) { desde.setMonth(desde.getMonth() - 3); }
+      if (this.op5) { desde.setMonth(desde.getMonth() - 6); }
+      if (this.op6) { desde.setMonth(desde.getMonth() - 12); }
+      if (this.op7) {
+        var fechaDesde = document.getElementById('desde') as HTMLInputElement;
+        var fechaSeleccionada = new Date(fechaDesde.value);
+        fechaSeleccionada.setDate(fechaSeleccionada.getDate() + 1); // Sumar un día
+        fechaSeleccionada.setHours(0, 0, 0, 0);
+        desde = fechaSeleccionada;
 
-      var fechaHasta = document.getElementById('hasta') as HTMLInputElement;
-      fechaSeleccionada = new Date(fechaHasta.value);
-      fechaSeleccionada.setDate(fechaSeleccionada.getDate() + 1); // Sumar un día
-      fechaSeleccionada.setHours(0, 0, 0, 0);
-      hasta = fechaSeleccionada;      
-    }
-    
-    // Crear el documento PDF
-    const doc = new jsPDF();//('p', 'mm', 'A4'); // Tipo de hoja A4
+        var fechaHasta = document.getElementById('hasta') as HTMLInputElement;
+        fechaSeleccionada = new Date(fechaHasta.value);
+        fechaSeleccionada.setDate(fechaSeleccionada.getDate() + 1); // Sumar un día
+        fechaSeleccionada.setHours(0, 0, 0, 0);
+        hasta = fechaSeleccionada;      
+      }
+      
+      // Crear el documento PDF
+      const doc = new jsPDF();//('p', 'mm', 'A4'); // Tipo de hoja A4
 
-    // Obtener la ruta de la imagen
-    const imagePath = 'assets/logo_sinfondo55.png';
-    // Cargar la imagen utilizando la biblioteca FileSaver.js
-    const imagePromise = this.loadImage(imagePath);
-    let yPos =0;
-    imagePromise.then((imageData) => {
+      // Obtener la ruta de la imagen
+      const imagePath = 'assets/logo_sinfondo55.png';
+      // Cargar la imagen utilizando la biblioteca FileSaver.js
+      const imagePromise = this.loadImage(imagePath);
+      let yPos =0;
+      imagePromise.then((imageData) => {
+        // Agregar la imagen al documento PDF
+        doc.addImage(imageData, 'PNG', 120, 0, 80, 20);  
+
+      // Obtener la fecha actual
+      const currentDate = new Date().toLocaleDateString().replace(/\//g, '-');
+
+      // Definir el título del reporte
+      const title = 'Reporte de Central Meteorológica';
+
+      // Definir la posición inicial para dibujar el contenido
+      yPos = 15;
+
+      // Agregar el título al documento
+      doc.setFontSize(18);
+      //doc.setFont('Arial');
+      doc.text(title, 20, yPos);
+      yPos += 5;
+      doc.line(20, yPos, doc.internal.pageSize.getWidth()-20, yPos);
+      yPos += 15;
+      
+      // Agregar la fecha al documento
+      doc.setFontSize(12);
+      doc.text('Fecha de creación del reporte: ' + currentDate, 20, yPos);
+      yPos += 10;
+      doc.text('Cliente: ' + localStorage.getItem('cliente'), 20, yPos);
+      yPos += 10;
+      doc.text('Usuario: ' + localStorage.getItem('usuario'), 20, yPos);
+      yPos += 10;
+      doc.text('Central N°: ' + this.centralNroSeleccionada, 20, yPos);
+      yPos += 10;
+      doc.text('Coordenada X: ' + this.coorXSeleccionada, 20, yPos);
+      yPos += 10;
+      doc.text('Coordenada Y: ' + this.coorYSeleccionada, 20, yPos);
+      yPos += 10;
+
+      doc.line(20, yPos, doc.internal.pageSize.getWidth()-20, yPos);
+
+      yPos += 10;
+      doc.setFontSize(16);
+      doc.text('Servicio: ' + this.ServiciosGraficar[0].serDescripcion, 20, yPos);
+      yPos += 10;
+
+      doc.setFontSize(12);
+      doc.text('Datos Estadisticos: ', 20, yPos);
+      yPos += 10;
+      doc.text('Fecha desde: ' + desde.toLocaleDateString() + '   -   Fecha hasta: ' + hasta.toLocaleDateString(), 20, yPos);
+      yPos += 15;
+      
+      let yRef = yPos;
+      doc.text('Máximo Valor: ', 10, yPos);
+      yPos += 10;
+      for (let i = 0; i < this.MedMax.length; i++) {
+        const fechaHora = new Date(this.MedMax[i].medFechaHoraSms);
+        const fechaFormateada = `${fechaHora.getFullYear()}/${(fechaHora.getMonth() + 1).toString().padStart(2, '0')}/${fechaHora.getDate().toString().padStart(2, '0')} ${fechaHora.getHours().toString().padStart(2, '0')}:${fechaHora.getMinutes().toString().padStart(2, '0')}`;    
+        doc.circle(15, yPos -1 , 1, 'FD');
+        doc.text('Fecha: ' + fechaFormateada + ' - Valor: ' + this.MedMax[i].medValor.toString(), 15 + 5, yPos);    
+        yPos += 10;
+      }
+
+      yPos = yRef;
+      doc.text('Mínimo Valor: ', 90, yPos);
+      yPos += 10;
+      for (let i = 0; i < this.MedMin.length; i++) {
+        const fechaHora = new Date(this.MedMin[i].medFechaHoraSms);
+        const fechaFormateada = `${fechaHora.getFullYear()}/${(fechaHora.getMonth() + 1).toString().padStart(2, '0')}/${fechaHora.getDate().toString().padStart(2, '0')} ${fechaHora.getHours().toString().padStart(2, '0')}:${fechaHora.getMinutes().toString().padStart(2, '0')}`;    
+        doc.circle(95, yPos -1, 1, 'FD');
+        doc.text('Fecha: ' + fechaFormateada + ' - Valor: ' + this.MedMin[i].medValor.toString(), 95 + 5, yPos);    
+        yPos += 10;
+      }
+
+      yPos = yRef;
+      doc.text('Promedio: ', 170, yPos);
+      yPos += 10;
+        doc.circle(175, yPos -1, 1, 'FD');
+        doc.text(this.formReporte.get('promedio')?.value, 175 + 5, yPos);    
+
+      if (this.MedMax.length >= this.MedMin.length) { yPos = yRef + (10 * this.MedMax.length + 1) }
+      else { yPos = yRef + (10 * this.MedMin.length + 1) }
+
+      yPos += 10;
+
+      doc.line(20, 280, doc.internal.pageSize.getWidth()-20, 280);
+      doc.text('Página 1', 98,  285); 
+
+      //Agrego Nueva Pagina
+      doc.addPage();
+
       // Agregar la imagen al documento PDF
       doc.addImage(imageData, 'PNG', 120, 0, 80, 20);  
+      
+      doc.line(20, 280, doc.internal.pageSize.getWidth()-20, 280);
+      doc.text('Página 2', 98,  285);
 
-    // Obtener la fecha actual
-    const currentDate = new Date().toLocaleDateString();
+      // Definir la posición inicial para dibujar el contenido
+      yPos = 15;
 
-    // Definir el título del reporte
-    const title = 'Reporte de Central Meteorológica';
-
-    // Definir la posición inicial para dibujar el contenido
-    yPos = 15;
-
-    // Agregar el título al documento
-    doc.setFontSize(18);
-    //doc.setFont('Arial');
-    doc.text(title, 20, yPos);
-    yPos += 5;
-    doc.line(20, yPos, doc.internal.pageSize.getWidth()-20, yPos);
-    yPos += 15;
-    
-    // Agregar la fecha al documento
-    doc.setFontSize(12);
-    doc.text('Fecha de creación del reporte: ' + currentDate, 20, yPos);
-    yPos += 10;
-    doc.text('Cliente: ' + localStorage.getItem('cliente'), 20, yPos);
-    yPos += 10;
-    doc.text('Usuario: ' + localStorage.getItem('usuario'), 20, yPos);
-    yPos += 10;
-    doc.text('Central N°: ' + this.centralNroSeleccionada, 20, yPos);
-    yPos += 10;
-    doc.text('Coordenada X: ' + this.coorXSeleccionada, 20, yPos);
-    yPos += 10;
-    doc.text('Coordenada Y: ' + this.coorYSeleccionada, 20, yPos);
-    yPos += 10;
-
-    doc.line(20, yPos, doc.internal.pageSize.getWidth()-20, yPos);
-
-    yPos += 10;
-    doc.setFontSize(16);
-    doc.text('Servicio: ' + this.ServiciosGraficar[0].serDescripcion, 20, yPos);
-    yPos += 10;
-
-    doc.setFontSize(12);
-    doc.text('Datos Estadisticos: ', 20, yPos);
-    yPos += 10;
-    doc.text('Fecha desde: ' + desde.toLocaleDateString() + '   -   Fecha hasta: ' + hasta.toLocaleDateString(), 20, yPos);
-    yPos += 15;
-    
-    let yRef = yPos;
-    doc.text('Máximo Valor: ', 10, yPos);
-    yPos += 10;
-    for (let i = 0; i < this.MedMax.length; i++) {
-      const fechaHora = new Date(this.MedMax[i].medFechaHoraSms);
-      const fechaFormateada = `${fechaHora.getFullYear()}/${(fechaHora.getMonth() + 1).toString().padStart(2, '0')}/${fechaHora.getDate().toString().padStart(2, '0')} ${fechaHora.getHours().toString().padStart(2, '0')}:${fechaHora.getMinutes().toString().padStart(2, '0')}`;    
-      doc.circle(15, yPos -1 , 1, 'FD');
-      doc.text('Fecha: ' + fechaFormateada + ' - Valor: ' + this.MedMax[i].medValor.toString(), 15 + 5, yPos);    
+      // Definir el título del reporte
+      //const title = 'Reporte de Central Meteorológica';
+      // Agregar el título al documento
+      doc.setFontSize(18);
+      doc.text(title, 20, yPos);
+      yPos += 5;
+      doc.line(20, yPos, doc.internal.pageSize.getWidth()-20, yPos);
       yPos += 10;
-    }
+      doc.setFontSize(16);
+      doc.text('Servicio: ' + this.ServiciosGraficar[0].serDescripcion, 20, yPos);
+      yPos += 15;
 
-    yPos = yRef;
-    doc.text('Mínimo Valor: ', 90, yPos);
-    yPos += 10;
-    for (let i = 0; i < this.MedMin.length; i++) {
-      const fechaHora = new Date(this.MedMin[i].medFechaHoraSms);
-      const fechaFormateada = `${fechaHora.getFullYear()}/${(fechaHora.getMonth() + 1).toString().padStart(2, '0')}/${fechaHora.getDate().toString().padStart(2, '0')} ${fechaHora.getHours().toString().padStart(2, '0')}:${fechaHora.getMinutes().toString().padStart(2, '0')}`;    
-      doc.circle(95, yPos -1, 1, 'FD');
-      doc.text('Fecha: ' + fechaFormateada + ' - Valor: ' + this.MedMin[i].medValor.toString(), 95 + 5, yPos);    
-      yPos += 10;
-    }
+      doc.setFontSize(16);
+      doc.text('Grafico: ',20, yPos);
+      yPos += 5;
 
-    yPos = yRef;
-    doc.text('Promedio: ', 170, yPos);
-    yPos += 10;
-      doc.circle(175, yPos -1, 1, 'FD');
-      doc.text(this.formReporte.get('promedio')?.value, 175 + 5, yPos);    
+      // Obtener el elemento del reporte
+      const reportElement = document.getElementById('grafico1');
+      if (reportElement) {   
+      //Convertir el elemento a imagen utilizando html2canvas
+      html2canvas(reportElement).then((canvas) => {
+        // Obtener la URL de la imagen generada
+        const imgData = canvas.toDataURL('image/png');
+        // Agregar la imagen al documento PDF
+        doc.addImage(imgData, 'PNG', 5, yPos, 190, 0);    
+        yPos += 105 ;
+        if (this.formReporte.get('comentario')?.value != null) {
+          doc.setFontSize(12);
+          doc.text('Comentario: ', 20, yPos);
+          yPos += 10;
+          doc.text(this.formReporte.get('comentario')?.value, 20, yPos);
+        }
+          //Generar reporte de las mediciones
+          let nroPag = 2;
+          let count = 0;
+          if (this.op1T) {
 
-    if (this.MedMax.length >= this.MedMin.length) { yPos = yRef + (10 * this.MedMax.length + 1) }
-    else { yPos = yRef + (10 * this.MedMin.length + 1) }
+            // Agregar nueva página
+            doc.addPage();
+            nroPag++;
+            // Agregar la imagen al documento PDF
+            doc.addImage(imageData, 'PNG', 120, 0, 80, 20);
+            doc.setFontSize(12);
+            doc.line(20, 280, doc.internal.pageSize.getWidth() - 20, 280);
+            doc.text('Página ' + nroPag, 98, 285);
 
-    yPos += 10;
+            // Definir la posición inicial para dibujar el contenido en la nueva página
+            yPos = 15;
 
-    doc.line(20, 280, doc.internal.pageSize.getWidth()-20, 280);
-    doc.text('Página 1', 98,  285);
+            // Definir el título del reporte en la nueva página
+            doc.setFontSize(18);
+            doc.text(title, 20, yPos);
+            yPos += 5;
+            doc.line(20, yPos, doc.internal.pageSize.getWidth() - 20, yPos);
+            yPos += 10;
 
- 
+            doc.setFontSize(16);
+            doc.text('Mediciones: ', 20, yPos);
+            yPos += 10;
 
-    //Agrego Nueva Pagina
-    doc.addPage();
+            doc.setFontSize(10);
+            doc.text('item', 27, yPos);
+            doc.text('Num. Med.', 48, yPos);
+            doc.text('Servicio', 90, yPos);
+            doc.text('Valor', 128, yPos);
+            doc.text('Fecha Medición', 152, yPos);
+            yPos += 10;
 
-    // Agregar la imagen al documento PDF
-    doc.addImage(imageData, 'PNG', 120, 0, 80, 20);  
-    
-    doc.line(20, 280, doc.internal.pageSize.getWidth()-20, 280);
-    doc.text('Página 2', 98,  285);
+            for (let a = 0; a < this.MedicionesTablaFiltrados.length; a++) {
+              const item = a + 1;
+              doc.text(item.toString(), 30, yPos);
+              doc.text((this.MedicionesTablaFiltrados[a].medId.toString()).toString(), 50, yPos);
+              doc.text((this.MedicionesTablaFiltrados[a].serDescripcion).toString().substring(0, 25), 75, yPos);
+              doc.text(this.MedicionesTablaFiltrados[a].medValor.toString(), 130, yPos);
 
-    // Definir la posición inicial para dibujar el contenido
-    yPos = 15;
+              const fechaHora = new Date(this.MedicionesTablaFiltrados[a].medFechaHoraSms);
+              const fechaFormateada = `${fechaHora.getFullYear()}/${(fechaHora.getMonth() + 1).toString().padStart(2, '0')}/${fechaHora.getDate().toString().padStart(2, '0')} ${fechaHora.getHours().toString().padStart(2, '0')}:${fechaHora.getMinutes().toString().padStart(2, '0')}`;
+              doc.text(fechaFormateada, 150, yPos);
+              yPos += 10;
 
-    // Definir el título del reporte
-    //const title = 'Reporte de Central Meteorológica';
-    // Agregar el título al documento
-    doc.setFontSize(18);
-    doc.text(title, 20, yPos);
-    yPos += 5;
-    doc.line(20, yPos, doc.internal.pageSize.getWidth()-20, yPos);
-    yPos += 10;
-    doc.setFontSize(16);
-    doc.text('Servicio: ' + this.ServiciosGraficar[0].serDescripcion, 20, yPos);
-    yPos += 15;
+              count++;
 
-    doc.setFontSize(16);
-    doc.text('Grafico: ',20, yPos);
-    yPos += 5;
+              if (count === 23) {
+                // Agregar nueva página
+                doc.addPage();
+                nroPag++;
+                // Agregar la imagen al documento PDF
+                doc.addImage(imageData, 'PNG', 120, 0, 80, 20);
+                doc.setFontSize(12);
+                doc.line(20, 280, doc.internal.pageSize.getWidth() - 20, 280);
+                doc.text('Página ' + nroPag, 98, 285);
 
-    // Obtener el elemento del reporte
-    const reportElement = document.getElementById('grafico1');
-    if (reportElement) {   
-    //Convertir el elemento a imagen utilizando html2canvas
-    html2canvas(reportElement).then((canvas) => {
-      // Obtener la URL de la imagen generada
-      const imgData = canvas.toDataURL('image/png');
-      // Agregar la imagen al documento PDF
-      doc.addImage(imgData, 'PNG', 5, yPos, 190, 0);    
-      yPos += 105 ;
-      if (this.formReporte.get('comentario')?.value != null) {
-        doc.setFontSize(12);
-        doc.text('Comentario: ', 20, yPos);
-        yPos += 10;
-        doc.text(this.formReporte.get('comentario')?.value, 20, yPos);
-      }
-        // Guardar el documento PDF
-        doc.save('reporte.pdf');
-    });
-    }  
-  });  
+                // Definir la posición inicial para dibujar el contenido en la nueva página
+                yPos = 15;
+
+                // Definir el título del reporte en la nueva página
+                doc.setFontSize(18);
+                doc.text(title, 20, yPos);
+                yPos += 5;
+                doc.line(20, yPos, doc.internal.pageSize.getWidth() - 20, yPos);
+                yPos += 10;
+
+                doc.setFontSize(16);
+                doc.text('Mediciones: ', 20, yPos);
+                yPos += 10;
+
+                doc.setFontSize(10);
+                doc.text('item', 27, yPos);
+                doc.text('Num. Med.', 48, yPos);
+                doc.text('Servicio', 90, yPos);
+                doc.text('Valor', 128, yPos);
+                doc.text('Fecha Medición', 152, yPos);
+                yPos += 10;
+
+                count = 0; // Reiniciar el contador
+              }
+            }
+          }
+
+          // let nroPag=2;
+          // if (this.op1T)
+          // {
+
+          //       //Agrego Nueva Pagina
+          //       doc.addPage();
+          //       nroPag =+1
+          //       // Agregar la imagen al documento PDF
+          //       doc.addImage(imageData, 'PNG', 120, 0, 80, 20);  
+          //       doc.setFontSize(12);
+          //       doc.line(20, 280, doc.internal.pageSize.getWidth()-20, 280);
+          //       doc.text('Página '+ nroPag, 98,  285);
+
+          //       // Definir la posición inicial para dibujar el contenido
+          //       yPos = 15;
+
+          //       // Definir el título del reporte
+          //       //const title = 'Reporte de Central Meteorológica';
+          //       // Agregar el título al documento
+          //       doc.setFontSize(18);
+          //       doc.text(title, 20, yPos);
+          //       yPos += 5;
+          //       doc.line(20, yPos, doc.internal.pageSize.getWidth()-20, yPos);
+          //       yPos += 10;
+
+          //       doc.setFontSize(16);
+          //       doc.text('Mediciones: ', 20, yPos);
+          //       yPos += 10;
+
+          //       doc.setFontSize(10);
+          //       doc.text('item' , 27, yPos);
+          //       doc.text('Num. Med.', 48, yPos);
+          //       doc.text('Servicio', 90, yPos);    
+          //       doc.text('Valor', 128, yPos);    
+          //       doc.text('Fecha Medición', 152, yPos); 
+          //       yPos += 10;
+          //       for (let a = 0; a < this.MedicionesTablaFiltrados.length; a++) {
+          //         const item = a+1;
+          //         doc.text(item.toString() , 30, yPos);
+          //         doc.text((this.MedicionesTablaFiltrados[a].medId.toString()).toString(), 50, yPos);
+          //         doc.text((this.MedicionesTablaFiltrados[a].serDescripcion).toString().substring(0, 25), 75, yPos);   
+          //         doc.text(this.MedicionesTablaFiltrados[a].medValor.toString(), 130, yPos);    
+                  
+          //         const fechaHora = new Date(this.MedicionesTablaFiltrados[a].medFechaHoraSms);
+          //         const fechaFormateada = `${fechaHora.getFullYear()}/${(fechaHora.getMonth() + 1).toString().padStart(2, '0')}/${fechaHora.getDate().toString().padStart(2, '0')} ${fechaHora.getHours().toString().padStart(2, '0')}:${fechaHora.getMinutes().toString().padStart(2, '0')}`;    
+          //         doc.text(fechaFormateada, 150, yPos);    
+          //         yPos += 10;
+          //       }               
+          // }
+
+          // Guardar el documento PDF
+          doc.save('Reporte Servicio ' + this.ServiciosGraficar[0].serDescripcion + ' - Fecha ' + currentDate +'.pdf');
+        });
+        }  
+      });  
   }	
 
   // Función para cargar la imagen y devolver los datos de la imagen como base64
@@ -282,12 +433,18 @@ formReporte: FormGroup;
   set promedio(valor: any) {
     this.formReporte.get('promedio')?.setValue(valor);
   }  
+  set cantMed(valor: any) {
+    this.formReporte.get('cantMed')?.setValue(valor);
+  }  
   set comentario(valor: any) {
     this.formReporte.get('comentario')?.setValue(valor);
   }
   
   get promedio() {
     return this.formReporte.get('promedio');
+  }
+  get cantMed() {
+    return this.formReporte.get('cantMed');
   }
   get comentario() {
     return this.formReporte.get('comentario');
@@ -296,7 +453,6 @@ formReporte: FormGroup;
   toggleCollapse1() {
     this.isCollapsed1 = !this.isCollapsed1;
   }
-
   toggleCollapse2() {
     this.isCollapsed2 = !this.isCollapsed2;
   }
@@ -313,6 +469,11 @@ formReporte: FormGroup;
     if (event.target.id === 'op7') { this.op7 = event.target.checked; }   
   }
   
+  // valida para msotrar tabla con mediciones en reporte
+  selOpT(event: any) {
+    this.op1T = !this.op1T; 
+  }
+
   //Valida que exista alguna Central que responda al filtro.
   validarFiltrado(): Boolean {
     if (this.CentralConsultaFiltrados.length == 0) {
@@ -349,14 +510,23 @@ formReporte: FormGroup;
     }
   }
 
-    //Valida que exista alguna medicion Maxima que responda al filtro.
-    validarMedMax(): Boolean {   
-      if (this.MedMax.length == 0) {
-        return false;
-      } else {
-        return true;
-      }
+  //Valida que exista alguna medicion Maxima que responda al filtro.
+  validarMedMax(): Boolean {   
+    if (this.MedMax.length == 0) {
+      return false;
+    } else {
+      return true;
     }
+  }
+
+  //Valida que exista alguna Medicion que responda al filtro.
+  validarFiltradoMedicion(): Boolean {
+    if (this.MedicionesTablaFiltrados.length == 0) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 
   //Almacena los datos del servicio que fue seleccionado en la tabla de servicio filtrados dentro de variables locales.
   esfilaSeleccionada(centralConsulta: CentralConsultaClass) {
@@ -390,6 +560,111 @@ formReporte: FormGroup;
         this.CentralConsultaFiltrados.push(centralConsulta);
       }
     });
+  }
+
+  //Filtro de Mediciones
+  esFiltrarMedicion(event: Event) {
+    const filtroMedId = (this.formfiltro.get('medId') as FormControl).value?.toLowerCase();
+    const filtroSerDescripcion = (this.formfiltro.get('serDescripcion') as FormControl).value?.toLowerCase();
+    const filtroMedValor = (this.formfiltro.get('medValor') as FormControl).value?.toLowerCase();
+  
+    this.MedicionesTablaFiltrados = this.MedicionesTabla.filter((medicion) => {
+      const valorMedId = medicion.medId.toString().toLowerCase();
+      const valorSerDescripcion = medicion.serDescripcion.toString().toLowerCase();
+      const valorMedValor = medicion.medValor.toString().toLowerCase();
+  
+      return (
+        (!filtroMedId || valorMedId.includes(filtroMedId)) &&
+        (!filtroSerDescripcion || valorSerDescripcion.includes(filtroSerDescripcion)) &&
+        (!filtroMedValor || valorMedValor.includes(filtroMedValor))
+      );
+    });
+  }
+  
+  // valida para que un solo selector de frecuencia este seleccionado a la vez
+  filtroFecha(event: any) {
+    if (event.target.checked === true) {
+      this.formfiltro.get('medId')?.disable();
+      this.formfiltro.get('serDescripcion')?.disable();
+      this.formfiltro.get('medValor')?.disable();
+      this.formfiltro.get('fecha_desde')?.enable();
+      this.formfiltro.get('fecha_hasta')?.enable();
+      this.habilitarBoton = true;
+    }
+    else {
+      this.formfiltro.get('medId')?.enable();      
+      this.formfiltro.get('serDescripcion')?.enable();
+      this.formfiltro.get('medValor')?.enable();
+      this.formfiltro.get('fecha_desde')?.disable();
+      this.formfiltro.get('fecha_hasta')?.disable();
+      this.habilitarBoton = false;
+    }
+  }
+
+  //filtro de Alarma por Fecha
+  filtarXFechas(){
+    var hoy = new Date();
+    var desde = new Date();
+    var hasta = new Date();
+
+    var fechaDesde = document.getElementById('fecha_desde') as HTMLInputElement;
+    var fechaSeleccionada = new Date(fechaDesde.value);
+    fechaSeleccionada.setDate(fechaSeleccionada.getDate() + 1); // Sumar un día
+    fechaSeleccionada.setHours(0, 0, 0, 0);
+    desde = fechaSeleccionada;
+
+    var fechaHasta = document.getElementById('fecha_hasta') as HTMLInputElement;
+    fechaSeleccionada = new Date(fechaHasta.value);
+    fechaSeleccionada.setDate(fechaSeleccionada.getDate() + 1); // Sumar un día
+    fechaSeleccionada.setHours(0, 0, 0, 0);
+    hasta = fechaSeleccionada;      
+
+    function mostrarError(mensaje: string, footer: string) {
+      Swal.fire({
+        title: 'Error',
+        text: mensaje,
+        icon: 'warning',
+        confirmButtonColor: '#0f425b',
+        confirmButtonText: 'Aceptar',
+        footer: footer
+      });
+    }
+
+    if (isNaN(desde.getTime())) {
+      mostrarError('Ingrese una fecha de desde válida.', 'Por favor, ingrese una fecha de hasta válida para generar el filtro.');
+    } else if (isNaN(hasta.getTime())) {
+      mostrarError('Ingrese una fecha de hasta válida.', 'Por favor, ingrese una fecha de hasta válida para generar el filtro.');
+    } else if (desde > hasta) {
+      mostrarError('La fecha "desde" es posterior a la fecha "hasta".', 'Por favor, cambie el rango de fechas seleccionado para generar el filtro.');
+    } else if (hasta > hoy) {
+      mostrarError('La fecha "desde" no puede ser posterior a la fecha actual.', 'Por favor, cambie el rango de fechas seleccionado para generar el filtro.');
+    } else {
+      
+      hasta.setDate(hasta.getDate() + 1); // Sumar un día al valor de 'hasta'
+
+      const filtroMedId = (this.formfiltro.get('medId') as FormControl).value?.toLowerCase();
+      const filtroSerDescripcion = (this.formfiltro.get('serDescripcion') as FormControl).value?.toLowerCase();
+      const filtroMedValor = (this.formfiltro.get('medValor') as FormControl).value?.toLowerCase();
+  
+      this.MedicionesTablaFiltrados = this.MedicionesTabla.filter((medicion) => {
+      const valorMedId = medicion.medId.toString().toLowerCase();
+      const valorSerDescripcion = medicion.serDescripcion.toString().toLowerCase();
+      const valorMedValor = medicion.medValor.toString().toLowerCase();
+      const fechaAlarma = new Date(medicion.medFechaHoraSms);
+
+      return (
+          (!filtroMedId || valorMedId.includes(filtroMedId)) &&
+          (!filtroSerDescripcion || valorSerDescripcion.includes(filtroSerDescripcion)) &&
+          (!filtroMedValor || valorMedValor.includes(filtroMedValor)) &&
+          (fechaAlarma >= desde && fechaAlarma < hasta)
+        );
+      });
+
+      // this.MedicionesTablaFiltrados = this.MedicionesTabla.filter((medicion) => {
+      //   const fechaAlarma = new Date(medicion.medFechaHoraSms);
+      //   return fechaAlarma >= desde && fechaAlarma < hasta;
+      // });
+    }
   }
 
   //Metodos para grilla
@@ -439,6 +714,22 @@ formReporte: FormGroup;
     } else {
       return '🠋🠉';
     }
+  }
+
+  //En base a la propiedad por la que se quiera ordenar y el tipo de orden muestra un icono.
+  ordenarIconoMedicion(propiedad: string) {
+    if (propiedad === this.propiedadOrdenamientoMedicion) {
+      return this.tipoOrdenamientoMedicion === 1 ? '🠉' : '🠋';
+    } else {
+      return '🠋🠉';
+    }
+  }
+
+  //Almacena en una variable la propiedad por la cual se quiere ordenar la consulta de Medicion.
+  ordenarMedicionPor(propiedad: string) {
+    this.tipoOrdenamientoMedicion =
+      propiedad === this.propiedadOrdenamientoMedicion ? this.tipoOrdenamientoMedicion * -1 : 1;
+    this.propiedadOrdenamientoMedicion = propiedad;
   }
 
   // Extraer servicios a la central selecciona
@@ -543,7 +834,7 @@ formReporte: FormGroup;
     this.medicionesConsultar.obtenerMediciones(this.centralNroSeleccionada, desde, hasta)      
       .subscribe(data => { this.Mediciones = data.filter((medicion: { medSer: number; }) => medicion.medSer === this.ServiciosGraficar[0].serId); 
 
-      // saco los valores minimo de las mediciones
+      // saco los valores maximo de las mediciones
       const valoresMax = this.Mediciones.map(medicion => medicion.medValor);
       const valorMaximo = Math.max(...valoresMax);
       this.MedMax = this.Mediciones.filter(medicion => medicion.medValor === valorMaximo);      
@@ -558,12 +849,18 @@ formReporte: FormGroup;
       const p = valoresPorm.reduce((sum, val) => sum + val, 0) / valoresPorm.length;
       this.promedio = p.toFixed(2).toString();
 
-      const contenedor = document.getElementById('contenedor-graficos')!;
+      // saco la cantidad de mediciones
+      this.cantMed = this.Mediciones.length;
 
+      this.MedicionesTabla =this.Mediciones; 
+      this.MedicionesTablaFiltrados = this.Mediciones;
+
+      const contenedor = document.getElementById('contenedor-graficos')!;
       this.Mediciones = data.filter((medicion: { medSer: number; }) => medicion.medSer === this.ServiciosGraficar[0].serId); 
 
       createAndRenderChart(contenedor, this.Mediciones, 1, [this.ServiciosGraficar[0]], 1);
       
+      this.habilitarBotonPDF = true;
     });    
 
     function createAndRenderChart(container: HTMLElement, mediciones: any[], i: number, servicios: any[], nroIf: number): void {

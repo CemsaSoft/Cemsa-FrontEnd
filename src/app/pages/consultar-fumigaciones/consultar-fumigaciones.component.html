@@ -236,10 +236,10 @@
    </form>
    <div class="row">
      <div class="modal-footer text-center col-3">
-         <button *ngIf="mostrarBtnEditarModificacion" type="submit" id="btnEditar" class="btn btn-success" (click)="desbloquearEditar()">Editar</button>
+         <button [disabled]="!mostrarBtnEditarModificacion" type="submit" id="btnEditar" class="btn btn-success" (click)="desbloquearEditar()">Editar</button>
      </div>
      <div class="modal-footer text-center col-3">
-         <button *ngIf="mostrarBtnAceptarModificacion" id="btnAceptarModificacion" type="submit" class="btn btn-success" (click)="modificarFumigacion()">Aceptar</button>
+         <button [disabled]="!mostrarBtnAceptarModificacion" id="btnAceptarModificacion" type="submit" class="btn btn-success" (click)="modificarFumigacion()">Aceptar</button>
      </div>
      <div class="modal-footer text-center col-3"> 
          <button style="background-color: #0e3c53;" id="CancelarModificacion" type="button" class="btn text-white"data-bs-dismiss="modal">Cancelar</button>        
