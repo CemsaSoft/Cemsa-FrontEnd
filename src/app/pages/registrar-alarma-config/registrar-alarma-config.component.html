@@ -132,7 +132,7 @@
                             <div *ngIf="nombreAlarmaA?.errors?.['required']">
                               Debe ingresar un nombre de alarma. </div>
                             <div *ngIf="nombreAlarmaA?.errors?.['pattern']">
-                              No debe contener caracteres especiales. </div>
+                              No debe contener caracteres especiales ni tener más de 50 carácteres. </div>
                             </div> 
                         </div>
               
@@ -203,7 +203,7 @@
                           </div>
                           <div *ngIf="cfgObservacionA?.invalid && (cfgObservacionA?.dirty || cfgObservacionA?.touched)" class="text-danger">
                               <div *ngIf="cfgObservacionA?.errors?.['pattern']">
-                                No debe contener caracteres especiales. </div>
+                                No debe contener caracteres especiales ni tener más de 100 carácteres. </div>
                           </div> 
                         </div>                    
 

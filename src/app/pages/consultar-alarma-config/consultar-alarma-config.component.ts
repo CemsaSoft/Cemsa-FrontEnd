@@ -71,7 +71,7 @@ export class ConsultarAlarmaConfigComponent implements OnInit {
       cfgId: new FormControl(null, []), 
       nombreAlarma: new FormControl(null, [
         Validators.required,
-        Validators.pattern("^[A-Za-zÑñáéíóúÁÉÍÓÚ'°0-9/%ºª ]{1,}$"),
+        Validators.pattern("^[A-Za-zÑñáéíóúÁÉÍÓÚ'°0-9/%ºª ]{1,50}$"),        
       ]),
       nombreServicio: new FormControl(null, []),
       cfgFechaAlta: new FormControl(null, []),
@@ -85,14 +85,14 @@ export class ConsultarAlarmaConfigComponent implements OnInit {
         Validators.pattern(/^-?\d+([.,]\d{1,2})?$/)
       ]),
       cfgObservacion: new FormControl(null, [
-        Validators.pattern("^[A-Za-zÑñáéíóúÁÉÍÓÚ'°0-9/%ºª ]{1,}$"),
+        Validators.pattern("^[A-Za-zÑñáéíóúÁÉÍÓÚ'°0-9/%ºª ]{1,100}$"),
       ]),
     });
     this.formAgregar = new FormGroup({
       nroCentralA: new FormControl(null, []),
       nombreAlarmaA: new FormControl(null, [
         Validators.required,
-        Validators.pattern("^[A-Za-zÑñáéíóúÁÉÍÓÚ'°0-9/%ºª ]{1,}$"),
+        Validators.pattern("^[A-Za-zÑñáéíóúÁÉÍÓÚ'°0-9/%ºª ]{1,50}$"),
       ]),
       nombreServicioA: new FormControl(null, []),
       cfgValorSuperiorAA: new FormControl(null, [
@@ -104,7 +104,7 @@ export class ConsultarAlarmaConfigComponent implements OnInit {
         Validators.pattern(/^-?\d+([.,]\d{1,2})?$/)
       ]),
       cfgObservacionA: new FormControl(null, [
-        Validators.pattern("^[A-Za-zÑñáéíóúÁÉÍÓÚ'°0-9/%ºª ]{1,}$"),
+        Validators.pattern("^[A-Za-zÑñáéíóúÁÉÍÓÚ'°0-9/%ºª ]{1,100}$"),
       ]),
     });
   }
@@ -455,7 +455,7 @@ export class ConsultarAlarmaConfigComponent implements OnInit {
     } else if (this.nombreAlarma?.invalid && this.nombreAlarma.errors?.['required'] ) {
       mostrarError('Debe ingresar un nombre de alarma', 'Por favor, introduzca un nombre de alarma.');
     } else if (this.nombreAlarma?.invalid && this.nombreAlarma.errors?.['pattern'] ) {
-      mostrarError('El nombre no debe contener caracteres especiales.', 'Por favor, corrija el nombre e inténtelo de nuevo.');
+      mostrarError('El nombre no debe contener caracteres especiales ni tener más de 50 carácteres.', 'Por favor, corrija el nombre e inténtelo de nuevo.');
     } else if (this.cfgValorSuperiorA?.invalid && this.cfgValorSuperiorA.errors?.['required'] ) {
       mostrarError('Debe ingresar un límite superior', 'Por favor, introduzca un límite superior.');    
     } else if (this.cfgValorSuperiorA?.invalid && this.cfgValorSuperiorA.errors?.['pattern'] ) {
@@ -467,7 +467,7 @@ export class ConsultarAlarmaConfigComponent implements OnInit {
     } else if (cfgValorInferiorA >= cfgValorSuperiorA) {
       mostrarError('El valor del límete inferior debe ser menor que límite superior', 'Por favor, cambie el limite');  
     } else if (this.cfgObservacion?.invalid && this.cfgObservacion.errors?.['pattern'] ) {
-      mostrarError('La observación no debe contener caracteres especiales.', 'Por favor, Por favor, corrija la observación e inténtelo de nuevo.');
+      mostrarError('La observación no debe contener caracteres especiales ni tener más de 100 carácteres.', 'Por favor, Por favor, corrija la observación e inténtelo de nuevo.');
     } else {
     
     let alarmaC: AlarmaConfigClass = new AlarmaConfigClass(
@@ -554,7 +554,7 @@ export class ConsultarAlarmaConfigComponent implements OnInit {
     if (this.nombreAlarmaA?.invalid && this.nombreAlarmaA.errors?.['required'] ) {
       mostrarError('Debe ingresar un nombre de alarma', 'Por favor, introduzca un nombre de alarma.');
     } else if (this.nombreAlarmaA?.invalid && this.nombreAlarmaA.errors?.['pattern'] ) {
-      mostrarError('El nombre no debe contener caracteres especiales.', 'Por favor, corrija el nombre e inténtelo de nuevo.');
+      mostrarError('El nombre no debe contener caracteres especiales ni tener más de 50 carácteres.', 'Por favor, corrija el nombre e inténtelo de nuevo.');
     } else if (this.cfgValorSuperiorAA?.invalid && this.cfgValorSuperiorAA.errors?.['required'] ) {
       mostrarError('Debe ingresar un límite superior', 'Por favor, introduzca un límite superior.');    
     } else if (this.cfgValorSuperiorAA?.invalid && this.cfgValorSuperiorAA.errors?.['pattern'] ) {
@@ -566,7 +566,7 @@ export class ConsultarAlarmaConfigComponent implements OnInit {
     } else if (cfgValorInferiorA >= cfgValorSuperiorA) {
       mostrarError('El valor del límete inferior debe ser menor que límite superior', 'Por favor, cambie el limite');  
     } else if (this.cfgObservacionA?.invalid && this.cfgObservacionA.errors?.['pattern'] ) {
-      mostrarError('La observación no debe contener caracteres especiales.', 'Por favor, Por favor, corrija la observación e inténtelo de nuevo.');
+      mostrarError('La observación no debe contener caracteres especiales ni tener más de 100 carácteres.', 'Por favor, Por favor, corrija la observación e inténtelo de nuevo.');
     } else {
     
     let alarmaC: AlarmaConfigClass = new AlarmaConfigClass(

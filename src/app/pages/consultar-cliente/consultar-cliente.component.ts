@@ -69,17 +69,22 @@ export class ConsultarClienteComponent implements OnInit {
       cliApeNomDen: new FormControl(null, [
         Validators.required,
         Validators.minLength(3),
+        Validators.maxLength(50),
         Validators.pattern('^[a-zA-Z0-9 ]*$'),
         Validators.pattern('^[A-Z].*$')
       ]),
       usuario: new FormControl(null, [
         Validators.required,
         Validators.minLength(3),
+        Validators.maxLength(50),
         Validators.pattern('^[a-zA-Z0-9 ]*$'),        
       ]),   
       fechaAlta: new FormControl(null, []),   
       fechaBaja: new FormControl(null, []),   
-      email: new FormControl(null, [Validators.email]),
+      email: new FormControl(null, [
+        Validators.email,
+        Validators.maxLength(30),
+      ]),
       telefono: new FormControl(null, [Validators.pattern(/^[\d]{2,4}-?[\d]{6,8}$/)]),
     });
 

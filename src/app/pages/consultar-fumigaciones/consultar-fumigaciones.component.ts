@@ -62,14 +62,14 @@ export class ConsultarFumigacionesComponent implements OnInit {
       fechaAlta: new FormControl(null, []),
       fechaRealizacion: new FormControl(null, []),
       observacion: new FormControl(null, [
-        Validators.pattern("^[A-Za-zÑñáéíóúÁÉÍÓÚ'°0-9/%ºª ]{1,}$"),
-      ]),
+        Validators.pattern("^[A-Za-zÑñáéíóúÁÉÍÓÚ'°0-9/%ºª ]{1,50}$"),
+      ]),      
     });
     this.formAgregar = new FormGroup({
       nroCentralA: new FormControl(null, []),
       fechaRealizacionA: new FormControl(null, []),
       observacionA: new FormControl(null, [
-        Validators.pattern("^[A-Za-zÑñáéíóúÁÉÍÓÚ'°0-9/%ºª ]{1,}$"),
+        Validators.pattern("^[A-Za-zÑñáéíóúÁÉÍÓÚ'°0-9/%ºª ]{1,50}$"),
       ]),
     });
   }
@@ -285,7 +285,7 @@ export class ConsultarFumigacionesComponent implements OnInit {
         Swal.fire({
         title: 'Error',
         text: `Verificar los datos ingresados:              
-          ${this.observacion?.invalid && this.observacion.errors?.['pattern'] ? '\n* Observación no debe contener caracteres especiales.' : ''}`,                      
+          ${this.observacion?.invalid && this.observacion.errors?.['pattern'] ? '\n* Observación no debe contener caracteres especiales ni tener más de 50 caracteres.' : ''}`,                      
         icon: 'warning',
         confirmButtonColor: '#0f425b',
         confirmButtonText: 'Aceptar',
@@ -414,7 +414,7 @@ export class ConsultarFumigacionesComponent implements OnInit {
       Swal.fire({
         title: 'Error',
         text: `Verificar los datos ingresados:                        
-            ${this.observacionA?.invalid && this.observacionA.errors?.['pattern'] ? '\n* Observación no debe contener caracteres especiales.' : ''}`,
+            ${this.observacionA?.invalid && this.observacionA.errors?.['pattern'] ? '\n* Observación no debe contener caracteres especiales ni tener más de 50 caracteres.' : ''}`,
         icon: 'warning',
         confirmButtonColor: '#0f425b',
         confirmButtonText: 'Aceptar',

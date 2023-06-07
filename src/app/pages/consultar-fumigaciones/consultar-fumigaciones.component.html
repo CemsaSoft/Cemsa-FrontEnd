@@ -228,7 +228,7 @@
                </div>
               <div *ngIf="observacion?.invalid && (observacion?.dirty || observacion?.touched)" class="text-danger">
                  <div *ngIf="observacion?.errors?.['pattern']">
-                   No debe contener caracteres especiales. </div>
+                  No debe contener caracteres especiales ni tener más de 50 caracteres. </div>
                </div> 
            </div>
 
@@ -349,7 +349,7 @@
               </div>
              <div *ngIf="observacionA?.invalid && (observacionA?.dirty || observacionA?.touched)" class="text-danger">
                 <div *ngIf="observacionA?.errors?.['pattern']">
-                  No debe contener caracteres especiales. </div>
+                  No debe contener caracteres especiales ni tener más de 50 caracteres. </div>
               </div> 
           </div>
       </fieldset>

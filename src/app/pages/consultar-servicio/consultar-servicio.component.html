@@ -123,7 +123,7 @@
                       La descripción es requerida.
                   </div>
                   <div *ngIf="descripcion?.errors?.['pattern']">
-                    La primera letra debe ser mayúscula y no debe contener caracteres especiales. Además, debe tener más de 3 caracteres. </div>
+                    La primera letra debe ser mayúscula y no debe contener caracteres especiales. Además, debe tener más de 3 caracteres y menos de 30 caracteres. </div>
                 </div>
             </div>
 
@@ -146,7 +146,7 @@
                     La unidad es requerida.
                 </div>
                 <div *ngIf="unidad?.errors?.['pattern']">
-                    No debe contener caracteres especiales.
+                    No debe contener caracteres especiales ni tener más de 12 caracteres.
                 </div>
               </div>          
             </div>
@@ -233,7 +233,7 @@
                       La descripción es requerida.
                   </div>
                   <div *ngIf="descripcionA?.errors?.['pattern']">
-                    La primera letra debe ser mayúscula y no debe contener caracteres especiales. Además, debe tener más de 3 caracteres.                  </div>
+                    La primera letra debe ser mayúscula y no debe contener caracteres especiales. Además, debe tener más de 3 caracteres y menos de 30 caracteres. </div>
                 </div>
             </div>
             <div class="col-md-12">
@@ -255,7 +255,7 @@
                     La unidad es requerida.
                 </div>
                 <div *ngIf="unidadA?.errors?.['pattern']">
-                    No debe contener caracteres especiales.
+                  No debe contener caracteres especiales ni tener más de 12 caracteres.
                 </div>
               </div>             
             </div>

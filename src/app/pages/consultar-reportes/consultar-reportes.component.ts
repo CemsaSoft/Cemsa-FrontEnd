@@ -178,40 +178,37 @@ formfiltro: FormGroup;
       doc.text('Datos Estadisticos: ', 20, yPos);
       yPos += 10;
       doc.text('Fecha desde: ' + desde.toLocaleDateString() + '   -   Fecha hasta: ' + hasta.toLocaleDateString(), 20, yPos);
-      yPos += 15;
+      yPos += 10;
       
+      doc.text('Promedio: ' + this.formReporte.get('promedio')?.value, 20, yPos);
+      yPos += 10;
+      doc.text('Cantidad de Medediciones: ' + this.formReporte.get('cantMed')?.value, 20, yPos);
+
+      yPos += 10;
       let yRef = yPos;
-      doc.text('Máximo Valor: ', 10, yPos);
+      doc.text('Máximo Valor: ', 20, yPos);
       yPos += 10;
       for (let i = 0; i < this.MedMax.length; i++) {
         const fechaHora = new Date(this.MedMax[i].medFechaHoraSms);
         const fechaFormateada = `${fechaHora.getFullYear()}/${(fechaHora.getMonth() + 1).toString().padStart(2, '0')}/${fechaHora.getDate().toString().padStart(2, '0')} ${fechaHora.getHours().toString().padStart(2, '0')}:${fechaHora.getMinutes().toString().padStart(2, '0')}`;    
-        doc.circle(15, yPos -1 , 1, 'FD');
-        doc.text('Fecha: ' + fechaFormateada + ' - Valor: ' + this.MedMax[i].medValor.toString(), 15 + 5, yPos);    
+        doc.circle(25, yPos -1 , 1, 'FD');
+        doc.text('Fecha: ' + fechaFormateada + ' - Valor: ' + this.MedMax[i].medValor.toString(), 25 + 5, yPos);    
         yPos += 10;
       }
 
+
       yPos = yRef;
-      doc.text('Mínimo Valor: ', 90, yPos);
+      doc.text('Mínimo Valor: ', 110, yPos);
       yPos += 10;
       for (let i = 0; i < this.MedMin.length; i++) {
         const fechaHora = new Date(this.MedMin[i].medFechaHoraSms);
         const fechaFormateada = `${fechaHora.getFullYear()}/${(fechaHora.getMonth() + 1).toString().padStart(2, '0')}/${fechaHora.getDate().toString().padStart(2, '0')} ${fechaHora.getHours().toString().padStart(2, '0')}:${fechaHora.getMinutes().toString().padStart(2, '0')}`;    
-        doc.circle(95, yPos -1, 1, 'FD');
-        doc.text('Fecha: ' + fechaFormateada + ' - Valor: ' + this.MedMin[i].medValor.toString(), 95 + 5, yPos);    
+        doc.circle(115, yPos -1, 1, 'FD');
+        doc.text('Fecha: ' + fechaFormateada + ' - Valor: ' + this.MedMin[i].medValor.toString(), 115 + 5, yPos);    
         yPos += 10;
       }
 
-      yPos = yRef;
-      doc.text('Promedio: ', 170, yPos);
-      yPos += 10;
-        doc.circle(175, yPos -1, 1, 'FD');
-        doc.text(this.formReporte.get('promedio')?.value, 175 + 5, yPos);    
 
-      if (this.MedMax.length >= this.MedMin.length) { yPos = yRef + (10 * this.MedMax.length + 1) }
-      else { yPos = yRef + (10 * this.MedMin.length + 1) }
-
-      yPos += 10;
 
       doc.line(20, 280, doc.internal.pageSize.getWidth()-20, 280);
       doc.text('Página 1', 98,  285); 
@@ -345,57 +342,7 @@ formfiltro: FormGroup;
                 count = 0; // Reiniciar el contador
               }
             }
-          }
-
-          // let nroPag=2;
-          // if (this.op1T)
-          // {
-
-          //       //Agrego Nueva Pagina
-          //       doc.addPage();
-          //       nroPag =+1
-          //       // Agregar la imagen al documento PDF
-          //       doc.addImage(imageData, 'PNG', 120, 0, 80, 20);  
-          //       doc.setFontSize(12);
-          //       doc.line(20, 280, doc.internal.pageSize.getWidth()-20, 280);
-          //       doc.text('Página '+ nroPag, 98,  285);
-
-          //       // Definir la posición inicial para dibujar el contenido
-          //       yPos = 15;
-
-          //       // Definir el título del reporte
-          //       //const title = 'Reporte de Central Meteorológica';
-          //       // Agregar el título al documento
-          //       doc.setFontSize(18);
-          //       doc.text(title, 20, yPos);
-          //       yPos += 5;
-          //       doc.line(20, yPos, doc.internal.pageSize.getWidth()-20, yPos);
-          //       yPos += 10;
-
-          //       doc.setFontSize(16);
-          //       doc.text('Mediciones: ', 20, yPos);
-          //       yPos += 10;
-
-          //       doc.setFontSize(10);
-          //       doc.text('item' , 27, yPos);
-          //       doc.text('Num. Med.', 48, yPos);
-          //       doc.text('Servicio', 90, yPos);    
-          //       doc.text('Valor', 128, yPos);    
-          //       doc.text('Fecha Medición', 152, yPos); 
-          //       yPos += 10;
-          //       for (let a = 0; a < this.MedicionesTablaFiltrados.length; a++) {
-          //         const item = a+1;
-          //         doc.text(item.toString() , 30, yPos);
-          //         doc.text((this.MedicionesTablaFiltrados[a].medId.toString()).toString(), 50, yPos);
-          //         doc.text((this.MedicionesTablaFiltrados[a].serDescripcion).toString().substring(0, 25), 75, yPos);   
-          //         doc.text(this.MedicionesTablaFiltrados[a].medValor.toString(), 130, yPos);    
-                  
-          //         const fechaHora = new Date(this.MedicionesTablaFiltrados[a].medFechaHoraSms);
-          //         const fechaFormateada = `${fechaHora.getFullYear()}/${(fechaHora.getMonth() + 1).toString().padStart(2, '0')}/${fechaHora.getDate().toString().padStart(2, '0')} ${fechaHora.getHours().toString().padStart(2, '0')}:${fechaHora.getMinutes().toString().padStart(2, '0')}`;    
-          //         doc.text(fechaFormateada, 150, yPos);    
-          //         yPos += 10;
-          //       }               
-          // }
+          }        
 
           // Guardar el documento PDF
           doc.save('Reporte Servicio ' + this.ServiciosGraficar[0].serDescripcion + ' - Fecha ' + currentDate +'.pdf');

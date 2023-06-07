@@ -40,6 +40,7 @@
                   <div *ngIf="cliApeNomDen?.errors?.['required']">El Cliente es requerido.</div>
                   <div *ngIf="cliApeNomDen?.errors?.['pattern']">La primera letra del Nombre del Cliente debe ser Mayúscula, no se admiten caracteres.</div>
                   <div *ngIf="cliApeNomDen?.errors?.['minlength']">El Nombre del Cliente debe tener al menos 3 caracteres.</div>
+                  <div *ngIf="cliApeNomDen?.errors?.['maxlength']">El Nombre del Usuario debe tener menos de 50 caracteres.</div>
                 </div>        
               </div>
               <div class="col-md-6">
@@ -57,6 +58,7 @@
                   <div *ngIf="usuario?.errors?.['required']">El Usuario es requerido.</div>
                   <div *ngIf="usuario?.errors?.['pattern']">El Nombre del Usuario no admiten caracteres.</div>
                   <div *ngIf="usuario?.errors?.['minlength']">El Nombre del Usuario debe tener al menos 3 caracteres.</div>
+                  <div *ngIf="usuario?.errors?.['maxlength']">El Nombre del Usuario debe tener menos de 50 caracteres.</div>
                 </div>  
               </div>    
             </div>
@@ -74,7 +76,9 @@
                     </span>
                 </div>
                 <div *ngIf="email?.invalid && (email?.dirty || email?.touched)" class="text-danger">
+                  <div *ngIf="email?.errors?.['required']">El correo electrónico es requerido.</div>
                   <div *ngIf="email?.errors?.['email']">El correo electrónico es inválido.</div>
+                  <div *ngIf="email?.errors?.['maxlength']">El mail del debe tener menos de 30 caracteres.</div>
                 </div>
               </div>
               <div class="col-md-6">
@@ -90,6 +94,7 @@
                   </span>
                 </div>
                 <div *ngIf="telefono?.invalid && (telefono?.dirty || telefono?.touched)" class="text-danger">
+                  <div *ngIf="telefono?.errors?.['required']">El teléfono es requerido.</div>
                   <div *ngIf="telefono?.errors?.['pattern']">
                     El número de teléfono es inválido. Los formatos permitidos son: '1234567890', '123-4567890', '1234-567890' o '1234-56-7890'
                   </div>
