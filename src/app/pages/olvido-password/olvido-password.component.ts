@@ -70,7 +70,7 @@ export class OlvidoPasswordComponent implements OnInit {
         footer: 'Por favor, corrija los errores e inténtelo de nuevo.'
       });     
     } else {
-      this.servicioUsuario.recuperarMail(usuario, email)
+      this.servicioUsuario.recuperarPassword(usuario, email)
         .subscribe(
           (response) => {
             if (response === 'Se envio Email y se blanqueo la Contraseña') {
