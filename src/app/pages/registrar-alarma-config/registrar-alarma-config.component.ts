@@ -157,7 +157,7 @@ export class RegistrarAlarmaConfigComponent implements OnInit {
             });
           }          
           if (this.ServiciosCentralA.length == 0) {
-            mostrarError('La Central Seleccionada No tiene Servicios asignados', 'Por favor, comunicar con su Administrados, para que le agregue servicios a su central.')
+            mostrarError('La Central Seleccionada No tiene Servicios asignados', 'Por favor, comunicarse con su Administrador.')
               .then(() => {
                 location.reload();
               });
@@ -254,7 +254,7 @@ export class RegistrarAlarmaConfigComponent implements OnInit {
   } else if (this.cfgValorSuperiorAA?.invalid && this.cfgValorSuperiorAA.errors?.['pattern'] ) {
     mostrarError('El límite inferior no es valido', 'Por favor, corrija el límite inferior e inténtelo de nuevo.');    
   } else if (cfgValorInferiorA >= cfgValorSuperiorA) {
-    mostrarError('El valor del límete inferior debe ser menor que límite superior', 'Por favor, cambie el limite');  
+    mostrarError('El valor del límite inferior debe ser menor que el límite superior', 'Por favor, cambie el límite.');
   } else if (this.cfgObservacionA?.invalid && this.cfgObservacionA.errors?.['pattern'] ) {
     mostrarError('La observación no debe contener caracteres especiales ni tener más de 100 carácteres.', 'Por favor, Por favor, corrija la observación e inténtelo de nuevo.');
   } else {

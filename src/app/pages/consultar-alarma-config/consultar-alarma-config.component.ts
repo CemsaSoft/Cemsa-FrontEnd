@@ -304,7 +304,7 @@ export class ConsultarAlarmaConfigComponent implements OnInit {
             });
           }          
           if (this.ServiciosCentralA.length == 0) {
-            mostrarError('La Central Seleccionada No tiene Servicios asignados', 'Por favor, comunicar con su Administrados, para que le agregue servicios a su central.')
+            mostrarError('La Central Seleccionada No tiene Servicios asignados', 'Por favor, comunicarse con su Administrador.')
               .then(() => {
                 location.reload();
               });

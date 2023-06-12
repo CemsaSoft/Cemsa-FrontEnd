@@ -150,7 +150,7 @@ export class ConsultarCuentaComponent implements OnInit {
           this.clienteConsultar.actualizarCliente(Cliente, usuario).subscribe(
             result => {
               Swal.fire({
-                text: 'Se ha actualizado el Cliente: '+ this.formModificar.get('cliApeNomDen')?.value,
+                text: 'Se ha actualizado el Usuario: '+ this.formModificar.get('usuario')?.value,
                 icon: 'success',
                 position: 'top',
                 showConfirmButton: true,

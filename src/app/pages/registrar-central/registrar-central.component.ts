@@ -341,7 +341,7 @@ export class RegistrarCentralComponent implements OnInit {
           
           ${this.imei?.invalid && this.imei.errors?.['required'] ? '\n* El IMEI es requerido' : ''}
           
-          ${this.imei?.invalid && this.imei.errors?.['pattern'] ? '\n*Debe ingresar solamente 15 números' : ''}`,
+          ${this.imei?.invalid && this.imei.errors?.['pattern'] ? '\n*Debe ingresar solamente 15 números para el IMEI' : ''}`,
         icon: 'warning',
         confirmButtonColor: '#0f425b',
         confirmButtonText: 'Aceptar',

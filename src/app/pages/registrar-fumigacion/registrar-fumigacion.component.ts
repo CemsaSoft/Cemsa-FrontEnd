@@ -185,7 +185,7 @@ export class RegistrarFumigacionComponent implements OnInit {
         mostrarError('Seleccione una central para registrar la fumigación.', 'Por favor, seleccione una central para generar el registro de la fumigación.');
         return false;
       }else if (isNaN(fechaRealiz.getTime())) {
-        mostrarError('Ingrese una fecha de realización de la fumigación válida.', 'Por favor, ingrese una fecha de realización de la fumigación válida para generar el registro de la fumigación.');
+        mostrarError('Ingrese una fecha de realización.', 'Por favor, ingrese una fecha de realización de la fumigación válida para generar el registro de la fumigación.');
         return false;
       }else if (esFechaPosterior || esFechaMenor) {
         if (esFechaPosterior) {
@@ -226,7 +226,7 @@ export class RegistrarFumigacionComponent implements OnInit {
     this.fumigacionesConsulta.registrarFumigacion(fumigaciones).subscribe(
       (data) => {
         Swal.fire({
-          text: 'La fumigacion ha sido registrado con éxito con el número de Cod.: ' + data.fumId,
+          text: 'La fumigación ha sido registrado con éxito con el número de Cod.: ' + data.fumId,
           icon: 'success',
           position: 'top',
           showConfirmButton: true,
@@ -243,7 +243,7 @@ export class RegistrarFumigacionComponent implements OnInit {
     },
     (error) => {
       Swal.fire({
-        text: 'No es posible Agregar esta fumigacion',
+        text: 'No es posible Agregar esta fumigación',
         icon: 'error',
         position: 'top',
         showConfirmButton: true,

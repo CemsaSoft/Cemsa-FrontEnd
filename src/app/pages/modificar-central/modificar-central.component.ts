@@ -304,7 +304,7 @@ export class ModificarCentralComponent implements OnInit {
         title: 'Error',
         text: `Verificar los datos ingresados:              
           ${this.imei?.invalid && this.imei.errors?.['required'] ? '\n* El IMEI es requerido' : ''}          
-          ${this.imei?.invalid && this.imei.errors?.['pattern'] ? '\n*Debe ingresar solamente 15 números' : ''}`,
+          ${this.imei?.invalid && this.imei.errors?.['pattern'] ? '\n*Debe ingresar solamente 15 números para el IMEI' : ''}`,
         icon: 'warning',
         confirmButtonColor: '#0f425b',
         confirmButtonText: 'Aceptar',

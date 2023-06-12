@@ -358,7 +358,7 @@ export class ConsultarFumigacionesComponent implements OnInit {
       });
     }, (error) => {
       Swal.fire({
-        text: 'No es posible eliminar esta fumigacion',
+        text: 'No es posible eliminar esta fumigación',
         icon: 'error',
         position: 'top',
         showConfirmButton: true,
@@ -399,7 +399,7 @@ export class ConsultarFumigacionesComponent implements OnInit {
         if (esFechaPosterior) {
           mostrarError('La fecha de realización de la fumigación no puede ser posterior a la fecha actual.', 'Por favor, cambie la fecha de realización de la fumigación.');
         } else {
-          mostrarError('La fecha de realización de la fumigación no puede ser 7 días de la fecha actual.', 'Por favor, cambie la fecha de realización de la fumigación.');
+          mostrarError('La fecha de realización de la fumigación debe ser anterior a la fecha actual y no puede exceder los 7 días a partir de la fecha actual.', 'Por favor, cambie la fecha de realización de la fumigación.');
         }
         return false;
       } 
@@ -434,7 +434,7 @@ export class ConsultarFumigacionesComponent implements OnInit {
     this.fumigacionesConsulta.registrarFumigacion(fumigaciones).subscribe(
       (data) => {
         Swal.fire({
-          text: 'La fumigacion ha sido registrado con éxito con el número de Cod.: ' + data.fumId,
+          text: 'La fumigación ha sido registrado con éxito con el número de Cod.: ' + data.fumId,
           icon: 'success',
           position: 'top',
           showConfirmButton: true,
@@ -451,7 +451,7 @@ export class ConsultarFumigacionesComponent implements OnInit {
     },
     (error) => {
       Swal.fire({
-        text: 'No es posible Agregar esta fumigacion',
+        text: 'No es posible Agregar esta fumigación',
         icon: 'error',
         position: 'top',
         showConfirmButton: true,
