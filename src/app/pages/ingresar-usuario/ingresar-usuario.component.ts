@@ -1,6 +1,7 @@
 //SISTEMA
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import Swal, { SweetAlertOptions } from 'sweetalert2';
 
 //COMPONENTES
 import { UsuarioClass } from 'src/app/core/models/usuario';
@@ -66,7 +67,13 @@ export class IngresarUsuarioComponent implements OnInit {
   redireccionar(): string {
      let localToken = this.servicioUsuario.obtenerToken();
      if (localToken != null && localToken != '') {
-       return (location.href = '/home');
+       if (this.formInicio.get('password')?.value != "123456") {
+        localStorage.setItem('cambiarPassword', "0");
+        return (location.href = '/home');
+       } else { 
+        localStorage.setItem('cambiarPassword', "1");
+        return (location.href = '/modificar-password');                   
+       }       
      } else {
        return '';
      }

@@ -10,6 +10,7 @@ import { ModificarCentralComponent } from './pages/modificar-central/modificar-c
 import { RegistrarCentralComponent } from './pages/registrar-central/registrar-central.component';
 import { ConsultarClienteComponent } from './pages/consultar-cliente/consultar-cliente.component';
 import { IngresarUsuarioComponent } from './pages/ingresar-usuario/ingresar-usuario.component';
+import { OlvidoPasswordComponent } from './pages/olvido-password/olvido-password.component';
 import { RouteguardsGuard } from './routeguards.guard';
 import { RegistrarClienteComponent } from './pages/registrar-cliente/registrar-cliente.component';
 import { ConsultarFumigacionesComponent } from './pages/consultar-fumigaciones/consultar-fumigaciones.component';
@@ -33,6 +34,7 @@ if (localStorage.getItem('rol') === '1')
    routes = [
     //Aquí configuramos las rutas, indicamos en el path la ruta, seguido de los componentes que mostrará esa ruta
     {path: '', component: IngresarUsuarioComponent},
+    {path: 'olvido-password', component: OlvidoPasswordComponent},    
     {path:'home', component: HomeComponent, canActivate: [RouteguardsGuard]},
     {path:'consultar-servicio', component: ConsultarServicioComponent, canActivate: [RouteguardsGuard]},
     {path:'registrar-servicio', component: RegistrarServicioComponent, canActivate: [RouteguardsGuard]},
@@ -64,6 +66,7 @@ if (localStorage.getItem('rol') === '1')
     {path:'consultar-alarma', component: ConsultarAlarmaComponent, canActivate: [RouteguardsGuard]},
 
     {path: '', component: IngresarUsuarioComponent},
+    {path: 'olvido-password', component: OlvidoPasswordComponent},    
     {path: '', redirectTo: '/', pathMatch:'full'},
     {path:'**', redirectTo: '/', pathMatch:'full'},
   ];
