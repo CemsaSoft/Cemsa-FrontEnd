@@ -1,6 +1,6 @@
 //SISTEMA
 import { JsonpClientBackend } from '@angular/common/http';
-import { Component, OnInit, Output } from '@angular/core';
+import { Component, OnInit, Output, ViewChild } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -8,10 +8,14 @@ import {
   Validators,
 } from '@angular/forms';
 import Swal, { SweetAlertOptions } from 'sweetalert2';
+import { MatStepper } from '@angular/material/stepper';
 
 //COMPONENTES
 import { ClienteClass } from 'src/app/core/models/cliente';
 import { ClienteConsultaClass } from 'src/app/core/models/clienteConsulta';
+import { StepComponent } from 'src/app/shared/step/step.component';
+import { TipoDocumentoClass } from 'src/app/core/models/tipoDocumento';
+
 
 //SERVICIOS
 import { ClienteService } from 'src/app/core/services/cliente.service';
@@ -22,11 +26,24 @@ import { ClienteService } from 'src/app/core/services/cliente.service';
   styleUrls: ['./consultar-cliente.component.css']
 })
 export class ConsultarClienteComponent implements OnInit {
+    //STEPPER
+    titulo1 = 'Consultá información de los clientes:';
+    titulo2 = 'Modificar información de un cliente';
+    titulo3 = 'Título del tercer paso';
+    isStep1Completed = false;
+    isStep2Completed = false;
+    isStep3Completed = false;
+   
+    @ViewChild(MatStepper, { static: false }) stepper: MatStepper | undefined;
 
   //VARIABLES DE OBJETOS LIST
   Clientes: ClienteConsultaClass[] = [];
   ClientesFiltrados: ClienteConsultaClass[] = [];
-
+  tiposDocumento: TipoDocumentoClass[] = [
+    new TipoDocumentoClass(1, 'DNI'),
+    new TipoDocumentoClass(2, 'LE'),
+    new TipoDocumentoClass(3, 'CUIT')
+  ];
   //VARIABLES DE DATOS
   propiedadOrdenamientoCliente: string = 'tdDescripcion'; 
   cliNroDocSeleccionado: string = '';
@@ -46,21 +63,29 @@ export class ConsultarClienteComponent implements OnInit {
   "Ingrese un correo electrónico válido. Los caracteres permitidos son letras, números, puntos, guiones y guiones bajos.";
   telefonoValido: string =
   "Ingrese un número de teléfono válido. Los formatos permitidos son: '1234567890', '123-4567890', '1234-567890' o '1234-56-7890'";
+  
+
 
   cliTipoDocSeleccionado : number = 0;
   cliIdUsuarioSeleccionado : number = 0;
   tipoOrdenamientoCliente: number = 1;
+  tipoDocumentoSeleccionado: number = 0;
   
   cliFechaAltaDate: Date = new Date(); 
 
   isCollapsed1 = false;
   isCollapsed2 = false;  
 
+  //PAGINADO
+  pageSize = 5; // Número de elementos por página
+  currentPage = 1; // Página actual
+  totalItems = 0; // Total de elementos en la tabla
+
+
   //FORMULARIOS DE AGRUPACION DE DATOS
   formModificar: FormGroup;
-
   constructor(
-    private clienteConsultar: ClienteService,    
+    private clienteConsultar: ClienteService, private formBuilder: FormBuilder 
   ) { 
     this.formModificar = new FormGroup({
       tipoDocumento: new FormControl(null, []),
@@ -83,6 +108,7 @@ export class ConsultarClienteComponent implements OnInit {
 
     });
   }
+ 
 
   toggleCollapse1() {
     this.isCollapsed1 = !this.isCollapsed1;
@@ -157,7 +183,65 @@ export class ConsultarClienteComponent implements OnInit {
       return true;
     }
   }
+  //STEP
+  goToNextStep(stepNumber: number): void {
+    console.log(`Pasando al siguiente paso: ${stepNumber}`);
+    if (this.stepper) {
+      this.stepper.selectedIndex = stepNumber;
+    }
+  }
+  
+  goToPreviousStep(): void {
+    if (this.stepper) {
+      this.stepper.previous();
+    }
+  }
+  // Placeholder de DNI
+  formatDocumentNumber(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const value = input.value.replace(/\D/g, ''); // Eliminar cualquier carácter que no sea un dígito
 
+    // Aplicar la máscara con puntos solo cuando se pierde el foco o se presiona Enter
+    input.addEventListener('blur', applyMask);
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        applyMask();
+      }
+    });
+
+    const insertDots = (value: string): string => {
+      const digit1 = value.slice(0, 2);
+      const digit2 = value.slice(2, 5);
+      const digit3 = value.slice(5, 8);
+
+      let formattedValue = '';
+
+      if (digit1) {
+        formattedValue += digit1;
+      }
+
+      if (digit2) {
+        formattedValue += `.${digit2}`;
+      }
+
+      if (digit3) {
+        formattedValue += `.${digit3}`;
+      }
+
+      return formattedValue;
+    };
+
+    function applyMask() {
+      const formattedValue = insertDots(value);
+      input.value = formattedValue;
+
+      // Verificar y ajustar el placeholder
+      if (value.length === 0) {
+        input.placeholder = '12.345.678';
+      }
+    }
+  }
+  
   //Almacena los datos del servicio que fue seleccionado en la tabla de servicio filtrados dentro de variables locales.
   esfilaSeleccionadaCliente(cliente: ClienteConsultaClass) {     
     this.cliNroDocSeleccionado = cliente.cliNroDoc;
@@ -202,7 +286,12 @@ export class ConsultarClienteComponent implements OnInit {
       return '🠋🠉';
     }
   }
-
+  //Filtro de Tipo de DNI
+  filtrarClientesPorTipoDocumento() {
+    
+    this.ClientesFiltrados = this.Clientes.filter(cliente => cliente.cliTipoDoc === this.tipoDocumentoSeleccionado);
+  }
+  
   //Filtro de Central por Nombre Cliente o Usuario.
   esFiltrar(event: Event, campo: string) {
     let txtBuscar = (event.target as HTMLInputElement).value;
@@ -332,8 +421,7 @@ export class ConsultarClienteComponent implements OnInit {
       if (this.formModificar.valid == false) {      
         Swal.fire({
           title: 'Error',
-          text: 'Verificar los datos ingresados.',              
-              
+          text: 'Verificar los datos ingresados.',      
           icon: 'warning',
           confirmButtonColor: '#0f425b',
           confirmButtonText: 'Aceptar',
@@ -358,7 +446,7 @@ export class ConsultarClienteComponent implements OnInit {
                 Swal.fire({
                   text: 'Se ha actualizado el Cliente: '+ this.formModificar.get('cliApeNomDen')?.value,
                   icon: 'success',
-                  position: 'top',
+                  position: 'center',
                   showConfirmButton: true,
                   confirmButtonColor: '#0f425b',
                   confirmButtonText: 'Aceptar',
@@ -372,7 +460,7 @@ export class ConsultarClienteComponent implements OnInit {
                 Swal.fire({
                   text: 'No es posible Actualizar el Cliente',
                   icon: 'error',
-                  position: 'top',
+                  position: 'center',
                   showConfirmButton: true,
                   confirmButtonColor: '#0f425b',
                   confirmButtonText: 'Aceptar',
@@ -384,7 +472,7 @@ export class ConsultarClienteComponent implements OnInit {
             Swal.fire({
               text: error.error,
               icon: 'error',
-              position: 'top',
+              position: 'center',
               showConfirmButton: true,
               confirmButtonColor: '#0f425b',
               confirmButtonText: 'Aceptar',
@@ -393,5 +481,18 @@ export class ConsultarClienteComponent implements OnInit {
         );
       }
     }
+  }
+  paginaCambiada(event: any) {
+    this.currentPage = event;
+    const cantidadPaginas = Math.ceil(
+      this.ClientesFiltrados.length / this.pageSize
+    );
+    const paginas = [];
+
+    for (let i = 1; i <= cantidadPaginas; i++) {
+      paginas.push(i);
+    }
+    return paginas;
   } 
+
 }

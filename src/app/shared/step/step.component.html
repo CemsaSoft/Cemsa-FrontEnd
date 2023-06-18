@@ -1,0 +1,20 @@
+<mat-vertical-stepper>
+  <mat-step [label]="titulo1" [completed]="isStep1Completed">
+    <ng-container contenido-paso-1 >
+      <!-- Contenido del primer paso específico de la página -->
+      <button mat-button (click)="goToNextStep(1)">Siguiente</button>
+    </ng-container>
+  </mat-step>
+  <mat-step [label]="titulo2" [completed]="isStep2Completed">
+    <ng-container contenido-paso-2>
+      <!-- Contenido del segundo paso específico de la página -->
+      <button mat-button (click)="goToNextStep(2)">Siguiente</button>
+    </ng-container>
+  </mat-step>
+  <mat-step [label]="titulo3" [completed]="isStep3Completed">
+    <ng-container contenido-paso-3>
+      <!-- Contenido del tercer paso específico de la página -->
+      <button mat-button (click)="goToNextStep(3)">Siguiente</button>
+    </ng-container>
+  </mat-step>
+</mat-vertical-stepper>

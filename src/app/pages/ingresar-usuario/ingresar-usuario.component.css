@@ -1,11 +1,42 @@
 .abs-center {
-    display: flex;
-    align-items: top;
-    justify-content: center;
-    min-height: 90vh;
-    padding: 15%;
-  }
+  display: flex;
+  align-items: top;
+  justify-content: center;
+  min-height: 90vh;
+  padding: 15%;
+}
+.bodyF {
+  background-image:url("../../../assets/fondoIngreso.jpg");
+  background-position: left left;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
+img {
+  width: 275px;
+}
 
-img{
-    width: 275px;
+.gradient-custom-2 {
+  background: #32b8cd;
+  background: linear-gradient(
+    49deg,
+    #32b8cde3 0%,
+    #38184c 100%
+  );
+}
+
+@media (min-width: 768px) {
+  .gradient-form {
+    height: 100vh !important;
   }
+}
+@media (min-width: 769px) {
+  .gradient-custom-2 {
+    border-top-right-radius: 0.3rem;
+    border-bottom-right-radius: 0.3rem;
+  }
+}
+.card {
+  background-color: hsla(0, 0%, 100%, 0.8) !important;
+}
+

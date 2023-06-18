@@ -1,15 +1,15 @@
 .modal-content
 {
     border-radius: 100%;
-        width: 100%;
-        max-width: 500px;
+    width: 100%;
+    max-width: 500px;
 }
 .modal-header{
-        height: 60px;
-        display: flex;
-        align-items: center;
-        padding: 0 32px;
-        background-color: #5ad910b4;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    padding: 0 32px;
+    background-color: #5ad910b4;
 }
 .modal-container{
     padding: 32px;
@@ -25,9 +25,7 @@
 
 .fondo{
     background-color: #e5e5f7;
-
-background-image:  radial-gradient(#0e3c53 1.05px, transparent 1.05px), radial-gradient(#0e3c53 1.05px, #e5e5f7 1.05px);
-background-size: 42px 42px;
-background-position: 0 0,21px 21px;
+    background-image:  radial-gradient(#0e3c53 1.05px, transparent 1.05px), radial-gradient(#0e3c53 1.05px, #e5e5f7 1.05px);
+    background-size: 42px 42px;
+    background-position: 0 0,21px 21px;
 }
-

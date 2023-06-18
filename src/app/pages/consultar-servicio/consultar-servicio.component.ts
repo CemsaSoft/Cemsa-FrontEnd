@@ -7,6 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import Swal, { SweetAlertOptions } from 'sweetalert2';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 //COMPONENTES 
 import { ServicioClass } from 'src/app/core/models/servicio';
@@ -24,6 +25,10 @@ export class ConsultarServicioComponent implements OnInit {
   //VARIABLES DE OBJETOS LIST
   Servicios: ServicioClass[] = [];
   ServiciosFiltrados: ServicioClass [] = [];
+  pageSize = 5; // Número de elementos por página
+  currentPage = 1; // Página actual
+  totalItems = 0; // Total de elementos en la tabla
+  myTable = 'myTable';
 
   //VARIABLES DE DATOS
   titulo: string = '';
@@ -224,9 +229,11 @@ export class ConsultarServicioComponent implements OnInit {
   obtenerServicio() {
     this.servicioConsultar.obtenerServicios().subscribe((data) => {
       this.Servicios = data;
+      this.totalItems = this.Servicios.length;
       this.Servicios.forEach((servicio) => {
         servicio.serDescripcion = this.serDescripcion;
         servicio.serUnidad = this.serUnidad;
+        
       });
     });
   }
@@ -378,4 +385,17 @@ export class ConsultarServicioComponent implements OnInit {
     });
     }
   }
+  paginaCambiada(event: any) {
+    this.currentPage = event;
+    const cantidadPaginas = Math.ceil(
+      this.ServiciosFiltrados.length / this.pageSize
+    );
+    const paginas = [];
+
+    for (let i = 1; i <= cantidadPaginas; i++) {
+      paginas.push(i);
+    }
+    return paginas;
+  }
+  
 }

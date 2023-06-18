@@ -23,6 +23,10 @@ export class ConsultarCentralComponent implements OnInit   {
 //VARIABLES DE OBJETOS LIST
 CentralConsulta: CentralConsultaClass[] = [];
 CentralConsultaFiltrados: CentralConsultaClass [] = [];
+pageSize = 5; // Número de elementos por página
+currentPage = 1; // Página actual
+totalItems = 0; // Total de elementos en la tabla
+myTable = 'myTable';
 
 //VARIABLES DE DATOS
 titulo: string = '';
@@ -163,5 +167,17 @@ CentralSeleccionada: any;
     //console.log(this.CentralSeleccionada)
     //console.log("paso por consultar central y los datos son");
     this.servicioCentral.enviarCentralSeleccionada(this.CentralSeleccionada)  
+  }
+  paginaCambiada(event: any) {
+    this.currentPage = event;
+    const cantidadPaginas = Math.ceil(
+      this.CentralConsultaFiltrados.length / this.pageSize
+    );
+    const paginas = [];
+
+    for (let i = 1; i <= cantidadPaginas; i++) {
+      paginas.push(i);
+    }
+    return paginas;
   }
 }

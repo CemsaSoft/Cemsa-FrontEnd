@@ -29,6 +29,21 @@ import { ConsultarCentralesClienteComponent } from './pages/consultar-centrales-
 import { ConsultarPanelesMonitoreoComponent } from './pages/consultar-paneles-monitoreo/consultar-paneles-monitoreo.component';
 import { ConsultarMedicionesActualesComponent } from './pages/consultar-mediciones-actuales/consultar-mediciones-actuales.component';
 import { RegistrarServicioComponent } from './pages/registrar-servicio/registrar-servicio.component';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { SidebarComponent } from './shared/sidebar/sidebar.component';
+import { FooterInternoComponent } from './shared/footer-interno/footer-interno.component';
+import { CardComponent } from './shared/card/card.component';
+import { StepComponent } from './shared/step/step.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatStepperModule} from '@angular/material/stepper';
+import { StepperComponent } from './shared/stepper/stepper.component';
+
+import {MatButtonModule} from '@angular/material/button';
+import {MatInputModule} from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import {MatIconModule} from '@angular/material/icon';
+
 
 //import { TextMaskModule } from 'angular2-text-mask';// npm i angular2-text-mask
 @NgModule({
@@ -57,7 +72,12 @@ import { RegistrarServicioComponent } from './pages/registrar-servicio/registrar
     ConsultarCentralesClienteComponent,
     ConsultarPanelesMonitoreoComponent,
     ConsultarMedicionesActualesComponent,
-    RegistrarServicioComponent
+    RegistrarServicioComponent,
+    SidebarComponent,
+    FooterInternoComponent,
+    CardComponent,
+    StepComponent,
+    StepperComponent,
   ],
   //Para importar otros módulos de angular
   imports: [
@@ -66,6 +86,18 @@ import { RegistrarServicioComponent } from './pages/registrar-servicio/registrar
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
+    NgxPaginationModule,
+    BrowserAnimationsModule,
+    MatStepperModule,
+    MatButtonModule,
+    MatStepperModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
+    MatIconModule,
+    
   ],
   // Inyección de dependencias
   providers: [

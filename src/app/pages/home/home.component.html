@@ -1,9 +1,177 @@
-<div class="jumbotron">
-  <div class="abs-center">
-    <div class="row">
-      <div class="col-12">
-        <app-carousel></app-carousel>
+<app-navbar></app-navbar>
+<div class="row body_">
+  <div class="col-1">
+    <!-- Aqui lo de la izquierda -->
+  </div>
+  <div class="col-10">
+    <div class="card-container">
+      <div class="card_externa html body">
+        <h1>Bienvenido!</h1>
+        <div class="row">
+          <div class="col-8">
+            <br />
+            <div class="row row-cols-1 row-cols-md-1 g-2">
+              <div class="col">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Mi perfil</h5>
+                    <p class="card-text">
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <br />
+            <br />
+          </div>
+          <div class="col-4">
+            <!-- Aqui lo de la izquierda -->
+            <div class="row row-cols-1 row-cols-md-1 g-2">
+              <div class="col">
+                <div class="card fondoReloDigital">
+                  <h5 class="card-title efecto-texto"></h5>
+                  <div class="  ">
+                    <img
+                      src="./assets/calendario.png"
+                      class="image"
+                      alt="..."
+                    />
+                    <div class="reloj">
+                      <img src="" alt="" />
+                      <p class="hora">{{ hora | date : "hh:mm:ss a" }}</p>
+                      <p class="fecha">
+                        {{ fecha | date : "ccc, d LLL, yyyy" }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <br />
+              </div>
+              <div class="col">
+                <div class="cardDerecha">
+                  <div class="card-body">
+                    <h5 class="card-title efecto-texto"></h5>
+
+                    <app-carousel>
+                      <form action="#" class="border form">
+                        <div
+                          id="carouselExampleInterval"
+                          class="from-group carousel slide"
+                          data-bs-ride="carousel"
+                        >
+                          <div class="carousel-inner">
+                            <div
+                              class="carousel-item active"
+                              data-bs-interval="8000"
+                            >
+                              <img
+                                src="./assets/img_agro.jpg"
+                                class="d-block w-50"
+                                alt="Imagen Banco"
+                              />
+                              <div class="carousel-caption d-none d-md-block">
+                                <div class="card-body">
+                                  <h5>CeMSA</h5>
+                                  <p>Innovando el Sector Agropecuario</p>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="carousel-item" data-bs-interval="8000">
+                              <img
+                                src="./assets/img_agro.jpg"
+                                class="d-block w-50"
+                                alt="Imagen Natural"
+                              />
+                              <div class="carousel-caption d-none d-md-block">
+                                <div class="card-body">
+                                  <h5>Sensores de Humedad</h5>
+                                  <p>Miden la humedad del suelo y del aire</p>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="carousel-item" data-bs-interval="8000">
+                              <img
+                                src="./assets/img_agro.jpg"
+                                class="d-block w-50"
+                                alt="Imagen Prestamo"
+                              />
+                              <div class="carousel-caption d-none d-md-block">
+                                <div class="card-body">
+                                  <h5>Sensores de Temperatura</h5>
+                                  <p>
+                                    Proporcionando indicadores para favorecer la
+                                    siembra y cosecha
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <button
+                            class="carousel-control-prev"
+                            type="button"
+                            data-bs-target="#carouselExampleInterval"
+                            data-bs-slide="prev"
+                          >
+                            <span
+                              class="carousel-control-prev-icon"
+                              aria-hidden="true"
+                            ></span>
+                            <span class="visually-hidden">Anterior</span>
+                          </button>
+                          <button
+                            class="carousel-control-next"
+                            type="button"
+                            data-bs-target="#carouselExampleInterval"
+                            data-bs-slide="next"
+                          >
+                            <span
+                              class="carousel-control-next-icon"
+                              aria-hidden="true"
+                            ></span>
+                            <span class="visually-hidden">Siguiente</span>
+                          </button>
+                        </div>
+                      </form>
+                    </app-carousel>
+                    <p class="card-text"></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br />
+        <div class="row">
+        </div>
+        <br />
+        <div class="card-container2">
+          <div class="accesosDirectos accesosDirectos:hover">
+            <img
+              src="../../../assets/tempe.png"
+              class="image"
+              alt="..."
+            />
+
+            <h5 class="efecto-texto content">Mi Panel de Control</h5>
+          </div>
+          <div class="accesosDirectos accesosDirectos:hover">
+            <img src="./assets/datos-en-la-nube.png" class="image" alt="..." />
+
+            <h5 class="efecto-texto content">Mis Centrales</h5>
+          </div>
+          <div class="accesosDirectos accesosDirectos:hover">
+            <img
+              src="./assets/informe-estadistico.png"
+              class="image"
+              alt="..."
+            />
+
+            <h5 class="efecto-texto content">Estado Actual</h5>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
+
+<app-footer-interno></app-footer-interno>

@@ -1,0 +1,20 @@
+.fondoFooterInterno {
+  /* background-color: #c54848; */
+  height: 10px;
+  /* background: rgb(30, 39, 58); */
+  /* background: linear-gradient(
+    11deg,
+    rgba(0, 172, 234, 0.52) 5%,
+    rgba(0, 239, 209, 0.52) 59%
+  ); */
+  background-image: url("../../../assets/2.png");
+}
+.fixed-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #f1f1f1;
+  padding: 10px;
+  z-index: 2;
+}

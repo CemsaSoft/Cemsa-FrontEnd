@@ -17,6 +17,7 @@ import { ClienteService } from 'src/app/core/services/cliente.service';
 export class IngresarUsuarioComponent implements OnInit {
   //VARIABLES DE DATOS
   esInicioValido: number = 0;
+  
 
   //FORMS PARA LA AGRUPACIÓN DE DATOS
   formInicio: FormGroup;
