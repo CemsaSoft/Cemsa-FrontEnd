@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+
+//COMPONENTES
+
+//SERVICIOS
+import { AlarmaService } from 'src/app/core/services/alarma.service';
 import { UsuarioService } from 'src/app/core/services/usuario.service';
 
 @Component({
@@ -7,15 +12,33 @@ import { UsuarioService } from 'src/app/core/services/usuario.service';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
+
   token = localStorage.getItem('token') || null;
+
   rol: any = 0;
+  idUsuario: any = 0;
 
+  cantAlarma: number=0;
 
-  constructor(private servicioUsuario: UsuarioService) {}
+  constructor(
+    private servicioUsuario: UsuarioService,
+    private alarmaConsultar: AlarmaService, 
+    )
+  {}
+
   esActivado: boolean = false;
 
   ngOnInit () : void {
     this.rol = localStorage.getItem('rol');
+    this.idUsuario = localStorage.getItem('idUsuario');    
+
+    if (this.idUsuario !=0) {
+      this.alarmaConsultar.obtenerCantAlarmasCliente(this.idUsuario).subscribe(data => {
+        this.cantAlarma = data.length;
+      });    
+    }
+
+
   }
 
   redirigir(){
@@ -23,4 +46,9 @@ export class NavbarComponent implements OnInit {
       location.href = "/home"
     }
   }
+
+  openConsultarAlarma() {
+    window.location.href = "consultar-alarma";
+  }
+  
 }

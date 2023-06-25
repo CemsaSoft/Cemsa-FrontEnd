@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient} from '@angular/common/http';
+import { HttpClient, HttpParams} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { MedicionesClass } from '../models/mediciones';
 
@@ -13,8 +13,16 @@ export class MedicionesService {
     console.log ("El servicio está corriendo");
   }
 
-  obtenerMediciones(medNro: number): Observable<any> {
-    return this.http.get(this.url + '/obtenerMediciones/' + medNro);
+  obtenerMediciones(medNro: number, desde: Date, hasta: Date): Observable<any> {
+    const params = new HttpParams()
+      .set('medNro', medNro.toString())
+      .set('desde', desde.toISOString())
+      .set('hasta', hasta.toISOString());
+  
+    return this.http.get(this.url + '/obtenerMediciones', { params });
   }
-    
+  
+  obtenerUltimaMedicionesXCentral(medNro: number): Observable<any> {
+    return this.http.get(this.url + '/obtenerUltimaMedicionesXCentral/' + medNro);
+  }
 }

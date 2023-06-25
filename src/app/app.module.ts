@@ -29,6 +29,12 @@ import { ConsultarCentralesClienteComponent } from './pages/consultar-centrales-
 import { ConsultarPanelesMonitoreoComponent } from './pages/consultar-paneles-monitoreo/consultar-paneles-monitoreo.component';
 import { ConsultarMedicionesActualesComponent } from './pages/consultar-mediciones-actuales/consultar-mediciones-actuales.component';
 import { RegistrarServicioComponent } from './pages/registrar-servicio/registrar-servicio.component';
+import { ConsultarReportesComponent } from './pages/consultar-reportes/consultar-reportes.component';
+import { RegistrarFumigacionComponent } from './pages/registrar-fumigacion/registrar-fumigacion.component';
+import { RegistrarAlarmaConfigComponent } from './pages/registrar-alarma-config/registrar-alarma-config.component';
+import { ConsultarAlarmaConfigComponent } from './pages/consultar-alarma-config/consultar-alarma-config.component';
+import { ConsultarAlarmaComponent } from './pages/consultar-alarma/consultar-alarma.component';
+import { OlvidoPasswordComponent } from './pages/olvido-password/olvido-password.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { SidebarComponent } from './shared/sidebar/sidebar.component';
 import { FooterInternoComponent } from './shared/footer-interno/footer-interno.component';
@@ -72,6 +78,13 @@ import {MatIconModule} from '@angular/material/icon';
     ConsultarCentralesClienteComponent,
     ConsultarPanelesMonitoreoComponent,
     ConsultarMedicionesActualesComponent,
+    RegistrarServicioComponent,
+    ConsultarReportesComponent,
+    RegistrarFumigacionComponent,
+    RegistrarAlarmaConfigComponent,
+    ConsultarAlarmaConfigComponent,
+    ConsultarAlarmaComponent,
+    OlvidoPasswordComponent
     RegistrarServicioComponent,
     SidebarComponent,
     FooterInternoComponent,

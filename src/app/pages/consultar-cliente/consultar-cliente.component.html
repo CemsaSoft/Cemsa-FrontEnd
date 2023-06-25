@@ -27,6 +27,7 @@
               <div class="col-10 cardFiltrado cardAnimate cardFlat">
                 <div>
                   <!-- <h3>Búsqueda por:</h3> -->
+                  <!-- <form [formGroup]="formfiltro"></form> -->
                   <div class="row">
                     <div class="col-md-2 image-container">
                       <span
@@ -74,6 +75,13 @@
                               filtrarClientesPorTipoDocumento()
                             "
                           >
+                              <!-- <input
+                          formControlName="tipo"
+                          type="text"
+                          class="form-control"
+                          placeholder="Filtrar por Tipo de Documento"
+                          (keyup)="esFiltrar($event)"
+                        /> -->
                             <mat-option
                               *ngFor="let tipoDocumento of tiposDocumento"
                               [value]="tipoDocumento.tdId"
@@ -103,6 +111,13 @@
                             (input)="formatDocumentNumber($event)"
                             (keyup)="esFiltrar($event, 'numero')"
                           />
+                          <!--  <input
+                      formControlName="numero"
+                      type="text"
+                      class="form-control"
+                      placeholder="Filtrar por Número de Documento"
+                      (keyup)="esFiltrar($event)"
+                    /> -->
                           <i
                             class="fas fa-search FormatoIconos"
                             style="padding-left: 20px"
@@ -133,6 +148,13 @@
                             placeholder="Ej. Agustín"
                             (keyup)="esFiltrar($event, 'cliente')"
                           />
+                              <!-- <input
+                          formControlName="cliente"
+                          type="text"
+                          class="form-control"
+                          placeholder="Filtrar por Nombre del Cliente"
+                          (keyup)="esFiltrar($event)"
+                        />-->
                           <i class="fa-solid fa-person FormatoIconos"></i>
                         </label>
                       </div>
@@ -155,6 +177,13 @@
                             placeholder="Ej. Usu123"
                             (keyup)="esFiltrar($event, 'usuario')"
                           />
+                              <!-- <input
+                          formControlName="usuario"
+                          type="text"
+                          class="form-control"
+                          placeholder="Filtrar por Nombre del Usuario"
+                          (keyup)="esFiltrar($event)"
+                        /> -->
                           <i class="fa-solid fa-user FormatoIconos"></i>
                         </label>
                       </div>
@@ -163,6 +192,7 @@
                 </div>
               </div>
             </div>
+          <!-- </form> -->
             <br />
             <br />
             <div class="row">
@@ -308,6 +338,7 @@
                     </tr>
                   </tbody>
                 </table>
+                <!-- <div class="alert alert-primary text-center" role="alert" *ngIf="validarFiltradoClientes() == false"> -->
                 <div
                   class="align-center"
                   *ngIf="validarFiltradoClientes() == true"
@@ -517,7 +548,7 @@
                                     *ngIf="cliApeNomDen?.errors?.['pattern']"
                                   >
                                     La primera letra del Nombre del Cliente debe
-                                    ser Mayúscula, no se admiten caracteres.
+                                    ser Mayúscula, no se admiten caracteres especiales.
                                   </mat-error>
                                   <mat-error
                                     class="error"
@@ -525,6 +556,12 @@
                                   >
                                     El Nombre del Cliente debe tener al menos 3
                                     caracteres.
+                                  </mat-error>
+                                  <mat-error
+                                    class="error"
+                                    *ngIf="cliApeNomDen?.errors?.['maxlength']"
+                                  >
+                                    El Nombre del Cliente debe tener menos de 50 caracteres.
                                   </mat-error>
                                 </mat-error>
                               </div>
@@ -598,7 +635,7 @@
                                     class="error"
                                     *ngIf="usuario?.errors?.['pattern']"
                                   >
-                                    El Nombre del Usuario no admiten caracteres.
+                                    El Nombre del Usuario no admiten caracteres especiales.
                                   </mat-error>
                                   <mat-error
                                     class="error"
@@ -606,6 +643,12 @@
                                   >
                                     El Nombre del Usuario debe tener al menos 3
                                     caracteres.
+                                  </mat-error>
+                                  <mat-error
+                                    class="error"
+                                    *ngIf="usuario?.errors?.['maxlength']"
+                                  >
+                                  El Nombre del Usuario debe tener menos de 50 caracteres.
                                   </mat-error>
                                 </mat-error>
                               </div>
@@ -640,11 +683,23 @@
                                   "
                                   class="text-danger"
                                 >
+                                <mat-error
+                                    class="error"
+                                    *ngIf="email?.errors?.['required']"
+                                  >
+                                  El correo electrónico es requerido.
+                                  </mat-error>
                                   <mat-error
                                     class="error"
                                     *ngIf="email?.errors?.['email']"
                                   >
                                     El correo electrónico es inválido.
+                                  </mat-error>
+                                  <mat-error
+                                    class="error"
+                                    *ngIf="email?.errors?.['maxlength']"
+                                  >
+                                  El mail del debe tener menos de 30 caracteres.
                                   </mat-error>
                                 </mat-error>
                                 <!-- ACLARACIÓN  DE CARACTERES  VÁLIDOS -->
@@ -750,6 +805,11 @@
                                     (telefono?.dirty || telefono?.touched)
                                   "
                                 >
+                                <mat-error
+                                    *ngIf="telefono?.errors?.['required']"
+                                  >
+                                  El teléfono es requerido.
+                                  </mat-error>
                                   <mat-error
                                     *ngIf="telefono?.errors?.['pattern']"
                                   >

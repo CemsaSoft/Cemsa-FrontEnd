@@ -1,6 +1,7 @@
 //SISTEMA
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import Swal, { SweetAlertOptions } from 'sweetalert2';
 
 //COMPONENTES
 import { UsuarioClass } from 'src/app/core/models/usuario';
@@ -48,25 +49,14 @@ export class IngresarUsuarioComponent implements OnInit {
   login(): any {
     let usuario: UsuarioClass = {id: 0, usuario: this.formInicio.get('usuario')?.value, password: this.formInicio.get('password')?.value};
     this.servicioUsuario.iniciarSesion(usuario).subscribe((data) => {
-      console.log("data:");
-      console.log(data)
       if (data.result != '') {
         this.servicioUsuario.limpiarToken();
         this.servicioUsuario.guardarToken(data.result);
-        localStorage.setItem('rol', data.rol);
+        localStorage.setItem('rol', data.rol);         // 0 es cliente -- 1 es administrador    
         localStorage.setItem('usuario', data.usu);
         localStorage.setItem('idUsuario', data.idUsuario);
-
-        this.servicioCliente.obtenerCliente(data.idUsuario).subscribe(
-          c => {
-            localStorage.setItem('cliente', c);            
-          },
-          error => {
-            console.log(error);
-          }
-        );
-
-        // 0 es cliente -- 1 es administrador        
+        localStorage.setItem('cliente', data.cliente);
+            
         this.esInicioValido = 1;
       } else {
         this.esInicioValido = 2;
@@ -76,12 +66,18 @@ export class IngresarUsuarioComponent implements OnInit {
 
   //Redirecciona a la landing page en caso de obtener un token.
   redireccionar(): string {
-    let localToken = this.servicioUsuario.obtenerToken();
-    if (localToken != null && localToken != '') {
-      return (location.href = '/home');
-    } else {
-      return '';
-    }
+     let localToken = this.servicioUsuario.obtenerToken();
+     if (localToken != null && localToken != '') {
+       if (this.formInicio.get('password')?.value != "123456") {
+        localStorage.setItem('cambiarPassword', "0");
+        return (location.href = '/home');
+       } else { 
+        localStorage.setItem('cambiarPassword', "1");
+        return (location.href = '/modificar-password');                   
+       }       
+     } else {
+       return '';
+     }
   }
 
   //Valida que el usuario y la contraseña ingresada sean correctas.

@@ -1,0 +1,469 @@
+<h1 class="text-center">Consultar Configuración de Alarma</h1>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center">
+              <h4 class="mb-0">Seleccionar Central</h4>
+              <button type="button" class="btn-unstyled" (click)="toggleCollapse1()">
+                <svg *ngIf="!isCollapsed1" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                  <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                </svg>
+                <svg *ngIf="isCollapsed1" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 16 16">
+                  <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="card-body" [ngClass]="{'collapse': isCollapsed1}">
+  
+  
+          <div class="row">
+            <div class="col-6 search-container">
+              <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por Código de Central">
+                <span class="input-group-text">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-search" viewBox="0 0 16 16">
+                    <path
+                      d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                  </svg>
+                </span>
+                <input type="text" class="form-control" placeholder="Filtrar por Código de Central" (keyup)="esFiltrar($event , 'codigo')">
+              </div>
+            </div>
+          </div>
+                    
+          <div class="row">
+              <div class="col-12">
+                <table class="table">
+                  <thead class="encabezado">
+                      <tr>            
+                        <th (click)="ordenarPor('cenNro')" [appSort]="CentralConsultaFiltrados" data-order="desc"
+                            data-name="cenNro" style="text-align: center;"><a>Cod. Central {{ordenarIcono('cenNro')}}</a></th>
+                        <th (click)="ordenarPor('cenImei')" [appSort]="CentralConsultaFiltrados" data-order="desc"
+                            data-name="cenImei" style="text-align: center;"><a>IMEI {{ordenarIcono('cenImei')}}</a></th>
+                        <th (click)="ordenarPor('cenCoorX')" [appSort]="CentralConsultaFiltrados" data-order="desc"
+                            data-name="cenCoorX" style="text-align: center;"><a>Coordenada X {{ordenarIcono('cenCoorX')}}</a></th>             
+                        <th (click)="ordenarPor('cenCoorY')" [appSort]="CentralConsultaFiltrados" data-order="desc"
+                            data-name="cenCoorY" style="text-align: center;"><a>Coordenada Y {{ordenarIcono('cenCoorY')}}</a></th>                                               
+                        <th scope="col" style="text-align: center;">Ver Más</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let central of CentralConsultaFiltrados; let i=index"
+                    [ngClass]="{'fila-par': i%2==0, 'fila-impar': i%2==1}"
+                    (click)="esfilaSeleccionada(central)">
+                      <th style="vertical-align: middle" class="align-center">{{ central.cenNro }}</th>
+                      <td style="vertical-align: middle" class="align-center">{{ central.cenImei }}</td>
+                      <td style="vertical-align: middle" class="align-center">{{ central.cenCoorX }}</td>
+                      <td style="vertical-align: middle" class="align-center">{{ central.cenCoorY }}</td>              
+                      <td class="align-center">
+                        <button type="button" class="btn" (click)="esfilaSeleccionada(central); seleccionarCentral()" title="Ver Más Opciones">     
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                          </svg>           
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="alert alert-primary text-center" role="alert" *ngIf="validarFiltrado() == false">      
+                ¡No se ha encontrado ninguna Central!
+              </div>            
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center">
+              <h4 class="mb-0">Consultar Alarma</h4>
+              <button type="button" class="btn-unstyled" (click)="toggleCollapse2()">
+                <svg *ngIf="!isCollapsed2" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                  <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                </svg>
+                <svg *ngIf="isCollapsed2" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 16 16">
+                  <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="card-body" [ngClass]="{'collapse': isCollapsed2}">
+  
+            <div class="row">
+              <div class="col-12">
+                <table class="table">
+                  <thead class="encabezado">
+                      <tr>            
+                        <th (click)="ordenarPorCA('cfgId')" [appSort]="AlarmaConfigConsulta" data-order="desc"
+                          data-name="cfgId" style="text-align: center;"><a>Cod. Alarma {{ordenarIconoCA('cfgId')}}</a></th>
+                        <th (click)="ordenarPorCA('serDescripcion')" [appSort]="AlarmaConfigConsulta" data-order="desc"
+                          data-name="serDescripcion" style="text-align: center;"><a>Servicio {{ordenarIconoCA('serDescripcion')}}</a></th>
+                        <th (click)="ordenarPorCA('cfgNombre')" [appSort]="AlarmaConfigConsulta" data-order="desc"
+                          data-name="cfgNombre" style="text-align: center;"><a>Nombre Alarma {{ordenarIconoCA('cfgNombre')}}</a></th>             
+                        <th (click)="ordenarPorCA('cfgFechaAlta')" [appSort]="AlarmaConfigConsulta" data-order="desc"
+                          data-name="cfgFechaAlta" style="text-align: center;"><a>Fecha de Alta{{ordenarIconoCA('cfgFechaAlta')}}</a></th>                                               
+                        <th (click)="ordenarPorCA('cfgFechaBaja')" [appSort]="AlarmaConfigConsulta" data-order="desc"
+                          data-name="cfgFechaBaja" style="text-align: center;"><a>Fecha de Baja{{ordenarIconoCA('cfgFechaBaja')}}</a></th>                                               
+                        <th (click)="ordenarPorCA('cfgValorSuperiorA')" [appSort]="AlarmaConfigConsulta" data-order="desc"
+                          data-name="cfgValorSuperiorA" style="text-align: center;"><a>Límite Superior{{ordenarIconoCA('cfgValorSuperiorA')}}</a></th>                                               
+                        <th (click)="ordenarPorCA('cfgValorInferiorA')" [appSort]="AlarmaConfigConsulta" data-order="desc"
+                          data-name="cfgValorInferiorA" style="text-align: center;"><a>Límite Inferior{{ordenarIconoCA('cfgValorInferiorA')}}</a></th>                                               
+                        <th (click)="ordenarPorCA('cfgObservacion')" [appSort]="AlarmaConfigConsulta" data-order="desc"
+                          data-name="cfgObservacion" style="text-align: center;"><a>Observación{{ordenarIconoCA('cfgObservacion')}}</a></th>                                               
+                        <th scope="col" style="text-align: center;">Modificar Estado</th>
+                        <th scope="col" style="text-align: center;">Ver Más</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let alarma of AlarmaConfigConsulta; let i=index"
+                    [ngClass]="{'fila-par': i%2==0, 'fila-impar': i%2==1}"
+                    (click)="esfilaSeleccionadaAlarma(alarma)">
+                      <th style="vertical-align: middle" class="align-center">{{ alarma.cfgId }}</th>
+                      <td style="vertical-align: middle" class="align-center">{{ alarma.serDescripcion }}</td>
+                      <td style="vertical-align: middle" class="align-center">{{ alarma.cfgNombre }}</td>
+                      <td style="vertical-align: middle" class="align-center">{{ alarma.cfgFechaAlta | date: 'yyyy-MM-dd'  }}</td>              
+                      <td style="vertical-align: middle" class="align-center">{{ alarma.cfgFechaBaja | date: 'yyyy-MM-dd'  }}</td>              
+                      <th style="vertical-align: middle" class="align-center">{{ alarma.cfgValorSuperiorA }}</th>
+                      <td style="vertical-align: middle" class="align-center">{{ alarma.cfgValorInferiorA }}</td>
+                      <td style="vertical-align: middle" class="align-center">{{ alarma.cfgObservacion }}</td>
+                      <td class="align-center">
+                        <button type="button" class="btn"
+                        data-bs-target="#staticBackdrop" (click)="ModificarEstadoAlarma(0, 'Disponible')" title="Cambiar Estado Alarma a Disponible">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-check2-square" viewBox="0 0 16 16">
+                            <path d="M3 14.5A1.5 1.5 0 0 1 1.5 13V3A1.5 1.5 0 0 1 3 1.5h8a.5.5 0 0 1 0 1H3a.5.5 0 0 0-.5.5v10a.5.5 0 0 0 .5.5h10a.5.5 0 0 0 .5-.5V8a.5.5 0 0 1 1 0v5a1.5 1.5 0 0 1-1.5 1.5H3z"/>
+                            <path d="m8.354 10.354 7-7a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0z"/>
+                          </svg>
+                        </button>                        
+                        <button type="button" class="btn"
+                        data-bs-target="#staticBackdrop" (click)="ModificarEstadoAlarma(1, 'Baja')" title="Cambiar Estado Alarma a Baja">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="gray"
+                                class="bi bi-trash" viewBox="0 0 16 16">
+                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                                <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                            </svg>
+                        </button>
+                      </td>
+                      <td class="align-center">
+                        <button type="button" class="btn"data-bs-toggle="modal"
+                        data-bs-target="#staticBackdrop" (click)="abrirModal('Ver Mas')" title="Ver Más Opciones">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="green"
+                              class="bi bi-pencil-square" viewBox="0 0 16 16">
+                              <path
+                                  d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                              <path fill-rule="evenodd"
+                                  d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
+                          </svg>
+                      </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="alert alert-primary text-center" role="alert" *ngIf="validarFiltradoAlarma() == false">      
+                ¡No se ha encontrado ninguna Alarma!
+              </div>            
+          </div>
+
+          <div class="row">
+            <div class="modal-footer text-center col-3" *ngIf="this.centralNroSeleccionada !== 0">
+              <button type="submit" id="btnAgregar" class="btn btn-success" data-bs-toggle="modal"
+                data-bs-target="#staticBackdrop" (click)="abrirModal('Agregar Alarma')">Agregar Alarma
+              </button>
+            </div>
+          </div>                 
+              
+  
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <br/>
+
+<app-modal titulo="{{titulo}}">
+    <!-- Seccion de Modificación de Alarma Config --> 
+   <div *ngIf="titulo == 'Ver Mas'">
+     <form [formGroup]="formModificar" class="row g-3">
+         <fieldset id="fieldset">
+             
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-outline input-group mb-3">
+                <span class="input-group-text">Nro. Central</span>
+                <input type="text" class="form-control" id="nroCentral" value="nroCentral" formControlName="nroCentral" readonly/>
+              </div>
+            </div>            
+            <div class="col-md-6">
+              <div class="form-outline input-group mb-3">
+                <span class="input-group-text">Cod. Alarma</span>
+                <input type="text" class="form-control" id="cfgId" value="cfgId" formControlName="cfgId" readonly/>
+              </div>
+            </div>
+          </div>          
+
+          <div class="col-md-12">
+            <div class="form-outline input-group mb-3">
+                <span class="input-group-text">Nombre de Alarma</span>
+                <input type="text" class="form-control" id="nombreAlarma" value="nombreAlarma"
+                    formControlName="nombreAlarma"/>
+                    <span class="input-group-text" title="{{caracteresValidosNombre}}"><svg                    
+                      xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                      class="bi bi-question-circle" viewBox="0 0 16 16">
+                      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                      <path
+                          d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z" />
+                    </svg>
+                </span>
+            </div>   
+            <div *ngIf="nombreAlarma?.invalid && (nombreAlarma?.dirty || nombreAlarma?.touched)" class="text-danger">
+              <div *ngIf="nombreAlarma?.errors?.['required']">
+                Debe ingresar un nombre de alarma. </div>
+              <div *ngIf="nombreAlarma?.errors?.['pattern']">
+                No debe contener caracteres especiales ni tener más de 50 carácteres. </div>
+              </div> 
+          </div>
+
+          <div class="col-md-12">
+            <div class="form-outline input-group mb-3 d-flex align-items-center">
+              <span class="input-group-text">Servicio</span>
+              <select name="nombreServicio" id="nombreServicio" formControlName="nombreServicio" class="form-select" style="width: 300px;">
+                <option *ngFor="let servicio of ServiciosCentral" [value]="servicio.serId">
+                  {{servicio.serDescripcion}}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <div class="form-outline input-group mb-3">
+                <span class="input-group-text">Fecha de Alta</span>
+                <input type="text" class="form-control" id="cfgFechaAlta" value="cfgFechaAlta"
+                    formControlName="cfgFechaAlta" readonly/>
+            </div>       
+          </div>
+
+          <div class="col-md-12">
+            <div class="form-outline input-group mb-3">
+                <span class="input-group-text">Fecha de Baja</span>
+                <input type="text" class="form-control" id="cfgFechaBaja" value="cfgFechaBaja"
+                    formControlName="cfgFechaBaja" readonly/>
+            </div>       
+          </div>
+
+          <div class="col-md-12">
+            <div class="form-outline input-group mb-3">
+                <span class="input-group-text">Límite Superior</span>
+                <input type="text" class="form-control" id="cfgValorSuperiorA" value="cfgValorSuperiorA"
+                    formControlName="cfgValorSuperiorA"/>
+                    <span class="input-group-text" title="{{caracteresValidosLimites}}"><svg                    
+                      xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                      class="bi bi-question-circle" viewBox="0 0 16 16">
+                      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                      <path
+                          d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z" />
+                    </svg>
+                </span>
+            </div>   
+            <div *ngIf="cfgValorSuperiorA?.invalid && (cfgValorSuperiorA?.dirty || cfgValorSuperiorA?.touched)" class="text-danger">
+              <div *ngIf="cfgValorSuperiorA?.errors?.['pattern']">
+                Debe contener números con un máximo de dos decimales y no debe incluir caracteres especiales. </div>
+            </div> 
+          </div>
+
+          <div class="col-md-12">
+            <div class="form-outline input-group mb-3">
+                <span class="input-group-text">Límite Inferior</span>
+                <input type="text" class="form-control" id="cfgValorInferiorA" value="cfgValorInferiorA"
+                    formControlName="cfgValorInferiorA"/>
+                    <span class="input-group-text" title="{{caracteresValidosLimites}}"><svg                    
+                      xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                      class="bi bi-question-circle" viewBox="0 0 16 16">
+                      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                      <path
+                          d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z" />
+                    </svg>
+                </span>
+            </div>   
+            <div *ngIf="cfgValorInferiorA?.invalid && (cfgValorInferiorA?.dirty || cfgValorInferiorA?.touched)" class="text-danger">
+                <div *ngIf="cfgValorInferiorA?.errors?.['pattern']">
+                  Debe contener números con un máximo de dos decimales y no debe incluir caracteres especiales. </div>
+            </div> 
+          </div>
+  
+          <div class="col-md-12">
+            <div class="form-outline input-group mb-3">
+                <span class="input-group-text">Observación</span>
+                <input type="text" class="form-control" id="cfgObservacion" value="cfgObservacion"
+                    formControlName="cfgObservacion" />
+                    <span class="input-group-text" title="{{caracteresValidosObservacion}}"><svg                    
+                      xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                      class="bi bi-question-circle" viewBox="0 0 16 16">
+                      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                      <path
+                          d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z" />
+                    </svg>
+                </span>
+            </div>
+            <div *ngIf="cfgObservacion?.invalid && (cfgObservacion?.dirty || cfgObservacion?.touched)" class="text-danger">
+                <div *ngIf="cfgObservacion?.errors?.['pattern']">
+                  No debe contener caracteres especiales ni tener más de 100 carácteres. </div>
+            </div> 
+          </div>
+          
+         </fieldset>
+     </form>
+
+     <div class="row">
+       <div class="modal-footer text-center col-3">
+           <button *ngIf="mostrarBtnEditarModificacion" type="submit" id="btnEditar" class="btn btn-success" (click)="desbloquearEditar()">Editar</button>
+       </div>
+       <div class="modal-footer text-center col-3">
+           <button *ngIf="mostrarBtnAceptarModificacion" id="btnAceptarModificacion" type="submit" class="btn btn-success" (click)="modificarAlarmaConfig()">Aceptar</button>
+       </div>
+       <div class="modal-footer text-center col-3"> 
+           <button style="background-color: #0e3c53;" id="CancelarModificacion" type="button" class="btn text-white"data-bs-dismiss="modal">Cancelar</button>        
+       </div>
+       <div *ngIf="validarControlesMod() == '2'" class="text-danger">
+         Verifique los campos ingresados
+       </div>
+     </div>
+
+   </div>   
+
+
+   <div *ngIf="titulo == 'Agregar Alarma'">
+    <form [formGroup]="formAgregar" class="row g-3">
+        <fieldset id="fieldset">
+            
+          <div class="col-md-12">
+            <div class="form-outline input-group mb-3">
+                <span class="input-group-text">Nro Central </span>
+                <input type="text" class="form-control" id="nroCentralA" value="nroCentralA"
+                    formControlName="nroCentralA" readonly/>
+            </div>        
+          </div> 
+          
+          <div class="col-md-12">
+            <div class="form-outline input-group mb-3">
+                <span class="input-group-text">Nombre de Alarma</span>
+                <input type="text" class="form-control" id="nombreAlarmaA" value="nombreAlarmaA"
+                    formControlName="nombreAlarmaA"/>
+                    <span class="input-group-text" title="{{caracteresValidosNombre}}"><svg                    
+                      xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                      class="bi bi-question-circle" viewBox="0 0 16 16">
+                      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                      <path
+                          d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z" />
+                    </svg>
+                </span>
+            </div>   
+            <div *ngIf="nombreAlarmaA?.invalid && (nombreAlarmaA?.dirty || nombreAlarmaA?.touched)" class="text-danger">
+              <div *ngIf="nombreAlarmaA?.errors?.['required']">
+                Debe ingresar un nombre de alarma. </div>
+              <div *ngIf="nombreAlarmaA?.errors?.['pattern']">
+                No debe contener caracteres especiales ni tener más de 50 carácteres. </div>
+              </div> 
+          </div>
+
+          <div class="col-md-12">
+            <div class="form-outline input-group mb-3 d-flex align-items-center">
+              <span class="input-group-text">Servicio</span>
+              <select name="nombreServicioA" id="nombreServicioA" formControlName="nombreServicioA" class="form-select" style="width: 300px;">
+                <option *ngFor="let servicio of ServiciosCentralA" [value]="servicio.serId">
+                  {{servicio.serDescripcion}}
+                </option>
+              </select>
+            </div>
+          </div>
+          
+
+          <div class="col-md-12">
+            <div class="form-outline input-group mb-3">
+                <span class="input-group-text">Límite Superior</span>
+                <input type="text" class="form-control" id="cfgValorSuperiorAA" value="cfgValorSuperiorAA"
+                    formControlName="cfgValorSuperiorAA"/>
+                    <span class="input-group-text" title="{{caracteresValidosLimites}}"><svg                    
+                      xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                      class="bi bi-question-circle" viewBox="0 0 16 16">
+                      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                      <path
+                          d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z" />
+                    </svg>
+                </span>
+            </div>   
+            <div *ngIf="cfgValorSuperiorAA?.invalid && (cfgValorSuperiorAA?.dirty || cfgValorSuperiorAA?.touched)" class="text-danger">
+              <div *ngIf="cfgValorSuperiorAA?.errors?.['pattern']">
+                Debe contener números con un máximo de dos decimales y no debe incluir caracteres especiales. </div>
+            </div> 
+          </div>
+
+          <div class="col-md-12">
+            <div class="form-outline input-group mb-3">
+                <span class="input-group-text">Límite Inferior</span>
+                <input type="text" class="form-control" id="cfgValorInferiorAA" value="cfgValorInferiorAA"
+                    formControlName="cfgValorInferiorAA"/>
+                    <span class="input-group-text" title="{{caracteresValidosLimites}}"><svg                    
+                      xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                      class="bi bi-question-circle" viewBox="0 0 16 16">
+                      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                      <path
+                          d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z" />
+                    </svg>
+                </span>
+            </div>   
+            <div *ngIf="cfgValorInferiorAA?.invalid && (cfgValorInferiorAA?.dirty || cfgValorInferiorAA?.touched)" class="text-danger">
+                <div *ngIf="cfgValorInferiorAA?.errors?.['pattern']">
+                  Debe contener números con un máximo de dos decimales y no debe incluir caracteres especiales. </div>
+            </div> 
+          </div>
+  
+          <div class="col-md-12">
+            <div class="form-outline input-group mb-3">
+                <span class="input-group-text">Observación</span>
+                <input type="text" class="form-control" id="cfgObservacionA" value="cfgObservacionA"
+                    formControlName="cfgObservacionA" />
+                    <span class="input-group-text" title="{{caracteresValidosObservacion}}"><svg                    
+                      xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                      class="bi bi-question-circle" viewBox="0 0 16 16">
+                      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                      <path
+                          d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z" />
+                    </svg>
+                </span>
+            </div>
+            <div *ngIf="cfgObservacionA?.invalid && (cfgObservacionA?.dirty || cfgObservacionA?.touched)" class="text-danger">
+                <div *ngIf="cfgObservacionA?.errors?.['pattern']">
+                  No debe contener caracteres especiales ni tener más de 100 carácteres. </div>
+            </div> 
+          </div>
+
+         </fieldset>
+     </form>
+
+    <div class="row">
+      <div class="modal-footer text-center col-3">
+          <button type="submit" id="Validar" class="btn btn-success" (click)="agregarAlarmaConfig()">
+            Agregar</button>
+      </div>
+      <div class="modal-footer text-center col-8">
+        <button style="background-color: #0e3c53;" id="Cancelar" type="button" class="btn text-white"
+          data-bs-dismiss="modal">Cancelar</button>        
+      </div>
+      <div *ngIf="validarControlesAgregar() == '2' " class="text-danger">
+        Verifique los campos ingresados
+      </div>
+    </div>
+  </div>   
+
+</app-modal>

@@ -53,4 +53,7 @@ export class UsuarioService {
     return tokenboolean;
   }
 
+  recuperarPassword(usuario: string , email: string): Observable<any> {
+    return this.http.get(this.url + '/recuperarPassword/'+ usuario + "/" + email);
+  }
 }

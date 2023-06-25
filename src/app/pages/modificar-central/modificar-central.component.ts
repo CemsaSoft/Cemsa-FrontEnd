@@ -140,16 +140,18 @@ export class ModificarCentralComponent implements OnInit {
     
     this.servicioConsultar.obtenerServicios().subscribe(data => {
       this.Servicios = data;  
-    })
+    
 
-    this.centralConsultar.obtenerServiciosXCentral(this.CentralConsultaSeleccionada.cenNro).subscribe(data => {
+    this.centralConsultar.obtenerServicioXCentral(this.CentralConsultaSeleccionada.cenNro).subscribe(data => {
       this.ServiciosDeCentralActualizado = data; 
       this.Servicios = this.Servicios.filter(servicio => {
         return !this.ServiciosDeCentralActualizado.some(servicioCentral => servicioCentral.serId === servicio.serId);
       });
     })
 
-    this.centralConsultar.serviciosXCentralCompleto(this.CentralConsultaSeleccionada.cenNro).subscribe(data => {
+    })
+
+  this.centralConsultar.serviciosXCentralCompleto(this.CentralConsultaSeleccionada.cenNro).subscribe(data => {
       this.ServiciosDeCentralOriginal = data;  
     })
 
@@ -302,7 +304,7 @@ export class ModificarCentralComponent implements OnInit {
         title: 'Error',
         text: `Verificar los datos ingresados:              
           ${this.imei?.invalid && this.imei.errors?.['required'] ? '\n* El IMEI es requerido' : ''}          
-          ${this.imei?.invalid && this.imei.errors?.['pattern'] ? '\n*Debe ingresar solamente 15 números' : ''}`,
+          ${this.imei?.invalid && this.imei.errors?.['pattern'] ? '\n*Debe ingresar solamente 15 números para el IMEI' : ''}`,
         icon: 'warning',
         confirmButtonColor: '#0f425b',
         confirmButtonText: 'Aceptar',

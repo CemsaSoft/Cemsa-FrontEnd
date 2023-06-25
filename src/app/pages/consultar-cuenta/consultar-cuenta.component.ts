@@ -51,15 +51,20 @@ export class ConsultarCuentaComponent implements OnInit {
       cliApeNomDen: new FormControl(null, [
         Validators.required,
         Validators.minLength(3),
+        Validators.maxLength(50),
         Validators.pattern('^[a-zA-Z0-9 ]*$'),
         Validators.pattern('^[A-Z].*$')
       ]),
       usuario: new FormControl(null, [
         Validators.required,
         Validators.minLength(3),
+        Validators.maxLength(50),
         Validators.pattern('^[a-zA-Z0-9 ]*$'),        
       ]),     
-      email: new FormControl(null, [Validators.email]),
+      email: new FormControl(null, [
+        Validators.email,
+        Validators.maxLength(30),
+      ]),
       telefono: new FormControl(null, [Validators.pattern(/^[\d]{2,4}-?[\d]{6,8}$/)]),
     });
   }
@@ -145,7 +150,7 @@ export class ConsultarCuentaComponent implements OnInit {
           this.clienteConsultar.actualizarCliente(Cliente, usuario).subscribe(
             result => {
               Swal.fire({
-                text: 'Se ha actualizado el Cliente: '+ this.formModificar.get('cliApeNomDen')?.value,
+                text: 'Se ha actualizado el Usuario: '+ this.formModificar.get('usuario')?.value,
                 icon: 'success',
                 position: 'top',
                 showConfirmButton: true,

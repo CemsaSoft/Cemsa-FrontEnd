@@ -51,15 +51,20 @@ export class RegistrarClienteComponent implements OnInit {
       cliApeNomDen: new FormControl(null, [
         Validators.required,
         Validators.minLength(3),
+        Validators.maxLength(50),
         Validators.pattern('^[a-zA-Z0-9 ]*$'),
         Validators.pattern('^[A-Z].*$')
       ]),
       usuario: new FormControl(null, [
         Validators.required,
         Validators.minLength(3),
+        Validators.maxLength(50),
         Validators.pattern('^[a-zA-Z0-9 ]*$'),
       ]),    
-      email: new FormControl(null, [Validators.email]),
+      email: new FormControl(null, [
+        Validators.email,
+        Validators.maxLength(30),
+      ]),
       telefono: new FormControl(null, [Validators.pattern(/^[\d]{2,4}-?[\d]{6,8}$/)]),
     });
   }
@@ -93,7 +98,7 @@ export class RegistrarClienteComponent implements OnInit {
     this.formRegistar.get('telefono')?.setValue(valor);
   }
   
-  get tipoDocumentoç() {
+  get tipoDocumento() {
     return this.formRegistar.get('tipoDocumento');
   }
   get nroDocumento() {
@@ -124,27 +129,27 @@ export class RegistrarClienteComponent implements OnInit {
     else{
       if (tipoDoc == 1) { // DNI    
           const regexDNI = /^[0-9]{7,8}$/;  
-          this.msjErrorDoc = "Número de DNI no valido, se espera 7 ó 8 número";       
+          this.msjErrorDoc = "Número de DNI no válido, se espera 7 ó 8 número";       
           return regexDNI.test(nroDoc);                         
       } 
       if (tipoDoc==2){ // Libreta cívica 
         const regexLib = /^[a-zA-Z]{1}[0-9]{6,7}$/;
-        this.msjErrorDoc = "Libreta cívica no valido, comenzando con una letra seguida de 6 o 7 números";
+        this.msjErrorDoc = "Libreta cívica no válido, comenzando con una letra seguida de 6 o 7 números";
         return regexLib.test(nroDoc);         
       }
       if (tipoDoc==3){ // Libreta de enrolamiento
         const regexLib = /^[a-zA-Z]{1}[0-9]{6,7}$/;
-        this.msjErrorDoc = "Libreta de enrolamiento no valido, comenzando con una letra seguida de 6 o 7 números";
+        this.msjErrorDoc = "Libreta de enrolamiento no válido, comenzando con una letra seguida de 6 o 7 números";
         return regexLib.test(nroDoc);         
       }
       if (tipoDoc==4) { // CUIT
         const regexCUIT = /^(\d{2}-\d{8}-\d{1})$/;
-        this.msjErrorDoc = "CUIT no valido, comenzando con dos dígitos del prefijo y luego un guión, seguido del número de  'persona física' o 'representante legal de la sociedad' (8 dígitos), guión y otro número";
+        this.msjErrorDoc = "CUIT no válido, comenzando con dos dígitos del prefijo y luego un guión, seguido del número de  'persona física' o 'representante legal de la sociedad' (8 dígitos), guión y otro número";
         return regexCUIT.test(nroDoc);   
       }   
       if (tipoDoc==5) { // CUIL
         const regexCUIL = /^(\d{2}-\d{8}-\d{1})$/;
-        this.msjErrorDoc = "CUIL no valido, comenzando con dos dígitos del prefijo y luego un guión, seguido del número del DNI (8 dígitos), guión y otro número";
+        this.msjErrorDoc = "CUIL no válido, comenzando con dos dígitos del prefijo y luego un guión, seguido del número del DNI (8 dígitos), guión y otro número";
         return regexCUIL.test(nroDoc);   
       }
       return false;

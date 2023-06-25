@@ -63,6 +63,8 @@
                           data-name="cenCoorX" style="text-align: center;"><a>Coordenada X {{ordenarIcono('cenCoorX')}}</a></th>             
                       <th (click)="ordenarPor('cenCoorY')" [appSort]="CentralConsultaFiltrados" data-order="desc"
                           data-name="cenCoorY" style="text-align: center;"><a>Coordenada Y {{ordenarIcono('cenCoorY')}}</a></th>                                               
+                      <th (click)="ordenarPor('estDescripcion')" [appSort]="CentralConsultaFiltrados" data-order="desc"
+                          data-name="estDescripcion" style="text-align: center;"><a>Estado Central {{ordenarIcono('estDescripcion')}}</a></th>                                                                   
                       <th scope="col" style="text-align: center;">Ver Más</th>
                     </tr>
                 </thead>
@@ -74,6 +76,7 @@
                     <td style="vertical-align: middle" class="align-center">{{ central.cenImei }}</td>
                     <td style="vertical-align: middle" class="align-center">{{ central.cenCoorX }}</td>
                     <td style="vertical-align: middle" class="align-center">{{ central.cenCoorY }}</td>              
+                    <td style="vertical-align: middle" class="align-center">{{ central.estDescripcion }}</td> 
                     <td class="align-center">
                       <button type="button" class="btn" (click)="esfilaSeleccionada(central); seleccionarCentral()" title="Ver Más Opciones">     
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
@@ -161,6 +164,8 @@
                             data-name="serDescripcion" style="text-align: center;"><a>Nombre de Servicio {{ordenarIconoServicioCentral('serDescripcion')}}</a></th>                        
                             <th (click)="ordenarServicioCentralPor('serUnidad')" [appSort]="ServiciosDeCentral" data-order="desc"
                             data-name="serUnidad" style="text-align: center;"><a>Nombre de Servicio {{ordenarIconoServicioCentral('serUnidad')}}</a></th>                                            
+                            <th (click)="ordenarServicioCentralPor('estDescripcion')" [appSort]="ServiciosDeCentral" data-order="desc"
+                            data-name="estDescripcion" style="text-align: center;"><a>Estado {{ordenarIconoServicioCentral('estDescripcion')}}</a></th>                                            
                           </tr>
                       </thead>
                       <tbody>
@@ -169,6 +174,7 @@
                         <th style="vertical-align: middle" class="align-center">{{ servicio.serId }}</th>
                         <td style="vertical-align: middle" class="align-center">{{ servicio.serDescripcion }}</td>  
                         <td style="vertical-align: middle" class="align-center">{{ servicio.serUnidad }}</td>                
+                        <td style="vertical-align: middle" class="align-center">{{ servicio.estDescripcion }}</td>      
                       </tbody>
                     </table>
                 <div class="alert alert-primary text-center" role="alert" *ngIf="validarFiltradoServiciosDeCentral() == false">

@@ -1,7 +1,7 @@
 //SISTEMA
 import { Component, OnInit } from '@angular/core';
 import {
-  FormBuilder,
+  FormBuilder, FormControl, FormGroup,
 } from '@angular/forms';
 import Swal, { SweetAlertOptions } from 'sweetalert2';
 
@@ -28,25 +28,26 @@ currentPage = 1; // Página actual
 totalItems = 0; // Total de elementos en la tabla
 myTable = 'myTable';
 
-//VARIABLES DE DATOS
-titulo: string = '';
-propiedadOrdenamiento: string = 'cenNro';
-cliApeNomDenSeleccionado: string ='';
-usuarioSeleccionado: string = '';
-estDescripcionSeleccionado: string = '';
+  //VARIABLES DE DATOS
+  titulo: string = '';
+  propiedadOrdenamiento: string = 'cenNro';
+  cliApeNomDenSeleccionado: string ='';
+  usuarioSeleccionado: string = '';
+  estDescripcionSeleccionado: string = '';
 
-imeiSeleccionado: string = '';
-coordenadaXSeleccionado: string = '';
-coordenadaYSeleccionado: string = '';
-fechaAltaSeleccionado: string = '';
-fechaBajaSeleccionado: string = '';
+  imeiSeleccionado: string = '';
+  coordenadaXSeleccionado: string = '';
+  coordenadaYSeleccionado: string = '';
+  fechaAltaSeleccionado: string = '';
+  fechaBajaSeleccionado: string = '';
 
-tipoOrdenamiento: number = 1;
-cenNroSeleccionado: number=0;
-estIdSeleccionado: number = 0;
-CentralSeleccionada: any;
+  tipoOrdenamiento: number = 1;
+  cenNroSeleccionado: number=0;
+  estIdSeleccionado: number = 0;
+  CentralSeleccionada: any;
 
-//FORMULARIOS DE AGRUPACION DE DATOS
+  //FORMULARIOS DE AGRUPACION DE DATOS
+  formfiltro: FormGroup;
 
   constructor(
     private fb: FormBuilder,
@@ -54,7 +55,12 @@ CentralSeleccionada: any;
     private centralConsultar: CentralService, 
     private servicioCentral: CentralService,
     )    
-  { }
+  {
+    this.formfiltro = new FormGroup({
+      cliente: new FormControl(null, []),
+      usuario: new FormControl(null, []),
+    });
+   }
         
     ngOnInit(): void {          
       this.centralConsultar.obtenerCentral().subscribe(data => {
@@ -88,20 +94,17 @@ CentralSeleccionada: any;
   }
 
   //Filtro de Central por Nombre Cliente o Usuario.
-  esFiltrar(event: Event, campo: string) {
-    let txtBuscar = (event.target as HTMLInputElement).value;
-    let filtro = txtBuscar
-      .replace(/[^\w\s]/g, '')
-      .trim()
-      .toLowerCase();
-    this.CentralConsultaFiltrados = [];
-    this.CentralConsulta.forEach((centralConsulta) => {
-      if (
-        (campo === 'cliente' && centralConsulta.cliApeNomDen.toString().toLowerCase().includes(filtro)) ||
-        (campo === 'usuario' && centralConsulta.usuario.toString().toLowerCase().includes(filtro))
-      ) {
-        this.CentralConsultaFiltrados.push(centralConsulta);
-      }
+  esFiltrar(event: Event) {
+    const filtronCliente = (this.formfiltro.get('cliente') as FormControl).value?.toLowerCase();
+    const filtroUsuario = (this.formfiltro.get('usuario') as FormControl).value?.toLowerCase();
+
+    this.CentralConsultaFiltrados = this.CentralConsulta.filter((central) => {
+      const valorCliente = central.cliApeNomDen.toString().toLowerCase();
+      const valorUsuario = central.usuario.toString().toLowerCase();
+      return (
+        (!filtronCliente || valorCliente.includes(filtronCliente)) &&
+        (!filtroUsuario || valorUsuario.includes(filtroUsuario)) 
+      );
     });
   }
 

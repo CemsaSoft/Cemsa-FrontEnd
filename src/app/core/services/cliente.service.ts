@@ -43,9 +43,9 @@ export class ClienteService {
     return this.http.post(this.url + '/verificarUsuarioMod/' + usuario + "/" + idUsuario, null );   
   }
 
-  obtenerCliente(idUsuario: number): Observable<string> {    
-    return this.http.post(this.url + '/obtenerCliente/' + idUsuario , null, { responseType: 'text' });   
-  }
+  // obtenerCliente(idUsuario: number): Observable<string> {    
+  //   return this.http.post(this.url + '/obtenerCliente/' + idUsuario , null, { responseType: 'text' });   
+  // }
   
   actualizarPassword(idUsuario: number, password: string, newPassword: string): Observable<any> {    
     const body = { idUsuario, password, newPassword };

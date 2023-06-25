@@ -17,222 +17,101 @@
 
   <h1 class="text-center">Registar Central Meteorológica</h1>
 
-  <div class="container mt-5">
-    <div class="row justify-content-center">
-      <div class="col-md-12">
-        <div class="card">
-          <div class="card-header">
-            <div class="d-flex justify-content-between align-items-center">
-              <h4 class="mb-0">
-                Seleccionar Cliente para la Central Meteorológica
-              </h4>
-              <button
-                type="button"
-                class="btn-unstyled"
-                (click)="toggleCollapse1()"
-              >
-                <svg
-                  *ngIf="!isCollapsed1"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="25"
-                  height="25"
-                  fill="currentColor"
-                  class="bi bi-caret-down-fill"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"
-                  />
-                </svg>
-                <svg
-                  *ngIf="isCollapsed1"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="25"
-                  height="25"
-                  fill="currentColor"
-                  class="bi bi-caret-up-fill"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"
-                  />
-                </svg>
-              </button>
-            </div>
+
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">Seleccionar Cliente para la Central Meteorológica</h4>            
+            <button type="button" class="btn-unstyled" (click)="toggleCollapse1()">
+              <svg *ngIf="!isCollapsed1" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+              </svg>
+              <svg *ngIf="isCollapsed1" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 16 16">
+                <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
+              </svg>
+            </button>
           </div>
-          <div class="card-body" [ngClass]="{ collapse: isCollapsed1 }">
-            <div class="row">
-              <div class="col-12">
-                <h3>Filtros:</h3>
-                <div class="row">
-                  <div class="col-md-6">
-                    <div
-                      class="form-outline input-group"
-                      data-toggle="tooltip"
-                      data-placement="top"
-                      title="Buscar por Tipo de Documento"
-                    >
-                      <span class="input-group-text">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
-                          fill="currentColor"
-                          class="bi bi-search"
-                          viewBox="0 0 16 16"
-                        >
-                          <path
-                            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"
-                          />
-                        </svg>
-                      </span>
-                      <input
-                        type="text"
-                        class="form-control"
-                        placeholder="Filtrar por Tipo de Documento"
-                        (keyup)="esFiltrar($event, 'tipo')"
-                      />
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div
-                      class="form-outline input-group"
-                      data-toggle="tooltip"
-                      data-placement="top"
-                      title="Buscar por Numero de Documento"
-                    >
-                      <span class="input-group-text">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
-                          fill="currentColor"
-                          class="bi bi-search"
-                          viewBox="0 0 16 16"
-                        >
-                          <path
-                            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"
-                          />
-                        </svg>
-                      </span>
-                      <input
-                        type="text"
-                        class="form-control"
-                        placeholder="Filtrar por Numero de Documento"
-                        (keyup)="esFiltrar($event, 'numero')"
-                      />
-                    </div>
+        </div>
+        <div class="card-body" [ngClass]="{'collapse': isCollapsed1}">
+          
+          <form [formGroup]="formfiltro">
+          <div class="row">            
+            <div class="col-12">
+              <h3>Filtros:</h3>          
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por Tipo de Documento">
+                    <span class="input-group-text">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-search" viewBox="0 0 16 16">
+                        <path
+                          d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                      </svg>
+                    </span>
+                    <input formControlName="tipo" type="text" class="form-control" placeholder="Filtrar por Tipo de Documento" (keyup)="esFiltrar($event)">
                   </div>
                 </div>
-
-                <div class="row">
-                  <div class="col-md-6">
-                    <div
-                      class="form-outline input-group"
-                      data-toggle="tooltip"
-                      data-placement="top"
-                      title="Buscar por Nombre de Cliente"
-                    >
-                      <span class="input-group-text">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
-                          fill="currentColor"
-                          class="bi bi-search"
-                          viewBox="0 0 16 16"
-                        >
-                          <path
-                            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"
-                          />
-                        </svg>
-                      </span>
-                      <input
-                        type="text"
-                        class="form-control"
-                        placeholder="Filtrar por Nombre del Cliente"
-                        (keyup)="esFiltrar($event, 'cliente')"
-                      />
-                    </div>
+                <div class="col-md-6">
+                  <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por Numero de Documento">
+                    <span class="input-group-text">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-search" viewBox="0 0 16 16">
+                        <path
+                          d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                      </svg>
+                    </span>
+                    <input formControlName="numero" type="text" class="form-control" placeholder="Filtrar por Numero de Documento" (keyup)="esFiltrar($event)">
                   </div>
-                  <div class="col-md-6">
-                    <div
-                      class="form-outline input-group"
-                      data-toggle="tooltip"
-                      data-placement="top"
-                      title="Buscar por Nombre de Usuario"
-                    >
-                      <span class="input-group-text">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
-                          fill="currentColor"
-                          class="bi bi-search"
-                          viewBox="0 0 16 16"
-                        >
-                          <path
-                            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"
-                          />
-                        </svg>
-                      </span>
-                      <input
-                        type="text"
-                        class="form-control"
-                        placeholder="Filtrar por Nombre del Usuario"
-                        (keyup)="esFiltrar($event, 'usuario')"
-                      />
-                    </div>
+                </div>
+              </div>
+          
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por Nombre de Cliente">
+                    <span class="input-group-text">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-search" viewBox="0 0 16 16">
+                        <path
+                          d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                      </svg>
+                    </span>
+                    <input formControlName="cliente" type="text" class="form-control" placeholder="Filtrar por Nombre del Cliente" (keyup)="esFiltrar($event)">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por Nombre de Usuario">
+                    <span class="input-group-text">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-search" viewBox="0 0 16 16">
+                        <path
+                          d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                      </svg>
+                    </span>
+                    <input formControlName="usuario" type="text" class="form-control" placeholder="Filtrar por Nombre del Usuario" (keyup)="esFiltrar($event)">
                   </div>
                 </div>
               </div>
             </div>
+          </div>
+          </form>
 
-            <div class="row">
-              <div class="col-12">
-                <table class="table" *ngIf="validarFiltradoClientes() == true">
-                  <thead class="encabezado">
-                    <tr>
-                      <th
-                        (click)="ordenarClientePor('tdDescripcion')"
-                        [appSort]="ClientesFiltrados"
-                        data-order="desc"
-                        data-name="tdDescripcion"
-                        style="text-align: center"
-                      >
-                        <a
-                          >Tipo Doc.
-                          {{ ordenarIconoCliente("tdDescripcion") }}</a
-                        >
-                      </th>
-                      <th
-                        (click)="ordenarClientePor('cliNroDoc')"
-                        [appSort]="ClientesFiltrados"
-                        data-order="desc"
-                        data-name="cliNroDoc"
-                        style="text-align: center"
-                      >
-                        <a>Num. Doc. {{ ordenarIconoCliente("cliNroDoc") }}</a>
-                      </th>
-                      <th
-                        (click)="ordenarClientePor('cliApeNomDen')"
-                        [appSort]="ClientesFiltrados"
-                        data-order="desc"
-                        data-name="cliApeNomDen"
-                        style="text-align: center"
-                      >
-                        <a>Cliente {{ ordenarIconoCliente("cliApeNomDen") }}</a>
-                      </th>
-                      <th
-                        (click)="ordenarClientePor('usuario')"
-                        [appSort]="ClientesFiltrados"
-                        data-order="desc"
-                        data-name="usuario"
-                        style="text-align: center"
-                      >
-                        <a>Usuario {{ ordenarIconoCliente("usuario") }}</a>
-                      </th>
-                      <th scope="col">Seleccionar</th>
+          <div class="row">            
+            <div class="col-12">                 
+              <table class="table" *ngIf="validarFiltradoClientes() == true">
+                <thead class="encabezado">
+                    <tr>        
+                      <th (click)="ordenarClientePor('tdDescripcion')" [appSort]="ClientesFiltrados" data-order="desc"
+                      data-name="tdDescripcion" style="text-align: center;"><a>Tipo Doc. {{ordenarIconoCliente('tdDescripcion')}}</a></th>            
+                      <th (click)="ordenarClientePor('cliNroDoc')" [appSort]="ClientesFiltrados" data-order="desc"
+                      data-name="cliNroDoc" style="text-align: center;"><a>Num. Doc. {{ordenarIconoCliente('cliNroDoc')}}</a></th>            
+                      <th (click)="ordenarClientePor('cliApeNomDen')" [appSort]="ClientesFiltrados" data-order="desc"
+                      data-name="cliApeNomDen" style="text-align: center;"><a>Cliente {{ordenarIconoCliente('cliApeNomDen')}}</a></th>            
+                      <th (click)="ordenarClientePor('usuario')" [appSort]="ClientesFiltrados" data-order="desc"
+                      data-name="usuario" style="text-align: center;"><a>Usuario {{ordenarIconoCliente('usuario')}}</a></th>          
+                      <th scope="col">Seleccionar</th> 
                     </tr>
                   </thead>
                   <tbody>

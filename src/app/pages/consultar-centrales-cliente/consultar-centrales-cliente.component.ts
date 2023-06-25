@@ -9,8 +9,7 @@ import * as L from 'leaflet';
 
 //COMPONENTES
 import { CentralConsultaClass } from 'src/app/core/models/centralConsulta';
-import { CentralClass } from 'src/app/core/models/central';
-import { ServicioClass } from 'src/app/core/models/servicio';
+import { ServicioEstadoClass } from 'src/app/core/models/servicioEstado';
 
 //SERVICIOS
 import { CentralService } from 'src/app/core/services/central.service';
@@ -25,7 +24,7 @@ export class ConsultarCentralesClienteComponent implements OnInit {
 //VARIABLES DE OBJETOS LIST
 CentralConsulta: CentralConsultaClass[] = [];
 CentralConsultaFiltrados: CentralConsultaClass [] = [];
-ServiciosDeCentral: ServicioClass [] = [];
+ServiciosDeCentral: ServicioEstadoClass [] = [];
 
 //VARIABLES DE DATOS
 propiedadOrdenamiento: string = 'cenNro';
@@ -168,7 +167,7 @@ marker: L.Marker | undefined;
   }
 
   seleccionarCentral(){
-    this.centralConsultar.obtenerServiciosXCentral(this.centralNroSeleccionada).subscribe(data => {
+    this.centralConsultar.obtenerServicioXCentralEstado(this.centralNroSeleccionada).subscribe(data => {
       this.ServiciosDeCentral = data; 
     })
     this.isCollapsed1 = !this.isCollapsed1;

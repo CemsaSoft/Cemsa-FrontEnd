@@ -84,6 +84,7 @@ export class ConsultarClienteComponent implements OnInit {
 
   //FORMULARIOS DE AGRUPACION DE DATOS
   formModificar: FormGroup;
+  // formfiltro: FormGroup;
   constructor(
     private clienteConsultar: ClienteService, private formBuilder: FormBuilder 
   ) { 
@@ -93,20 +94,31 @@ export class ConsultarClienteComponent implements OnInit {
       cliApeNomDen: new FormControl(null, [
         Validators.required,
         Validators.minLength(3),
+        Validators.maxLength(50),
         Validators.pattern('^[a-zA-Z0-9 ]*$'),
         Validators.pattern('^[A-Z].*$')
       ]),
       usuario: new FormControl(null, [
         Validators.required,
         Validators.minLength(3),
+        Validators.maxLength(50),
         Validators.pattern('^[a-zA-Z0-9 ]*$'),        
       ]),   
       fechaAlta: new FormControl(null, []),   
       fechaBaja: new FormControl(null, []),   
-      email: new FormControl(null, [Validators.email]),
+      email: new FormControl(null, [
+        Validators.email,
+        Validators.maxLength(30),
+      ]),
       telefono: new FormControl(null, [Validators.pattern(/^[\d]{2,4}-?[\d]{6,8}$/)]),
-
     });
+
+    this.formfiltro = new FormGroup({
+      tipo: new FormControl(null, []),
+      numero: new FormControl(null, []),
+      cliente: new FormControl(null, []),
+      usuario: new FormControl(null, []),
+    });   
   }
  
 
@@ -311,7 +323,26 @@ export class ConsultarClienteComponent implements OnInit {
       }
     });
   }
+  // esFiltrar(event: Event) {
+  //   const filtronTipo = (this.formfiltro.get('tipo') as FormControl).value?.toLowerCase();
+  //   const filtroNumero = (this.formfiltro.get('numero') as FormControl).value?.toLowerCase();
+  //   const filtroCliente = (this.formfiltro.get('cliente') as FormControl).value?.toLowerCase();
+  //   const filtronUsuario = (this.formfiltro.get('usuario') as FormControl).value?.toLowerCase();
 
+  //   this.ClientesFiltrados = this.Clientes.filter((cli) => {
+  //     const valorTdDescripcion= cli.tdDescripcion.toString().toLowerCase();
+  //     const valorCliNroDoc = cli.cliNroDoc.toString().toLowerCase();
+  //     const valorCliApeNomDen = cli.cliApeNomDen.toString().toLowerCase();
+  //     const valorUsuario = cli.usuario.toString().toLowerCase();
+
+  //     return (
+  //       (!filtronTipo || valorTdDescripcion.includes(filtronTipo)) &&
+  //       (!filtroNumero || valorCliNroDoc.includes(filtroNumero)) &&
+  //       (!filtroCliente || valorCliApeNomDen.includes(filtroCliente)) &&
+  //       (!filtronUsuario || valorUsuario.includes(filtronUsuario))
+  //     );
+  //   });
+  // }
   modificarEstadoCliente(accion: number, estado:string): void {
     Swal.fire({
       text: '¿Estás seguro que deseas modificar el estado del Cliente a "' + estado + '"?',

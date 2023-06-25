@@ -53,11 +53,14 @@ export class RegistrarServicioComponent implements OnInit {
       this.formAgregar = this.fb.group({
         descripcionA: new FormControl(null, [
           Validators.required,
-          Validators.pattern("^[A-Z][A-ZÑa-zñáéíóúÁÉÍÓÚ'° 0-9/]{2,}$"),
+          Validators.pattern("^[A-Z][A-ZÑa-zñáéíóúÁÉÍÓÚ'° 0-9/]{2,29}$"),
         ]),
         unidadA: new FormControl(null, [
           Validators.required,
-          Validators.pattern("^[A-Za-zÑñáéíóúÁÉÍÓÚ'°0-9/%ºª ]{1,}$"),
+          Validators.pattern("^[A-Za-zÑñáéíóúÁÉÍÓÚ'°0-9/%ºª ]{1,12}$"),
+        ]),
+        tipoGraficoA: new FormControl(null, [
+          Validators.required,
         ]),
       }
     );
@@ -72,11 +75,17 @@ export class RegistrarServicioComponent implements OnInit {
   set unidadA(valor: any) {
     this.formAgregar.get('unidadA')?.setValue(valor);
   }
+  set tipoGraficoA(valor: any) {
+    this.formAgregar.get('tipoGraficoA')?.setValue(valor);
+  }
   get descripcionA() {
     return this.formAgregar.get('descripcionA');
   }
   get unidadA() {
     return this.formAgregar.get('unidadA');
+  }
+  get tipoGraficoA() {
+    return this.formAgregar.get('tipoGraficoA');
   }
 
   //Valida que los campos descripcion y uniddad se encuentren correctamente ingresados.
@@ -96,9 +105,11 @@ agregarServicio(): void {
       title: 'Error',
       text: `Verificar los datos ingresados:              
         ${this.descripcionA?.invalid && this.descripcionA.errors?.['required'] ? '\n* La descripción es requerida.' : ''}          
-        ${this.descripcionA?.invalid && this.descripcionA.errors?.['pattern'] ? '\n* La primera letra debe ser mayúscula y no debe contener caracteres especiales. Además, debe tener más de 3 caracteres.' : ''}
+        ${this.descripcionA?.invalid && this.descripcionA.errors?.['pattern'] ? '\n* La primera letra debe ser mayúscula y no debe contener caracteres especiales. Además, debe tener más de 3 caracteres y menos de 30 caracteres.' : ''}
         ${this.unidadA?.invalid && this.unidadA.errors?.['required'] ? '\n* La unidad es requerida.' : ''}          
-        ${this.unidadA?.invalid && this.unidadA.errors?.['pattern'] ? '\n* La unidad no debe contener caracteres especiales.' : ''}`,      
+        ${this.unidadA?.invalid && this.unidadA.errors?.['pattern'] ? '\n* La unidad no debe contener caracteres especiales ni tener más de 12 caracteres.' : ''}      
+        ${this.tipoGraficoA?.invalid && this.tipoGraficoA.errors?.['required'] ? '\n* Seleccione un tipo de grafico.' : ''}`,      
+
       icon: 'warning',
       confirmButtonColor: '#0f425b',
       confirmButtonText: 'Aceptar',
@@ -110,6 +121,7 @@ agregarServicio(): void {
     0,
     this.formAgregar.get('descripcionA')?.value,
     this.formAgregar.get('unidadA')?.value,
+    this.formAgregar.get('tipoGraficoA')?.value,
   );
   this.servicioRegistrar.guardarServicio(Servicios).subscribe((data) => {      
     Swal.fire({

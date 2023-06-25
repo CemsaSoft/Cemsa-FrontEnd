@@ -24,6 +24,7 @@ export class ModificarPasswordComponent implements OnInit {
   usu: any = 0;
   cliente: any = 0;
   idUsuario: any = 0;
+  modPassword: any = 0;
 
   //FORMS PARA LA AGRUPACIÓN DE DATOS
   formPassword: FormGroup;
@@ -35,7 +36,10 @@ export class ModificarPasswordComponent implements OnInit {
     this.formPassword = this.fb.group({
       usuario: new FormControl(null, []),
       password: [null, [Validators.required]],
-      newPassword: [null, [Validators.required]],
+      newPassword: [null, [
+        Validators.required, 
+        Validators.pattern(/^(?!.*123456).*$/)
+      ]],
       confPassword: [null, [Validators.required]],
     });
   }
@@ -56,6 +60,20 @@ export class ModificarPasswordComponent implements OnInit {
     this.idUsuario = localStorage.getItem('idUsuario');    
 
     this.usuario = this.usu;
+
+    this.modPassword = localStorage.getItem('cambiarPassword');
+    if (this.modPassword==="1")
+    {
+      Swal.fire({
+        title: 'Advertencia',
+        text: 'Es necesario cambiar la contraseña.',
+        icon: 'warning',
+        confirmButtonColor: '#0f425b',
+        confirmButtonText: 'Aceptar',
+        footer: 'Por favor, cambie su contraseña.'
+      });
+    }
+
   }
 
   set usuario(valor: any) {
@@ -113,6 +131,7 @@ export class ModificarPasswordComponent implements OnInit {
             confirmButtonText: 'Aceptar',
           } as SweetAlertOptions).then((result) => {
             if (result.value == true) {
+              localStorage.setItem('cambiarPassword', "0");
               location.href = '/home'; // Redireccionar al usuario a la página de inicio
             }
           });
