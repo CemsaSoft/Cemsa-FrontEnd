@@ -49,6 +49,7 @@ import {MatInputModule} from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import {MatIconModule} from '@angular/material/icon';
+import { SidebarClienteComponent } from './shared/sidebar-cliente/sidebar-cliente.component';
 
 
 //import { TextMaskModule } from 'angular2-text-mask';// npm i angular2-text-mask
@@ -84,13 +85,14 @@ import {MatIconModule} from '@angular/material/icon';
     RegistrarAlarmaConfigComponent,
     ConsultarAlarmaConfigComponent,
     ConsultarAlarmaComponent,
-    OlvidoPasswordComponent
+    OlvidoPasswordComponent,
     RegistrarServicioComponent,
     SidebarComponent,
     FooterInternoComponent,
     CardComponent,
     StepComponent,
     StepperComponent,
+    SidebarClienteComponent,
   ],
   //Para importar otros módulos de angular
   imports: [

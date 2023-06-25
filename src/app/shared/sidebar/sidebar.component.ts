@@ -13,6 +13,6 @@ export class SidebarComponent implements OnInit {
   ngOnInit(): void {
   }
   cerrarSesion(): void {
-    this.servicioUsuario.limpiarToken();
+    this.servicioUsuario.limpiarToken(); 
   }
 }

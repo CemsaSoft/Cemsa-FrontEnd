@@ -1,101 +1,5 @@
 <!doctype html>
 <html lang="en" data-bs-theme="auto">
-  <head>
-    <!-- <script src="../assets/js/color-modes.js"></script> -->
-
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Hugo 0.111.3">
-    <title>Sidebars · Bootstrap v5.3</title>
-
-    <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/sidebars/">
-
-    
-
-    
-
-<link href="node_modules\bootstrap\dist\css\bootstrap.min.css" rel="">
-
-    <!-- <style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        user-select: none;
-      }
-
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
-        }
-      }
-
-      .b-example-divider {
-        width: 100%;
-        height: 3rem;
-        background-color: rgba(0, 0, 0, .1);
-        border: solid rgba(0, 0, 0, .15);
-        border-width: 1px 0;
-        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
-      }
-
-      .b-example-vr {
-        flex-shrink: 0;
-        width: 1.5rem;
-        height: 100vh;
-      }
-
-      .bi {
-        vertical-align: -.125em;
-        fill: currentColor;
-      }
-
-      .nav-scroller {
-        position: relative;
-        z-index: 2;
-        height: 2.75rem;
-        overflow-y: hidden;
-      }
-
-      .nav-scroller .nav {
-        display: flex;
-        flex-wrap: nowrap;
-        padding-bottom: 1rem;
-        margin-top: -1px;
-        overflow-x: auto;
-        text-align: center;
-        white-space: nowrap;
-        -webkit-overflow-scrolling: touch;
-      }
-
-      .btn-bd-primary {
-        --bd-violet-bg: #712cf9;
-        --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
-
-        --bs-btn-font-weight: 600;
-        --bs-btn-color: var(--bs-white);
-        --bs-btn-bg: var(--bd-violet-bg);
-        --bs-btn-border-color: var(--bd-violet-bg);
-        --bs-btn-hover-color: var(--bs-white);
-        --bs-btn-hover-bg: #6528e0;
-        --bs-btn-hover-border-color: #6528e0;
-        --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
-        --bs-btn-active-color: var(--bs-btn-hover-color);
-        --bs-btn-active-bg: #5a23c8;
-        --bs-btn-active-border-color: #5a23c8;
-      }
-      .bd-mode-toggle {
-        z-index: 1500;
-      }
-    </style> -->
-
-    
-    <!-- Custom styles for this template -->
-    <link href="./sidebar.component.css" rel="stylesheet">
-  </head>
   <body>
     <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
       <symbol id="check2" viewBox="0 0 16 16">
@@ -112,8 +16,7 @@
         <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
       </symbol>
     </svg>
-
-    <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
+    <!-- <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
       <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center"
               id="bd-theme"
               type="button"
@@ -146,7 +49,7 @@
           </button>
         </li>
       </ul>
-    </div>
+    </div> -->
 
     
 <svg xmlns="" style="display: none;">
@@ -177,74 +80,10 @@
     
     <!-- Contenido de la barra lateral -->
     <main class="d-flex flex-nowrap">
-  
-        <!-- EJEMPLO 1 -->
-          <!-- <div class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark" style="width: 280px;">
-            <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-              <svg class="bi pe-none me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg>
-              <span class="fs-4">Sidebar</span>
-            </a>
-            <hr>
-            <ul class="nav nav-pills flex-column mb-auto">
-              <li class="nav-item">
-                <a href="#" class="nav-link active" aria-current="page">
-                  <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#home"/></svg>
-                  Home
-                </a>
-              </li>
-              <li>
-                <a href="#" class="nav-link text-white">
-                  <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#speedometer2"/></svg>
-                  Dashboard
-                </a>
-              </li>
-              <li>
-                <a href="#" class="nav-link text-white">
-                  <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#table"/></svg>
-                  Orders
-                </a>
-              </li>
-              <li>
-                <a href="#" class="nav-link text-white">
-                  <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#grid"/></svg>
-                  Products
-                </a>
-              </li>
-              <li>
-                <a href="#" class="nav-link text-white">
-                  <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#people-circle"/></svg>
-                  Customers
-                </a>
-              </li>
-            </ul>
-            <hr>
-            <div class="dropdown">
-              <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
-                <strong>mdo</strong>
-              </a>
-              <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-                <li><a class="dropdown-item" href="#">New project...</a></li>
-                <li><a class="dropdown-item" href="#">Settings</a></li>
-                <li><a class="dropdown-item" href="#">Profile</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="#">Sign out</a></li>
-              </ul>
-            </div>
-          </div> -->
-         
-        <!-- EJEMPLO 2 -->
-      
-        
-          
         <!-- EJEMPLO 3 -->
            <div class="d-flex flex-column flex-shrink-0 bg-body-tertiary" style="width: 4.5rem;" 
            id="navbarToggleExternalContentAdmin"
            >
-            <!-- <a href="/" class="d-block p-3 link-body-emphasis text-decoration-none" title="Icon-only" data-bs-toggle="tooltip" data-bs-placement="right">
-             <img src="../../../assets/CEM.png" alt="" class="bi pe-none" width="150" height="90">
-              <span class="visually-hidden">Icon-only</span>
-            </a> -->
             <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
               <li class="nav-item">
                 <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed nav-link active iconPading" >
@@ -253,283 +92,64 @@
                     <svg class="bi pe-none" width="40" height="40" role="img" aria-label="Home"><use xlink:href="#home"/></svg>
                     <b>Home</b> 
                   </a>
-                  <!-- <svg class="bi pe-none " width="40" height="40" role="img" aria-label="Home"><use xlink:href="#home"/></svg> -->
-                  </button>
+                </button>
               </li>
               <li class="nav-item">
-                <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed nav-link active iconPading" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="false">
-                  
-                  <a class="nav-link py-3 border-bottom rounded-0" aria-current="page" title="Home" data-bs-toggle="tooltip" data-bs-placement="right">
+                <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed nav-link active iconPading" data-bs-toggle="collapse" data-bs-target="#clientes-collapse" aria-expanded="false">
+                  <a class="nav-link py-3 border-bottom rounded-0" aria-current="page" title="Clientes" data-bs-toggle="tooltip" data-bs-placement="right">
                     <svg class="bi pe-none" width="40" height="40" role="img" aria-label="Customers"><use xlink:href="#people-circle"/></svg>
                     <b>Clientes</b>
-                    
                   </a>
-                  <!-- <svg class="bi pe-none " width="40" height="40" role="img" aria-label="Home"><use xlink:href="#home"/></svg> -->
                   </button>
-                  <div class="collapse" id="home-collapse">
+                  <div class="collapse" id="clientes-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                      
                       <li><a href="consultar-cliente" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Consultar</a></li>
-                   
                       <li><a href="registrar-cliente" class="link-body-emphasis d-inline-flex text-decoration-none rounded color">Registrar</a></li>
-                      <!-- <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Reports</a></li> -->
                     </ul>
                   </div>
               </li>
               <li class="nav-item">
-                <!-- <a href="#" class="nav-link py-3 border-bottom rounded-0" title="Dashboard" data-bs-toggle="tooltip" data-bs-placement="right">
-                  <svg class="bi pe-none" width="40" height="40" role="img" aria-label="Dashboard"><use xlink:href="#speedometer2"/></svg>
-                </a> -->
-                <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="false">
-                  
-                  <a class="nav-link py-3 border-bottom rounded-0" title="Dashboard" data-bs-toggle="tooltip " title="Dashboard" data-bs-toggle="tooltip" data-bs-placement="right">
+                <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#centrales-collapse" aria-expanded="false">
+                  <a class="nav-link py-3 border-bottom rounded-0" data-bs-toggle="tooltip " title="Centrales" data-bs-toggle="tooltip" data-bs-placement="right">
                     <svg class="bi pe-none" width="40" height="40" role="img" aria-label="Dashboard"><use xlink:href="#speedometer2"/></svg>
                     <b>Centrales</b>
                   </a>
-                  
                 </button>
-                
-                <div class="collapse" id="dashboard-collapse">
+                <div class="collapse" id="centrales-collapse">
                   <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                     <li><a href="consultar-central" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Consultar</a></li>
                     <li><a href="registrar-central" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Registrar</a></li>
-                    <!-- <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Monthly</a></li>
-                    <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Annually</a></li> -->
                   </ul>
                 </div>
-
-
-
               </li>
               <li>
-                <!-- <a href="#" class="nav-link py-3 border-bottom rounded-0" title="Orders" data-bs-toggle="tooltip" data-bs-placement="right">
-                  <svg class="bi pe-none" width="40" height="40" role="img" aria-label="Orders"><use xlink:href="#table"/></svg>
-                </a> -->
-                <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#orders-collapse" aria-expanded="false">
-                 
-                  <a class="nav-link py-3 border-bottom rounded-0" title="Orders" data-bs-toggle="tooltip" data-bs-placement="right">
-                    <!-- <svg class="bi pe-none" width="40" height="24" role="img" aria-label="Orders"><use xlink:href="#table"/></svg> -->
+                <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#servicios-collapse" aria-expanded="false">
+                  <a class="nav-link py-3 border-bottom rounded-0" title="Servicios" data-bs-toggle="tooltip" data-bs-placement="right">
                     <svg class="bi pe-none me-2" width="40" height="40"><use xlink:href="#table"/></svg>
                     <b href="#">Servicios</b>
                   </a>
                 </button>
-                
-                <div class="collapse" id="orders-collapse">
+                <div class="collapse" id="servicios-collapse">
                   <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                     <li><a href="consultar-servicio" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Consultar</a></li>
                     <li><a href="registrar-servicio" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Registrar</a></li>
-                    <!-- <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Shipped</a></li>
-                    <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Returned</a></li> -->
                   </ul>
                 </div>
               </li>
-              <!-- <li>
-                <a href="#" class="nav-link py-3 border-bottom rounded-0" title="Products" data-bs-toggle="tooltip" data-bs-placement="right">
-                  <svg class="bi pe-none" width="40" height="40" role="img" aria-label="Products"><use xlink:href="#grid"/></svg>
-                </a>
-              </li>
-              <li>
-                <a href="#" class="nav-link py-3 border-bottom rounded-0" title="Customers" data-bs-toggle="tooltip" data-bs-placement="right">
-                  <svg class="bi pe-none" width="40" height="40" role="img" aria-label="Customers"><use xlink:href="#people-circle"/></svg>
-                </a>
-              </li> -->
             </ul>
-            <!-- <div class="dropdown ">
-              <a href="#" class=" cerrarSesion d-flex align-items-center justify-content-center p-3 link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" (click)=" cerrarSesion()" >
-                <svg class="bi pe-none" width="40" height="40" role="img" aria-label="Customers"><use xlink:href="#people-circle"/></svg>
-                
-              </a>
-
-              <ul class="dropdown-menu text-small shadow">
-                <li><a class="dropdown-item" href="#">Sign out</a></li>
-              </ul>
-            </div> -->
-            
-            
               <a href="" class="d-flex align-items-center link-body-emphasis text-decoration-none" (click)="cerrarSesion()">
-                <!-- <svg class="bi pe-none" width="5" height="5" role="img" aria-label="Products"><use xlink:href="#grid"/></svg> -->
-                <!-- <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2"> -->
-                
-                <svg class="bi pe-none me-2" width="36" height="36" (click)="cerrarSesion()"><use xlink:href="#people-circle"/></svg>
+                <!-- <svg class="bi pe-none me-2" width="36" height="36" (click)="cerrarSesion()"><use xlink:href="#people-circle"/></svg> -->
                 <p style="padding-right: 15px; padding-left: 2px; margin-bottom: 30px;">Salir</p>
                 <img src="../../../assets/desconectar.png" style="margin-bottom: 30px; margin-left: 20px; margin-right: 5px;" alt="" width="45" height="45">
               </a>
-             
           </div> 
-        <!-- EJEMPLO 4 -->
-          <!-- <div class="flex-shrink-0 p-3" style="width: 280px;">
-            <a href="/" class="d-flex align-items-center pb-3 mb-3 link-body-emphasis text-decoration-none border-bottom">
-              <svg class="bi pe-none me-2" width="30" height="24"><use xlink:href="#bootstrap"/></svg>
-              <span class="fs-5 fw-semibold">Collapsible</span>
-            </a>
-            <ul class="list-unstyled ps-0">
-              <li class="mb-1">
-                <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
-                  HomeSS
-                </button>
-                <div class="collapse show" id="home-collapse">
-                  <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                    <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Overview</a></li>
-                    <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Updates</a></li>
-                    <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Reports</a></li>
-                  </ul>
-                </div>
-              </li>
-              <li class="mb-1">
-                <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="false">
-                  Dashboard
-                </button>
-                <div class="collapse" id="dashboard-collapse">
-                  <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                    <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Overview</a></li>
-                    <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Weekly</a></li>
-                    <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Monthly</a></li>
-                    <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Annually</a></li>
-                  </ul>
-                </div>
-              </li>
-              <li class="mb-1">
-                <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#orders-collapse" aria-expanded="false">
-                  Orders
-                </button>
-                <div class="collapse" id="orders-collapse">
-                  <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                    <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">New</a></li>
-                    <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Processed</a></li>
-                    <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Shipped</a></li>
-                    <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Returned</a></li>
-                  </ul>
-                </div>
-              </li>
-              <li class="border-top my-3"></li>
-              <li class="mb-1">
-                <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#account-collapse" aria-expanded="false">
-                  Account
-                </button>
-                <div class="collapse" id="account-collapse">
-                  <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                    <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">New...</a></li>
-                    <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Profile</a></li>
-                    <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Settings</a></li>
-                    <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Sign out</a></li>
-                  </ul>
-                </div>
-              </li>
-            </ul>
-          </div> -->
-        
-          <!-- <div class="b-example-divider b-example-vr"></div> -->
-        <!-- EJEMPLO 5 -->
-          <!-- <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-body-tertiary" style="width: 380px;">
-            <a href="/" class="d-flex align-items-center flex-shrink-0 p-3 link-body-emphasis text-decoration-none border-bottom">
-              <svg class="bi pe-none me-2" width="30" height="24"><use xlink:href="#bootstrap"/></svg>
-              <span class="fs-5 fw-semibold">List group</span>
-            </a>
-            <div class="list-group list-group-flush border-bottom scrollarea">
-              <a href="#" class="list-group-item list-group-item-action active py-3 lh-sm" aria-current="true">
-                <div class="d-flex w-100 align-items-center justify-content-between">
-                  <strong class="mb-1">List group item heading</strong>
-                  <small>Wed</small>
-                </div>
-                <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
-              </a>
-              <a href="#" class="list-group-item list-group-item-action py-3 lh-sm">
-                <div class="d-flex w-100 align-items-center justify-content-between">
-                  <strong class="mb-1">List group item heading</strong>
-                  <small class="text-body-secondary">Tues</small>
-                </div>
-                <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
-              </a>
-              <a href="#" class="list-group-item list-group-item-action py-3 lh-sm">
-                <div class="d-flex w-100 align-items-center justify-content-between">
-                  <strong class="mb-1">List group item heading</strong>
-                  <small class="text-body-secondary">Mon</small>
-                </div>
-                <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
-              </a>
-        
-              <a href="#" class="list-group-item list-group-item-action py-3 lh-sm" aria-current="true">
-                <div class="d-flex w-100 align-items-center justify-content-between">
-                  <strong class="mb-1">List group item heading</strong>
-                  <small class="text-body-secondary">Wed</small>
-                </div>
-                <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
-              </a>
-              <a href="#" class="list-group-item list-group-item-action py-3 lh-sm">
-                <div class="d-flex w-100 align-items-center justify-content-between">
-                  <strong class="mb-1">List group item heading</strong>
-                  <small class="text-body-secondary">Tues</small>
-                </div>
-                <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
-              </a>
-              <a href="#" class="list-group-item list-group-item-action py-3 lh-sm">
-                <div class="d-flex w-100 align-items-center justify-content-between">
-                  <strong class="mb-1">List group item heading</strong>
-                  <small class="text-body-secondary">Mon</small>
-                </div>
-                <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
-              </a>
-              <a href="#" class="list-group-item list-group-item-action py-3 lh-sm" aria-current="true">
-                <div class="d-flex w-100 align-items-center justify-content-between">
-                  <strong class="mb-1">List group item heading</strong>
-                  <small class="text-body-secondary">Wed</small>
-                </div>
-                <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
-              </a>
-              <a href="#" class="list-group-item list-group-item-action py-3 lh-sm">
-                <div class="d-flex w-100 align-items-center justify-content-between">
-                  <strong class="mb-1">List group item heading</strong>
-                  <small class="text-body-secondary">Tues</small>
-                </div>
-                <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
-              </a>
-              <a href="#" class="list-group-item list-group-item-action py-3 lh-sm">
-                <div class="d-flex w-100 align-items-center justify-content-between">
-                  <strong class="mb-1">List group item heading</strong>
-                  <small class="text-body-secondary">Mon</small>
-                </div>
-                <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
-              </a>
-              <a href="#" class="list-group-item list-group-item-action py-3 lh-sm" aria-current="true">
-                <div class="d-flex w-100 align-items-center justify-content-between">
-                  <strong class="mb-1">List group item heading</strong>
-                  <small class="text-body-secondary">Wed</small>
-                </div>
-                <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
-              </a>
-              <a href="#" class="list-group-item list-group-item-action py-3 lh-sm">
-                <div class="d-flex w-100 align-items-center justify-content-between">
-                  <strong class="mb-1">List group item heading</strong>
-                  <small class="text-body-secondary">Tues</small>
-                </div>
-                <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
-              </a>
-              <a href="#" class="list-group-item list-group-item-action py-3 lh-sm">
-                <div class="d-flex w-100 align-items-center justify-content-between">
-                  <strong class="mb-1">List group item heading</strong>
-                  <small class="text-body-secondary">Mon</small>
-                </div>
-                <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
-              </a>
-            </div>
-          </div> -->
-        
-          <!-- <div class="b-example-divider b-example-vr"></div> -->
-        <!-- <app-home></app-home> -->
         </main>
   </div>
-  
   <div class="content">
-    
     <!-- Contenido principal -->
-    <!-- <app-home></app-home> -->
   </div>
 </div>
-
-
-
     <script src="node_modules\bootstrap\dist\js\bootstrap.bundle.min.js"></script>
-
       <script src="sidebars.js"></script>
   </body>
 </html>

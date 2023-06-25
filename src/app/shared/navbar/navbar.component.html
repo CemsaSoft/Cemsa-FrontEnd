@@ -74,4 +74,12 @@
 <!-- 
 <app-menu-cliente></app-menu-cliente>
 <app-menu-usuario></app-menu-usuario> -->
-<app-sidebar></app-sidebar>
+
+<span *ngIf="token != null && rol != 1" >
+    <app-sidebar-cliente></app-sidebar-cliente>
+</span>
+<span *ngIf="token != null && rol != 0" >
+    <app-sidebar></app-sidebar>
+</span>
+
+

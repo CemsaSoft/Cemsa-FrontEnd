@@ -84,7 +84,7 @@ export class ConsultarClienteComponent implements OnInit {
 
   //FORMULARIOS DE AGRUPACION DE DATOS
   formModificar: FormGroup;
-  // formfiltro: FormGroup;
+  formfiltro: FormGroup;
   constructor(
     private clienteConsultar: ClienteService, private formBuilder: FormBuilder 
   ) { 
