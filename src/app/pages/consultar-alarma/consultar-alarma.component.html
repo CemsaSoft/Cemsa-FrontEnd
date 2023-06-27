@@ -1,7 +1,260 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
-<h1 class="text-center">Consultar Alarmas</h1>
-<br>
+<app-navbar></app-navbar>
+
+
+<div class="body">
+  <h1 class="text-center titulo tituloFuente">Consultar Alarmas</h1>
+  <!-- Contenido de breadcrumb -->
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item" style="padding-left: 310px; font-size: 18px">
+        <a href="/home">Home</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        Consultar Alarmas
+      </li>
+    </ol>
+  </nav>
+  <div class="container mt-12">
+
+<!-- ----------------------------Inicio de Paso a Paso-------------------------------------------- -->
+<mat-vertical-stepper>
+  <mat-step
+    [label]="titulo1"
+    [completed]="isStep1Completed"
+    [ngClass]="{ collapse: isCollapsed1 }"
+  >
+    <ng-container contenido-paso-1>
+      <div class="card-body" [ngClass]="{ collapse: isCollapsed2 }">
+        <div class="row justify-content-center">
+          <div class="col-10 cardFiltrado cardAnimate cardFlat">
+            <div>
+              <div class="row">
+                <div class="col-md-2 image-container">
+                  <span
+                    ><img
+                      style="width: 102%; height: 102"
+                      src="../../../assets/icons8-user-64_1.png"
+                      class="image"
+                      alt="..."
+                    />
+                    <div class="texto">
+                      <h4
+                        style="
+                          text-align: center;
+                          color: #63ddff;
+                          font-size: 18px;
+                        "
+                      >
+                        Filtrar Alarma
+                      </h4>
+                    </div></span
+                  >
+                </div>         
+
+              <div class="row">
+
+                <div
+                  class="col-md-1 vertical-line"
+                  style="width: 20px"
+                ></div>
+                <div class="col-md-2 margenFiltros">
+                  <div
+                    class="form-outline input-group"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Buscar por Código de Central"
+                  >
+                    <label class="search-field">
+                      <mat-label
+                        class="search-field label ng-tns-c97-48 ng-star-inserted"
+                        >Código de Central</mat-label
+                      >
+                      <input
+                        type="text"
+                        class="form-control inputBusqueda .input-con-color-de-fondo"
+                        placeholder="Ej. 1"
+                        (keyup)="esFiltrar($event)"
+                      />                             
+                      <i
+                        class="fas fa-search FormatoIconos"
+                        style="padding-left: 20px"
+                      ></i>
+                    </label>
+                  </div>                          
+                </div>
+
+                <div
+                  class="col-md-1 vertical-line"
+                  style="width: 20px"
+                ></div>
+                <div class="col-md-2 margenFiltros">
+                  <div
+                    class="form-outline input-group"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Buscar por Código de Central"
+                  >
+                    <label class="search-field">
+                      <mat-label
+                        class="search-field label ng-tns-c97-48 ng-star-inserted"
+                        >Código de Central</mat-label
+                      >
+                      <input
+                        type="text"
+                        class="form-control inputBusqueda .input-con-color-de-fondo"
+                        placeholder="Ej. 1"
+                        (keyup)="esFiltrar($event)"
+                      />                             
+                      <i
+                        class="fas fa-search FormatoIconos"
+                        style="padding-left: 20px"
+                      ></i>
+                    </label>
+                  </div>                          
+                </div>
+
+                <div
+                  class="col-md-1 vertical-line"
+                  style="width: 20px"
+                ></div>
+                <div class="col-md-2 margenFiltros">
+                  <div
+                    class="form-outline input-group"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Buscar por Código de Central"
+                  >
+                    <label class="search-field">
+                      <mat-label
+                        class="search-field label ng-tns-c97-48 ng-star-inserted"
+                        >Código de Central</mat-label
+                      >
+                      <input
+                        type="text"
+                        class="form-control inputBusqueda .input-con-color-de-fondo"
+                        placeholder="Ej. 1"
+                        (keyup)="esFiltrar($event)"
+                      />                             
+                      <i
+                        class="fas fa-search FormatoIconos"
+                        style="padding-left: 20px"
+                      ></i>
+                    </label>
+                  </div>                          
+                </div>
+              </div>
+  
+              <div class="row">
+
+                <div
+                  class="col-md-1 vertical-line"
+                  style="width: 20px"
+                ></div>
+                <div class="col-md-2 margenFiltros">
+                  <div
+                    class="form-outline input-group"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Buscar por Código de Central"
+                  >
+                    <label class="search-field">
+                      <mat-label
+                        class="search-field label ng-tns-c97-48 ng-star-inserted"
+                        >Código de Central</mat-label
+                      >
+                      <input
+                        type="text"
+                        class="form-control inputBusqueda .input-con-color-de-fondo"
+                        placeholder="Ej. 1"
+                        (keyup)="esFiltrar($event)"
+                      />                             
+                      <i
+                        class="fas fa-search FormatoIconos"
+                        style="padding-left: 20px"
+                      ></i>
+                    </label>
+                  </div>                          
+                </div>
+
+                <div
+                  class="col-md-1 vertical-line"
+                  style="width: 20px"
+                ></div>
+                <div class="col-md-2 margenFiltros">
+                  <div
+                    class="form-outline input-group"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Buscar por Código de Central"
+                  >
+                    <label class="search-field">
+                      <mat-label
+                        class="search-field label ng-tns-c97-48 ng-star-inserted"
+                        >Código de Central</mat-label
+                      >
+                      <input
+                        type="text"
+                        class="form-control inputBusqueda .input-con-color-de-fondo"
+                        placeholder="Ej. 1"
+                        (keyup)="esFiltrar($event)"
+                      />                             
+                      <i
+                        class="fas fa-search FormatoIconos"
+                        style="padding-left: 20px"
+                      ></i>
+                    </label>
+                  </div>                          
+                </div>
+
+                <div
+                  class="col-md-1 vertical-line"
+                  style="width: 20px"
+                ></div>
+                <div class="col-md-2 margenFiltros">
+                  <div
+                    class="form-outline input-group"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Buscar por Código de Central"
+                  >
+                    <label class="search-field">
+                      <mat-label
+                        class="search-field label ng-tns-c97-48 ng-star-inserted"
+                        >Código de Central</mat-label
+                      >
+                      <input
+                        type="text"
+                        class="form-control inputBusqueda .input-con-color-de-fondo"
+                        placeholder="Ej. 1"
+                        (keyup)="esFiltrar($event)"
+                      />                             
+                      <i
+                        class="fas fa-search FormatoIconos"
+                        style="padding-left: 20px"
+                      ></i>
+                    </label>
+                  </div>                          
+                </div>
+              </div>
+              
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+      <br />
+
+
+
+
+      </div>
+    </ng-container>
+  </mat-step>
+</mat-vertical-stepper>
+
 
 <div class="d-flex justify-content-center">
   <div class="col-xs-6 col-sm-6 col-md-6 col-lg-10 col-xl-10">
@@ -168,3 +421,5 @@
 
 </div>
 
+
+<app-footer-interno></app-footer-interno>

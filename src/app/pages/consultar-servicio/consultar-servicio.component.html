@@ -1,128 +1,297 @@
 <app-navbar></app-navbar>
+
 <div class="body">
-  <h1 class="text-center">Consultar Servicio</h1>
-  <br />
+  <h1 class="text-center titulo tituloFuente">Consultar Servicio</h1>
+  <!-- Contenido de breadcrumb -->
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item" style="padding-left: 310px; font-size: 18px">
+        <a href="/home">Home</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        Consultar Servicio
+      </li>
+    </ol>
+  </nav>
+  <div class="container mt-12">
+    <!-- ----------------------------Inicio de Paso a Paso-------------------------------------------- -->
+    <mat-vertical-stepper>
+      <mat-step
+        [label]="titulo1"
+        [completed]="isStep1Completed"
+        [ngClass]="{ collapse: isCollapsed1 }"
+      >
+        <ng-container contenido-paso-1>
+          <div class="card-body" [ngClass]="{ collapse: isCollapsed2 }">
+            <div class="row justify-content-center">
+              <div class="col-10 cardFiltrado cardAnimate cardFlat">
+                <div>
+                  <div class="row">
+                    <div class="col-md-2 image-container">
+                      <span
+                        ><img
+                          style="width: 102%; height: 102"
+                          src="../../../assets/icons8-user-64_1.png"
+                          class="image"
+                          alt="..."
+                        />
+                        <div class="texto">
+                          <h4
+                            style="
+                              text-align: center;
+                              color: #63ddff;
+                              font-size: 18px;
+                            "
+                          >
+                            Filtrar Servicio
+                          </h4>
+                        </div></span
+                      >
+                    </div>                    
+                    
+                    <div
+                      class="col-md-1 vertical-line"
+                      style="width: 20px"
+                    ></div>
+                    <div class="col-md-2 margenFiltros">
+                      <div
+                        class="form-outline input-group"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title="Buscar por Nombre de Servicio"
+                      >
+                        <label class="search-field">
+                          <mat-label
+                            class="search-field label ng-tns-c97-48 ng-star-inserted"
+                            >Nombre de Servicio</mat-label
+                          >
+                          <input
+                            type="text"
+                            class="form-control inputBusqueda .input-con-color-de-fondo"
+                            placeholder="Ej. Temperatura"
+                            (keyup)="esFiltrar($event)"
+                          />                             
+                          <i
+                            class="fas fa-search FormatoIconos"
+                            style="padding-left: 20px"
+                          ></i>
+                        </label>
+                      </div>                          
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <br />
+            <br />
+            
+            <div class="row">
+              <div class="col-12 cardFiltrado cardAnimate cardFlat">
+                <table class="table" *ngIf="validarFiltrado() == true">
+                  <thead class="encabezado">
+                    <tr>
+                      <th
+                        (click)="ordenarPor('serId')"
+                        [appSort]="ServiciosFiltrados"
+                        data-order="desc"
+                        data-name="serId"
+                        style="text-align: center"
+                      >
+                        <a
+                          >Cod.
+                          {{ ordenarIcono("serId") }}</a
+                        >
+                      </th>
+                      <th
+                        (click)="ordenarPor('serDescripcion')"
+                        [appSort]="ServiciosFiltrados"
+                        data-order="desc"
+                        data-name="serDescripcion"
+                        style="text-align: center"
+                      >
+                        <a>Nombre de Servicio {{ ordenarIcono("serDescripcion") }}</a>
+                      </th>
+                      <th
+                        (click)="ordenarPor('serUnidad')"
+                        [appSort]="ServiciosFiltrados"
+                        data-order="desc"
+                        data-name="serUnidad"
+                        style="text-align: center"
+                      >
+                        <a>Unidad de Medida {{ ordenarIcono("serUnidad") }}</a>
+                      </th>
+                      <th></th>
+                      <th scope="col" style="text-align: center">
+                        Desactivar
+                      </th>
+                      <th scope="col" style="text-align: center">                        
+                        Ver Más
+                      </th>                      
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      class="table-row"
+                      *ngFor="
+                        let servicio of ServiciosFiltrados
+                          | paginate
+                            : {
+                                itemsPerPage: pageSize,
+                                currentPage: currentPage,
+                                totalItems: totalItems
+                              };
+                        let i = index
+                      "
+                      [ngClass]="{
+                        'fila-par': i % 2 == 0,
+                        'fila-impar': i % 2 == 1
+                      }"
+                      (click)="esfilaSeleccionada(servicio)"
+                    >
+                      <th style="vertical-align: middle align-center">
+                        {{ servicio.serId }}
+                      </th>
+                      <td style="vertical-align: middle" class="textIzquierda">
+                        {{ servicio.serDescripcion }}
+                      </td>
+                      <td style="vertical-align: middle" class="textIzquierda">
+                        {{ servicio.serUnidad }}
+                      </td>
 
-  <div class="row">
-    <div class="col-3"></div>
-    <div class="col-6 search-container">
-      <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por Nombre del Servicio">
-        <span class="input-group-text">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            fill="currentColor"
-            class="bi bi-search"
-            viewBox="0 0 16 16"
-          >
-            <path
-              d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"
-            />
-          </svg>
-        </span>
-        <input type="text" class="form-control" placeholder="Nombre del Servicio a Buscar" (keyup)="esFiltrar($event)">
-      </div>
-    </div>
-  </div>
-  <br />
-
-  <div class="row">
-    <div class="col-1"></div>
-    <div class="col-10">
-      <table class="table" *ngIf="validarFiltrado() == true">
-        <thead class="encabezado">
-          <tr>
-            <!-- <th scope="col">Cod.</th> 
-                  <th scope="col">Nombre de Servicio</th>
-                  <th scope="col">Unidad de Medida</th>
-            -->
-              <th (click)="ordenarPor('serId')" [appSort]="ServiciosFiltrados" data-order="desc"
-                  data-name="serId" style="text-align: center;"><a>Cod {{ordenarIcono('serId')}}</a></th>
-              <th (click)="ordenarPor('serDescripcion')" [appSort]="ServiciosFiltrados" data-order="desc"
-                  data-name="serDescripcion" style="text-align: center;"><a>Nombre de Servicio {{ordenarIcono('serDescripcion')}}</a></th>
-              <th (click)="ordenarPor('serUnidad')" [appSort]="ServiciosFiltrados" data-order="desc"
-                  data-name="serUnidad" style="text-align: center;"><a>Unidad de Medida {{ordenarIcono('serUnidad')}}</a></th>             
-              
-              <th scope="col" style="text-align: center;">Desactivar</th>
-              <th scope="col" style="text-align: center;">Ver Más</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="
-            let servicio of ServiciosFiltrados
-              | paginate
-                : {
-                    itemsPerPage: pageSize,
-                    currentPage: currentPage,
-                    totalItems: totalItems
-                  };
-            let i = index
-          "
-            [ngClass]="{'fila-par': i%2==0, 'fila-impar': i%2==1}"
-              (click)="esfilaSeleccionada(servicio)">
-              <th style="vertical-align: middle" class="align-center">{{ servicio.serId }}</th>
-              <td style="vertical-align: middle">{{ servicio.serDescripcion }}</td>
-              <td style="vertical-align: middle">{{ servicio.serUnidad }}</td>
-              <td class="align-center">
-                <button type="button" class="btn"data-bs-toggle="modal"
-                data-bs-target="#staticBackdrop" (click)="abrirModal('Eliminar Servicio')" title="Eliminar Servicio">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="gray"
-                        class="bi bi-trash" viewBox="0 0 16 16">
-                        <path
-                            d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
-                        <path fill-rule="evenodd"
-                            d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
-                    </svg>
-                </button>
-              </td>
-              <td class="align-center">
-                <button type="button" class="btn"data-bs-toggle="modal"
-                data-bs-target="#staticBackdrop" (click)="abrirModal('Ver Mas')" title="Ver Más Opciones">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="green"
-                      class="bi bi-pencil-square" viewBox="0 0 16 16">
-                      <path
-                          d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
-                      <path fill-rule="evenodd"
-                          d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
-                  </svg>
+                      <td class="empty-column"></td>
+                      <td class="align-center">
+                        <button
+                          type="button"                          
+                          class="btn" 
+                          data-bs-toggle="modal"
+                          data-bs-target="#staticBackdrop"    
+                          mat-button                      
+                          (click)="abrirModal('Eliminar Servicio')"
+                          title="Eliminar Servicio"
+                        >
+                          <img
+                          src="../../../assets/no check.png"
+                            class="iconosBoton"
+                            alt="..."
+                          />
+                        </button>                        
+                      </td>
+                      <td class="align-center">
+                        <button
+                          type="button"
+                          class="btn"
+                          data-bs-toggle="modal"
+                          data-bs-target="#staticBackdrop"  
+                          mat-button
+                          (click)="abrirModal('Ver Mas')"
+                          title="Ver Más Opciones"
+                        >
+                          <img
+                            src="../../../assets/seleccionarClie.png"
+                            class="image"
+                            alt="..."
+                          />
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div
+                  class="align-center"
+                  *ngIf="validarFiltrado() == true"
+                >
+                  <pagination-controls
+                    (pageChange)="paginaCambiada($event)"
+                    itemsPerPage="pageSize"
+                    totalItems="totalItems"
+                  ></pagination-controls>
+                </div>
+              </div>
+              <div
+                class="alert alert-primary text-center"
+                role="alert"
+                *ngIf="validarFiltrado() == false"
+              >                
+                No se encontrado servicio que coincidan con su búsqueda.
+              </div>
+            </div>          
+          </div>
+        </ng-container>
+      </mat-step>
+      
+      <mat-step
+        [label]="titulo2"
+        [completed]="isStep2Completed"
+        [ngClass]="{ collapse: isCollapsed2 }"
+      >
+        <ng-container contenido-paso-2>         
+          <!-- Botón ver otro cliente -->
+          <div class="row">
+            <div
+              class="example-button-row"
+              style="display: flex; justify-content: flex-end"
+            >
+              <button
+                mat-fab
+                extended
+                color="primary"
+                class="btonNuevaConsulta"
+                (click)="goToPreviousStep()"
+              >
+                <mat-icon>touch_app</mat-icon>
+                Nueva Consulta
               </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <div class="align-center">
-        <pagination-controls
-          (pageChange)="paginaCambiada($event)"
-          itemsPerPage="pageSize"
-          totalItems="totalItems"
-        ></pagination-controls>
-      </div>
-    </div>
-    <div
-      class="alert alert-primary text-center"
-      role="alert"
-      *ngIf="validarFiltrado() == false"
-    >
-      ¡No se ha encontrado ningún servicio!
-    </div>
+            </div>
+          </div>
 
-    <div class="row">
-      <div class="modal-footer text-center col-3">
-        <button
-          type="submit"
-          id="btnAgregar"
-          class="btn btn-success"
-          data-bs-toggle="modal"
-          data-bs-target="#staticBackdrop"
-          (click)="abrirModal('Agregar Servicio')"
-        >
-          Agregar Servicio
-        </button>
-      </div>
-    </div>
-  </div>
+          <div class="card cardFiltrado cardAnimate cardFlat">
+            <div class="card-header">
+              <div class="d-flex justify-content-between align-items-center">
+                <h4 class="mb-0 tituloCard">Agregar Servicio</h4>
+                <img
+                  src="../../../assets/seleccionar.png"
+                  class="image"
+                  style="width: 5%; height: 5%; padding-right: 5px"
+                  alt="..."
+                />
+              </div>
+            </div>
+
+            <br>
+            <div
+              class="col-12 text-center"
+              style="display: flex; justify-content: center"
+            >
+              <div class="modal-footer example-button-row">
+                <button
+                  mat-fab
+                  extended
+                  color="primary"
+                  type="submit"
+                  id="btnAgregar"
+                  class="btn btnAgregar"
+                  data-bs-toggle="modal"
+                  data-bs-target="#staticBackdrop"
+                  (click)="abrirModal('Agregar Servicio')"
+                >
+                  Agregar Servicio
+                </button>
+              </div>
+            </div>
+
+            <br>
+          </div>
+
+        </ng-container>
+      </mat-step>
+      
+    </mat-vertical-stepper>
+  </div>  
+  <br />
 </div>
+
+<app-footer-interno></app-footer-interno>
+
 <app-modal titulo="{{ titulo }}">
   <!-- Seccion de Modificación de Servicio -->
   <div *ngIf="titulo == 'Ver Mas'">
@@ -384,4 +553,4 @@
     </div>
   </div>
 </app-modal>
-<app-footer-interno></app-footer-interno>
+

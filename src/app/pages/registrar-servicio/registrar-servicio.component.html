@@ -1,116 +1,229 @@
 <app-navbar></app-navbar>
-<div class="body">
-  <h1 class="text-center">Agregar Servicio</h1>
-  <br />
-  <div class="d-flex justify-content-center">
-    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-      <div class="card">
-        <div
-          class="card-body d-flex flex-column justify-content-center align-items-center"
-        >
-          <form
-            [formGroup]="formAgregar"
-            class="row g-3 justify-content-center mt-10"
-          >
-            <div class="col-md-12">
-                <div class="form-outline input-group mb-3">
-                    <span class="input-group-text">Nombre de Servicio</span>
-                    <input type="text" class="form-control" id="descripcionA"
-                        formControlName="descripcionA" placeholder="Ingrese una descripción"/>
-                    <span class="input-group-text" title="{{caracteresValidosNombreServicio}}"><svg
-                          xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                          class="bi bi-question-circle" viewBox="0 0 16 16">
-                          <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                          <path
-                              d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z" />
-                        </svg>
-                    </span>
-                </div>
-                <div *ngIf="descripcionA?.invalid && (descripcionA?.dirty || descripcionA?.touched)" class="text-danger">
-                  <div *ngIf="descripcionA?.errors?.['required']">
-                      La descripción es requerida.
-                  </div>
-                  <div *ngIf="descripcionA?.errors?.['pattern']">
-                    La primera letra debe ser mayúscula y no debe contener caracteres especiales. Además, debe tener más de 3 caracteres y menos de 30 caracteres. </div>
-                </div>
-            </div>
-            <div class="col-md-12">
-              <div class="form-outline input-group mb-3">
-                <span class="input-group-text">Unidad de Medida</span>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="unidadA"
-                  formControlName="unidadA"
-                  placeholder="Ingrese una unidad"
-                />
-                <span
-                  class="input-group-text"
-                  title="{{ caracteresValidosUnidad }}"
-                  ><svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    fill="currentColor"
-                    class="bi bi-question-circle"
-                    viewBox="0 0 16 16"
-                  >
-                    <path
-                      d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"
-                    />
-                    <path
-                      d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"
-                    />
-                  </svg>
-                </span>
-              </div>
-              <div
-                *ngIf="unidadA?.invalid && (unidadA?.dirty || unidadA?.touched)"
-                class="text-danger"
-              >
-                <div *ngIf="unidadA?.errors?.['required']">
-                  La unidad es requerida.
-                </div>
-                <div *ngIf="unidadA?.errors?.['pattern']">
-                  No debe contener caracteres especiales ni tener más de 12 caracteres.
-                </div>
-              </div>             
-            </div>                                      
-            
-            <div class="col-md-12 ">
-              <div class="form-outline input-group mb-3">
-                <span class="input-group-text">Tipo Grafico</span> 
-                <select name="tipoGraficoA" id="tipoGraficoA" value="tipoGraficoA" formControlName="tipoGraficoA" style="width: 525px;">
-                  <option value="1">Humedad de Suelo</option>
-                  <option value="2">Humedad del Ambiente</option>
-                  <option value="3">Temperatura</option>
-                  <option value="4">Velocidad del Viento</option>
-                  <option value="5">Dirección del Viento</option>
-                </select>           
-              </div>
-            </div>
 
-            <div class="col-12 text-center">
-              <button
-                type="submit"
-                id="Validar"
-                class="btn btn-success"
-                (click)="agregarServicio()"
-              >
-                Agregar
-              </button>
+<div class="body">
+  <h1 class="text-center titulo tituloFuente">Agregar Servicio</h1>
+  <!-- Contenido de breadcrumb -->
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item" style="padding-left: 310px; font-size: 18px">
+        <a href="/home">Home</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        Agregar Servicio
+      </li>
+    </ol>
+  </nav>
+  <div class="container mt-12">
+    <!-- ----------------------------Inicio de Paso a Paso-------------------------------------------- -->
+    <mat-vertical-stepper>
+      <mat-step
+        [label]="titulo1"
+        [completed]="isStep1Completed"
+        [ngClass]="{ collapse: isCollapsed1 }"
+      >
+      <ng-container contenido-paso-1>
+        <div class="card cardFiltrado cardAnimate cardFlat">
+          <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center">
+              <h4 class="mb-0 tituloCard">Agregar Servicio</h4>
+              <img
+                src="../../../assets/seleccionar.png"
+                class="image"
+                style="width: 5%; height: 5%; padding-right: 5px"
+                alt="..."
+              />
             </div>
-            <div class="col-12 text-center mt-2">
-              <div *ngIf="validarControlesAgregar() == '2'" class="text-danger">
-                Verifique los campos ingresados
+          </div>
+          
+          <br/>
+
+          <form [formGroup]="formAgregar">
+            <div class="container">
+              <div class="row">
+                <div class="col-sm-9" style="justify-content: right">
+                  <div class="row justify-content-center">
+                    <div class="col-50 col-sm-50">
+                      <div class="row">
+                        <div class="col-md-6">
+                          
+                          <div class="form-outline input-group mb-3">
+                            <mat-form-field
+                              appearance="fill"
+                              class="example-full-width form-outline input-group"
+                            >
+                              <mat-label>Nombre de Servicio</mat-label>
+                              <input
+                                type="text"
+                                style="padding-left: 20px"
+                                matInput
+                                id="descripcionA"
+                                value="descripcionA"
+                                formControlName="descripcionA"
+                                required
+                              />
+                              <mat-icon class="edit" matSuffix
+                                >edit</mat-icon
+                              >
+                            </mat-form-field>
+                            <mat-error
+                              *ngIf="
+                              descripcionA?.invalid &&
+                                (descripcionA?.dirty ||
+                                descripcionA?.touched)
+                              "
+                              class="text-danger"
+                            >
+                              <mat-error
+                                class="error"
+                                *ngIf="descripcionA?.errors?.['required']"
+                              >
+                                La descripción es requerida.
+                              </mat-error>
+                              <mat-error
+                                class="error"
+                                *ngIf="descripcionA?.errors?.['pattern']"
+                              >
+                                La primera letra debe ser mayúscula y no debe contener caracteres especiales. 
+                                Además, debe tener más de 3 caracteres y menos de 30 caracteres. 
+                              </mat-error>
+                            </mat-error>
+                          </div>
+
+                          <div class="form-outline input-group mb-3">
+                            <mat-form-field
+                              appearance="fill"
+                              class="example-full-width form-outline input-group"
+                            >
+                              <mat-label>Unidad de Medida</mat-label>
+                              <input
+                                type="text"
+                                style="padding-left: 20px"
+                                matInput
+                                id="unidadA"
+                                value="unidadA"
+                                formControlName="unidadA"
+                                required
+                              />
+                              <mat-icon class="edit" matSuffix
+                                >edit</mat-icon
+                              >
+                            </mat-form-field>
+                            <mat-error
+                              *ngIf="
+                              unidadA?.invalid &&
+                                (unidadA?.dirty ||
+                                unidadA?.touched)
+                              "
+                              class="text-danger"
+                            >
+                              <mat-error
+                                class="error"
+                                *ngIf="unidadA?.errors?.['required']"
+                              >
+                                La unidad es requerida.
+                              </mat-error>
+                              <mat-error
+                                class="error"
+                                *ngIf="unidadA?.errors?.['pattern']"
+                              >
+                                La primera letra debe ser mayúscula y no debe contener caracteres especiales. 
+                                Además, debe tener más de 3 caracteres y menos de 30 caracteres.                              
+                              </mat-error>
+                            </mat-error>
+                          </div>
+
+                          <div class="form-outline input-group mb-3">
+                            <mat-form-field
+                              class="FormatoCombos;"
+                              style="width: 525px"
+                              appearance="outline"
+                              >
+                              <mat-label>Tipo Grafico</mat-label>
+                              <mat-select 
+                                style="text-align: center; border-color: #63ddff" 
+                                placeholder="Seleccionar Tipo Grafico" 
+                                >
+                                <mat-option value="1">Humedad de Suelo</mat-option>
+                                <mat-option value="2">Humedad del Ambiente</mat-option>
+                                <mat-option value="3">Temperatura</mat-option>
+                                <mat-option value="4">Velocidad del Viento</mat-option>
+                                <mat-option value="5">Dirección del Viento</mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                          </div>
+
+                          <br>
+                          <div
+                            class="col-12 text-center"
+                            style="display: flex; justify-content: center"
+                          >
+                            <div class="modal-footer example-button-row">
+                              <button
+                                mat-fab
+                                extended
+                                color="primary"
+                                type="submit"
+                                id="btnAgregar"
+                                class="btn btnAgregar"
+                                data-bs-toggle="modal"
+                                data-bs-target="#staticBackdrop"
+                                (click)="agregarServicio()"
+                              >
+                                Agregar Servicio
+                              </button>
+                            </div>
+                          </div> 
+
+                        </div>
+                      </div>
+                  
+
+                    </div>
+                  </div>
+                </div>
+
+                <!-------------------- Ir a Consultar Servicio: .col-sm-4 ---------------------------------->
+                <div
+                class="col-sm-3"
+                style="display: flex; justify-content: left"
+              >
+                <div class="col-md-2 image-container">
+                  <span
+                    ><img
+                      style="
+                        width: 102%;
+                        height: 102;
+                        margin-bottom: 100px;
+                      "
+                      src="../../../assets/nube.png"
+                      class="image"
+                      alt="..."
+                    />
+                    <div class="example-button-row">
+
+                      <button
+                        mat-stroked-button
+                        type="submit"
+                        class="btnIrConsultaServicio"
+                        routerLink="/consultar-servicio"
+                        data-bs-toggle="button"
+                      >
+                        Ir a Consultar Servicios
+                      </button>
+
+                    </div>
+                  </span>
+                </div>
+              </div>
+
+
               </div>
             </div>
           </form>
+
         </div>
-      </div>
-    </div>
-  </div>
-  <br />
-  <br />
-</div>
+      </ng-container>
+    </mat-step>
+  </mat-vertical-stepper>
+
 <app-footer-interno></app-footer-interno>

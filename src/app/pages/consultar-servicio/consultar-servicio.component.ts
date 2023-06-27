@@ -1,5 +1,6 @@
 //SISTEMA
-import { Component, OnInit } from '@angular/core';
+import { JsonpClientBackend } from '@angular/common/http';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -7,7 +8,7 @@ import {
   Validators,
 } from '@angular/forms';
 import Swal, { SweetAlertOptions } from 'sweetalert2';
-import { NgxPaginationModule } from 'ngx-pagination';
+import { MatStepper } from '@angular/material/stepper';
 
 //COMPONENTES 
 import { ServicioClass } from 'src/app/core/models/servicio';
@@ -22,13 +23,29 @@ import { ServicioService } from 'src/app/core/services/servicio.service';
 })
 export class ConsultarServicioComponent implements OnInit {
 
+  //STEPPER
+  titulo1 = 'Consultá información de los servicios:';
+  titulo2 = 'Agregar servicio:';
+  titulo3 = '';
+  isStep1Completed = false;
+  isStep2Completed = false;
+  isStep3Completed = false;
+
+  @ViewChild(MatStepper, { static: false }) stepper: MatStepper | undefined;
+
   //VARIABLES DE OBJETOS LIST
   Servicios: ServicioClass[] = [];
   ServiciosFiltrados: ServicioClass [] = [];
+
+  isCollapsed1 = false;
+  isCollapsed2 = false;  
+
+  //PAGINADO
   pageSize = 5; // Número de elementos por página
   currentPage = 1; // Página actual
   totalItems = 0; // Total de elementos en la tabla
-  myTable = 'myTable';
+
+  //myTable = 'myTable';
 
   //VARIABLES DE DATOS
   titulo: string = '';
@@ -135,6 +152,20 @@ export class ConsultarServicioComponent implements OnInit {
   }
   get tipoGraficoA() {
     return this.formAgregar.get('tipoGraficoA');
+  }
+
+  //STEP
+  goToNextStep(stepNumber: number): void {
+    console.log(`Pasando al siguiente paso: ${stepNumber}`);
+    if (this.stepper) {
+      this.stepper.selectedIndex = stepNumber;
+    }
+  }
+  
+  goToPreviousStep(): void {
+    if (this.stepper) {
+      this.stepper.previous();
+    }
   }
 
   getTipoGraficoTexto(serTipoGrafico: number): string {

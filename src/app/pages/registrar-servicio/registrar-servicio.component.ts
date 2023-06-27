@@ -20,6 +20,14 @@ import { ServicioService } from 'src/app/core/services/servicio.service';
 })
 export class RegistrarServicioComponent implements OnInit {
 
+    //STEPPER
+    titulo1 = 'Agregar servicio:';
+    titulo2 = '';
+    titulo3 = '';
+    isStep1Completed = false;
+    isStep2Completed = false;
+    isStep3Completed = false;
+   
   //VARIABLES DE OBJETOS LIST
   Servicios: ServicioClass[] = [];
   ServiciosFiltrados: ServicioClass [] = [];
@@ -43,6 +51,9 @@ export class RegistrarServicioComponent implements OnInit {
   mostrarBtnAceptarModificacion: boolean = false;
   mostrarBtnEditarModificacion : boolean = true;
 
+  isCollapsed1 = false;
+  isCollapsed2 = false;  
+  
   //FORMULARIOS DE AGRUPACION DE DATOS
   formAgregar: FormGroup;
 

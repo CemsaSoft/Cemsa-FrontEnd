@@ -21,7 +21,15 @@ import { AlarmaService } from 'src/app/core/services/alarma.service';
   templateUrl: './consultar-alarma.component.html',
   styleUrls: ['./consultar-alarma.component.css']
 })
-export class ConsultarAlarmaComponent implements OnInit {
+export class ConsultarAlarmaComponent implements OnInit {  
+    //STEPPER
+    titulo1 = 'Alarmas';
+    titulo2 = '';
+    titulo3 = '';
+    isStep1Completed = false;
+    isStep2Completed = false;
+    isStep3Completed = false;
+  
   //VARIABLES DE OBJETOS LIST
   AlarmaConsulta: AlarmaConsultaClass[] = [];
   AlarmaConsultaFiltrados: AlarmaConsultaClass [] = [];
@@ -32,7 +40,10 @@ export class ConsultarAlarmaComponent implements OnInit {
   tipoOrdenamiento: number = 1;
   idUsuario: any = 0;
 
-  public habilitarBoton: boolean = false;
+  public habilitarBoton: boolean = false;  
+  isCollapsed1 = false;
+  isCollapsed2 = false;
+  isCollapsed3 = false;
 
   //FORMULARIOS DE AGRUPACION DE DATOS
   formfiltro: FormGroup;
