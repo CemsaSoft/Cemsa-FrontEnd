@@ -50,7 +50,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import {MatIconModule} from '@angular/material/icon';
 import { SidebarClienteComponent } from './shared/sidebar-cliente/sidebar-cliente.component';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material/core';
 
 //import { TextMaskModule } from 'angular2-text-mask';// npm i angular2-text-mask
 @NgModule({
@@ -112,7 +115,12 @@ import { SidebarClienteComponent } from './shared/sidebar-cliente/sidebar-client
     MatSelectModule,
     MatInputModule,
     MatIconModule,
-    
+    MatSlideToggleModule,
+    MatFormFieldModule,
+    MatDatepickerModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatNativeDateModule,
   ],
   // Inyección de dependencias
   providers: [

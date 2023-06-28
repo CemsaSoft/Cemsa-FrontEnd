@@ -23,8 +23,10 @@
       >
         <ng-container contenido-paso-1>
           <div class="card-body" [ngClass]="{ collapse: isCollapsed2 }">
-            <div class="row justify-content-center">
-              <div class="col-10 cardFiltrado cardAnimate cardFlat">
+
+            <div class="row containerCard">
+            
+              <div class="col-12 cardFiltrado cardAnimate cardFlat cardSeparacion">
                 <div>
                   <div class="row">
                     <div class="col-md-2 image-container">
@@ -81,6 +83,27 @@
                   </div>
                 </div>
               </div>
+            
+              <div class="col-12 cardFiltrado cardAnimate cardFlat cardSeparacion">
+                <div class="h-100 d-flex align-items-center justify-content-center">
+                  <div class="text-center">
+                    <button
+                      mat-fab
+                      extended
+                      color="primary"
+                      type="submit"
+                      id="btnAgregar"
+                      class="btn btnAgregar"
+                      routerLink="/registrar-servicio"
+                      data-bs-target="#staticBackdrop"
+                    >
+                      Agregar Servicio
+                    </button>
+                  </div>
+                </div>
+              </div>         
+                           
+
             </div>
             <br />
             <br />
@@ -218,73 +241,7 @@
           </div>
         </ng-container>
       </mat-step>
-      
-      <mat-step
-        [label]="titulo2"
-        [completed]="isStep2Completed"
-        [ngClass]="{ collapse: isCollapsed2 }"
-      >
-        <ng-container contenido-paso-2>         
-          <!-- Botón ver otro cliente -->
-          <div class="row">
-            <div
-              class="example-button-row"
-              style="display: flex; justify-content: flex-end"
-            >
-              <button
-                mat-fab
-                extended
-                color="primary"
-                class="btonNuevaConsulta"
-                (click)="goToPreviousStep()"
-              >
-                <mat-icon>touch_app</mat-icon>
-                Nueva Consulta
-              </button>
-            </div>
-          </div>
-
-          <div class="card cardFiltrado cardAnimate cardFlat">
-            <div class="card-header">
-              <div class="d-flex justify-content-between align-items-center">
-                <h4 class="mb-0 tituloCard">Agregar Servicio</h4>
-                <img
-                  src="../../../assets/seleccionar.png"
-                  class="image"
-                  style="width: 5%; height: 5%; padding-right: 5px"
-                  alt="..."
-                />
-              </div>
-            </div>
-
-            <br>
-            <div
-              class="col-12 text-center"
-              style="display: flex; justify-content: center"
-            >
-              <div class="modal-footer example-button-row">
-                <button
-                  mat-fab
-                  extended
-                  color="primary"
-                  type="submit"
-                  id="btnAgregar"
-                  class="btn btnAgregar"
-                  data-bs-toggle="modal"
-                  data-bs-target="#staticBackdrop"
-                  (click)="abrirModal('Agregar Servicio')"
-                >
-                  Agregar Servicio
-                </button>
-              </div>
-            </div>
-
-            <br>
-          </div>
-
-        </ng-container>
-      </mat-step>
-      
+            
     </mat-vertical-stepper>
   </div>  
   <br />
@@ -461,96 +418,5 @@
     </div>
   </div>
 
-  <!-- Seccion de Agregar un Servicio -->
-  <div *ngIf="titulo == 'Agregar Servicio'">
-    <form [formGroup]="formAgregar" class="row g-3">
-      <fieldset id="fieldset">
-        <div class="col-md-12">
-            <div class="form-outline input-group mb-3">
-                <span class="input-group-text">Nombre de Servicio</span>
-                <input type="text" class="form-control" id="descripcionA"
-                    formControlName="descripcionA" placeholder="Ingrese una descripción"/>
-                <span class="input-group-text" title="{{caracteresValidosNombreServicio}}"><svg
-                      xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                      class="bi bi-question-circle" viewBox="0 0 16 16">
-                      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                      <path
-                          d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z" />
-                    </svg>
-                </span>
-            </div>
-            <div *ngIf="descripcionA?.invalid && (descripcionA?.dirty || descripcionA?.touched)" class="text-danger">
-              <div *ngIf="descripcionA?.errors?.['required']">
-                  La descripción es requerida.
-              </div>
-              <div *ngIf="descripcionA?.errors?.['pattern']">
-                La primera letra debe ser mayúscula y no debe contener caracteres especiales. Además, debe tener más de 3 caracteres y menos de 30 caracteres. </div>
-            </div>
-        </div>
-            <div class="col-md-12">
-              <div class="form-outline input-group mb-3">
-                  <span class="input-group-text">Unidad de Medida</span>
-                  <input type="text" class="form-control" id="unidadA"
-                      formControlName="unidadA" placeholder="Ingrese una unidad"/>
-                  <span class="input-group-text" title="{{caracteresValidosUnidad}}"><svg
-                          xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                          class="bi bi-question-circle" viewBox="0 0 16 16">
-                          <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                          <path
-                              d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z" />
-                      </svg>
-                  </span>
-              </div> 
-              <div *ngIf="unidadA?.invalid && (unidadA?.dirty || unidadA?.touched)" class="text-danger">
-                <div *ngIf="unidadA?.errors?.['required']">
-                    La unidad es requerida.
-                </div>
-                <div *ngIf="unidadA?.errors?.['pattern']">
-                  No debe contener caracteres especiales ni tener más de 12 caracteres.
-                </div>
-              </div>             
-            </div>
-            <div class="col-md-12 ">
-              <div class="form-outline input-group mb-3">
-                <span class="input-group-text">Tipo Grafico</span> 
-                <select name="tipoGraficoA" id="tipoGraficoA" value="tipoGraficoA" formControlName="tipoGraficoA" style="width: 320px;">
-                  <option value="1">Humedad de Suelo</option>
-                  <option value="2">Humedad del Ambiente</option>
-                  <option value="3">Temperatura</option>
-                  <option value="4">Velocidad del Viento</option>
-                  <option value="5">Dirección del Viento</option>
-                </select>           
-              </div>
-            </div> 
-            
-        </fieldset>
-    </form>
-    <div class="row">
-      <div class="modal-footer text-center col-3">
-        <button
-          type="submit"
-          id="Validar"
-          class="btn btn-success"
-          (click)="agregarServicio()"
-        >
-          Agregar
-        </button>
-      </div>
-      <div class="modal-footer text-center col-8">
-        <button
-          style="background-color: #0e3c53"
-          id="Cancelar"
-          type="button"
-          class="btn text-white"
-          data-bs-dismiss="modal"
-        >
-          Cancelar
-        </button>
-      </div>
-      <div *ngIf="validarControlesAgregar() == '2'" class="text-danger">
-        Verifique los campos ingresados
-      </div>
-    </div>
-  </div>
 </app-modal>
 

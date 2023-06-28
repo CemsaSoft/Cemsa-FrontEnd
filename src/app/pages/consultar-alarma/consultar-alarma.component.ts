@@ -8,6 +8,25 @@ import {
   Validators,
 } from '@angular/forms';
 import Swal, { SweetAlertOptions } from 'sweetalert2';
+import { NgModule } from '@angular/core';
+
+import {ThemePalette} from '@angular/material/core';
+import {FormsModule} from '@angular/forms';
+import {MatRadioModule} from '@angular/material/radio';
+import { MatCardModule } from '@angular/material/card';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+
+import {ReactiveFormsModule} from '@angular/forms';
+import {NgIf, JsonPipe} from '@angular/common';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatNativeDateModule} from '@angular/material/core';
+
+import { MatDateRangeInput, MatDateRangePicker, MatStartDate, MatEndDate } from '@angular/material/datepicker';
+
+
 
 //COMPONENTES
 import { AlarmaConsultaClass } from 'src/app/core/models/alarmaConsulta';
@@ -19,9 +38,19 @@ import { AlarmaService } from 'src/app/core/services/alarma.service';
 @Component({
   selector: 'app-consultar-alarma',
   templateUrl: './consultar-alarma.component.html',
-  styleUrls: ['./consultar-alarma.component.css']
+  styleUrls: ['./consultar-alarma.component.css'],
 })
+
 export class ConsultarAlarmaComponent implements OnInit {  
+    
+  // Reemplaza el código del formulario actual con el siguiente código
+
+range = new FormGroup({
+  start: new FormControl(null),
+  end: new FormControl(null),
+});
+
+
     //STEPPER
     titulo1 = 'Alarmas';
     titulo2 = '';
@@ -29,7 +58,11 @@ export class ConsultarAlarmaComponent implements OnInit {
     isStep1Completed = false;
     isStep2Completed = false;
     isStep3Completed = false;
-  
+
+    color: ThemePalette = 'accent';
+    checked = true;
+    disabled = false;
+
   //VARIABLES DE OBJETOS LIST
   AlarmaConsulta: AlarmaConsultaClass[] = [];
   AlarmaConsultaFiltrados: AlarmaConsultaClass [] = [];
@@ -50,7 +83,7 @@ export class ConsultarAlarmaComponent implements OnInit {
 
   constructor(
     private alarmaConsultar: AlarmaService, 
-  ) { 
+  ) {     
     this.formfiltro = new FormGroup({
       nroAlarma: new FormControl(null, []),
       nroCentral: new FormControl(null, []),

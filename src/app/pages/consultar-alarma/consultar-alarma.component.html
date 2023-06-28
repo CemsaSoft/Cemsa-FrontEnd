@@ -1,6 +1,7 @@
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
 
 <app-navbar></app-navbar>
+
 
 
 <div class="body">
@@ -19,6 +20,23 @@
   <div class="container mt-12">
 
 <!-- ----------------------------Inicio de Paso a Paso-------------------------------------------- -->
+
+<!-- <mat-form-field>
+  <mat-label>Enter a date range</mat-label>
+  <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+    <input matStartDate formControlName="start" placeholder="Start date">
+    <input matEndDate formControlName="end" placeholder="End date">
+  </mat-date-range-input>
+  <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+  <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+  <mat-date-range-picker #picker></mat-date-range-picker>
+
+  <mat-error *ngIf="range.controls['start'].hasError('matStartDateInvalid')">Invalid start date</mat-error>
+  <mat-error *ngIf="range.controls['end'].hasError('matEndDateInvalid')">Invalid end date</mat-error>
+</mat-form-field>
+
+<p>Selected range: {{range.value | json}}</p> -->
+
 <mat-vertical-stepper>
   <mat-step
     [label]="titulo1"
@@ -26,229 +44,152 @@
     [ngClass]="{ collapse: isCollapsed1 }"
   >
     <ng-container contenido-paso-1>
-      <div class="card-body" [ngClass]="{ collapse: isCollapsed2 }">
+      <div class="card-body" [ngClass]="{ collapse: isCollapsed2 }">                      
+
         <div class="row justify-content-center">
           <div class="col-10 cardFiltrado cardAnimate cardFlat">
-            <div>
-              <div class="row">
-                <div class="col-md-2 image-container">
-                  <span
-                    ><img
-                      style="width: 102%; height: 102"
-                      src="../../../assets/icons8-user-64_1.png"
-                      class="image"
-                      alt="..."
-                    />
+            <div class="row">
+              <div class="col-md-2">
+                <div class="col-md-12 image-container">
+                  <span>
+                    <img style="width: 100%; height: 100%" src="../../../assets/icons8-user-64_1.png" class="image" alt="..." />
                     <div class="texto">
-                      <h4
-                        style="
-                          text-align: center;
-                          color: #63ddff;
-                          font-size: 18px;
-                        "
-                      >
-                        Filtrar Alarma
-                      </h4>
-                    </div></span
-                  >
-                </div>         
-
-              <div class="row">
-
-                <div
-                  class="col-md-1 vertical-line"
-                  style="width: 20px"
-                ></div>
-                <div class="col-md-2 margenFiltros">
-                  <div
-                    class="form-outline input-group"
-                    data-toggle="tooltip"
-                    data-placement="top"
-                    title="Buscar por Código de Central"
-                  >
-                    <label class="search-field">
-                      <mat-label
-                        class="search-field label ng-tns-c97-48 ng-star-inserted"
-                        >Código de Central</mat-label
-                      >
-                      <input
-                        type="text"
-                        class="form-control inputBusqueda .input-con-color-de-fondo"
-                        placeholder="Ej. 1"
-                        (keyup)="esFiltrar($event)"
-                      />                             
-                      <i
-                        class="fas fa-search FormatoIconos"
-                        style="padding-left: 20px"
-                      ></i>
-                    </label>
-                  </div>                          
-                </div>
-
-                <div
-                  class="col-md-1 vertical-line"
-                  style="width: 20px"
-                ></div>
-                <div class="col-md-2 margenFiltros">
-                  <div
-                    class="form-outline input-group"
-                    data-toggle="tooltip"
-                    data-placement="top"
-                    title="Buscar por Código de Central"
-                  >
-                    <label class="search-field">
-                      <mat-label
-                        class="search-field label ng-tns-c97-48 ng-star-inserted"
-                        >Código de Central</mat-label
-                      >
-                      <input
-                        type="text"
-                        class="form-control inputBusqueda .input-con-color-de-fondo"
-                        placeholder="Ej. 1"
-                        (keyup)="esFiltrar($event)"
-                      />                             
-                      <i
-                        class="fas fa-search FormatoIconos"
-                        style="padding-left: 20px"
-                      ></i>
-                    </label>
-                  </div>                          
-                </div>
-
-                <div
-                  class="col-md-1 vertical-line"
-                  style="width: 20px"
-                ></div>
-                <div class="col-md-2 margenFiltros">
-                  <div
-                    class="form-outline input-group"
-                    data-toggle="tooltip"
-                    data-placement="top"
-                    title="Buscar por Código de Central"
-                  >
-                    <label class="search-field">
-                      <mat-label
-                        class="search-field label ng-tns-c97-48 ng-star-inserted"
-                        >Código de Central</mat-label
-                      >
-                      <input
-                        type="text"
-                        class="form-control inputBusqueda .input-con-color-de-fondo"
-                        placeholder="Ej. 1"
-                        (keyup)="esFiltrar($event)"
-                      />                             
-                      <i
-                        class="fas fa-search FormatoIconos"
-                        style="padding-left: 20px"
-                      ></i>
-                    </label>
-                  </div>                          
+                      <h4 style="text-align: center; color: #63ddff; font-size: 18px;">Filtrar Alarma</h4>
+                    </div>
+                  </span>
                 </div>
               </div>
-  
-              <div class="row">
 
-                <div
-                  class="col-md-1 vertical-line"
-                  style="width: 20px"
-                ></div>
-                <div class="col-md-2 margenFiltros">
-                  <div
-                    class="form-outline input-group"
-                    data-toggle="tooltip"
-                    data-placement="top"
-                    title="Buscar por Código de Central"
-                  >
-                    <label class="search-field">
-                      <mat-label
-                        class="search-field label ng-tns-c97-48 ng-star-inserted"
-                        >Código de Central</mat-label
-                      >
-                      <input
-                        type="text"
-                        class="form-control inputBusqueda .input-con-color-de-fondo"
-                        placeholder="Ej. 1"
-                        (keyup)="esFiltrar($event)"
-                      />                             
-                      <i
-                        class="fas fa-search FormatoIconos"
-                        style="padding-left: 20px"
-                      ></i>
-                    </label>
-                  </div>                          
+              <div class="col-md-9">
+
+                <div class="row">
+                  <!-- Primer grupo de filtros -->
+                  <div class="col-md-4 margenFiltros">
+                    <!-- Código de Central -->
+                    <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por Código de Central">
+                      <label class="search-field">
+                        <mat-label class="search-field label ng-tns-c97-48 ng-star-inserted">Código de Central</mat-label>
+                        <input type="text" class="form-control inputBusqueda .input-con-color-de-fondo" placeholder="Ej. 1" (keyup)="esFiltrar($event)" />
+                        <i class="fas fa-search FormatoIconos" style="padding-left: 20px"></i>
+                      </label>
+                    </div>
+                  </div>
+                  
+                  <!-- Segundo grupo de filtros -->
+                  <div class="col-md-4 margenFiltros">
+                    <!-- Código de Central -->
+                    <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por Código de Central">
+                      <label class="search-field">
+                        <mat-label class="search-field label ng-tns-c97-48 ng-star-inserted">Código de Central</mat-label>
+                        <input type="text" class="form-control inputBusqueda .input-con-color-de-fondo" placeholder="Ej. 1" (keyup)="esFiltrar($event)" />
+                        <i class="fas fa-search FormatoIconos" style="padding-left: 20px"></i>
+                      </label>
+                    </div>
+                  </div>
+                  
+                  <!-- Tercer grupo de filtros -->
+                  <div class="col-md-4 margenFiltros">
+                    <!-- Código de Central -->
+                    <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por Código de Central">
+                      <label class="search-field">
+                        <mat-label class="search-field label ng-tns-c97-48 ng-star-inserted">Código de Central</mat-label>
+                        <input type="text" class="form-control inputBusqueda .input-con-color-de-fondo" placeholder="Ej. 1" (keyup)="esFiltrar($event)" />
+                        <i class="fas fa-search FormatoIconos" style="padding-left: 20px"></i>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="row">
+                  <!-- Cuarto grupo de filtros -->
+                  <div class="col-md-4 margenFiltros">
+                    <!-- Código de Central -->
+                    <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por Código de Central">
+                      <label class="search-field">
+                        <mat-label class="search-field label ng-tns-c97-48 ng-star-inserted">Código de Central</mat-label>
+                        <input type="text" class="form-control inputBusqueda .input-con-color-de-fondo" placeholder="Ej. 1" (keyup)="esFiltrar($event)" />
+                        <i class="fas fa-search FormatoIconos" style="padding-left: 20px"></i>
+                      </label>
+                    </div>
+                  </div>
+                  
+                  <!-- Quinto grupo de filtros -->
+                  <div class="col-md-4 margenFiltros">
+                    <!-- Código de Central -->
+                    <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por Código de Central">
+                      <label class="search-field">
+                        <mat-label class="search-field label ng-tns-c97-48 ng-star-inserted">Código de Central</mat-label>
+                        <input type="text" class="form-control inputBusqueda .input-con-color-de-fondo" placeholder="Ej. 1" (keyup)="esFiltrar($event)" />
+                        <i class="fas fa-search FormatoIconos" style="padding-left: 20px"></i>
+                      </label>
+                    </div>
+                  </div>
+                  
+                  <!-- Sexto grupo de filtros -->
+                  <div class="col-md-4 margenFiltros">
+                    <!-- Código de Central -->
+                    <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por Código de Central">
+                      <label class="search-field">
+                        <mat-label class="search-field label ng-tns-c97-48 ng-star-inserted">Código de Central</mat-label>
+                        <input type="text" class="form-control inputBusqueda .input-con-color-de-fondo" placeholder="Ej. 1" (keyup)="esFiltrar($event)" />
+                        <i class="fas fa-search FormatoIconos" style="padding-left: 20px"></i>
+                      </label>
+                    </div>
+                  </div>
                 </div>
 
-                <div
-                  class="col-md-1 vertical-line"
-                  style="width: 20px"
-                ></div>
-                <div class="col-md-2 margenFiltros">
-                  <div
-                    class="form-outline input-group"
-                    data-toggle="tooltip"
-                    data-placement="top"
-                    title="Buscar por Código de Central"
-                  >
-                    <label class="search-field">
-                      <mat-label
-                        class="search-field label ng-tns-c97-48 ng-star-inserted"
-                        >Código de Central</mat-label
-                      >
-                      <input
-                        type="text"
-                        class="form-control inputBusqueda .input-con-color-de-fondo"
-                        placeholder="Ej. 1"
-                        (keyup)="esFiltrar($event)"
-                      />                             
-                      <i
-                        class="fas fa-search FormatoIconos"
-                        style="padding-left: 20px"
-                      ></i>
-                    </label>
-                  </div>                          
+                <div class="row">
+
+                  <div class="col-md-4 margenFiltrosSlite">
+                    <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por Código de Central">
+                      <mat-slide-toggle> Filtar por Fecha </mat-slide-toggle>
+                    </div>
+                  </div>
+
+                  
+                  <!-- Quinto grupo de filtros -->
+                  <div class="col-md-4 margenFiltros">
+                    <!-- Código de Central -->
+                    <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por Código de Central">
+
+                      <mat-form-field>
+                        <mat-label>Ingrese Rango de Fecha</mat-label>
+                        <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+                          <input matStartDate formControlName="start" placeholder="Fecha Desde">
+                          <input matEndDate formControlName="end" placeholder="Fecha Hasta">
+                        </mat-date-range-input>
+                        <mat-hint>DD/MM/AAAA – DD/MM/AAAA</mat-hint>
+                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-date-range-picker #picker></mat-date-range-picker>
+                      
+                        <mat-error *ngIf="range.controls['start'].hasError('matStartDateInvalid')">Invalid start date</mat-error>
+                        <mat-error *ngIf="range.controls['end'].hasError('matEndDateInvalid')">Invalid end date</mat-error>
+                      </mat-form-field>
+
+                    </div>
+                  </div>
+                  
+                  <!-- Sexto grupo de filtros -->
+                  <div class="col-md-4 margenFiltros">
+                    <!-- Código de Central -->
+                    <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por Código de Central">
+
+
+
+
+                      
+                    </div>
+                  </div>
                 </div>
 
-                <div
-                  class="col-md-1 vertical-line"
-                  style="width: 20px"
-                ></div>
-                <div class="col-md-2 margenFiltros">
-                  <div
-                    class="form-outline input-group"
-                    data-toggle="tooltip"
-                    data-placement="top"
-                    title="Buscar por Código de Central"
-                  >
-                    <label class="search-field">
-                      <mat-label
-                        class="search-field label ng-tns-c97-48 ng-star-inserted"
-                        >Código de Central</mat-label
-                      >
-                      <input
-                        type="text"
-                        class="form-control inputBusqueda .input-con-color-de-fondo"
-                        placeholder="Ej. 1"
-                        (keyup)="esFiltrar($event)"
-                      />                             
-                      <i
-                        class="fas fa-search FormatoIconos"
-                        style="padding-left: 20px"
-                      ></i>
-                    </label>
-                  </div>                          
-                </div>
               </div>
               
-
             </div>
           </div>
-        </div>
-      </div>
+        </div>      
+      
       <br />
       <br />
-
-
-
 
       </div>
     </ng-container>

@@ -279,8 +279,12 @@
   margin-top:22px;
 }
 .margenFiltros{
+  margin-top: 2px;
+  margin-bottom: 0px;
+}
+.margenFiltrosSlite{
   margin-top: 30px;
-    margin-bottom: 10px;
+  margin-bottom: 0px;
 }
 /* -----imágen de Input de Búsqueda----- */
 .image-container {
@@ -474,3 +478,24 @@
   box-shadow: var(--bs-btn-active-shadow);
 }
 
+
+
+.example-h2 {
+  margin: 10px;
+}
+
+.example-section {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  height: 60px;
+}
+
+.example-margin {
+  margin: 10px;
+}
+
+
+.example-form-field {
+  margin: 0 8px 16px 0;
+}
