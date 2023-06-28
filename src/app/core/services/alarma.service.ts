@@ -11,7 +11,6 @@ export class AlarmaService {
    //centralSeleccionada: any;
 
   constructor(private http: HttpClient) { 
-    console.log ("El servicio está corriendo");
   }
 
   obtenerAlarmasClienteModificaEstado(idUsuario: number): Observable<any> {

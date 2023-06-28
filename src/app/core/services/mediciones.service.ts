@@ -10,7 +10,6 @@ export class MedicionesService {
    private url: string ='https://localhost:7155/api/mediciones';
 
   constructor(private http: HttpClient) { 
-    console.log ("El servicio está corriendo");
   }
 
   obtenerMediciones(medNro: number, desde: Date, hasta: Date): Observable<any> {

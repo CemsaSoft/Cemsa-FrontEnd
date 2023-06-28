@@ -7,36 +7,36 @@
             <ul class="list-unstyled components">
                 <li>
                     <a class="d-flex justify-content-between align-items-center text-decoration-none"
-                        href="home" ><b>Home</b></a>
+                    routerLink="home" ><b>Home</b></a>
                 </li>
                 <li>
                     <a data-bs-toggle="collapse" data-bs-target="#cliente-collapse" aria-expanded="false" class="dropdown-toggle d-flex justify-content-between align-items-center text-decoration-none">
                         <p>Clientes</p></a>
                     <ul class="collapse list-unstyled" id="cliente-collapse">
-                        <li><a href="consultar-cliente" >Consultar</a></li>
-                        <li><a href="registrar-cliente" >Registrar</a></li>                                              
+                        <li><a routerLink="consultar-cliente" >Consultar</a></li>
+                        <li><a routerLink="registrar-cliente" >Registrar</a></li>                                              
                     </ul>                    
                 </li>
                 <li>
                     <a data-bs-toggle="collapse" data-bs-target="#central-collapse" aria-expanded="false" class="dropdown-toggle d-flex justify-content-between align-items-center text-decoration-none">
                         <b>Central</b></a>
                     <ul class="collapse list-unstyled" id="central-collapse">
-                        <li><a href="consultar-central" >Consultar</a></li>  
-                        <li><a href="registrar-central" >Registrar</a></li>                    
+                        <li><a routerLink="/consultar-central" >Consultar</a></li>  
+                        <li><a routerLink="/registrar-central" >Registrar</a></li>                    
                     </ul>                    
                 </li>
                 <li>
                     <a data-bs-toggle="collapse" data-bs-target="#servicio-collapse" aria-expanded="false" class="dropdown-toggle d-flex justify-content-between align-items-center text-decoration-none">
                       <b>Servicio</b></a>
                     <ul class="collapse list-unstyled" id="servicio-collapse">                    
-                        <li><a href="consultar-servicio">Consultar</a></li>  
-                        <li><a href="registrar-servicio">Registrar</a></li>                    
+                        <li><a routerLink="consultar-servicio">Consultar</a></li>  
+                        <li><a routerLink="registrar-servicio">Registrar</a></li>                    
                     </ul>
                   </li>                  
             </ul>
             <ul class="list-unstyled CTAs">
                 <li>
-                    <a href="#" class="cerrarSesion" (click)=" cerrarSesion()">
+                    <a routerLink="#" class="cerrarSesion" (click)=" cerrarSesion()">
                         <h5>Cerrar Sesión</h5>
                     </a>
                 </li>

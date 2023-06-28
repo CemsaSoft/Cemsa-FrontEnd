@@ -7,57 +7,57 @@
             <ul class="list-unstyled components">
                 <li>
                     <a class="d-flex justify-content-between align-items-center text-decoration-none"
-                        href="home" ><b>Home</b></a>
+                        routerLink="/home" ><b>Home</b></a>
                 </li>
                 <li>
                     <a data-bs-toggle="collapse" data-bs-target="#central-collapse" aria-expanded="false" class="dropdown-toggle d-flex justify-content-between align-items-center text-decoration-none">
                         <b>Mis Centrales</b></a>
                     <ul class="collapse list-unstyled" id="central-collapse">
-                        <li><a href="consultar-central-cliente">Consultar</a></li>                                            
+                        <li><a routerLink="/consultar-central-cliente">Consultar</a></li>                                            
                     </ul>                    
                 </li>
                 <li>
                     <a data-bs-toggle="collapse" data-bs-target="#alarmas-collapse" aria-expanded="false" class="dropdown-toggle d-flex justify-content-between align-items-center text-decoration-none">
                         <b>Mis Alarmas</b></a>
                     <ul class="collapse list-unstyled" id="alarmas-collapse">                    
-                        <li><a href="consultar-alarma">Consultar</a></li>                      
+                        <li><a routerLink="/consultar-alarma">Consultar</a></li>                      
                     </ul>                    
                 </li>
                 <li>
                     <a data-bs-toggle="collapse" data-bs-target="#config-alarmas-collapse" aria-expanded="false" class="dropdown-toggle d-flex justify-content-between align-items-center text-decoration-none">
                         <b>Configuración de Alarmas</b></a>
                     <ul class="collapse list-unstyled" id="config-alarmas-collapse">
-                        <li><a href="registrar-alarma-config">Registrar</a></li>
-                        <li><a href="consultar-alarma-config">Consultar</a></li>                      
+                        <li><a routerLink="/registrar-alarma-config">Registrar</a></li>
+                        <li><a routerLink="/consultar-alarma-config">Consultar</a></li>                      
                     </ul>                    
                 </li>
                 <li>
                     <a data-bs-toggle="collapse" data-bs-target="#tableros-collapse" aria-expanded="false" class="dropdown-toggle d-flex justify-content-between align-items-center text-decoration-none">
                         <b>Mis Tableros</b></a>
                     <ul class="collapse list-unstyled" id="tableros-collapse">
-                        <li><a href="consultar-paneles-monitoreo">Panel de Monitoreo</a></li>
-                        <li><a href="consultar-mediciones-actuales">Mediciones Actuales</a></li>                      
+                        <li><a routerLink="/consultar-paneles-monitoreo">Panel de Monitoreo</a></li>
+                        <li><a routerLink="/consultar-mediciones-actuales">Mediciones Actuales</a></li>                      
                     </ul>                    
                 </li>
                 <li>
                     <a data-bs-toggle="collapse" data-bs-target="#fumigacion-collapse" aria-expanded="false" class="dropdown-toggle d-flex justify-content-between align-items-center text-decoration-none">
                       <b>Fumigaciones</b></a>
                     <ul class="collapse list-unstyled" id="fumigacion-collapse">   
-                        <li><a href="registrar-fumigaciones">Registrar</a></li>                 
-                        <li><a href="consultar-fumigaciones">Consultar</a></li>                      
+                        <li><a routerLink="/registrar-fumigaciones">Registrar</a></li>                 
+                        <li><a routerLink="/consultar-fumigaciones">Consultar</a></li>                      
                     </ul>
                 </li>                  
                 <li>
                     <a data-bs-toggle="collapse" data-bs-target="#reportes-collapse" aria-expanded="false" class="dropdown-toggle d-flex justify-content-between align-items-center text-decoration-none">
                       <b>Mis Reportes</b></a>
                     <ul class="collapse list-unstyled" id="reportes-collapse">   
-                        <li><a href="consultar-reportes">Reportes</a></li>                 
+                        <li><a routerLink="/consultar-reportes">Reportes</a></li>                 
                     </ul>
                 </li>   
             </ul>
             <ul class="list-unstyled CTAs">
                 <li>
-                    <a href="#" class="cerrarSesion" (click)=" cerrarSesion()">
+                    <a routerLink ="#" class="cerrarSesion" (click)=" cerrarSesion()">
                         <h5>Cerrar Sesión</h5>
                     </a>
                 </li>

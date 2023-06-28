@@ -1,10 +1,9 @@
-<!-- <app-navbar></app-navbar> -->
+
+<app-navbar *ngIf="validarIngreso() == true"></app-navbar>
 <div class="container-xxl"></div>
-<!-- Agregar el router-outlet para que respete la ruta pública -->
   <router-outlet></router-outlet>
 
   <!-- Solo debe ir el navbar y el footer -->
-  <!--<app-consultar-servicio> </app-consultar-servicio> -->
-  <!-- <app-consultar-central> </app-consultar-central>   -->
 
-  <!-- <app-footer></app-footer> -->
+  <!-- <app-footer></app-footer> --> 
+  <app-footer-interno *ngIf="validarIngreso() == true"></app-footer-interno>

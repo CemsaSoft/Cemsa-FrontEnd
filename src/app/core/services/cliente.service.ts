@@ -11,7 +11,6 @@ export class ClienteService {
    centralSeleccionada: any;
 
   constructor(private http: HttpClient) { 
-    console.log ("El servicio está corriendo");
   }
 
   listaClientes(): Observable<any> {

@@ -11,7 +11,6 @@ export class FumigacionesService {
    fumigacionesSeleccionada: any;
 
   constructor(private http: HttpClient) { 
-    console.log ("El servicio está corriendo");
   }
 
   obtenerFumigacionesDeCentral(cenNum: number): Observable<any> {

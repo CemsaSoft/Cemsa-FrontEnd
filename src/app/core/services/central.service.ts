@@ -13,8 +13,7 @@ export class CentralService {
    centralSeleccionada: any;
 
   constructor(private http: HttpClient) { 
-    console.log ("El servicio está corriendo");
-  }
+     }
 
   obtenerCentral(): Observable<any> {
     return this.http.get(this.url + '/listaCentrales');

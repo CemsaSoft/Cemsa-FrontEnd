@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
-//SERVICIOS
+// SERVICIOS
 import { UsuarioService } from 'src/app/core/services/usuario.service';
 
 @Component({
@@ -11,6 +12,7 @@ import { UsuarioService } from 'src/app/core/services/usuario.service';
 export class MenuClienteComponent implements OnInit {
 
   constructor(
+    private router: Router,
     private servicioUsuario: UsuarioService
   ) { }
 
@@ -20,10 +22,6 @@ export class MenuClienteComponent implements OnInit {
   
   cerrarSesion(): void {
     this.servicioUsuario.limpiarToken();
-
-    localStorage.setItem('rol', "0");
-    localStorage.setItem('usuario', "");
-    localStorage.setItem('idUsuario', "");
-    localStorage.setItem('cliente', ""); 
+    this.router.navigate(['/src/app/pages/consultar-alarma-config']);
   }
 }
