@@ -89,7 +89,9 @@ export class ConsultarClienteComponent implements OnInit {
     private clienteConsultar: ClienteService, private formBuilder: FormBuilder 
   ) { 
     this.formModificar = new FormGroup({
-      tipoDocumento: new FormControl(null, []),
+      tipoDocumento: new FormControl(null, [ Validators.required,
+        Validators.minLength(7),
+        Validators.maxLength(8)]),
       nroDoc: new FormControl(null, []),
       cliApeNomDen: new FormControl(null, [
         Validators.required,

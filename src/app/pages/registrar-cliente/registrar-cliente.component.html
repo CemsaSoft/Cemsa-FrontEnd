@@ -1,9 +1,267 @@
 <app-navbar></app-navbar>
 <div class="body">
-  <h1 class="text-center">Registar Cliente</h1>
-  <br />
+  <h1 class="text-center titulo tituloFuente">Registar Cliente</h1>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item" style="padding-left: 310px; font-size: 18px">
+        <a href="/home">Home</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        Registar Cliente
+      </li>
+    </ol>
+  </nav>
+  <div class="container mt-12">
+    <mat-vertical-stepper>
+      <mat-step 
+      [label]="titulo1"
+        [completed]="isStep1Completed"
+        [ngClass]="{ collapse: isCollapsed1 }"
+      >
+      <ng-container contenido-paso-1>
+        <div class="card-body" [ngClass]="{ collapse: isCollapsed2 }">
 
-  <div class="d-flex justify-content-center">
+          <div class="row containerCard">
+            <div class="container d-flex justify-content-center">
+            <div class="col-8 cardFiltrado cardAnimate cardFlat ">
+              <div>
+                <div class="row">
+                  <div class="col-md-5 image-container">
+                    <span
+                      ><img
+                        style="width: 102%; height: 102"
+                        src="../../../assets/icons8-user-64_1.png"
+                        class="image"
+                        alt="..."
+                      />
+                      <div class="texto">
+                        <h4
+                          style="
+                            text-align: center;
+                            color: #63ddff;
+                            font-size: 18px;
+                          "
+                        >
+                          Nuevo Cliente
+                        </h4>
+                      </div></span
+                    >
+                  </div>                    
+                  
+                  <div
+                    class="col-md-1 vertical-line"
+                    style="width: 1px"
+                  ></div>
+                  <div class="col-md-2 margenFiltros">
+                    
+              
+                    <mat-form-field class="fix"
+                        [hideRequiredMarker]="hideRequiredControl.value"
+                        [floatLabel]="getFloatLabelValue()">
+                      <mat-select required>
+                       
+                        <mat-option value="option">DNI</mat-option>
+                        <mat-option value="option">LC</mat-option>
+                        <mat-option value="option">LE</mat-option>
+                        <mat-option value="option">CUIT</mat-option>
+                        <mat-option value="option">CUIL</mat-option>
+                      </mat-select>
+                      <mat-label> Tipo de Documento</mat-label>
+                    </mat-form-field>
+
+                 <!--------Input Número de Documento ----------->
+                      <div class="form-outline input-group  fix">
+                        <mat-form-field class="fix">
+                          <mat-label >N° de Documento</mat-label>
+                          <input matInput type="number" placeholder="Ej. 12.345.678"  id="nroDocumento" value="nroDocumento" [formControl]="nroDocumento" required="true">
+                          <mat-icon matSuffix>123</mat-icon>
+
+
+                        </mat-form-field>
+                          <!-- Validación de N° de Documento -->
+                              <mat-error
+                                  class="error"
+                                  *ngIf="!validarNumeroDocumento()"
+                                >Formato <strong>incorrecto</strong>  {{ msjErrorDoc }}
+                              </mat-error>                               
+                              <mat-error
+                                    class="error"
+                                    *ngIf="nroDocumento?.errors?.['required']"
+                                  >El N° de Documento es <strong>requerido.</strong>
+                              </mat-error>
+                      </div>
+               
+                       <!--------Input Nombre de Cliente ----------->
+                       <div class="form-outline input-group fix">
+                        <mat-form-field class="fix" [floatLabel]="getFloatLabelValue()">
+                          <mat-label>Cliente</mat-label>
+                          <input matInput type="text" placeholder="Ej. Agustín" id="cliApeNomDen"  [formControl]="cliApeNomDen" formControlName="cliApeNomDen" required>
+                          <mat-icon matSuffix>person</mat-icon>
+                        </mat-form-field>
+                        <mat-error
+                            class="error"
+                            *ngIf="cliApeNomDen?.invalid && (cliApeNomDen?.dirty || cliApeNomDen?.touched)"
+                             >
+                             El Cliente es requerido.
+                        </mat-error>
+                        <!-- <mat-error
+                            class="error"
+                            *ngIf="cliApeNomDen?.errors?.['required']">El Cliente es <strong>requerido.</strong>
+                        </mat-error> -->
+                        <mat-error
+                            class="error"
+                            *ngIf="cliApeNomDen?.errors?.['pattern']">La primera letra del Nombre del Cliente debe ser Mayúscula, no se admiten caracteres especiales.
+                        </mat-error>
+                         <mat-error
+                            class="error"
+                            *ngIf="cliApeNomDen?.errors?.['minlength']">El Nombre del Cliente debe tener al menos 3 caracteres.
+                        </mat-error>
+                         <mat-error
+                        class="error"
+                        *ngIf="cliApeNomDen?.errors?.['maxlength']">El Nombre del Usuario debe tener menos de 50 caracteres.
+                        </mat-error>
+                       </div>
+                        <!--------Input Nombre de Usuario ----------->
+                        <div class="form-outline input-group fix">
+                          <mat-form-field class="fix">
+                            <mat-label>Usuario</mat-label>
+                            <input matInput placeholder="Ej. Usuario123"  id="usuario" value="usuario" formControlName="usuario" [formControl]="usuario" required>
+                            <mat-icon matSuffix>account_circle</mat-icon>
+                          </mat-form-field>
+                          <mat-error
+                            class="error"
+                            *ngIf="usuario?.invalid && (usuario?.dirty || usuario?.touched)">El Usuario es <strong>requerido.</strong>
+                        </mat-error>
+                        <!-- <mat-error
+                            class="error"
+                            *ngIf="usuario?.errors?.['required']">El Usuario es requerido.
+                        </mat-error> -->
+                        <mat-error
+                            class="error"
+                            *ngIf="usuario?.errors?.['pattern']">El Nombre del Usuario no admite caracteres especiales.
+                        </mat-error>
+                        <mat-error
+                            class="error"
+                            *ngIf="usuario?.errors?.['maxlength']">El Nombre del Usuario debe tener menos de 50 caracteres.
+                        </mat-error>
+                        </div>
+                        <!--------Input Email ----------->
+                    <div class="form-outline input-group fix">
+                      <mat-form-field class="fix">
+                        <mat-label>Email</mat-label>
+                        <input matInput type="email" matInput  [errorStateMatcher]="matcher" id="email" [formControl]="email" required
+                        placeholder="Ej. pat@example.com">
+                        <mat-icon matSuffix>alternate_email</mat-icon>
+                        <mat-error *ngIf="email.hasError('email') && !email.hasError('required')">
+                         Por favor ingrese un correo válido.
+                        </mat-error>
+                        <mat-error *ngIf="email.hasError('required')">
+                          Email es <strong>requerido</strong>
+                        </mat-error>
+                        <mat-error *ngIf="email?.invalid && (email?.dirty || email?.touched)">
+                        </mat-error>
+                        <mat-error *ngIf="email?.errors?.['email']">
+                          El correo electrónico es <strong>inválido.</strong>
+                        </mat-error>
+                        <mat-error div *ngIf="email?.errors?.['maxlength']">
+                          El email del debe tener menos de 30 caracteres.
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                     <!--------Input Teléfono ----------->
+                    <div class="form-outline input-group fix">
+                      <mat-form-field class="fix" [floatLabel]="getFloatLabelValue()">
+                        <mat-label>Teléfono</mat-label>
+                        <span matPrefix>+549 &nbsp;</span>
+                        <input matInput type="tel"placeholder="351 210 9815" id="telefono" [formControl]="telefono" required>
+                        <mat-icon matSuffix>phone_in_talk</mat-icon>
+                      </mat-form-field>
+                      <mat-error  *ngIf="telefono?.invalid && (telefono?.dirty || telefono?.touched)">
+                      </mat-error>
+                      <mat-error  *ngIf="telefono?.errors?.['required']">
+                        El teléfono es <strong>requerido.</strong>
+                      </mat-error>
+                      <mat-error  *ngIf="telefono?.errors?.['pattern']">
+                        El número de teléfono es inválido. Los formatos permitidos son: '1234567890', '123-4567890', '1234-567890' o '1234-56-7890'
+                      </mat-error>
+                    </div>
+                    <br>
+                    <br>
+                    <div
+                            class="col-6"
+                            style="display: flex; justify-content: center"
+                          >
+                            <div class="example-button-row">
+                              <button
+                                mat-fab
+                                extended
+                                color="primary"
+                                type="submit"
+                                class="btn btnGuardar"
+                                data-bs-toggle="button"
+                                (click)="registarCliente()"
+                              >
+                                Guardar 
+                              </button>
+                            </div>
+                          </div>
+                    
+                    
+
+                    
+
+
+
+
+                    <!-- <div class="col-md-6">
+                      <div class="form-outline input-group mb-3">
+                        <span class="input-group-text">Telefono </span>
+                        <input type="text" class="form-control" id="telefono" value="telefono" formControlName="telefono" required />
+                        <span class="input-group-text" title="{{ telefonoValido }}">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-circle" viewBox="0 0 16 16" >
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                            <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"/>
+                          </svg>
+                        </span>
+                    </div>
+                    <div *ngIf="telefono?.invalid && (telefono?.dirty || telefono?.touched)"
+                      class="text-danger">
+                      <div *ngIf="telefono?.errors?.['required']">El teléfono es requerido.</div>
+                      <div *ngIf="telefono?.errors?.['pattern']">
+                        El número de teléfono es inválido. Los formatos permitidos son: '1234567890', '123-4567890', '1234-567890' o '1234-56-7890'
+                      </div>
+                    </div>              
+                    </div> -->
+
+
+
+                  </div>
+                </div>
+              </div>
+            </div> 
+            </div>    
+          </div>
+          <br />
+          <br />
+          
+          <div class="row">
+            <!-- <div class="col-12 cardFiltrado cardAnimate cardFlat">
+              
+              
+            </div> -->
+            
+          </div>          
+        </div>
+      </ng-container>
+      </mat-step>
+      
+
+    </mat-vertical-stepper>
+
+    
+  
+  </div>
+  <!-- <div class="d-flex justify-content-center">
     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-8 col-xl-8">
       <div class="card">
         <div class="card-body">
@@ -133,7 +391,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
   <br />
 </div>
 <app-footer-interno></app-footer-interno>

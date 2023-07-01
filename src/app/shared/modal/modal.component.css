@@ -1,31 +1,60 @@
-.modal-content
-{
+
+.modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .modal-dialog {
+    margin: 20;
+    margin-top: 190px;
+  }
+  
+  .modal-content {
     border-radius: 100%;
     width: 100%;
     max-width: 500px;
-}
-.modal-header{
+  }
+  
+  .modal-header {
     height: 60px;
-    display: flex;
+
+    display: flex; 
+    z-index: 999; 
+    /* Los valores más altos se superponen a los valores más bajos en z*/
+    visibility: visible;
     align-items: center;
     padding: 0 32px;
     background-color: #5ad910b4;
-}
-.modal-container{
+  }
+  
+  .modal-container {
     padding: 32px;
     background: #fff;
     border-radius: 0 0;
-}
-
-.modal-title{
+  }
+  
+  .modal-title {
     font-size: 24px;
     font-weight: 600;
     color: #000;
-}
-
-.fondo{
+  }
+  
+  .fondo {
     background-color: #e5e5f7;
-    background-image:  radial-gradient(#0e3c53 1.05px, transparent 1.05px), radial-gradient(#0e3c53 1.05px, #e5e5f7 1.05px);
+    background-image: radial-gradient(#0e3c53 1.05px, transparent 1.05px),
+      radial-gradient(#0e3c53 1.05px, #e5e5f7 1.05px);
     background-size: 42px 42px;
-    background-position: 0 0,21px 21px;
-}
+    background-position: 0 0, 21px 21px;
+  }
+  #overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.468); /* Color de fondo semitransparente */
+    z-index: 999; /* Asegura que esté por encima del resto del contenido */
+    
+  }

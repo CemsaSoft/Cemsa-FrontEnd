@@ -1,6 +1,6 @@
 //SISTEMA
 import { JsonpClientBackend } from '@angular/common/http';
-import { Component, OnInit, Output } from '@angular/core';
+import { Component, OnInit, Output, ViewChild } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -8,7 +8,11 @@ import {
   Validators,
 } from '@angular/forms';
 import Swal, { SweetAlertOptions } from 'sweetalert2';
-
+import { MatStepper } from '@angular/material/stepper';
+import {FloatLabelType, MatFormFieldModule} from '@angular/material/form-field';
+import {ErrorStateMatcher} from '@angular/material/core';
+import {NgIf} from '@angular/common';
+import {MatInputModule} from '@angular/material/input';
 //COMPONENTES
 import { ClienteClass } from 'src/app/core/models/cliente';
 //import { ClienteConsultaClass } from 'src/app/core/models/clienteConsulta';
@@ -24,6 +28,29 @@ import { ClienteService } from 'src/app/core/services/cliente.service';
 })
 export class RegistrarClienteComponent implements OnInit {
 
+  
+  //STEPPER
+  titulo1 = 'Complete los datos del Cliente:';
+  titulo2 = '';
+  titulo3 = '';
+  isStep1Completed = false;
+  isStep2Completed = false;
+  isStep3Completed = false;
+  isCollapsed1 = false;
+  isCollapsed2 = false;  
+  hideRequiredControl = new FormControl(false);
+  floatLabelControl = new FormControl('auto' as FloatLabelType);
+  options = this._formBuilder.group({
+    hideRequired: this.hideRequiredControl,
+    floatLabel: this.floatLabelControl,
+  });
+  selected = 'option2';
+  emailFormControl = new FormControl('', [Validators.required, Validators.email]);
+
+  matcher = new ErrorStateMatcher();
+
+
+  @ViewChild(MatStepper, { static: false }) stepper: MatStepper | undefined;
   //VARIABLES DE OBJETOS LIST
   TipoDocumento: TipoDocumentoClass[] = [];
 
@@ -43,11 +70,15 @@ export class RegistrarClienteComponent implements OnInit {
   formRegistar: FormGroup;
 
   constructor(
-    private clienteConsultar: ClienteService,    
+    private clienteConsultar: ClienteService, private _formBuilder: FormBuilder   
   ) { 
     this.formRegistar = new FormGroup({
       tipoDocumento: new FormControl(null, []),
-      nroDocumento: new FormControl(null, []),
+      nroDocumento: new FormControl(null, [
+        Validators.required,
+        Validators.minLength(7),
+        Validators.maxLength(11),
+      ]),
       cliApeNomDen: new FormControl(null, [
         Validators.required,
         Validators.minLength(3),
@@ -119,7 +150,54 @@ export class RegistrarClienteComponent implements OnInit {
   get telefono() {
     return this.formRegistar.get('telefono');
   }
+  getFloatLabelValue(): FloatLabelType {
+    return this.floatLabelControl.value || 'auto';
+  }
+   // Placeholder de DNI
+   formatDocumentNumber(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const value = input.value.replace(/\D/g, ''); // Eliminar cualquier carácter que no sea un dígito
 
+    // Aplicar la máscara con puntos solo cuando se pierde el foco o se presiona Enter
+    input.addEventListener('blur', applyMask);
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        applyMask();
+      }
+    });
+
+    const insertDots = (value: string): string => {
+      const digit1 = value.slice(0, 2);
+      const digit2 = value.slice(2, 5);
+      const digit3 = value.slice(5, 8);
+
+      let formattedValue = '';
+
+      if (digit1) {
+        formattedValue += digit1;
+      }
+
+      if (digit2) {
+        formattedValue += `.${digit2}`;
+      }
+
+      if (digit3) {
+        formattedValue += `.${digit3}`;
+      }
+
+      return formattedValue;
+    };
+
+    function applyMask() {
+      const formattedValue = insertDots(value);
+      input.value = formattedValue;
+
+      // Verificar y ajustar el placeholder
+      if (value.length === 0) {
+        input.placeholder = '12.345.678';
+      }
+    }
+  }
   validarNumeroDocumento(): boolean {
     let tipoDoc: number = this.formRegistar.get('tipoDocumento')?.value;
     let nroDoc: string = this.formRegistar.get('nroDocumento')?.value;
@@ -129,22 +207,22 @@ export class RegistrarClienteComponent implements OnInit {
     else{
       if (tipoDoc == 1) { // DNI    
           const regexDNI = /^[0-9]{7,8}$/;  
-          this.msjErrorDoc = "Número de DNI no válido, se espera 7 ó 8 número";       
+          this.msjErrorDoc = "Número de DNI no válido, se espera 7 ó 8 dígitos";       
           return regexDNI.test(nroDoc);                         
       } 
       if (tipoDoc==2){ // Libreta cívica 
         const regexLib = /^[a-zA-Z]{1}[0-9]{6,7}$/;
-        this.msjErrorDoc = "Libreta cívica no válido, comenzando con una letra seguida de 6 o 7 números";
+        this.msjErrorDoc = "Libreta cívica no válido, comenzando con una letra seguida de 6 o 7 dígitos";
         return regexLib.test(nroDoc);         
       }
       if (tipoDoc==3){ // Libreta de enrolamiento
         const regexLib = /^[a-zA-Z]{1}[0-9]{6,7}$/;
-        this.msjErrorDoc = "Libreta de enrolamiento no válido, comenzando con una letra seguida de 6 o 7 números";
+        this.msjErrorDoc = "Libreta de enrolamiento no válido, comenzando con una letra seguida de 6 o 7 dígitos";
         return regexLib.test(nroDoc);         
       }
       if (tipoDoc==4) { // CUIT
         const regexCUIT = /^(\d{2}-\d{8}-\d{1})$/;
-        this.msjErrorDoc = "CUIT no válido, comenzando con dos dígitos del prefijo y luego un guión, seguido del número de  'persona física' o 'representante legal de la sociedad' (8 dígitos), guión y otro número";
+        this.msjErrorDoc = "CUIT no válido, comenzando con dos dígitos del prefijo y luego un guión, seguido del número de  'persona física' o 'representante legal de la sociedad' (8 dígitos), guión y otro dígito";
         return regexCUIT.test(nroDoc);   
       }   
       if (tipoDoc==5) { // CUIL

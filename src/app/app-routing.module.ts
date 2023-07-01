@@ -25,16 +25,18 @@ import { RegistrarFumigacionComponent } from './pages/registrar-fumigacion/regis
 import { RegistrarAlarmaConfigComponent } from './pages/registrar-alarma-config/registrar-alarma-config.component';
 import { ConsultarAlarmaConfigComponent } from './pages/consultar-alarma-config/consultar-alarma-config.component';
 import { ConsultarAlarmaComponent } from './pages/consultar-alarma/consultar-alarma.component';
+import { NoLoginGuard } from './nologuin.guard';
 
 //RUTAS
 let routes: Routes = [];
 
 if (localStorage.getItem('rol') === '1') 
 {
+   //Aquí configuramos las rutas, indicamos en el path la ruta, seguido de los componentes que mostrará esa ruta
    routes = [
-    //Aquí configuramos las rutas, indicamos en el path la ruta, seguido de los componentes que mostrará esa ruta
+   
     {path: '', component: IngresarUsuarioComponent},
-    {path: 'olvido-password', component: OlvidoPasswordComponent},    
+    {path:'olvido-password', component: OlvidoPasswordComponent},    
     {path:'home', component: HomeComponent, canActivate: [RouteguardsGuard]},
     {path:'consultar-servicio', component: ConsultarServicioComponent, canActivate: [RouteguardsGuard]},
     {path:'registrar-servicio', component: RegistrarServicioComponent, canActivate: [RouteguardsGuard]},
@@ -49,27 +51,28 @@ if (localStorage.getItem('rol') === '1')
     {path: '', redirectTo: '/', pathMatch:'full'},
     {path:'**', redirectTo: '/', pathMatch:'full'},
   ];
-} else {
-   routes = [
-    //Aquí configuramos las rutas, indicamos en el path la ruta, seguido de los componentes que mostrará esa ruta
-    {path:'home', component: HomeComponent, canActivate: [RouteguardsGuard]},
-    {path:'consultar-fumigaciones', component: ConsultarFumigacionesComponent, canActivate: [RouteguardsGuard]},
-    {path:'registrar-fumigaciones', component: RegistrarFumigacionComponent, canActivate: [RouteguardsGuard]},
-    {path:'modificar-password', component: ModificarPasswordComponent, canActivate: [RouteguardsGuard]},
-    {path:'consultar-cuenta', component: ConsultarCuentaComponent, canActivate: [RouteguardsGuard]},
-    {path:'consultar-central-cliente', component: ConsultarCentralesClienteComponent, canActivate: [RouteguardsGuard]},
-    {path:'consultar-paneles-monitoreo', component: ConsultarPanelesMonitoreoComponent, canActivate: [RouteguardsGuard]},
-    {path:'consultar-mediciones-actuales', component: ConsultarMedicionesActualesComponent, canActivate: [RouteguardsGuard]},
-    {path:'consultar-reportes', component: ConsultarReportesComponent, canActivate: [RouteguardsGuard]},
-    {path:'consultar-alarma-config', component: ConsultarAlarmaConfigComponent, canActivate: [RouteguardsGuard]},
-    {path:'registrar-alarma-config', component: RegistrarAlarmaConfigComponent, canActivate: [RouteguardsGuard]},
-    {path:'consultar-alarma', component: ConsultarAlarmaComponent, canActivate: [RouteguardsGuard]},
-
-    {path: '', component: IngresarUsuarioComponent},
-    {path: 'olvido-password', component: OlvidoPasswordComponent},    
-    {path: '', redirectTo: '/', pathMatch:'full'},
-    {path:'**', redirectTo: '/', pathMatch:'full'},
-  ];
+} else 
+{
+    routes = [
+      //Aquí configuramos las rutas, indicamos en el path la ruta, seguido de los componentes que mostrará esa ruta
+      {path:'home', component: HomeComponent, canActivate: [RouteguardsGuard ]},
+      {path:'consultar-fumigaciones', component: ConsultarFumigacionesComponent, canActivate: [RouteguardsGuard]},
+      {path:'registrar-fumigaciones', component: RegistrarFumigacionComponent, canActivate: [RouteguardsGuard]},
+      {path:'modificar-password', component: ModificarPasswordComponent, canActivate: [RouteguardsGuard]},
+      {path:'consultar-cuenta', component: ConsultarCuentaComponent, canActivate: [RouteguardsGuard]},
+      {path:'consultar-central-cliente', component: ConsultarCentralesClienteComponent, canActivate: [RouteguardsGuard]},
+      {path:'consultar-paneles-monitoreo', component: ConsultarPanelesMonitoreoComponent, canActivate: [RouteguardsGuard]},
+      {path:'consultar-mediciones-actuales', component: ConsultarMedicionesActualesComponent, canActivate: [RouteguardsGuard]},
+      {path:'consultar-reportes', component: ConsultarReportesComponent, canActivate: [RouteguardsGuard]},
+      {path:'consultar-alarma-config', component: ConsultarAlarmaConfigComponent, canActivate: [RouteguardsGuard]},
+      {path:'registrar-alarma-config', component: RegistrarAlarmaConfigComponent, canActivate: [RouteguardsGuard]},
+      {path:'consultar-alarma', component: ConsultarAlarmaComponent, canActivate: [RouteguardsGuard]},
+  
+      {path: '', component: IngresarUsuarioComponent},
+      {path: 'olvido-password', component: OlvidoPasswordComponent},    
+      {path: '', redirectTo: '/', pathMatch:'full'},
+      {path:'**', redirectTo: '/', pathMatch:'full'},
+    ];
 }
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
