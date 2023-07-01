@@ -1,235 +1,583 @@
-<h1 class="text-center">Registrar Alarma Configuración </h1>
+<div class="body">
+  <h1 class="text-center titulo tituloFuente">Registrar Configuración de Alarma </h1>
+  <!-- Contenido de breadcrumb -->
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item" style="padding-left: 310px; font-size: 18px">
+        <a href="/home">Home</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        Registrar Configuración de Alarma 
+      </li>
+    </ol>
+  </nav>
+  <div class="container mt-12">
 
-<div class="container mt-5">
-    <div class="row justify-content-center">
-      <div class="col-md-12">
-        <div class="card">
-          <div class="card-header">
-            <div class="d-flex justify-content-between align-items-center">
-              <h4 class="mb-0">Seleccionar Central</h4>
-              <button type="button" class="btn-unstyled" (click)="toggleCollapse1()">
-                <svg *ngIf="!isCollapsed1" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
-                  <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
-                </svg>
-                <svg *ngIf="isCollapsed1" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 16 16">
-                  <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
-                </svg>
+<!-- ----------------------------Inicio de Paso a Paso-------------------------------------------- -->
+<mat-vertical-stepper>
+  <mat-step
+    [label]="titulo1"
+    [completed]="isStep1Completed"
+    [ngClass]="{ collapse: isCollapsed1 }"
+  >
+    <ng-container contenido-paso-1>
+      <div class="card-body" [ngClass]="{ collapse: isCollapsed2 }">
+  
+        <div class="row containerCard">
+  
+          <div class="col-12 cardFiltrado cardAnimate cardFlat cardSeparacion">
+            <div>
+              <div class="row">
+                <div class="col-md-2 image-container">
+                  <span
+                    ><img
+                      style="width: 102%; height: 102"
+                      src="../../../assets/icons8-user-64_1.png"
+                      class="image"
+                      alt="..."
+                    />
+                    <div class="texto">
+                      <h4
+                        style="
+                          text-align: center;
+                          color: #63ddff;
+                          font-size: 18px;
+                        "
+                      >
+                        Filtrar Central
+                      </h4>
+                    </div></span
+                  >
+                </div>                 
+
+                <div
+                class="col-md-1 vertical-line"
+                style="width: 20px"
+              ></div>
+              <div class="col-md-2 margenFiltros">
+                <div
+                  class="form-outline input-group"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title="Buscar por Código de Central"
+                >
+                  <label class="search-field">
+                    <mat-label
+                      class="search-field label ng-tns-c97-48 ng-star-inserted"
+                      >Código de Central</mat-label
+                    >
+                    <input
+                      type="text"
+                      class="form-control inputBusqueda .input-con-color-de-fondo"
+                      placeholder="Ej. 1"
+                      (keyup)="esFiltrar($event , 'codigo')"
+                    />                             
+                    <i
+                      class="fas fa-search FormatoIconos"
+                      style="padding-left: 20px"
+                    ></i>
+                  </label>
+                </div>                          
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 cardFiltrado cardAnimate cardFlat cardSeparacion">
+          <div class="h-100 d-flex align-items-center justify-content-center">
+            <div
+              class="example-button-row"
+              style="display: flex; justify-content: flex-end"
+            >
+              <button
+                mat-fab
+                extended
+                color="primary"
+                class="btnConsultarConfigAlarma"
+                routerLink="/consultar-alarma-config"
+              >
+                <mat-icon>touch_app</mat-icon>
+                Consultar Config. Alarmas
               </button>
             </div>
           </div>
-          <div class="card-body" [ngClass]="{'collapse': isCollapsed1}">
-  
-  
-          <div class="row">
-            <div class="col-6 search-container">
-              <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por Código de Central">
-                <span class="input-group-text">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                    class="bi bi-search" viewBox="0 0 16 16">
-                    <path
-                      d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-                  </svg>
-                </span>
-                <input type="text" class="form-control" placeholder="Filtrar por Código de Central" (keyup)="esFiltrar($event , 'codigo')">
-              </div>
-            </div>
+        </div>   
+     
+      </div>
+      <br />
+      <br />
+
+
+      <div class="row">
+        <div class="col-12 cardFiltrado cardAnimate cardFlat">
+          <table class="table" *ngIf="validarFiltrado() == true" id="servicio">
+            <thead class="encabezado">
+              <tr>
+                <th
+                  (click)="ordenarPor('cenNro')"
+                  [appSort]="CentralConsultaFiltrados"
+                  data-order="desc"
+                  data-name="cenNro"
+                  style="text-align: center"
+                >
+                  <a
+                    >Cod. {{ ordenarIcono("cenNro") }}</a
+                  >
+                </th>
+                <th
+                  (click)="ordenarPor('cenImei')"
+                  [appSort]="CentralConsultaFiltrados"
+                  data-order="desc"
+                  data-name="cenImei"
+                  style="text-align: center"
+                >
+                  <a>IMEI {{ ordenarIcono("cenImei") }}</a>
+                </th>
+                <th
+                  (click)="ordenarPor('cenCoorX')"
+                  [appSort]="CentralConsultaFiltrados"
+                  data-order="desc"
+                  data-name="cenCoorX"
+                  style="text-align: center"
+                >
+                  <a>Coordenada X {{ ordenarIcono("cenCoorX") }}</a>
+                </th>
+                <th
+                  (click)="ordenarPor('cenCoorY')"
+                  [appSort]="CentralConsultaFiltrados"
+                  data-order="desc"
+                  data-name="cenCoorY"
+                  style="text-align: center"
+                >
+                  <a>Coordenada Y {{ ordenarIcono("cenCoorY") }}</a>
+                </th>
+                <th></th>
+                <th scope="col">Seleccionar</th>             
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                class="table-row"
+                *ngFor="
+                  let central of CentralConsultaFiltrados
+                    | paginate
+                    : {
+                      itemsPerPage: pageSizeCentral,  
+                      currentPage: currentPageCentral,  
+                      totalItems: totalItemsCentral  
+                    };
+                  let i = index
+                "
+                [ngClass]="{
+                  'fila-par': i % 2 == 0,
+                  'fila-impar': i % 2 == 1
+                }"
+                (click)="esfilaSeleccionada(central)"
+              >
+                <th style="vertical-align: middle align-center">
+                  {{ central.cenNro }}
+                </th>
+                <td style="vertical-align: middle" class="textDerecha">
+                  {{ central.cenImei }}
+                </td>
+                <td style="vertical-align: middle" class="textDerecha">
+                  {{ central.cenCoorX }}
+                </td>
+                <td style="vertical-align: middle" class="textDerecha">
+                  {{ central.cenCoorY }}
+                </td>  
+                <td class="empty-column"></td>
+                <td class="align-center">
+                  <button
+                    mat-button
+                    (click)="esfilaSeleccionada(central) ; seleccionarCentral(); goToNextStep(1)"               
+                    type="button"
+                    class="btn"
+                    data-bs-target="#staticBackdrop"
+                    title="Seleccionar Cliente"
+                  >
+                    <img
+                      src="../../../assets/seleccionarClie.png"
+                      class="image"
+                      alt="..."
+                    />
+                  </button>
+                </td>
+
+              </tr>
+            </tbody>
+          </table>
+          <div
+            class="align-center"
+            *ngIf="validarFiltrado() == true"
+          >
+            <pagination-controls
+              (pageChange)="paginaCambiadaCentral($event)"
+              itemsPerPage="pageSizeCentral"
+              totalItems="totalItemsCentral"
+            ></pagination-controls>
           </div>
-                    
-          <div class="row">
-              <div class="col-12">
-                <table class="table">
-                  <thead class="encabezado">
-                      <tr>            
-                        <th (click)="ordenarPor('cenNro')" [appSort]="CentralConsultaFiltrados" data-order="desc"
-                            data-name="cenNro" style="text-align: center;"><a>Cod. Central {{ordenarIcono('cenNro')}}</a></th>
-                        <th (click)="ordenarPor('cenImei')" [appSort]="CentralConsultaFiltrados" data-order="desc"
-                            data-name="cenImei" style="text-align: center;"><a>IMEI {{ordenarIcono('cenImei')}}</a></th>
-                        <th (click)="ordenarPor('cenCoorX')" [appSort]="CentralConsultaFiltrados" data-order="desc"
-                            data-name="cenCoorX" style="text-align: center;"><a>Coordenada X {{ordenarIcono('cenCoorX')}}</a></th>             
-                        <th (click)="ordenarPor('cenCoorY')" [appSort]="CentralConsultaFiltrados" data-order="desc"
-                            data-name="cenCoorY" style="text-align: center;"><a>Coordenada Y {{ordenarIcono('cenCoorY')}}</a></th>                                               
-                        <th scope="col" style="text-align: center;">Ver Más</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let central of CentralConsultaFiltrados; let i=index"
-                    [ngClass]="{'fila-par': i%2==0, 'fila-impar': i%2==1}"
-                    (click)="esfilaSeleccionada(central)">
-                      <th style="vertical-align: middle" class="align-center">{{ central.cenNro }}</th>
-                      <td style="vertical-align: middle" class="align-center">{{ central.cenImei }}</td>
-                      <td style="vertical-align: middle" class="align-center">{{ central.cenCoorX }}</td>
-                      <td style="vertical-align: middle" class="align-center">{{ central.cenCoorY }}</td>              
-                      <td class="align-center">
-                        <button type="button" class="btn" (click)="esfilaSeleccionada(central); seleccionarCentral()">     
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-                          </svg>           
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div class="alert alert-primary text-center" role="alert" *ngIf="validarFiltrado() == false">      
-                ¡No se ha encontrado ninguna Central!
-              </div>            
-          </div>
-          
+        </div>
+        <div
+          class="alert alert-primary text-center"
+          role="alert"
+          *ngIf="validarFiltrado() == false"
+        >
+          No se encontraron centrales que coincidan con su búsqueda.
         </div>
       </div>
-    </div>
-  </div>
-  
-  <div class="container mt-5">
-    <div class="row justify-content-center">
-      <div class="col-md-12">
-        <div class="card">
-          <div class="card-header">
-            <div class="d-flex justify-content-between align-items-center">
-              <h4 class="mb-0">Registar Alarma</h4>
-              <button type="button" class="btn-unstyled" (click)="toggleCollapse2()">
-                <svg *ngIf="!isCollapsed2" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
-                  <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
-                </svg>
-                <svg *ngIf="isCollapsed2" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 16 16">
-                  <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
-                </svg>
-              </button>
-            </div>
-          </div>
-          <div class="card-body" [ngClass]="{'collapse': isCollapsed2}">
-               
-            <div class="d-flex justify-content-center">
-              <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                <div class="card">        
-                  <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                    <form [formGroup]="formAgregar" class="row g-3">
-                      <fieldset id="fieldset">
-                          
-                        <div class="col-md-12">
-                          <div class="form-outline input-group mb-3">
-                              <span class="input-group-text">Nro Central </span>
-                              <input type="text" class="form-control" id="nroCentralA" value="nroCentralA"
-                                  formControlName="nroCentralA" readonly/>
-                          </div>        
-                        </div> 
-                        
-                        <div class="col-md-12">
-                          <div class="form-outline input-group mb-3">
-                              <span class="input-group-text">Nombre de Alarma</span>
-                              <input type="text" class="form-control" id="nombreAlarmaA" value="nombreAlarmaA"
-                                  formControlName="nombreAlarmaA"/>
-                                  <span class="input-group-text" title="{{caracteresValidosNombre}}"><svg                    
-                                    xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                    class="bi bi-question-circle" viewBox="0 0 16 16">
-                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                                    <path
-                                        d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z" />
-                                  </svg>
-                              </span>
-                          </div>   
-                          <div *ngIf="nombreAlarmaA?.invalid && (nombreAlarmaA?.dirty || nombreAlarmaA?.touched)" class="text-danger">
-                            <div *ngIf="nombreAlarmaA?.errors?.['required']">
-                              Debe ingresar un nombre de alarma. </div>
-                            <div *ngIf="nombreAlarmaA?.errors?.['pattern']">
-                              No debe contener caracteres especiales ni tener más de 50 carácteres. </div>
-                            </div> 
-                        </div>
-              
-                        <div class="col-md-12">
-                          <div class="form-outline input-group mb-3 d-flex align-items-center">
-                            <span class="input-group-text">Servicio</span>
-                            <select name="nombreServicioA" id="nombreServicioA" formControlName="nombreServicioA" class="form-select" style="width: 300px;">
-                              <option *ngFor="let servicio of ServiciosCentralA" [value]="servicio.serId">
-                                {{servicio.serDescripcion}}
-                              </option>
-                            </select>
-                          </div>
-                        </div>                        
-              
-                        <div class="col-md-12">
-                          <div class="form-outline input-group mb-3">
-                              <span class="input-group-text">Límite Superior</span>
-                              <input type="text" class="form-control" id="cfgValorSuperiorAA" value="cfgValorSuperiorAA"
-                                  formControlName="cfgValorSuperiorAA"/>
-                                  <span class="input-group-text" title="{{caracteresValidosLimites}}"><svg                    
-                                    xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                    class="bi bi-question-circle" viewBox="0 0 16 16">
-                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                                    <path
-                                        d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z" />
-                                  </svg>
-                              </span>
-                          </div>   
-                          <div *ngIf="cfgValorSuperiorAA?.invalid && (cfgValorSuperiorAA?.dirty || cfgValorSuperiorAA?.touched)" class="text-danger">
-                            <div *ngIf="cfgValorSuperiorAA?.errors?.['pattern']">
-                              Debe contener números con un máximo de dos decimales y no debe incluir caracteres especiales. </div>
-                          </div> 
-                        </div>
-              
-                        <div class="col-md-12">
-                          <div class="form-outline input-group mb-3">
-                              <span class="input-group-text">Límite Inferior</span>
-                              <input type="text" class="form-control" id="cfgValorInferiorAA" value="cfgValorInferiorAA"
-                                  formControlName="cfgValorInferiorAA"/>
-                                  <span class="input-group-text" title="{{caracteresValidosLimites}}"><svg                    
-                                    xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                    class="bi bi-question-circle" viewBox="0 0 16 16">
-                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                                    <path
-                                        d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z" />
-                                  </svg>
-                              </span>
-                          </div>   
-                          <div *ngIf="cfgValorInferiorAA?.invalid && (cfgValorInferiorAA?.dirty || cfgValorInferiorAA?.touched)" class="text-danger">
-                              <div *ngIf="cfgValorInferiorAA?.errors?.['pattern']">
-                                Debe contener números con un máximo de dos decimales y no debe incluir caracteres especiales. </div>
-                          </div> 
-                        </div>
-                
-                        <div class="col-md-12">
-                          <div class="form-outline input-group mb-3">
-                              <span class="input-group-text">Observación</span>
-                              <input type="text" class="form-control" id="cfgObservacionA" value="cfgObservacionA"
-                                  formControlName="cfgObservacionA" />
-                                  <span class="input-group-text" title="{{caracteresValidosObservacion}}"><svg                    
-                                    xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                    class="bi bi-question-circle" viewBox="0 0 16 16">
-                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                                    <path
-                                        d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z" />
-                                  </svg>
-                              </span>
-                          </div>
-                          <div *ngIf="cfgObservacionA?.invalid && (cfgObservacionA?.dirty || cfgObservacionA?.touched)" class="text-danger">
-                              <div *ngIf="cfgObservacionA?.errors?.['pattern']">
-                                No debe contener caracteres especiales ni tener más de 100 carácteres. </div>
-                          </div> 
-                        </div>                    
 
-                      </fieldset>
-                  </form>          
-                  
-                  <div class="col-12 text-center">
-                    <button type="submit" id="Validar" class="btn btn-success" (click)="agregarAlarmaConfig()">
-                      Agregar
+        </div>
+    </ng-container>
+  </mat-step>
+
+  <mat-step
+  [label]="titulo2"
+  [completed]="isStep2Completed"
+  [ngClass]="{ collapse: isCollapsed2 }"
+  >
+    <ng-container contenido-paso-2>    
+      <!-- Botón ver otra central -->
+      <div class="row">
+        <div
+          class="example-button-row"
+          style="display: flex; justify-content: flex-end"
+        >
+          <button
+            mat-fab
+            extended
+            color="primary"
+            class="btonNuevaConsulta"
+            (click)="goToPreviousStep()"
+          >
+            <mat-icon>touch_app</mat-icon>
+            Nueva Consulta
+          </button>
+        </div>
+      </div>
+
+      <div class="card cardFiltrado cardAnimate cardFlat">
+        <div class="card-header">
+          <div class="d-flex justify-content-between align-items-center">
+            <h4 class="mb-0 tituloCard">Registrar Configuración de Alarma a la Central N°: {{centralNroSeleccionada}} </h4>
+            <img
+              src="../../../assets/seleccionar.png"
+              class="image"
+              style="width: 5%; height: 5%; padding-right: 5px"
+              alt="..."
+            />
+          </div>
+        </div>
+
+        <br>  
+        <br>  
+        
+        <form [formGroup]="formAgregar">
+          <div class="container">
+            <div class="row">
+              <div class="col-sm-9" style="justify-content: right">
+                <div class="row justify-content-center">
+                  <div class="col-50 col-sm-50">
+                    <div class="row">
+                      <div class="col-md-6">
+                        
+                        <div class="form-outline input-group mb-3">
+                          <mat-form-field
+                            appearance="fill"
+                            class="example-full-width form-outline input-group"
+                          >
+                            <mat-label>Nro Central</mat-label>
+                            <input
+                              type="text"
+                              style="padding-left: 20px"
+                              matInput
+                              id="nroCentralA"
+                              value="nroCentralA"
+                              formControlName="nroCentralA"
+                              required
+                              readonly
+                            />
+                            <mat-icon class="edit" matSuffix
+                              >edit_off</mat-icon
+                            >
+                          </mat-form-field>
+                        </div>
+
+                        <div class="form-outline input-group mb-3">
+                          <mat-form-field
+                            appearance="fill"
+                            class="example-full-width form-outline input-group"
+                          >
+                            <mat-label>Nombre de Alarma</mat-label>
+                            <input
+                              type="text"
+                              style="padding-left: 20px"
+                              matInput
+                              id="nombreAlarmaA"
+                              value="nombreAlarmaA"
+                              formControlName="nombreAlarmaA"
+                              required
+                            />
+                            <mat-icon class="edit" matSuffix
+                              >edit</mat-icon
+                            >
+                          </mat-form-field>
+                          <mat-error
+                            *ngIf="
+                            nombreAlarmaA?.invalid &&
+                              (nombreAlarmaA?.dirty ||
+                              nombreAlarmaA?.touched)
+                            "
+                            class="text-danger"
+                          >
+                            <mat-error
+                              class="error"
+                              *ngIf="nombreAlarmaA?.errors?.['required']"
+                            >
+                              Debe ingresar un nombre de alarma.
+                            </mat-error>
+                            <mat-error
+                              class="error"
+                              *ngIf="nombreAlarmaA?.errors?.['pattern']"
+                            >
+                              No debe contener caracteres especiales ni tener más de 50 carácteres.                                                         
+                            </mat-error>
+                          </mat-error>
+                        </div>
+
+                        <div class="form-outline input-group mb-3">
+                          <mat-form-field
+                            style="width: 525px"
+                            >
+                            <mat-label>Seleccione un Servicio</mat-label>
+                            <mat-select 
+                              style="padding-left: 30px"                              
+                              placeholder="Seleccionar un Servicio" 
+                              required
+                              id="nombreServicioA"
+                              formControlName="nombreServicioA"
+                              >
+                              <mat-option *ngFor="let servicio of ServiciosCentralA" [value]="servicio.serId">
+                                {{servicio.serDescripcion}}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                          <mat-error
+                            *ngIf="
+                            nombreServicioA?.invalid &&
+                              (nombreServicioA?.dirty ||
+                              nombreServicioA?.touched)
+                            "
+                            class="text-danger"
+                          >
+                            <mat-error
+                              class="error"
+                              *ngIf="nombreServicioA?.errors?.['required']"
+                            >
+                              Debe seleccionar un servicio.
+                            </mat-error>
+                          </mat-error>
+                        </div>
+
+                        <div class="form-outline input-group mb-3">
+                          <mat-form-field
+                            appearance="fill"
+                            class="example-full-width form-outline input-group"
+                          >
+                            <mat-label>Límite Superior</mat-label>
+                            <input
+                              type="text"
+                              style="padding-left: 20px"
+                              matInput
+                              id="cfgValorSuperiorAA"
+                              value="cfgValorSuperiorAA"
+                              formControlName="cfgValorSuperiorAA"
+                              required
+                            />
+                            <mat-icon class="edit" matSuffix
+                              >edit</mat-icon
+                            >
+                          </mat-form-field>
+                          <mat-error
+                            *ngIf="
+                            cfgValorSuperiorAA?.invalid &&
+                              (cfgValorSuperiorAA?.dirty ||
+                              cfgValorSuperiorAA?.touched)
+                            "
+                            class="text-danger"
+                          >
+                            <mat-error
+                              class="error"
+                              *ngIf="cfgValorSuperiorAA?.errors?.['required']"
+                            >
+                              Debe ingresar un Límite Superior.
+                            </mat-error>
+                            <mat-error
+                              class="error"
+                              *ngIf="cfgValorSuperiorAA?.errors?.['pattern']"
+                            >
+                            Debe contener números con un máximo de dos decimales y no debe incluir caracteres especiales.
+                            </mat-error>
+                          </mat-error>
+                        </div>
+
+                        <div class="form-outline input-group mb-3">
+                          <mat-form-field
+                            appearance="fill"
+                            class="example-full-width form-outline input-group"
+                          >
+                            <mat-label>Límite Inferior</mat-label>
+                            <input
+                              type="text"
+                              style="padding-left: 20px"
+                              matInput
+                              id="cfgValorInferiorAA"
+                              value="cfgValorInferiorAA"
+                              formControlName="cfgValorInferiorAA"
+                              required
+                            />
+                            <mat-icon class="edit" matSuffix
+                              >edit</mat-icon
+                            >
+                          </mat-form-field>
+                          <mat-error
+                            *ngIf="
+                            cfgValorInferiorAA?.invalid &&
+                              (cfgValorInferiorAA?.dirty ||
+                              cfgValorInferiorAA?.touched)
+                            "
+                            class="text-danger"
+                          >
+                            <mat-error
+                              class="error"
+                              *ngIf="cfgValorInferiorAA?.errors?.['required']"
+                            >
+                            Debe ingresar un Límite Inferior.
+                          </mat-error>
+                          <mat-error
+                              class="error"
+                              *ngIf="cfgValorInferiorAA?.errors?.['pattern']"
+                            >
+                            Debe contener números con un máximo de dos decimales y no debe incluir caracteres especiales.
+                            </mat-error>
+                          </mat-error>
+                        </div>
+                        
+                        <div class="form-outline input-group mb-3">
+                          <mat-form-field
+                            appearance="fill"
+                            class="example-full-width form-outline input-group"
+                          >
+                            <mat-label>Observación</mat-label>
+                            <input
+                              type="text"
+                              style="padding-left: 20px"
+                              matInput
+                              id="cfgObservacionA"
+                              value="cfgObservacionA"
+                              formControlName="cfgObservacionA"                    
+                            />
+                            <mat-icon class="edit" matSuffix
+                              >edit</mat-icon
+                            >
+                          </mat-form-field>
+                          <mat-error
+                            *ngIf="
+                            cfgObservacionA?.invalid &&
+                              (cfgObservacionA?.dirty ||
+                              cfgObservacionA?.touched)
+                            "
+                            class="text-danger"
+                          >
+                          <mat-error
+                              class="error"
+                              *ngIf="cfgObservacionA?.errors?.['pattern']"
+                            >
+                            No debe contener caracteres especiales ni tener más de 100 carácteres.
+                            </mat-error>
+                          </mat-error>
+                        </div>
+
+                        <br>
+                        <div
+                          class="col-12 text-center"
+                          style="display: flex; justify-content: center"
+                        >
+                          <div class="modal-footer example-button-row">
+                            <button
+                              mat-fab
+                              extended
+                              color="primary"
+                              type="submit"
+                              id="btnAgregar"
+                              class="btn btnConfirmar"
+                              data-bs-toggle="modal"
+                              data-bs-target="#staticBackdrop"
+                              (click)="agregarAlarmaConfig()"
+                            >
+                              Registrar Config. Alarma
+                            </button>
+                          </div>
+                        </div> 
+
+                      </div>
+                    </div>
+                
+
+                  </div>
+                </div>
+              </div>
+
+              <!-------------------- Ir a Consultar: .col-sm-4 ---------------------------------->
+              <div
+              class="col-sm-3"
+              style="display: flex; justify-content: left"
+            >
+              <div class="col-md-2 image-container">
+                <span
+                  ><img
+                    style="
+                      width: 100%;
+                      height: 100%;
+                      margin-bottom: 100px;
+                    "
+                    src="../../../assets/nube.png"
+                    class="image"
+                    alt="..."
+                  />
+                <!-- Botón Consultar Config. Alarma -->
+                <div class="row">
+                  <div
+                    class="example-button-row"
+                    style="display: flex; justify-content: flex-end"
+                  >
+                    <button
+                      mat-fab
+                      extended
+                      color="primary"
+                      class="btnConsultarConfigAlarma"
+                      routerLink="/consultar-alarma-config"
+                      >
+                      <mat-icon>touch_app</mat-icon>
+                      Consultar Config. Alarmas
                     </button>
                   </div>
-                  <div class="col-12 text-center mt-2">
-                    <div *ngIf="validarControlesAgregar() == '2'" class="text-danger">
-                      Verifique los campos ingresados
-                    </div>
-                  </div>
-        
-                </div>  
-              </div>  
-            </div>  
-          </div>                 
-  
+                </div>
+                </span>
+              </div>
+            </div>
+
+
+            </div>
           </div>
-        </div>
+        </form>
+
       </div>
-    </div>
-  </div>
+      </ng-container>
+  </mat-step>
   
-  <br/>
+</mat-vertical-stepper>
+</div>  
+<br />
+</div>
+<br/>

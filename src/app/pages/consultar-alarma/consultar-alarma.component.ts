@@ -43,14 +43,6 @@ import { AlarmaService } from 'src/app/core/services/alarma.service';
 
 export class ConsultarAlarmaComponent implements OnInit {  
     
-  // Reemplaza el código del formulario actual con el siguiente código
-
-range = new FormGroup({
-  start: new FormControl(null),
-  end: new FormControl(null),
-});
-
-
     //STEPPER
     titulo1 = 'Alarmas';
     titulo2 = '';
@@ -62,6 +54,12 @@ range = new FormGroup({
     color: ThemePalette = 'accent';
     checked = true;
     disabled = false;
+
+    //PAGINADO
+    pageSize = 5; // Número de elementos por página
+    currentPage = 1; // Página actual
+    totalItems = 0; // Total de elementos en la tabla
+
 
   //VARIABLES DE OBJETOS LIST
   AlarmaConsulta: AlarmaConsultaClass[] = [];
@@ -109,12 +107,12 @@ range = new FormGroup({
 
   //Filtro de Alarmas
   esFiltrar(event: Event) {
-    const filtronNoAlarma = (this.formfiltro.get('nroAlarma') as FormControl).value?.toLowerCase();
-    const filtroNroCentral = (this.formfiltro.get('nroCentral') as FormControl).value?.toLowerCase();
-    const filtroNroMed = (this.formfiltro.get('nroMed') as FormControl).value?.toLowerCase();
-    const filtronNombreServ = (this.formfiltro.get('nombreServ') as FormControl).value?.toLowerCase();
-    const filtroNombreMensaje = (this.formfiltro.get('nombreMensaje') as FormControl).value?.toLowerCase();
-    const filtroValorMed = (this.formfiltro.get('valorMed') as FormControl).value?.toLowerCase();
+    const filtronNoAlarma = ((this.formfiltro.get('nroAlarma') as FormControl).value ?? "").toLowerCase();
+    const filtroNroCentral = ((this.formfiltro.get('nroCentral') as FormControl).value ?? "").toLowerCase();
+    const filtroNroMed = ((this.formfiltro.get('nroMed') as FormControl).value ?? "").toLowerCase();
+    const filtronNombreServ = ((this.formfiltro.get('nombreServ') as FormControl).value ?? "").toLowerCase();
+    const filtroNombreMensaje = ((this.formfiltro.get('nombreMensaje') as FormControl).value ?? "").toLowerCase();
+    const filtroValorMed = ((this.formfiltro.get('valorMed') as FormControl).value ?? "").toLowerCase();
 
     this.AlarmaConsultaFiltrados = this.AlarmaConsulta.filter((alarma) => {
       const valorAlmId= alarma.almId.toString().toLowerCase();
@@ -133,8 +131,7 @@ range = new FormGroup({
         (!filtroValorMed || valorMedValor.includes(filtroValorMed))
       );
     });
-  }
-  
+  }  
   
   //filtro de Alarma por Fecha
   filtarXFechas(){
@@ -142,15 +139,15 @@ range = new FormGroup({
     var desde = new Date();
     var hasta = new Date();
 
-    var fechaDesde = document.getElementById('fecha_desde') as HTMLInputElement;
-    var fechaSeleccionada = new Date(fechaDesde.value);
-    fechaSeleccionada.setDate(fechaSeleccionada.getDate() + 1); // Sumar un día
+    var fechaDesde = this.formfiltro.value.fecha_desde ?? null;
+    var fechaSeleccionada = new Date(fechaDesde);
+    fechaSeleccionada.setDate(fechaSeleccionada.getDate() ); // Sumar un día
     fechaSeleccionada.setHours(0, 0, 0, 0);
     desde = fechaSeleccionada;
 
-    var fechaHasta = document.getElementById('fecha_hasta') as HTMLInputElement;
-    fechaSeleccionada = new Date(fechaHasta.value);
-    fechaSeleccionada.setDate(fechaSeleccionada.getDate() + 1); // Sumar un día
+    var fechaHasta = this.formfiltro.value.fecha_hasta ?? null;
+    fechaSeleccionada = new Date(fechaHasta);
+    fechaSeleccionada.setDate(fechaSeleccionada.getDate() ); // Sumar un día
     fechaSeleccionada.setHours(0, 0, 0, 0);
     hasta = fechaSeleccionada;      
 
@@ -165,9 +162,9 @@ range = new FormGroup({
       });
     }
 
-    if (isNaN(desde.getTime())) {
+    if (fechaDesde === null || isNaN(desde.getTime())) {
       mostrarError('Ingrese una fecha de desde válida.', 'Por favor, ingrese una fecha de hasta válida para generar el filtro.');
-    } else if (isNaN(hasta.getTime())) {
+    } else if (fechaHasta === null || isNaN(hasta.getTime())) {
       mostrarError('Ingrese una fecha de hasta válida.', 'Por favor, ingrese una fecha de hasta válida para generar el filtro.');
     } else if (desde > hasta) {
       mostrarError('La fecha "desde" es posterior a la fecha "hasta".', 'Por favor, cambie el rango de fechas seleccionado para generar el filtro.');
@@ -175,7 +172,10 @@ range = new FormGroup({
       mostrarError('La fecha "desde" no puede ser posterior a la fecha actual.', 'Por favor, cambie el rango de fechas seleccionado para generar el filtro.');
     } else {
       
-      hasta.setDate(hasta.getDate() + 1); // Sumar un día al valor de 'hasta'
+    // if (desde.getTime() === hasta.getTime()) {
+      // Agregar un día a la fecha 'hasta'
+      hasta.setDate(hasta.getDate() + 1);
+
 
       const filtronNoAlarma = (this.formfiltro.get('nroAlarma') as FormControl).value?.toLowerCase();
       const filtroNroCentral = (this.formfiltro.get('nroCentral') as FormControl).value?.toLowerCase();
@@ -200,7 +200,7 @@ range = new FormGroup({
         (!filtronNombreServ || valorSerDescripcion.includes(filtronNombreServ)) &&
         (!filtroNombreMensaje || valorAlmMensaje.includes(filtroNombreMensaje)) &&
         (!filtroValorMed || valorMedValor.includes(filtroValorMed)) &&
-        (fechaAlarma >= desde && fechaAlarma < hasta)
+        (fechaAlarma >= desde && fechaAlarma <= hasta)
       );
       });
 
@@ -213,7 +213,7 @@ range = new FormGroup({
 
   // valida para que un solo selector de frecuencia este seleccionado a la vez
   filtroFecha(event: any) {
-    if (event.target.checked === true) {
+    if (event.checked === true) {
       this.formfiltro.get('nroAlarma')?.disable();
       this.formfiltro.get('nroCentral')?.disable();
       this.formfiltro.get('nroMed')?.disable();
@@ -237,7 +237,6 @@ range = new FormGroup({
     }
   }
     
-
   //Metodos para grilla
   //Almacena en una variable la propiedad por la cual se quiere ordenar la consulta de alarma.
   ordenarPor(propiedad: string) {
@@ -268,4 +267,17 @@ range = new FormGroup({
     // this.centralNroSeleccionada = centralConsulta.cenNro;    
   }
 
+  paginaCambiada(event: any) {
+    this.currentPage = event;
+    const cantidadPaginas = Math.ceil(
+      this.AlarmaConsultaFiltrados.length / this.pageSize
+    );
+    const paginas = [];
+
+    for (let i = 1; i <= cantidadPaginas; i++) {
+      paginas.push(i);
+    }
+    return paginas;
+  } 
+  
 }

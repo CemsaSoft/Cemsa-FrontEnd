@@ -23,7 +23,7 @@ import { CentralService } from 'src/app/core/services/central.service';
 export class ConsultarCentralesClienteComponent implements OnInit, AfterViewInit  {
 
   //STEPPER
-  titulo1 = 'Seleccionar Central:';
+  titulo1 = 'Seleccionar Central para Ver sus Datos';
   titulo2 = 'Datos de la Central N°:';
   titulo3 = ':';
   isStep1Completed = false;
@@ -94,18 +94,18 @@ export class ConsultarCentralesClienteComponent implements OnInit, AfterViewInit
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(this.map);
   }
 
-    //STEP
-    goToNextStep(stepNumber: number): void {    
-      if (this.stepper) {
-        this.stepper.selectedIndex = stepNumber;
-      }
+  //STEP
+  goToNextStep(stepNumber: number): void {    
+    if (this.stepper) {
+      this.stepper.selectedIndex = stepNumber;
     }
-    
-    goToPreviousStep(): void {     
-      if (this.stepper) {
-        this.stepper.previous();
-      }    
-    }
+  }
+  
+  goToPreviousStep(): void {     
+    if (this.stepper) {
+      this.stepper.previous();
+    }    
+  }
 
   toggleCollapse1() {
     this.isCollapsed1 = !this.isCollapsed1;
@@ -214,7 +214,7 @@ export class ConsultarCentralesClienteComponent implements OnInit, AfterViewInit
       this.ServiciosDeCentral = data; 
     })
     this.isCollapsed1 = !this.isCollapsed1;
-    this.titulo2 = 'Datos de la Central N°' + this.centralNroSeleccionada +':';
+    this.titulo2 = 'Datos de la Central N°:' + this.centralNroSeleccionada;
 
   }
 

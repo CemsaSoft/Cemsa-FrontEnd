@@ -282,9 +282,33 @@
   margin-top: 2px;
   margin-bottom: 0px;
 }
+
 .margenFiltrosSlite{
   margin-top: 30px;
   margin-bottom: 0px;
+}
+.margenFiltrosFecha{
+  margin-top: 2px;
+  margin-bottom: 0px;
+  margin-left: -100px; 
+  width: 300px; 
+  /* width: 100%; */
+
+}
+  .input-container {
+    display: flex;
+    align-items: center;
+  }
+  .mat-datepicker-toggle {
+    margin-left: 8px;
+  }
+  .mat-form-field {
+    width: 250px;
+  }
+.margenFiltrosBtn{
+  margin-top: 30px;
+  margin-bottom: 0px;
+  margin-left: 30px; 
 }
 /* -----imágen de Input de Búsqueda----- */
 .image-container {
@@ -477,7 +501,13 @@
   border-color: #fff!important;
   box-shadow: var(--bs-btn-active-shadow);
 }
-
+/* -------Botón aplicar filtro------- */
+.btnAplicarFiltro{
+  background-color: #01C3CC;
+  width: 237px !important;
+  height: 59px !important;
+  border-radius: 50px !important;
+}
 
 
 .example-h2 {
@@ -494,8 +524,8 @@
 .example-margin {
   margin: 10px;
 }
-
-
 .example-form-field {
   margin: 0 8px 16px 0;
 }
+
+

@@ -427,14 +427,14 @@
   display: inline-block;
 }
 
-.btonNuevaConsulta{
+.btnAgregar{
   background-color: #01C3CC;
   width: 237px !important;
   height: 59px !important;
   border-radius: 50px !important;
 }
 /* -------Botón Guardar------- */
-.btnAgregar{
+.btnAgregarServicio{
   width: 237px !important;
   height: 59px !important;
   border-radius: 4px !important;

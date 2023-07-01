@@ -1,6 +1,6 @@
 //SISTEMA
 import { JsonpClientBackend } from '@angular/common/http';
-import { Component, OnInit, Output } from '@angular/core';
+import { Component, OnInit, Output, ViewChild } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -8,6 +8,7 @@ import {
   Validators,
 } from '@angular/forms';
 import Swal, { SweetAlertOptions } from 'sweetalert2';
+import { MatStepper } from '@angular/material/stepper';
 
 //COMPONENTES
 import { CentralConsultaClass } from 'src/app/core/models/centralConsulta';
@@ -25,6 +26,17 @@ import { AlarmaConfigService } from 'src/app/core/services/alarmaConfig.service'
   styleUrls: ['./registrar-alarma-config.component.css']
 })
 export class RegistrarAlarmaConfigComponent implements OnInit {
+
+  //STEPPER
+  titulo1 = 'Seleccionar Central para Registar Configuración de Alarma';
+  titulo2 = 'Registrar Configuración de Alarma a la Central N°:';
+  titulo3 = ':';
+  isStep1Completed = false;
+  isStep2Completed = false;
+  isStep3Completed = false;
+
+  @ViewChild(MatStepper, { static: false }) stepper: MatStepper | undefined;
+
   //VARIABLES DE OBJETOS LIST
   CentralConsulta: CentralConsultaClass[] = [];
   CentralConsultaFiltrados: CentralConsultaClass [] = [];
@@ -44,6 +56,11 @@ export class RegistrarAlarmaConfigComponent implements OnInit {
   isCollapsed1 = false;
   isCollapsed2 = false;
 
+  //PAGINADO
+  pageSizeCentral = 5; // Número de elementos por página
+  currentPageCentral = 1; // Página actual
+  totalItemsCentral = 0; // Total de elementos en la tabla
+
   //FORMULARIOS DE AGRUPACION DE DATOS
   formAgregar: FormGroup;
 
@@ -57,7 +74,9 @@ export class RegistrarAlarmaConfigComponent implements OnInit {
         Validators.required,
         Validators.pattern("^[A-Za-zÑñáéíóúÁÉÍÓÚ'°0-9/%ºª ]{1,50}$"),
       ]),
-      nombreServicioA: new FormControl(null, []),
+      nombreServicioA: new FormControl(null, [
+        Validators.required,
+      ]),
       cfgValorSuperiorAA: new FormControl(null, [
         Validators.required,
         Validators.pattern(/^-?\d+([.,]\d{1,2})?$/)
@@ -118,6 +137,19 @@ export class RegistrarAlarmaConfigComponent implements OnInit {
     return this.formAgregar.get('cfgObservacionA');
   }
 
+  //STEP
+  goToNextStep(stepNumber: number): void {    
+    if (this.stepper) {
+      this.stepper.selectedIndex = stepNumber;
+    }
+  }
+  
+  goToPreviousStep(): void {     
+    if (this.stepper) {
+      this.stepper.previous();
+    }    
+  }
+  
   toggleCollapse1() {
     this.isCollapsed1 = !this.isCollapsed1;
   }
@@ -137,6 +169,7 @@ export class RegistrarAlarmaConfigComponent implements OnInit {
 
   //Almacena los datos del servicio que fue seleccionado en la tabla de servicio filtrados dentro de variables locales.
   esfilaSeleccionada(centralConsulta: CentralConsultaClass) {
+    this.centralNroSeleccionada = centralConsulta.cenNro;    
     this.nroCentralA = centralConsulta.cenNro;
         this.centralConsultar.obtenerServicioXCentral(centralConsulta.cenNro).subscribe(data => {
           this.ServiciosCentralA = data.filter((servicio: { serTipoGrafico: number; }) => servicio.serTipoGrafico != 5)
@@ -203,6 +236,7 @@ export class RegistrarAlarmaConfigComponent implements OnInit {
 
   seleccionarCentral(){
     this.isCollapsed1 = !this.isCollapsed1;
+    this.titulo2 = 'Registrar Configuración de Alarma a la Central N°:' + this.centralNroSeleccionada;
   }
 
   //Valida que los campos descripcion y uniddad se encuentren correctamente ingresados.
@@ -304,4 +338,17 @@ export class RegistrarAlarmaConfigComponent implements OnInit {
   }
 } 
     
- }
+  paginaCambiadaCentral(event: any) {
+    this.currentPageCentral = event;
+    const cantidadPaginasCentral = Math.ceil(
+      this.CentralConsultaFiltrados.length / this.pageSizeCentral
+    );
+    const paginasCentral = [];
+
+    for (let i = 1; i <= cantidadPaginasCentral; i++) {
+      paginasCentral.push(i);
+    }
+    return paginasCentral;
+  } 
+
+}
