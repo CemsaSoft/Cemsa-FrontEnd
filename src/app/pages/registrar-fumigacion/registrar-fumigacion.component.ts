@@ -1,6 +1,6 @@
 //SISTEMA
 import { JsonpClientBackend } from '@angular/common/http';
-import { Component, OnInit, Output } from '@angular/core';
+import { Component, OnInit, Output, ViewChild } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -8,6 +8,8 @@ import {
   Validators,
 } from '@angular/forms';
 import Swal, { SweetAlertOptions } from 'sweetalert2';
+import { MatStepper } from '@angular/material/stepper';
+
 
 //COMPONENTES
 import { CentralConsultaClass } from 'src/app/core/models/centralConsulta';
@@ -20,9 +22,21 @@ import { FumigacionesService } from 'src/app/core/services/fumigaciones.service'
 @Component({
   selector: 'app-registrar-fumigacion',
   templateUrl: './registrar-fumigacion.component.html',
-  styleUrls: ['./registrar-fumigacion.component.css']
+  styleUrls: ['./registrar-fumigacion.component.css'],
 })
+
+
 export class RegistrarFumigacionComponent implements OnInit {
+  //STEPPER
+  titulo1 = 'Seleccionar Central para Registar Fumigaciones';
+  titulo2 = 'Registrar Fumigaciones a la Central N°:';
+  titulo3 = ':';
+  isStep1Completed = false;
+  isStep2Completed = false;
+  isStep3Completed = false;
+
+  @ViewChild(MatStepper, { static: false }) stepper: MatStepper | undefined;
+ 
   //VARIABLES DE OBJETOS LIST
   CentralConsulta: CentralConsultaClass[] = [];
   CentralConsultaFiltrados: CentralConsultaClass [] = [];
@@ -33,23 +47,26 @@ export class RegistrarFumigacionComponent implements OnInit {
   titulo: string = '';
   caracteresValidosObservacion: string = "No se admiten: ! # $ & ' ( ) * + , - . : ; < = > ¿? @ [  ] ^ _` { | } ~";
                                         
-
   tipoOrdenamiento: number = 1;
   centralNroSeleccionada: number=0;
   idUsuario: any = 0;
   validadorCamposAgregar: string = '1';
+
+  //PAGINADO
+  pageSizeCentral = 5; // Número de elementos por página
+  currentPageCentral = 1; // Página actual
+  totalItemsCentral = 0; // Total de elementos en la tabla
 
   isCollapsed1 = false;
   isCollapsed2 = false;
 
   //FORMULARIOS DE AGRUPACION DE DATOS
   formAgregar: FormGroup;
-
+  
   constructor(
     private centralConsultar: CentralService, 
     private fumigacionesConsulta: FumigacionesService
-  ) {
-
+  ) {    
     this.formAgregar = new FormGroup({
       nroCentralA: new FormControl(null, []),
       fechaRealizacionA: new FormControl(null, []),
@@ -58,7 +75,7 @@ export class RegistrarFumigacionComponent implements OnInit {
       ]),
     });
   }
-
+  
   ngOnInit(): void {
     this.idUsuario = localStorage.getItem('idUsuario');    
     this.centralConsultar.listaCentralesCliente(this.idUsuario).subscribe(data => {
@@ -70,9 +87,9 @@ export class RegistrarFumigacionComponent implements OnInit {
   set nroCentralA(valor: any) {
     this.formAgregar.get('nroCentralA')?.setValue(valor);
   }
-  set fechaRealizacionA(valor: any) {
-    this.formAgregar.get('fechaRealizacionA')?.setValue(valor);
-  }
+  // set fechaRealizacionA(valor: any) {
+  //   this.formAgregar.get('fechaRealizacionA')?.setValue(valor);
+  // }
   set observacionA(valor: any) {
     this.formAgregar.get('observacionA')?.setValue(valor);
   }
@@ -80,13 +97,26 @@ export class RegistrarFumigacionComponent implements OnInit {
   get nroCentralA() {
     return this.formAgregar.get('nroCentralA');
   }
-  get fechaRealizacionA() {
-    return this.formAgregar.get('fechaRealizacionA');
-  }
+  // get fechaRealizacionA() {
+  //   return this.formAgregar.get('fechaRealizacionA');
+  // }
   get observacionA() {
     return this.formAgregar.get('observacionA');
   }
 
+  //STEP
+  goToNextStep(stepNumber: number): void {    
+    if (this.stepper) {
+      this.stepper.selectedIndex = stepNumber;
+    }
+  }
+  
+  goToPreviousStep(): void {     
+    if (this.stepper) {
+      this.stepper.previous();
+    }    
+  }
+  
   toggleCollapse1() {
     this.isCollapsed1 = !this.isCollapsed1;
   }
@@ -146,6 +176,7 @@ export class RegistrarFumigacionComponent implements OnInit {
   seleccionarCentral(){
     this.nroCentralA = this.centralNroSeleccionada;
     this.isCollapsed1 = !this.isCollapsed1;
+    this.titulo2 = 'Registrar Fumigaciones a la Central N°:' + this.nroCentralA;
   }
 
   //Valida que los campos descripcion y uniddad se encuentren correctamente ingresados.
@@ -160,11 +191,20 @@ export class RegistrarFumigacionComponent implements OnInit {
   //Agregar una Fumgacion 
   agregarFumigacion(): void {
     const hoy = new Date();
-    const fecha = document.getElementById('fechaRealizacionA') as HTMLInputElement;
-    const fechaSeleccionada = new Date(fecha.value);
-    fechaSeleccionada.setDate(fechaSeleccionada.getDate() + 1); // Sumar un día
-    fechaSeleccionada.setHours(0, 0, 0, 0);
-    const fechaRealiz = fechaSeleccionada;
+    var fechaSeleccionada = new Date();
+    var fechaRealiz = fechaSeleccionada;
+    var esFechaPosterior = false;
+    var esFechaMenor = false;
+
+    var fecha = this.formAgregar.value.fechaRealizacionA ?? null;
+    if (fecha!=null) {
+      fechaSeleccionada = new Date(fecha);
+      fechaSeleccionada.setDate(fechaSeleccionada.getDate() + 1); // Sumar un día
+      fechaSeleccionada.setHours(0, 0, 0, 0);
+      fechaRealiz = fechaSeleccionada;
+      esFechaPosterior = fechaRealiz > hoy;
+      esFechaMenor = fechaRealiz < new Date(hoy.getTime() - 7 * 24 * 60 * 60 * 1000);
+    }
 
     function mostrarError(mensaje: string, footer: string) {
       Swal.fire({
@@ -177,21 +217,20 @@ export class RegistrarFumigacionComponent implements OnInit {
       });
     }
 
-    const esFechaPosterior = fechaRealiz > hoy;
-    const esFechaMenor = fechaRealiz < new Date(hoy.getTime() - 7 * 24 * 60 * 60 * 1000);
+
     const nroCent = this.centralNroSeleccionada;
     function validarFechaRealizacion(fechaRealiz: Date) {      
       if (nroCent === 0 ) {
         mostrarError('Seleccione una central para registrar la fumigación.', 'Por favor, seleccione una central para generar el registro de la fumigación.');
         return false;
-      }else if (isNaN(fechaRealiz.getTime())) {
+      }else if (fecha === null || isNaN(fechaRealiz.getTime())) {
         mostrarError('Ingrese una fecha de realización.', 'Por favor, ingrese una fecha de realización de la fumigación válida para generar el registro de la fumigación.');
         return false;
       }else if (esFechaPosterior || esFechaMenor) {
         if (esFechaPosterior) {
           mostrarError('La fecha de realización de la fumigación no puede ser posterior a la fecha actual.', 'Por favor, cambie la fecha de realización de la fumigación.');
         } else {
-          mostrarError('La fecha de realización de la fumigación no puede ser 7 días de la fecha actual.', 'Por favor, cambie la fecha de realización de la fumigación.');
+          mostrarError('La fecha de realización de la fumigación debe ser anterior a la fecha actual y no puede exceder los 7 días a partir de la fecha actual.', 'Por favor, cambie la fecha de realización de la fumigación.');
         }
         return false;
       } 
@@ -253,4 +292,19 @@ export class RegistrarFumigacionComponent implements OnInit {
     }
   );
   }
+
+  paginaCambiadaCentral(event: any) {
+    this.currentPageCentral = event;
+    const cantidadPaginasCentral = Math.ceil(
+      this.CentralConsultaFiltrados.length / this.pageSizeCentral
+    );
+    const paginasCentral = [];
+
+    for (let i = 1; i <= cantidadPaginasCentral; i++) {
+      paginasCentral.push(i);
+    }
+    return paginasCentral;
+  } 
+
+
 }

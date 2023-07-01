@@ -1,6 +1,6 @@
 //SISTEMA
 import { JsonpClientBackend } from '@angular/common/http';
-import { Component, OnInit, Output } from '@angular/core';
+import { Component, OnInit, Output, ViewChild } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -8,6 +8,7 @@ import {
   Validators,
 } from '@angular/forms';
 import Swal, { SweetAlertOptions } from 'sweetalert2';
+import { MatStepper } from '@angular/material/stepper';
 
 //COMPONENTES
 import { CentralConsultaClass } from 'src/app/core/models/centralConsulta';
@@ -23,6 +24,16 @@ import { FumigacionesService } from 'src/app/core/services/fumigaciones.service'
   styleUrls: ['./consultar-fumigaciones.component.css']
 })
 export class ConsultarFumigacionesComponent implements OnInit {
+  //STEPPER
+  titulo1 = 'Seleccionar Central para Consultar sus Fumigaciones';
+  titulo2 = 'Fumigaciones de la Central N°:';
+  titulo3 = ':';
+  isStep1Completed = false;
+  isStep2Completed = false;
+  isStep3Completed = false;
+
+  @ViewChild(MatStepper, { static: false }) stepper: MatStepper | undefined;
+  
   //VARIABLES DE OBJETOS LIST
   CentralConsulta: CentralConsultaClass[] = [];
   CentralConsultaFiltrados: CentralConsultaClass [] = [];
@@ -42,6 +53,15 @@ export class ConsultarFumigacionesComponent implements OnInit {
   validadorCamposModif: string = '1';
   validadorCamposAgregar: string = '1';
 
+  //PAGINADO
+  pageSizeCentral = 5; // Número de elementos por página
+  currentPageCentral = 1; // Página actual
+  totalItemsCentral = 0; // Total de elementos en la tabla
+  
+  pageSizeFumigacion = 5; // Número de elementos por página
+  currentPageFumigacion = 1; // Página actual
+  totalItemsFumigacion = 0; // Total de elementos en la tabla
+  
   isCollapsed1 = false;
   isCollapsed2 = false;
   mostrarBtnEditarModificacion = true;
@@ -130,6 +150,19 @@ export class ConsultarFumigacionesComponent implements OnInit {
   }
   get observacionA() {
     return this.formAgregar.get('observacionA');
+  }
+
+  //STEP
+  goToNextStep(stepNumber: number): void {    
+    if (this.stepper) {
+      this.stepper.selectedIndex = stepNumber;
+    }
+  }
+  
+  goToPreviousStep(): void {     
+    if (this.stepper) {
+      this.stepper.previous();
+    }    
   }
 
   toggleCollapse1() {
@@ -257,6 +290,7 @@ export class ConsultarFumigacionesComponent implements OnInit {
       this.Fumigaciones = data; 
     })
     this.isCollapsed1 = !this.isCollapsed1;
+    this.titulo2 = 'Fumigaciones de la Central N°:' + this.centralNroSeleccionada +':';
   }
 
   //Valida que los campos descripcion y uniddad se encuentren correctamente ingresados.
@@ -460,5 +494,31 @@ export class ConsultarFumigacionesComponent implements OnInit {
       });
     }
   );
-}
+  }
+
+  paginaCambiadaCentral(event: any) {
+    this.currentPageCentral = event;
+    const cantidadPaginasCentral = Math.ceil(
+      this.CentralConsultaFiltrados.length / this.pageSizeCentral
+    );
+    const paginasCentral = [];
+
+    for (let i = 1; i <= cantidadPaginasCentral; i++) {
+      paginasCentral.push(i);
+    }
+    return paginasCentral;
+  }   
+
+  paginaCambiadaFumigacion(event: any) {
+    this.currentPageFumigacion = event;
+    const cantidadPaginasFumigacion = Math.ceil(
+      this.Fumigaciones.length / this.pageSizeFumigacion
+    );
+    const paginasFumigacion = [];
+
+    for (let i = 1; i <= cantidadPaginasFumigacion; i++) {
+      paginasFumigacion.push(i);
+    }
+    return paginasFumigacion;
+  }   
 }

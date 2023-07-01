@@ -1,100 +1,291 @@
-<h1 class="text-center">Consultar Mediciones Actuales</h1>
-  <div class="container mt-5">
-    <div class="row justify-content-center">
-      <div class="col-md-12">
-        <div class="card">
-          <div class="card-header">
-            <div class="d-flex justify-content-between align-items-center">
-            <h4 class="mb-0">Seleccionar Central para ver sus Mediciones Actuales</h4>
-            <button type="button" class="btn-unstyled" (click)="toggleCollapse1()">
-              <svg *ngIf="!isCollapsed1" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
-                <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
-              </svg>
-              <svg *ngIf="isCollapsed1" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 16 16">
-                <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
-              </svg>
-            </button>
+<div class="body">
+  <h1 class="text-center titulo tituloFuente">Consultar Mediciones Actuales</h1>
+  <!-- Contenido de breadcrumb -->
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item" style="padding-left: 310px; font-size: 18px">
+        <a href="/home">Home</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        Consultar Mediciones Actuales
+      </li>
+    </ol>
+  </nav>
+  <div class="container mt-12">
+
+<!-- ----------------------------Inicio de Paso a Paso-------------------------------------------- -->
+<mat-vertical-stepper>
+  <mat-step
+    [label]="titulo1"
+    [completed]="isStep1Completed"
+    [ngClass]="{ collapse: isCollapsed1 }"
+  >
+    <ng-container contenido-paso-1>
+      <div class="card-body" [ngClass]="{ collapse: isCollapsed2 }">
+  
+        <div class="row containerCard">
+  
+          <div class="col-12 cardFiltrado cardAnimate cardFlat cardSeparacion">
+            <div>
+              <div class="row">
+                <div class="col-md-2 image-container">
+                  <span
+                    ><img
+                      style="width: 102%; height: 102"
+                      src="../../../assets/icons8-user-64_1.png"
+                      class="image"
+                      alt="..."
+                    />
+                    <div class="texto">
+                      <h4
+                        style="
+                          text-align: center;
+                          color: #63ddff;
+                          font-size: 18px;
+                        "
+                      >
+                        Filtrar Central
+                      </h4>
+                    </div></span
+                  >
+                </div>                 
+
+                <div
+                class="col-md-1 vertical-line"
+                style="width: 20px"
+              ></div>
+              <div class="col-md-2 margenFiltros">
+                <div
+                  class="form-outline input-group"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title="Buscar por Código de Central"
+                >
+                  <label class="search-field">
+                    <mat-label
+                      class="search-field label ng-tns-c97-48 ng-star-inserted"
+                      >Código de Central</mat-label
+                    >
+                    <input
+                      type="text"
+                      class="form-control inputBusqueda .input-con-color-de-fondo"
+                      placeholder="Ej. 1"
+                      (keyup)="esFiltrar($event , 'codigo')"
+                    />                             
+                    <i
+                      class="fas fa-search FormatoIconos"
+                      style="padding-left: 20px"
+                    ></i>
+                  </label>
+                </div>                          
+              </div>
+            </div>
           </div>
         </div>
-        <div class="card-body" [ngClass]="{'collapse': isCollapsed1}">
-          
 
-          <div class="row">
-            <div class=".col-xxl-4"></div>
-            <div class="col-12">
-              <table class="table">
-                <thead class="encabezado">
-                    <tr>            
-                      <th (click)="ordenarPor('cenNro')" [appSort]="CentralConsultaFiltrados" data-order="desc"
-                          data-name="cenNro" style="text-align: center;"><a>Cod. Central {{ordenarIcono('cenNro')}}</a></th>
-                      <th (click)="ordenarPor('cenImei')" [appSort]="CentralConsultaFiltrados" data-order="desc"
-                          data-name="cenImei" style="text-align: center;"><a>IMEI {{ordenarIcono('cenImei')}}</a></th>
-                      <th (click)="ordenarPor('cenCoorX')" [appSort]="CentralConsultaFiltrados" data-order="desc"
-                          data-name="cenCoorX" style="text-align: center;"><a>Coordenada X {{ordenarIcono('cenCoorX')}}</a></th>             
-                      <th (click)="ordenarPor('cenCoorY')" [appSort]="CentralConsultaFiltrados" data-order="desc"
-                          data-name="cenCoorY" style="text-align: center;"><a>Coordenada Y {{ordenarIcono('cenCoorY')}}</a></th>             
-                                  
-                      <th scope="col" style="text-align: center;">Ver Estado Actual</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let central of CentralConsultaFiltrados; let i=index"
-                    [ngClass]="{'fila-par': i%2==0, 'fila-impar': i%2==1}"
-                    (click)="esfilaSeleccionada(central)">
-                      <th style="vertical-align: middle" class="align-center">{{ central.cenNro }}</th>
-                      <td style="vertical-align: middle" class="align-center">{{ central.cenImei }}</td>
-                      <td style="vertical-align: middle" class="align-center">{{ central.cenCoorX }}</td>
-                      <td style="vertical-align: middle" class="align-center">{{ central.cenCoorY }}</td>              
-                      <td class="align-center">
-                        <button type="button" class="btn" (click)="esfilaSeleccionada(central); seleccionarCentral()" title="Ver Más Opciones">     
-                          <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-clock-history" viewBox="0 0 16 16">
-                            <path d="M8.515 1.019A7 7 0 0 0 8 1V0a8 8 0 0 1 .589.022l-.074.997zm2.004.45a7.003 7.003 0 0 0-.985-.299l.219-.976c.383.086.76.2 1.126.342l-.36.933zm1.37.71a7.01 7.01 0 0 0-.439-.27l.493-.87a8.025 8.025 0 0 1 .979.654l-.615.789a6.996 6.996 0 0 0-.418-.302zm1.834 1.79a6.99 6.99 0 0 0-.653-.796l.724-.69c.27.285.52.59.747.91l-.818.576zm.744 1.352a7.08 7.08 0 0 0-.214-.468l.893-.45a7.976 7.976 0 0 1 .45 1.088l-.95.313a7.023 7.023 0 0 0-.179-.483zm.53 2.507a6.991 6.991 0 0 0-.1-1.025l.985-.17c.067.386.106.778.116 1.17l-1 .025zm-.131 1.538c.033-.17.06-.339.081-.51l.993.123a7.957 7.957 0 0 1-.23 1.155l-.964-.267c.046-.165.086-.332.12-.501zm-.952 2.379c.184-.29.346-.594.486-.908l.914.405c-.16.36-.345.706-.555 1.038l-.845-.535zm-.964 1.205c.122-.122.239-.248.35-.378l.758.653a8.073 8.073 0 0 1-.401.432l-.707-.707z"/>
-                            <path d="M8 1a7 7 0 1 0 4.95 11.95l.707.707A8.001 8.001 0 1 1 8 0v1z"/>
-                            <path d="M7.5 3a.5.5 0 0 1 .5.5v5.21l3.248 1.856a.5.5 0 0 1-.496.868l-3.5-2A.5.5 0 0 1 7 9V3.5a.5.5 0 0 1 .5-.5z"/>
-                          </svg>    
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+        <div class="col-12 cardFiltrado cardAnimate cardFlat cardSeparacion">
+          <div class="h-100 d-flex align-items-center justify-content-center">
+            <div
+              class="example-button-row"
+              style="display: flex; justify-content: flex-end"
+            >
+              <button
+                mat-fab
+                extended
+                color="primary"
+                class="btnAgregar"
+                routerLink="/consultar-paneles-monitoreo"
+              >
+                <mat-icon>touch_app</mat-icon>
+                Paneles de Monitoreo
+              </button>
             </div>
-            <div class="alert alert-primary text-center" role="alert" *ngIf="validarFiltrado() == false">      ¡No se ha encontrado ninguna Central!
           </div>
+        </div>   
+     
+      </div>
+      <br />
+      <br />
 
 
+      <div class="row">
+        <div class="col-12 cardFiltrado cardAnimate cardFlat">
+          <table class="table" *ngIf="validarFiltrado() == true" id="servicio">
+            <thead class="encabezado">
+              <tr>
+                <th
+                  (click)="ordenarPor('cenNro')"
+                  [appSort]="CentralConsultaFiltrados"
+                  data-order="desc"
+                  data-name="cenNro"
+                  style="text-align: center"
+                >
+                  <a
+                    >Cod. {{ ordenarIcono("cenNro") }}</a
+                  >
+                </th>
+                <th
+                  (click)="ordenarPor('cenImei')"
+                  [appSort]="CentralConsultaFiltrados"
+                  data-order="desc"
+                  data-name="cenImei"
+                  style="text-align: center"
+                >
+                  <a>IMEI {{ ordenarIcono("cenImei") }}</a>
+                </th>
+                <th
+                  (click)="ordenarPor('cenCoorX')"
+                  [appSort]="CentralConsultaFiltrados"
+                  data-order="desc"
+                  data-name="cenCoorX"
+                  style="text-align: center"
+                >
+                  <a>Coordenada X {{ ordenarIcono("cenCoorX") }}</a>
+                </th>
+                <th
+                  (click)="ordenarPor('cenCoorY')"
+                  [appSort]="CentralConsultaFiltrados"
+                  data-order="desc"
+                  data-name="cenCoorY"
+                  style="text-align: center"
+                >
+                  <a>Coordenada Y {{ ordenarIcono("cenCoorY") }}</a>
+                </th>
+                <th></th>
+                <th scope="col">Seleccionar</th>             
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                class="table-row"
+                *ngFor="
+                  let central of CentralConsultaFiltrados
+                    | paginate
+                    : {
+                      itemsPerPage: pageSizeCentral,  
+                      currentPage: currentPageCentral,  
+                      totalItems: totalItemsCentral  
+                    };
+                  let i = index
+                "
+                [ngClass]="{
+                  'fila-par': i % 2 == 0,
+                  'fila-impar': i % 2 == 1
+                }"
+                (click)="esfilaSeleccionada(central)"
+              >
+                <th style="vertical-align: middle align-center">
+                  {{ central.cenNro }}
+                </th>
+                <td style="vertical-align: middle" class="textDerecha">
+                  {{ central.cenImei }}
+                </td>
+                <td style="vertical-align: middle" class="textDerecha">
+                  {{ central.cenCoorX }}
+                </td>
+                <td style="vertical-align: middle" class="textDerecha">
+                  {{ central.cenCoorY }}
+                </td>  
+                <td class="empty-column"></td>
+                <td class="align-center">
+                  <button
+                    mat-button
+                    (click)="esfilaSeleccionada(central) ; seleccionarCentral(); goToNextStep(1)"               
+                    type="button"
+                    class="btn"
+                    data-bs-target="#staticBackdrop"
+                    title="Seleccionar Cliente"
+                  >
+                    <img
+                      src="../../../assets/seleccionarClie.png"
+                      class="image"
+                      alt="..."
+                    />
+                  </button>
+                </td>
+
+              </tr>
+            </tbody>
+          </table>
+          <div
+            class="align-center"
+            *ngIf="validarFiltrado() == true"
+          >
+            <pagination-controls
+              (pageChange)="paginaCambiadaCentral($event)"
+              itemsPerPage="pageSizeCentral"
+              totalItems="totalItemsCentral"
+            ></pagination-controls>
+          </div>
+        </div>
+        <div
+          class="alert alert-primary text-center"
+          role="alert"
+          *ngIf="validarFiltrado() == false"
+        >
+          No se encontraron centrales que coincidan con su búsqueda.
         </div>
       </div>
-    </div>
-  </div>
-</div>
 
-<div class="container mt-5">
-  <div class="row justify-content-center">
-    <div class="col-md-12">
-      <div class="card">
-        <div class="card-header">
-          <div class="d-flex justify-content-between align-items-center">
-          <h4 class="mb-0">Mediciones Actuales</h4>
-          <button type="button" class="btn-unstyled" (click)="toggleCollapse2()">
-            <svg *ngIf="!isCollapsed2" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
-              <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
-            </svg>
-            <svg *ngIf="isCollapsed2" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 16 16">
-              <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
-            </svg>
+        </div>
+    </ng-container>  
+  </mat-step>
+
+  <mat-step
+  [label]="titulo2"
+  [completed]="isStep2Completed"
+  [ngClass]="{ collapse: isCollapsed2 }"
+  >
+    <ng-container contenido-paso-2>    
+      <!-- Botón ver otra central -->
+      <div class="row">
+        <div
+          class="example-button-row"
+          style="display: flex; justify-content: flex-end"
+        >
+          <button
+            mat-fab
+            extended
+            color="primary"
+            class="btonNuevaConsulta"
+            (click)="goToPreviousStep()"
+          >
+            <mat-icon>touch_app</mat-icon>
+            Nueva Consulta
           </button>
         </div>
       </div>
-      <div class="card-body" [ngClass]="{'collapse': isCollapsed2}">  
+
+      <br>
+
+      <div class="card cardFiltrado cardAnimate cardFlat">
+        <div class="card-header">
+          <div class="d-flex justify-content-between align-items-center">
+            <h4 class="mb-0 tituloCard">Mediciones Actuales de la Central N°: {{centralNroSeleccionada}} </h4>
+            <img
+              src="../../../assets/seleccionar.png"
+              class="image"
+              style="width: 5%; height: 5%; padding-right: 5px"
+              alt="..."
+            />
+          </div>
+        </div>
+
+        <br>
+
         <div class="d-flex justify-content-center">
           <div id="contenedor-graficos"></div>
         </div>
         <div class="alert alert-primary text-center" role="alert" *ngIf="sinMedicones == false">¡No hay Mediciones en esta Central!
+        </div>
 
       </div>
-      </div>
-    </div>
-  </div>
+
+      <br>
+    </ng-container>
+  </mat-step>
+
+</mat-vertical-stepper>
+</div>  
+<br />
 </div>
-
-<br/>

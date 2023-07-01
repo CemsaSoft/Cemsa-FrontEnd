@@ -1,6 +1,6 @@
 //SISTEMA
 import { JsonpClientBackend } from '@angular/common/http';
-import { Component, OnInit, Output } from '@angular/core';
+import { Component, OnInit, Output, ViewChild } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -9,6 +9,7 @@ import {
   AbstractControl, ValidatorFn, ValidationErrors
 } from '@angular/forms';
 import Swal, { SweetAlertOptions } from 'sweetalert2';
+import { MatStepper } from '@angular/material/stepper';
 
 //COMPONENTES
 import { CentralConsultaClass } from 'src/app/core/models/centralConsulta';
@@ -27,6 +28,17 @@ import { AlarmaConfigService } from 'src/app/core/services/alarmaConfig.service'
   styleUrls: ['./consultar-alarma-config.component.css']
 })
 export class ConsultarAlarmaConfigComponent implements OnInit {
+
+  //STEPPER
+  titulo1 = 'Seleccionar Central para Consultar Configuración de Alarma';
+  titulo2 = 'Alarmas Configurada de la Central N°:';
+  titulo3 = ':';
+  isStep1Completed = false;
+  isStep2Completed = false;
+  isStep3Completed = false;
+
+  @ViewChild(MatStepper, { static: false }) stepper: MatStepper | undefined;
+
   //VARIABLES DE OBJETOS LIST
   CentralConsulta: CentralConsultaClass[] = [];
   CentralConsultaFiltrados: CentralConsultaClass [] = [];
@@ -57,6 +69,15 @@ export class ConsultarAlarmaConfigComponent implements OnInit {
   isCollapsed2 = false;
   mostrarBtnEditarModificacion = true;
   mostrarBtnAceptarModificacion = false;
+
+  //PAGINADO
+  pageSizeCentral = 5; // Número de elementos por página
+  currentPageCentral = 1; // Página actual
+  totalItemsCentral = 0; // Total de elementos en la tabla
+
+  pageSizeAlarma = 5; // Número de elementos por página
+  currentPageAlarma = 1; // Página actual
+  totalItemsAlarma = 0; // Total de elementos en la tabla
 
   //FORMULARIOS DE AGRUPACION DE DATOS
   formModificar: FormGroup;
@@ -209,6 +230,19 @@ export class ConsultarAlarmaConfigComponent implements OnInit {
     return this.formAgregar.get('cfgObservacionA');
   }
 
+  //STEP
+  goToNextStep(stepNumber: number): void {    
+    if (this.stepper) {
+      this.stepper.selectedIndex = stepNumber;
+    }
+  }
+  
+  goToPreviousStep(): void {     
+    if (this.stepper) {
+      this.stepper.previous();
+    }    
+  }
+  
   toggleCollapse1() {
     this.isCollapsed1 = !this.isCollapsed1;
   }
@@ -353,6 +387,7 @@ export class ConsultarAlarmaConfigComponent implements OnInit {
       this.AlarmaConfigConsulta = data; 
     })
     this.isCollapsed1 = !this.isCollapsed1;
+    this.titulo2 = 'Alarmas Configurada de la Central N°:' + this.centralNroSeleccionada;
   }
 
    //Bloquea los campos ante una consulta.
@@ -613,4 +648,31 @@ export class ConsultarAlarmaConfigComponent implements OnInit {
       });          
     }
   }
+
+  paginaCambiadaCentral(event: any) {
+    this.currentPageCentral = event;
+    const cantidadPaginasCentral = Math.ceil(
+      this.CentralConsultaFiltrados.length / this.pageSizeCentral
+    );
+    const paginasCentral = [];
+
+    for (let i = 1; i <= cantidadPaginasCentral; i++) {
+      paginasCentral.push(i);
+    }
+    return paginasCentral;
+  } 
+
+  
+  paginaCambiadaAlarma(event: any) {
+    this.currentPageAlarma = event;
+    const cantidadPaginasAlarma = Math.ceil(
+      this.AlarmaConfigConsulta.length / this.pageSizeAlarma
+    );
+    const paginasAlarma = [];
+
+    for (let i = 1; i <= cantidadPaginasAlarma; i++) {
+      paginasAlarma.push(i);
+    }
+    return paginasAlarma;
+  } 
 }

@@ -1,9 +1,3 @@
-<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
-
-<app-navbar></app-navbar>
-
-
-
 <div class="body">
   <h1 class="text-center titulo tituloFuente">Consultar Alarmas</h1>
   <!-- Contenido de breadcrumb -->
@@ -15,27 +9,12 @@
       <li class="breadcrumb-item active" aria-current="page">
         Consultar Alarmas
       </li>
-    </ol>
+    </ol>    
   </nav>
+  
   <div class="container mt-12">
 
 <!-- ----------------------------Inicio de Paso a Paso-------------------------------------------- -->
-
-<!-- <mat-form-field>
-  <mat-label>Enter a date range</mat-label>
-  <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
-    <input matStartDate formControlName="start" placeholder="Start date">
-    <input matEndDate formControlName="end" placeholder="End date">
-  </mat-date-range-input>
-  <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
-  <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-  <mat-date-range-picker #picker></mat-date-range-picker>
-
-  <mat-error *ngIf="range.controls['start'].hasError('matStartDateInvalid')">Invalid start date</mat-error>
-  <mat-error *ngIf="range.controls['end'].hasError('matEndDateInvalid')">Invalid end date</mat-error>
-</mat-form-field>
-
-<p>Selected range: {{range.value | json}}</p> -->
 
 <mat-vertical-stepper>
   <mat-step
@@ -45,6 +24,7 @@
   >
     <ng-container contenido-paso-1>
       <div class="card-body" [ngClass]="{ collapse: isCollapsed2 }">                      
+        <form [formGroup]="formfiltro">
 
         <div class="row justify-content-center">
           <div class="col-10 cardFiltrado cardAnimate cardFlat">
@@ -59,41 +39,34 @@
                   </span>
                 </div>
               </div>
-
               <div class="col-md-9">
 
                 <div class="row">
-                  <!-- Primer grupo de filtros -->
                   <div class="col-md-4 margenFiltros">
-                    <!-- Código de Central -->
-                    <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por Código de Central">
+                    <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por número de Alarma">
                       <label class="search-field">
-                        <mat-label class="search-field label ng-tns-c97-48 ng-star-inserted">Código de Central</mat-label>
-                        <input type="text" class="form-control inputBusqueda .input-con-color-de-fondo" placeholder="Ej. 1" (keyup)="esFiltrar($event)" />
+                        <mat-label class="search-field label ng-tns-c97-48 ng-star-inserted">Número de Alarma</mat-label>
+                        <input formControlName="nroAlarma" type="text" class="form-control inputBusqueda .input-con-color-de-fondo" placeholder="Ej. 1" (keyup)="esFiltrar($event)" />
                         <i class="fas fa-search FormatoIconos" style="padding-left: 20px"></i>
                       </label>
                     </div>
                   </div>
                   
-                  <!-- Segundo grupo de filtros -->
                   <div class="col-md-4 margenFiltros">
-                    <!-- Código de Central -->
-                    <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por Código de Central">
+                    <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por número de Central">
                       <label class="search-field">
                         <mat-label class="search-field label ng-tns-c97-48 ng-star-inserted">Código de Central</mat-label>
-                        <input type="text" class="form-control inputBusqueda .input-con-color-de-fondo" placeholder="Ej. 1" (keyup)="esFiltrar($event)" />
+                        <input formControlName="nroCentral" type="text" class="form-control inputBusqueda .input-con-color-de-fondo" placeholder="Ej. 2" (keyup)="esFiltrar($event)" />
                         <i class="fas fa-search FormatoIconos" style="padding-left: 20px"></i>
                       </label>
                     </div>
                   </div>
                   
-                  <!-- Tercer grupo de filtros -->
                   <div class="col-md-4 margenFiltros">
-                    <!-- Código de Central -->
-                    <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por Código de Central">
+                    <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por número de Medición">
                       <label class="search-field">
-                        <mat-label class="search-field label ng-tns-c97-48 ng-star-inserted">Código de Central</mat-label>
-                        <input type="text" class="form-control inputBusqueda .input-con-color-de-fondo" placeholder="Ej. 1" (keyup)="esFiltrar($event)" />
+                        <mat-label class="search-field label ng-tns-c97-48 ng-star-inserted">Número de Medición</mat-label>
+                        <input formControlName="nroMed" type="text" class="form-control inputBusqueda .input-con-color-de-fondo" placeholder="Ej. 40" (keyup)="esFiltrar($event)" />
                         <i class="fas fa-search FormatoIconos" style="padding-left: 20px"></i>
                       </label>
                     </div>
@@ -101,37 +74,31 @@
                 </div>
                 
                 <div class="row">
-                  <!-- Cuarto grupo de filtros -->
                   <div class="col-md-4 margenFiltros">
-                    <!-- Código de Central -->
-                    <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por Código de Central">
+                    <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por nombre de Servicio">
                       <label class="search-field">
-                        <mat-label class="search-field label ng-tns-c97-48 ng-star-inserted">Código de Central</mat-label>
-                        <input type="text" class="form-control inputBusqueda .input-con-color-de-fondo" placeholder="Ej. 1" (keyup)="esFiltrar($event)" />
+                        <mat-label class="search-field label ng-tns-c97-48 ng-star-inserted">Nombre de Servicio</mat-label>
+                        <input formControlName="nombreServ" type="text" class="form-control inputBusqueda .input-con-color-de-fondo" placeholder="Ej. Temperatura" (keyup)="esFiltrar($event)" />
                         <i class="fas fa-search FormatoIconos" style="padding-left: 20px"></i>
                       </label>
                     </div>
                   </div>
                   
-                  <!-- Quinto grupo de filtros -->
                   <div class="col-md-4 margenFiltros">
-                    <!-- Código de Central -->
-                    <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por Código de Central">
+                    <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por descripción Mensaje">
                       <label class="search-field">
-                        <mat-label class="search-field label ng-tns-c97-48 ng-star-inserted">Código de Central</mat-label>
-                        <input type="text" class="form-control inputBusqueda .input-con-color-de-fondo" placeholder="Ej. 1" (keyup)="esFiltrar($event)" />
+                        <mat-label class="search-field label ng-tns-c97-48 ng-star-inserted">Descripción Mensaje</mat-label>
+                        <input formControlName="nombreMensaje" type="text" class="form-control inputBusqueda .input-con-color-de-fondo" placeholder="Ej. Valor SUPERIOR" (keyup)="esFiltrar($event)" />
                         <i class="fas fa-search FormatoIconos" style="padding-left: 20px"></i>
                       </label>
                     </div>
                   </div>
                   
-                  <!-- Sexto grupo de filtros -->
                   <div class="col-md-4 margenFiltros">
-                    <!-- Código de Central -->
-                    <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por Código de Central">
+                    <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por valor de Medición">
                       <label class="search-field">
-                        <mat-label class="search-field label ng-tns-c97-48 ng-star-inserted">Código de Central</mat-label>
-                        <input type="text" class="form-control inputBusqueda .input-con-color-de-fondo" placeholder="Ej. 1" (keyup)="esFiltrar($event)" />
+                        <mat-label class="search-field label ng-tns-c97-48 ng-star-inserted">Valor de Medición</mat-label>
+                        <input formControlName="valorMed" type="text" class="form-control inputBusqueda .input-con-color-de-fondo" placeholder="Ej. 35" (keyup)="esFiltrar($event)" />
                         <i class="fas fa-search FormatoIconos" style="padding-left: 20px"></i>
                       </label>
                     </div>
@@ -141,226 +108,206 @@
                 <div class="row">
 
                   <div class="col-md-4 margenFiltrosSlite">
-                    <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por Código de Central">
-                      <mat-slide-toggle> Filtar por Fecha </mat-slide-toggle>
+                    <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Filtrar por Fecha">
+                      <mat-slide-toggle id="op1" (change)="filtroFecha($event)">Filtrar por Fecha</mat-slide-toggle>
                     </div>
                   </div>
-
                   
-                  <!-- Quinto grupo de filtros -->
-                  <div class="col-md-4 margenFiltros">
-                    <!-- Código de Central -->
-                    <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por Código de Central">
-
-                      <mat-form-field>
-                        <mat-label>Ingrese Rango de Fecha</mat-label>
-                        <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
-                          <input matStartDate formControlName="start" placeholder="Fecha Desde">
-                          <input matEndDate formControlName="end" placeholder="Fecha Hasta">
+                  <div class="col-md-4 margenFiltrosFecha">
+                    <mat-form-field [formGroup]="formfiltro">
+                      <mat-label>Ingrese Rango de Fecha</mat-label>
+                      <div class="input-container">
+                        <mat-date-range-input [rangePicker]="picker">
+                          <input matStartDate formControlName="fecha_desde" placeholder="Desde">
+                          <input matEndDate formControlName="fecha_hasta" placeholder="Hasta">
                         </mat-date-range-input>
-                        <mat-hint>DD/MM/AAAA – DD/MM/AAAA</mat-hint>
-                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                        <mat-date-range-picker #picker></mat-date-range-picker>
-                      
-                        <mat-error *ngIf="range.controls['start'].hasError('matStartDateInvalid')">Invalid start date</mat-error>
-                        <mat-error *ngIf="range.controls['end'].hasError('matEndDateInvalid')">Invalid end date</mat-error>
-                      </mat-form-field>
-
-                    </div>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                      </div>
+                      <mat-hint>DD/MM/AAAA – DD/MM/AAAA</mat-hint>
+                      <mat-date-range-picker #picker></mat-date-range-picker>
+                    </mat-form-field>
                   </div>
                   
-                  <!-- Sexto grupo de filtros -->
                   <div class="col-md-4 margenFiltros">
-                    <!-- Código de Central -->
-                    <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por Código de Central">
-
-
-
-
-                      
-                    </div>
+                      <div class="row margenFiltrosBtn">
+                        <div
+                          class="example-button-row"
+                          style="display: flex; justify-content: flex-end"
+                        >
+                          <button
+                            mat-fab
+                            extended
+                            color="primary"
+                            class="btnAplicarFiltro"
+                            (click)="filtarXFechas()" 
+                            [disabled]="!habilitarBoton"
+                            >
+                            <mat-icon>touch_app</mat-icon>
+                            Aplicar Filtro
+                          </button>
+                        </div>
+                      </div>                      
                   </div>
+
                 </div>
 
-              </div>
-              
+              </div>            
             </div>
           </div>
         </div>      
-      
+      </form>
       <br />
       <br />
 
       </div>
+
+      <div class="row">
+        <div class="col-12 cardFiltrado cardAnimate cardFlat">
+          <table class="table" *ngIf="validarFiltradoAlarma() == true">
+            <thead class="encabezado">
+              <tr>
+                <th
+                  (click)="ordenarPor('almId')"
+                  [appSort]="AlarmaConsultaFiltrados"
+                  data-order="asc"
+                  data-name="almId"
+                  style="text-align: center"
+                >
+                  <a
+                    >Alarma Nro. {{ ordenarIcono("almId") }}</a
+                  >
+                </th>
+                <th
+                  (click)="ordenarPor('almIdMedicion')"
+                  [appSort]="AlarmaConsultaFiltrados"
+                  data-order="desc"
+                  data-name="almIdMedicion"
+                  style="text-align: center"
+                >
+                  <a>Med. Nro. {{ ordenarIcono("almIdMedicion") }}</a>
+                </th>
+                <th
+                  (click)="ordenarPor('cenNro')"
+                  [appSort]="AlarmaConsultaFiltrados"
+                  data-order="desc"
+                  data-name="cenNro"
+                  style="text-align: center"
+                >
+                  <a>Central Nro. {{ ordenarIcono("cenNro") }}</a>
+                </th>
+                <th
+                  (click)="ordenarPor('serDescripcion')"
+                  [appSort]="AlarmaConsultaFiltrados"
+                  data-order="desc"
+                  data-name="serDescripcion"
+                  style="text-align: center"
+                >
+                  <a>Servicio {{ ordenarIcono("serDescripcion") }}</a>
+                </th>
+                <th
+                  (click)="ordenarPor('almMensaje')"
+                  [appSort]="AlarmaConsultaFiltrados"
+                  data-order="desc"
+                  data-name="almMensaje"
+                  style="text-align: center"
+                >
+                  <a>Mensaje {{ ordenarIcono("almMensaje") }}</a>
+                </th>
+                <th
+                  (click)="ordenarPor('medValor')"
+                  [appSort]="AlarmaConsultaFiltrados"
+                  data-order="desc"
+                  data-name="medValor"
+                  style="text-align: center"
+                >
+                  <a>Valor Medición {{ ordenarIcono("medValor") }}</a>
+                </th>
+                <th
+                  (click)="ordenarPor('almFechaHoraBD')"
+                  [appSort]="AlarmaConsultaFiltrados"
+                  data-order="desc"
+                  data-name="almFechaHoraBD"
+                  style="text-align: center"
+                >
+                  <a>Fecha Medición {{ ordenarIcono("almFechaHoraBD") }}</a>
+                </th>         
+                <th></th>
+                <th scope="col" style="text-align: center">
+                  Nueva Alarma
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                class="table-row"
+                *ngFor="
+                  let alarma of AlarmaConsultaFiltrados
+                    | paginate
+                      : {
+                          itemsPerPage: pageSize,
+                          currentPage: currentPage,
+                          totalItems: totalItems
+                        };
+                  let i = index
+                "
+                [ngClass]="{
+                  'fila-par': i % 2 == 0,
+                  'fila-impar': i % 2 == 1
+                }"
+                (click)="esfilaSeleccionadaAlarma(alarma)"
+              >
+                <th style="vertical-align: middle align-center">
+                  {{ alarma.almId }}
+                </th>
+                <td style="vertical-align: middle" class="textDerecha">
+                  {{ alarma.almIdMedicion }}
+                </td>
+                <td style="vertical-align: middle" class="textDerecha">
+                  {{ alarma.cenNro }}
+                </td>
+                <td style="vertical-align: middle" class="textIzquierda">
+                  {{ alarma.serDescripcion }}
+                </td>
+                <td style="vertical-align: middle" class="textIzquierda">
+                  {{ alarma.almMensaje }}
+                </td>
+                <td style="vertical-align: middle" class="textDerecha">
+                  {{ alarma.medValor }}
+                </td>
+                <td style="vertical-align: middle" class="textIzquierda">
+                  {{ alarma.almFechaHoraBD | date: 'dd-MM-yyyy' }}
+                </td>
+                <td class="empty-column"></td>
+                <td style="vertical-align: middle" class="textIzquierda">
+                  <span *ngIf="alarma.almVisto === false">Nueva</span>
+                  <span *ngIf="alarma.almVisto === true">Visto</span>
+                </td>          
+              </tr>
+            </tbody>
+          </table>
+          <div
+            class="align-center"
+            *ngIf="validarFiltradoAlarma() == true"
+          >
+            <pagination-controls
+              (pageChange)="paginaCambiada($event)"
+              itemsPerPage="pageSize"
+              totalItems="totalItems"
+            ></pagination-controls>
+          </div>
+        </div>
+        <div
+          class="alert alert-primary text-center"
+          role="alert"
+          *ngIf="validarFiltradoAlarma() == false"
+        >
+          No se encontraron alarma que coincidan con su búsqueda.
+        </div>
+      </div>
+
+      <br>
+      <br>
+
     </ng-container>
   </mat-step>
-</mat-vertical-stepper>
-
-
-<div class="d-flex justify-content-center">
-  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-10 col-xl-10">
-    <div class="card">
-      <div class="card-body">
-        <br>
-          <h3>Filtros:</h3>
-          <form [formGroup]="formfiltro">
-            <div class="row">
-              <div class="col-4">
-                <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por número de Alarma">
-                  <span class="input-group-text">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                      class="bi bi-search" viewBox="0 0 16 16">
-                      <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-                    </svg>
-                  </span>
-                  <input formControlName="nroAlarma" type="text" class="form-control" placeholder="Buscar por número de Alarma" (keyup)="esFiltrar($event)">
-                </div>
-              </div>
-              <div class="col-4">
-                <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por número de Central">
-                  <span class="input-group-text">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                      class="bi bi-search" viewBox="0 0 16 16">
-                      <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-                    </svg>
-                  </span>
-                  <input formControlName="nroCentral" type="text" class="form-control" placeholder="Buscar por número de Central" (keyup)="esFiltrar($event)">
-                </div>
-              </div>
-              <div class="col-4">
-                <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por número de Medición">
-                  <span class="input-group-text">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                      class="bi bi-search" viewBox="0 0 16 16">
-                      <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-                    </svg>
-                  </span>
-                  <input formControlName="nroMed" type="text" class="form-control" placeholder="Buscar por número de Medición" (keyup)="esFiltrar($event)">
-                </div>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-4">
-                <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por nombre de Servicio">
-                  <span class="input-group-text">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                      class="bi bi-search" viewBox="0 0 16 16">
-                      <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-                    </svg>
-                  </span>
-                  <input formControlName="nombreServ" type="text" class="form-control" placeholder="Buscar por nombre de Servicio" (keyup)="esFiltrar($event)">
-                </div>
-              </div>
-              <div class="col-4">
-                <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por descripción Mensaje" >
-                  <span class="input-group-text">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                      class="bi bi-search" viewBox="0 0 16 16">
-                      <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-                    </svg>
-                  </span>
-                  <input formControlName="nombreMensaje" type="text" class="form-control" placeholder="Buscar por descripción Mensaje" (keyup)="esFiltrar($event)">
-                </div>
-              </div>
-              <div class="col-4">
-                <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por valor de Medición">
-                  <span class="input-group-text">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                      class="bi bi-search" viewBox="0 0 16 16">
-                      <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-                    </svg>
-                  </span>
-                  <input formControlName="valorMed" type="text" class="form-control" placeholder="Buscar por valor de Medición" (keyup)="esFiltrar($event)">
-                </div>
-              </div>
-            </div>
-
-            <br>
-
-            <div class="row align-items-center justify-content-center text-center"> <!-- Contenedor principal -->
-              <div class="col ">
-                <div class="custom-control custom-switch mb-3">
-                  <input type="checkbox" class="custom-control-input" id="op1" (change)="filtroFecha($event)">
-                  <label class="custom-control-label" for="op1">Filtar por Fecha</label>
-                </div>                 
-              </div>
-              <div class="col-4">
-                <div class="form-outline input-group mb-2" >
-                  <span class="input-group-text">Desde</span>
-                  <input type="date" id="fecha_desde" class="form-control" formControlName="fecha_desde">
-                </div>
-              </div>
-              <div class="col-4">
-                <div class="form-outline input-group mb-2">
-                  <span class="input-group-text">Hasta</span>
-                  <input type="date" id="fecha_hasta" class="form-control" formControlName="fecha_hasta">
-                </div>             
-              </div>   
-              <div class="col">
-                <button type="submit" class="btn btn-success" data-bs-toggle="button" 
-                  (click)="filtarXFechas()" [disabled]="!habilitarBoton">
-                  Aplicar Filtro
-                </button>
-              </div>      
-            </div>
-
-          </form>
-
-       </div>
-    </div>  
-  </div>  
-  </div>
-
-<br/>
-
-<div class="row">
-    <div class="col-1"></div>
-    <div class="col-10">
-      <table class="table" *ngIf="validarFiltradoAlarma() == true">
-        <thead class="encabezado">
-            <tr>
-              <th (click)="ordenarPor('almId')" [appSort]="AlarmaConsultaFiltrados" data-order="asc"
-                  data-name="almId" style="text-align: center;"><a>Alarma Nro. {{ordenarIcono('almId')}}</a></th>
-              <th (click)="ordenarPor('almIdMedicion')" [appSort]="AlarmaConsultaFiltrados" data-order="desc"
-                  data-name="almIdMedicion" style="text-align: center;"><a>Med. Nro. {{ordenarIcono('almIdMedicion')}}</a></th>
-              <th (click)="ordenarPor('cenNro')" [appSort]="AlarmaConsultaFiltrados" data-order="desc"
-                  data-name="cenNro" style="text-align: center;"><a>Central Nro. {{ordenarIcono('cenNro')}}</a></th>
-              <th (click)="ordenarPor('serDescripcion')" [appSort]="AlarmaConsultaFiltrados" data-order="desc"
-                  data-name="serDescripcion" style="text-align: center;"><a>Servicio {{ordenarIcono('serDescripcion')}}</a></th>
-              <th (click)="ordenarPor('almMensaje')" [appSort]="AlarmaConsultaFiltrados" data-order="desc"
-                  data-name="almMensaje" style="text-align: center;"><a>Mensaje {{ordenarIcono('almMensaje')}}</a></th>             
-              <th (click)="ordenarPor('medValor')" [appSort]="AlarmaConsultaFiltrados" data-order="desc"
-                  data-name="medValor" style="text-align: center;"><a>Valor Medición {{ordenarIcono('medValor')}}</a></th>             
-              <th (click)="ordenarPor('almFechaHoraBD')" [appSort]="AlarmaConsultaFiltrados" data-order="desc"
-                  data-name="almFechaHoraBD" style="text-align: center;"><a>Fecha Medición {{ordenarIcono('almFechaHoraBD')}}</a></th>             
-              <th (click)="ordenarPor('almVisto')" [appSort]="AlarmaConsultaFiltrados" data-order="desc"
-                  data-name="almVisto" style="text-align: center;"><a>almVisto {{ordenarIcono('almVisto')}}</a></th>                     
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let alarma of AlarmaConsultaFiltrados let i=index"
-              [ngClass]="{'fila-par': i%2==0, 'fila-impar': i%2==1}"
-              (click)="esfilaSeleccionadaAlarma(alarma)"
-              [ngStyle]="{'font-weight': alarma.almVisto ? 'normal' : 'bold'}"
-              >              
-              <th style="vertical-align: middle" class="align-center">{{ alarma.almId }}</th>
-              <td style="vertical-align: middle">{{ alarma.almIdMedicion }}</td>
-              <td style="vertical-align: middle">{{ alarma.cenNro }}</td>
-              <td style="vertical-align: middle">{{ alarma.serDescripcion }}</td>
-              <td style="vertical-align: middle">{{ alarma.almMensaje }}</td>
-              <td style="vertical-align: middle">{{ alarma.medValor }}</td>
-              <td style="vertical-align: middle">{{ alarma.almFechaHoraBD | date: 'dd-MM-yyyy' }}</td>
-              <td style="vertical-align: middle">{{ alarma.almVisto }}</td>    
-            </tr>
-          </tbody>
-        </table>
-    </div>
-    <div class="alert alert-primary text-center" role="alert" *ngIf="validarFiltradoAlarma() == false">
-      ¡No se ha encontrado ninguna alarma!
-  </div>
-
-</div>
-
-
-<app-footer-interno></app-footer-interno>
+</mat-vertical-stepper>      

@@ -199,19 +199,24 @@
                       class="image"
                       alt="..."
                     />
-                    <div class="example-button-row">
-
+                  <!-- Botón Consultar Servicio -->
+                  <div class="row">
+                    <div
+                      class="example-button-row"
+                      style="display: flex; justify-content: flex-end"
+                    >
                       <button
-                        mat-stroked-button
-                        type="submit"
-                        class="btnIrConsultaServicio"
+                        mat-fab
+                        extended
+                        color="primary"
+                        class="btnConsultarServicio"
                         routerLink="/consultar-servicio"
-                        data-bs-toggle="button"
-                      >
-                        Ir a Consultar Servicios
+                        >
+                        <mat-icon>touch_app</mat-icon>
+                        Consultar Servicio
                       </button>
-
                     </div>
+                  </div>
                   </span>
                 </div>
               </div>

@@ -1,9 +1,10 @@
 //SISTEMA
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {
   FormBuilder,
 } from '@angular/forms';
 import Swal, { SweetAlertOptions } from 'sweetalert2';
+import { MatStepper } from '@angular/material/stepper';
 
 //COMPONENTES
 import { CentralConsultaClass } from 'src/app/core/models/centralConsulta';
@@ -34,22 +35,36 @@ import { IfStmt } from '@angular/compiler';
 })
 
 export class ConsultarMedicionesActualesComponent implements OnInit {
-//VARIABLES DE OBJETOS LIST
-CentralConsulta: CentralConsultaClass[] = [];
-CentralConsultaFiltrados: CentralConsultaClass [] = [];
-MedicionesConsulta: MedicionesConsultaClass[] = [];
+  //STEPPER
+  titulo1 = 'Seleccionar Central para Ver sus Mediciones Actuales';
+  titulo2 = 'Mediciones Actuales de la Central N°:';
+  titulo3 = ':';
+  isStep1Completed = false;
+  isStep2Completed = false;
+  isStep3Completed = false;
 
+  @ViewChild(MatStepper, { static: false }) stepper: MatStepper | undefined;
 
-//VARIABLES DE DATOS
-propiedadOrdenamiento: string = 'cenNro';
+  //VARIABLES DE OBJETOS LIST
+  CentralConsulta: CentralConsultaClass[] = [];
+  CentralConsultaFiltrados: CentralConsultaClass [] = [];
+  MedicionesConsulta: MedicionesConsultaClass[] = [];
 
-tipoOrdenamiento: number = 1;
-centralNroSeleccionada: number=0;
-idUsuario: any = 0;
+  //VARIABLES DE DATOS
+  propiedadOrdenamiento: string = 'cenNro';
 
-isCollapsed1 = false;
-isCollapsed2 = false;
-sinMedicones = true;
+  tipoOrdenamiento: number = 1;
+  centralNroSeleccionada: number=0;
+  idUsuario: any = 0;
+
+  //PAGINADO
+  pageSizeCentral = 5; // Número de elementos por página
+  currentPageCentral = 1; // Página actual
+  totalItemsCentral = 0; // Total de elementos en la tabla
+
+  isCollapsed1 = false;
+  isCollapsed2 = false;
+  sinMedicones = true;
 
   constructor(
     private centralConsultar: CentralService, 
@@ -57,7 +72,6 @@ sinMedicones = true;
   ) 
   { 
   }
-
   
   ngOnInit(): void {
     this.idUsuario = localStorage.getItem('idUsuario');
@@ -196,6 +210,19 @@ sinMedicones = true;
     option && myChart.setOption(option);
   }
   
+  //STEP
+  goToNextStep(stepNumber: number): void {    
+    if (this.stepper) {
+      this.stepper.selectedIndex = stepNumber;
+    }
+  }
+  
+  goToPreviousStep(): void {     
+    if (this.stepper) {
+      this.stepper.previous();
+    }    
+  }
+  
   toggleCollapse1() {
     this.isCollapsed1 = !this.isCollapsed1;
   }
@@ -253,6 +280,7 @@ sinMedicones = true;
 
   seleccionarCentral(){
     this.isCollapsed1 = !this.isCollapsed1;
+    this.titulo2 = 'Mediciones Actuales de la Central N°:' + this.centralNroSeleccionada;
 
     this.MedicionesConsulta = [];
     // Obtén el contenedor de los gráficos
@@ -525,5 +553,18 @@ sinMedicones = true;
     });
   
   }
+
+  paginaCambiadaCentral(event: any) {
+    this.currentPageCentral = event;
+    const cantidadPaginasCentral = Math.ceil(
+      this.CentralConsultaFiltrados.length / this.pageSizeCentral
+    );
+    const paginasCentral = [];
+
+    for (let i = 1; i <= cantidadPaginasCentral; i++) {
+      paginasCentral.push(i);
+    }
+    return paginasCentral;
+  } 
 }
 

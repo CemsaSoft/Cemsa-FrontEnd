@@ -419,12 +419,7 @@
   display: inline-block;
 }
 
-.btonNuevaConsulta{
-  background-color: #01C3CC;
-  width: 237px !important;
-  height: 59px !important;
-  border-radius: 50px !important;
-}
+
 /* -------Botón Guardar------- */
 .btnAgregar{
   width: 237px !important;
@@ -467,10 +462,17 @@
   border-color:#6ae5ec !important;
   box-shadow: 0 0 10px rgba(var(--bs-btn-focus-shadow-rgb), 0.5); 
 }
-.btnIrConsultaServicio:active{/*efecto al presionar*/
+.btnBlanqueoContraseña:active{/*efecto al presionar*/
   color:  #194c87 !important;
   background-color: #fff !important;
   border-color: #fff!important;
   box-shadow: var(--bs-btn-active-shadow);
 }
 
+/* -------Botón Consultar Servicio------- */
+.btnConsultarServicio{
+    background-color: #01C3CC;
+    width: 237px !important;
+    height: 59px !important;
+    border-radius: 50px !important;
+}

@@ -1,5 +1,3 @@
-<app-navbar></app-navbar>
-
 <head>
   <link
     rel="stylesheet"
@@ -214,15 +212,23 @@
               </tr>
             </tbody>
           </table>
+          <mat-paginator 
+            [length]=totalItemsCentral
+            [pageSize]=pageSizeCentral
+            [pageSizeOptions]="[5, 10, 25, 100]"
+            aria-label="Select page">
+          </mat-paginator>
+
           <div
             class="align-center"
             *ngIf="validarFiltrado() == true"
           >
-            <pagination-controls
+            <!-- <pagination-controls
               (pageChange)="paginaCambiadaCentral($event)"
               itemsPerPage="pageSizeCentral"
               totalItems="totalItemsCentral"
-            ></pagination-controls>
+            ></pagination-controls> -->
+
           </div>
         </div>
         <div
@@ -236,9 +242,9 @@
 
         </div>
       </ng-container>
-    </mat-step>
+  </mat-step>
 
-    <mat-step
+  <mat-step
     [label]="titulo2"
     [completed]="isStep2Completed"
     [ngClass]="{ collapse: isCollapsed2 }"
@@ -266,7 +272,7 @@
         <div class="card cardFiltrado cardAnimate cardFlat">
           <div class="card-header">
             <div class="d-flex justify-content-between align-items-center">
-              <h4 class="mb-0 tituloCard">Ubicación de la Central N° {{centralNroSeleccionada}} </h4>
+              <h4 class="mb-0 tituloCard">Ubicación de la Central N°: {{centralNroSeleccionada}} </h4>
               <img
                 src="../../../assets/seleccionar.png"
                 class="image"
@@ -399,12 +405,9 @@
           </div>
         </div>
       </ng-container>
-    </mat-step>
-
+  </mat-step>
+    
 </mat-vertical-stepper>
 </div>  
 <br />
 </div>
-
-
-<app-footer-interno></app-footer-interno>
