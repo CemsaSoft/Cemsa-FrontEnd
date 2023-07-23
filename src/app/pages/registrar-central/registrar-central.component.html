@@ -1,5 +1,17 @@
 <app-navbar></app-navbar>
 <div class="body">
+  <h1 class="text-center titulo tituloFuente">Registrar Central Meteorológica</h1>
+  <!-- Contenido de breadcrumb -->
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item" style="padding-left: 310px; font-size: 18px">
+        <a href="/home">Home</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        Registrar Central Meteorológica
+      </li>
+    </ol>
+  </nav>
   <head>
     <link
       rel="stylesheet"
@@ -14,11 +26,929 @@
     ></script>
     <script src="ruta/a/tu/archivo.js"></script>
   </head>
+  <div class="container mt-12">
+    <mat-vertical-stepper> 
+      <mat-step
+        [label]="titulo1"
+        [completed]="isStep1Completed"
+        [ngClass]="{ collapse: isCollapsed1 }"
+      > 
+      <ng-container contenido-paso-1>
+        <div class="card-body" [ngClass]="{ collapse: isCollapsed2 }">
+          <div class="row containerCard">
+            <div class="col-12  cardAnimate cardFlat cardSeparacion" style="padding-top: 40px;">
+              <div>
+                <mat-tab-group>
+                  <mat-tab >
+                    <ng-template mat-tab-label >
+                     
+                      <mat-icon class="example-tab-icon">account_circle</mat-icon>
+                         Seleccionar Cliente 
+                    </ng-template>
+                    <br> <br>
+                    <div class="row col-11 cardFiltrado cardAnimate cardFlat cardSeparacion">
+                    <br> <br>
+                  
+                      <div class="col-md-2 image-container">
+                        <span
+                          ><img
+                            style="width: 102%; height: 102"
+                            src="../../../assets/icons8-user-64_1.png"
+                            class="image"
+                            alt="..."
+                          />
+                          <div class="texto">
+                            <h4
+                              style="
+                                text-align: center;
+                                color: #63ddff;
+                                font-size: 18px;
+                              "
+                            >
+                            Filtrar Cliente
+                            </h4>
+                          </div></span
+                        >
+                      </div>                    
+                          <div
+                          class="col-md-2"
+                          style="margin-top: 48px; padding-left: 40px"
+                        >
+                        <div
+                          class="form-outline input-group"
+                          data-toggle="tooltip"
+                          data-placement="top"
+                          title="Buscar por Tipo de Documento"
+                        >
+                          <mat-form-field
+                            class="FormatoCombos;"
+                            style="width: 156px"
+                            appearance="outline"
+                          >
+                            <mat-label>Tipo Documento</mat-label>
+                            <mat-select
+                              style="text-align: center; border-color: #63ddff"
+                              placeholder="Seleccionar"
+                              [(ngModel)]="tipoDocumentoSeleccionado"
+                              (selectionChange)="
+                                filtrarClientesPorTipoDocumento()
+                              "
+                            >
+                              <mat-option
+                                *ngFor="let tipoDocumento of tiposDocumento"
+                                [value]="tipoDocumento.tdId"
+                                >{{ tipoDocumento.tdDescripcion }}</mat-option
+                              >
+                            </mat-select>
+                          </mat-form-field>
+                        </div>
+                      </div>
+                      <div class="col-md-2 margen" style="padding-left: 0px">
+                        <div
+                          class="form-outline input-group"
+                          data-toggle="tooltip"
+                          data-placement="top"
+                          title="Buscar por Numero de Documento"
+                        >
+                          <label class="search-field2 label">
+                            <mat-label class="search-field label"
+                              >N° de Documento</mat-label
+                            >
+                            <input
+                              type="text"
+                              style="width: 164px"
+                              class="form-control inputBusqueda2"
+                              placeholder="12.345.678"
+                              (input)="formatDocumentNumber($event)"
+                              (keyup)="esFiltrar($event, 'numero')"
+                            />
+                            
+                            <i
+                              class="fas fa-search FormatoIconos"
+                              style="padding-left: 20px"
+                            ></i>
+                          </label>
+                        </div>
+                      </div>
 
-  <h1 class="text-center">Registar Central Meteorológica</h1>
+                    <!-- <div
+                      class="col-md-1 vertical-line"
+                      style="width: 1px"
+                    ></div> -->
+                    <div class="col-md-2 margenFiltros vertical-line">
+                      <div
+                        class="form-outline input-group"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title="Buscar por Nombre de Cliente"
+                      >
+                        <label class="search-field inputUsuarioNombre">
+                          <mat-label
+                            class="search-field label ng-tns-c97-48 ng-star-inserted"
+                            >Nombre de Cliente</mat-label
+                          >
+                          <input
+                            type="text"
+                            class="form-control inputBusqueda inputUsuarioNombre input-con-color-de-fondo"
+                            placeholder="Ej. Agustín"
+                            (keyup)="esFiltrar($event, 'cliente')"
+                          />
+                              
+                          <!-- <i class="fa-solid fa-person FormatoIconos"></i> -->
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-md-1"></div>
+                    <div class="col-md-2 margenFiltros vertical-line">
+                      <div
+                        class="form-outline input-group"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title="Buscar por Nombre de Usuario"
+                      >
+                      <label class="search-field inputUsuarioNombre">
+                          <mat-label
+                            class="search-field label ng-tns-c97-48 ng-star-inserted"
+                            >Nombre del Usuario</mat-label
+                          >
+                          <input
+                            type="text"
+                            class="form-control inputBusqueda inputUsuarioNombre input-con-color-de-fondo"
+                            placeholder="Ej. Usu123"
+                            (keyup)="esFiltrar($event, 'usuario')"
+                          />
+                             
+                          <!-- <i class="fa-solid fa-user FormatoIconos"></i> -->
+                        </label>
+                      </div>
+                    </div>
+                    </div>
+                    <br>
+                     <!-- ------Tabla------------>
+                    <div class="col-11 cardFiltrado cardAnimate cardFlat cardSeparacion">
+                      <div class="row">            
+                        <div class="col-12">                 
+                          <table class="table" *ngIf="validarFiltradoClientes() == true">
+                            <thead class="encabezado">
+                                <tr>        
+                                  <th (click)="ordenarClientePor('tdDescripcion')" [appSort]="ClientesFiltrados" data-order="desc"
+                                  data-name="tdDescripcion" style="text-align: center;"><a>Tipo Doc. {{ordenarIconoCliente('tdDescripcion')}}</a></th>            
+                                  <th (click)="ordenarClientePor('cliNroDoc')" [appSort]="ClientesFiltrados" data-order="desc"
+                                  data-name="cliNroDoc" style="text-align: center;"><a>Num. Doc. {{ordenarIconoCliente('cliNroDoc')}}</a></th>            
+                                  <th (click)="ordenarClientePor('cliApeNomDen')" [appSort]="ClientesFiltrados" data-order="desc"
+                                  data-name="cliApeNomDen" style="text-align: center;"><a>Cliente {{ordenarIconoCliente('cliApeNomDen')}}</a></th>            
+                                  <th (click)="ordenarClientePor('usuario')" [appSort]="ClientesFiltrados" data-order="desc"
+                                  data-name="usuario" style="text-align: center;"><a>Usuario {{ordenarIconoCliente('usuario')}}</a></th>          
+                                  <th scope="col">Seleccionar</th> 
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr
+                                  *ngFor="let cliente of ClientesFiltrados; let i = index"
+                                  [ngClass]="{
+                                    'fila-par': i % 2 == 0,
+                                    'fila-impar': i % 2 == 1
+                                  }"
+                                  (click)="esfilaSeleccionadaCliente(cliente)"
+                                >
+                                  <th style="vertical-align: middle" class="align-center">
+                                    {{ cliente.tdDescripcion }}
+                                  </th>
+                                  <td style="vertical-align: middle">
+                                    {{ cliente.cliNroDoc }}
+                                  </td>
+                                  <td style="vertical-align: middle">
+                                    {{ cliente.cliApeNomDen }}
+                                  </td>
+                                  <td style="vertical-align: middle">
+                                    {{ cliente.usuario }}
+                                  </td>
+                                  <td class="align-center">
+                                    <button
+                                      mat-button
+                                      (click)="selectTab(1)"
+                                      type="button"
+                                      class="btn"
+                                      data-bs-target="#staticBackdrop"
+                                      title="Seleccionar Cliente"
+                                    >
+                                      <img
+                                        src="../../../assets/seleccionar_user.png"
+                                        class="iconosBoton"
+                                        alt="..."
+                                      />
+                                    </button>
+                                  </td>
+                                  <!-- <td class="align-center">
+                                    <button
+                                      type="button"
+                                      class="btn"
+                                      data-bs-target="#staticBackdrop"
+                                      title="Seleccionar Cliente"
+                                    >
+                                      <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="25"
+                                        height="25"
+                                        fill="currentColor"
+                                        class="bi bi-box-arrow-down"
+                                        viewBox="0 0 16 16"
+                                      >
+                                        <path
+                                          fill-rule="evenodd"
+                                          d="M3.5 10a.5.5 0 0 1-.5-.5v-8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 0 0 1h2A1.5 1.5 0 0 0 14 9.5v-8A1.5 1.5 0 0 0 12.5 0h-9A1.5 1.5 0 0 0 2 1.5v8A1.5 1.5 0 0 0 3.5 11h2a.5.5 0 0 0 0-1h-2z"
+                                        />
+                                        <path
+                                          fill-rule="evenodd"
+                                          d="M7.646 15.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 14.293V5.5a.5.5 0 0 0-1 0v8.793l-2.146-2.147a.5.5 0 0 0-.708.708l3 3z"
+                                        />
+                                      </svg>
+                                    </button>
+                                  </td> -->
+                                </tr>
+                              </tbody>
+                            </table>
+                            <div
+                              class="alert alert-primary text-center"
+                              role="alert"
+                              *ngIf="validarFiltradoClientes() == false"
+                            >
+                              No tiene Clientes Activos
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                    
+                    <!-- <div class="container mt-5">
+                      <div class="row justify-content-center">
+                        <div class="col-md-12">
+                          <div class="card">
+                            <div class="card-header">
+                              <div class="d-flex justify-content-between align-items-center">
+                                <h4 class="mb-0">Seleccionar Cliente para la Central Meteorológica</h4>            
+                                <button type="button" class="btn-unstyled" (click)="toggleCollapse1()">
+                                  <svg *ngIf="!isCollapsed1" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                                    <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                                  </svg>
+                                  <svg *ngIf="isCollapsed1" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 16 16">
+                                    <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
+                                  </svg>
+                                </button>
+                              </div>
+                            </div>
+                            <div class="card-body" [ngClass]="{'collapse': isCollapsed1}">
+                              
+                              <form [formGroup]="formfiltro">
+                              <div class="row">            
+                                <div class="col-12">
+                                  <h3>Filtros:</h3>          
+                                  <div class="row">
+                                    <div class="col-md-6">
+                                      <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por Tipo de Documento">
+                                        <span class="input-group-text">
+                                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                            class="bi bi-search" viewBox="0 0 16 16">
+                                            <path
+                                              d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                                          </svg>
+                                        </span>
+                                        <input formControlName="tipo" type="text" class="form-control" placeholder="Filtrar por Tipo de Documento" (keyup)="esFiltrar2($event)">
+                                      </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                      <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por Numero de Documento">
+                                        <span class="input-group-text">
+                                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                            class="bi bi-search" viewBox="0 0 16 16">
+                                            <path
+                                              d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                                          </svg>
+                                        </span>
+                                        <input formControlName="numero" type="text" class="form-control" placeholder="Filtrar por Numero de Documento" (keyup)="esFiltrar2($event)">
+                                      </div>
+                                    </div>
+                                  </div>
+                              
+                                  <div class="row">
+                                    <div class="col-md-6">
+                                      <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por Nombre de Cliente">
+                                        <span class="input-group-text">
+                                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                            class="bi bi-search" viewBox="0 0 16 16">
+                                            <path
+                                              d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                                          </svg>
+                                        </span>
+                                        <input formControlName="cliente" type="text" class="form-control" placeholder="Filtrar por Nombre del Cliente" (keyup)="esFiltrar2($event)">
+                                      </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                      <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por Nombre de Usuario">
+                                        <span class="input-group-text">
+                                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                            class="bi bi-search" viewBox="0 0 16 16">
+                                            <path
+                                              d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                                          </svg>
+                                        </span>
+                                        <input formControlName="usuario" type="text" class="form-control" placeholder="Filtrar por Nombre del Usuario" (keyup)="esFiltrar2($event)">
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              </form>
+                    
+                              <div class="row">            
+                                <div class="col-12">                 
+                                  <table class="table" *ngIf="validarFiltradoClientes() == true">
+                                    <thead class="encabezado">
+                                        <tr>        
+                                          <th (click)="ordenarClientePor('tdDescripcion')" [appSort]="ClientesFiltrados" data-order="desc"
+                                          data-name="tdDescripcion" style="text-align: center;"><a>Tipo Doc. {{ordenarIconoCliente('tdDescripcion')}}</a></th>            
+                                          <th (click)="ordenarClientePor('cliNroDoc')" [appSort]="ClientesFiltrados" data-order="desc"
+                                          data-name="cliNroDoc" style="text-align: center;"><a>Num. Doc. {{ordenarIconoCliente('cliNroDoc')}}</a></th>            
+                                          <th (click)="ordenarClientePor('cliApeNomDen')" [appSort]="ClientesFiltrados" data-order="desc"
+                                          data-name="cliApeNomDen" style="text-align: center;"><a>Cliente {{ordenarIconoCliente('cliApeNomDen')}}</a></th>            
+                                          <th (click)="ordenarClientePor('usuario')" [appSort]="ClientesFiltrados" data-order="desc"
+                                          data-name="usuario" style="text-align: center;"><a>Usuario {{ordenarIconoCliente('usuario')}}</a></th>          
+                                          <th scope="col">Seleccionar</th> 
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        <tr
+                                          *ngFor="let cliente of ClientesFiltrados; let i = index"
+                                          [ngClass]="{
+                                            'fila-par': i % 2 == 0,
+                                            'fila-impar': i % 2 == 1
+                                          }"
+                                          (click)="esfilaSeleccionadaCliente(cliente)"
+                                        >
+                                          <th style="vertical-align: middle" class="align-center">
+                                            {{ cliente.tdDescripcion }}
+                                          </th>
+                                          <td style="vertical-align: middle">
+                                            {{ cliente.cliNroDoc }}
+                                          </td>
+                                          <td style="vertical-align: middle">
+                                            {{ cliente.cliApeNomDen }}
+                                          </td>
+                                          <td style="vertical-align: middle">
+                                            {{ cliente.usuario }}
+                                          </td>
+                                          <td class="align-center">
+                                            <button
+                                              type="button"
+                                              class="btn"
+                                              data-bs-target="#staticBackdrop"
+                                              title="Seleccionar Cliente"
+                                            >
+                                              <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                width="25"
+                                                height="25"
+                                                fill="currentColor"
+                                                class="bi bi-box-arrow-down"
+                                                viewBox="0 0 16 16"
+                                              >
+                                                <path
+                                                  fill-rule="evenodd"
+                                                  d="M3.5 10a.5.5 0 0 1-.5-.5v-8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 0 0 1h2A1.5 1.5 0 0 0 14 9.5v-8A1.5 1.5 0 0 0 12.5 0h-9A1.5 1.5 0 0 0 2 1.5v8A1.5 1.5 0 0 0 3.5 11h2a.5.5 0 0 0 0-1h-2z"
+                                                />
+                                                <path
+                                                  fill-rule="evenodd"
+                                                  d="M7.646 15.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 14.293V5.5a.5.5 0 0 0-1 0v8.793l-2.146-2.147a.5.5 0 0 0-.708.708l3 3z"
+                                                />
+                                              </svg>
+                                            </button>
+                                          </td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                    <div
+                                      class="alert alert-primary text-center"
+                                      role="alert"
+                                      *ngIf="validarFiltradoClientes() == false"
+                                    >
+                                      No tiene Clientes Activos
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div> -->
+                  </mat-tab>
+                
+                  <mat-tab>
+                    <ng-template mat-tab-label>
+                      <mat-icon class="example-tab-icon">broadcast_on_personal</mat-icon>
+                      Ingresar Datos de Central Meteorológica
+                    </ng-template>
+                    <br><br>
+                    <!-- <div class="col-11  cardAnimate cardFlat cardSeparacion">
+                        <div class="row justify-content-center">
+                          <div class="col-md-12">
+                            <div class="card">
+                              <div class="card-header">
+                                <div class="d-flex justify-content-between align-items-center">
+                                  <h4 class="mb-2">Cliente Seleccionado:</h4>
+                                  <span
+                                            ><img
+                                              style="padding-top: 0px;"
+                                              src="../../../assets/user.png"
+                                              class="image"
+                                              alt="..."
+                                            />
+                                           </span
+                                          >
+                                </div>
+                              </div>
+                              <div class="card-body" [ngClass]="{ collapse: isCollapsed2 }">
+                                <form [formGroup]="formRegistar">
+                                  <div class="row g-6">
+                                    <div class="col-md-6">
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                      <mat-form-field appearance="fill"
+                                      class="example-full-width  ">
+                                        <mat-label>Cliente</mat-label>
+                                        <input matInput    type="text"
+                                        class="enabled"
+                                        id="cliApeNomDenVM"
+                                        value="cliApeNomDenVM"
+                                        formControlName="cliApeNomDenVM"
+                                        readonly>
+                                      </mat-form-field>
+                                    </div>
+
+                                    <div class="col-md-6"></div>
+                                    <div class="col-md-6">
+                                      <mat-form-field appearance="fill"
+                                      class="example-full-width  ">
+                                        <mat-label>Usuario</mat-label>
+                                        <input matInput    type="text"
+                                        class="enabled"
+                                        id="usuarioVM"
+                                        value="usuarioVM"
+                                        formControlName="usuarioVM"
+                                        readonly>
+                                      </mat-form-field>
 
 
-<div class="container mt-5">
+                                    </div>
+                                     
+                                      
+                                    
+                                   
+                                   
+                                    <div class="col-md-1">
+                                      
+                                    </div>
+                                  </div>
+                                  
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                    </div> -->
+                    <div class="col-11  cardAnimate cardFlat cardSeparacion">
+                      <!-- <div class="container mt-5" style="padding-left: 12px;"> -->
+                        <div class="row justify-content-center">
+                          <div class="col-md-12">
+                            <div class="card">
+                              <div class="card-header">
+                                <div class="d-flex justify-content-between align-items-center">
+                                  <!-- <h4 class="mb-0">Datos de la Central</h4> -->
+                                </div>
+                              </div>
+                              <div class="card-body" [ngClass]="{ collapse: isCollapsed3 }">
+                                <form [formGroup]="formRegistar">
+                                  <div class="row">
+                                    <div class="col-md-3">
+                                      <div> <b>Cliente: </b>
+                                        {{ cliApeNomDenSeleccionado ? cliApeNomDenSeleccionado : '-' }}
+                                      </div>
+                                      <div> <b>Usuario: </b>
+                                        {{ usuarioSeleccionado ? usuarioSeleccionado : '-' }}
+                                      </div>
+                                      <br>
+                                      <br>
+
+                                      <mat-form-field
+                                        appearance="fill"
+                                        class="example-full-width form-outline input-group"
+                                        style="top: 10px"
+                                      >
+                                        <mat-label>IMEI</mat-label>
+                                        <input
+                                          type="text"
+                                          style="padding-left: 20px"
+                                          matInput
+                                          id="imei"
+                                          value="imei"
+                                          formControlName="imei"
+                                          required
+                                        />
+                                        <mat-icon class="edit" matSuffix
+                                          >123</mat-icon
+                                        >
+                                      </mat-form-field>
+                                      <!--------IMEI ----------->
+                                      <div class="form-outline input-group fix mb-3">
+                                        <mat-form-field class="fix w-100">
+                                          <mat-label>IMEI</mat-label>
+                                          <input matInput placeholder="Ej. 1234567891011121"  id="imei" value="imei" formControlName="imei" [formControl]="imei" required>
+                                          <mat-icon matSuffix>123</mat-icon>
+                                          
+                                          
+                                          <span title="{{ numerosValidos }}"></span>
+                                          <mat-error
+                                              class="error" 
+                                              *ngIf="imei?.invalid && (imei?.dirty || imei?.touched)">
+                                          </mat-error>                               
+                                          <mat-error
+                                                class="error"
+                                                *ngIf="imei?.errors?.['required']"
+                                              >El IMEI es <strong>requerido.</strong>
+                                          </mat-error>
+                                          <mat-error class="error" *ngIf="imei?.errors?.['pattern']">
+                                            Debe ingresar solamente 15 números.
+                                          </mat-error>
+                                        </mat-form-field>
+                                      </div>
+                                      <!-- Columna 1: Input IMEI, Coordenada X, Coordenada Y -->
+                                      <!-- <div class="form-outline input-group mb-3">
+                                        <span class="input-group-text">IMEI</span>
+                                        <input
+                                          type="text"
+                                          class="form-control"
+                                          id="imei"
+                                          value="imei"
+                                          formControlName="imei"
+                                          required
+                                        />
+                                        <span class="input-group-text" title="{{ numerosValidos }}">
+                                          <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="16"
+                                            height="16"
+                                            fill="currentColor"
+                                            class="bi bi-question-circle"
+                                            viewBox="0 0 16 16"
+                                          >
+                                          </svg>
+                                        </span>
+                                      </div> -->
+                                      <div
+                                        *ngIf="imei?.invalid && (imei?.dirty || imei?.touched)"
+                                        class="text-danger"
+                                      >
+                                        <div *ngIf="imei?.errors?.['required']">
+                                          El IMEI es requerido.
+                                        </div>
+                                        <div *ngIf="imei?.errors?.['pattern']">
+                                          Debe ingresar solamente 15 números.
+                                        </div>
+                                      </div>
+                                      <!--------Input Coordenada X ----------->
+                                      <div class="form-outline input-group fix">
+                                        <mat-form-field class="fix w-100">
+                                          <mat-label>Coordenada X</mat-label>
+                                          <input matInput placeholder="Ej. -31.420083"  id="coordenadaX" value="coordenadaX" formControlName="usuario" [formControl]="coordenadaX" required>
+                                          <mat-icon matSuffix>my_location</mat-icon>
+                                        </mat-form-field>
+                                      </div>
+                                      <!-- <div class="form-outline input-group mb-3">
+                                        <span class="input-group-text">Coordenadas X</span>
+                                        <input
+                                          type="text"
+                                          class="form-control"
+                                          id="coordenadaX"
+                                          value="coordenadaX"
+                                          formControlName="coordenadaX"
+                                          required
+                                          readonly
+                                        />
+                                      </div> -->
+                                       <!--------Input Coordenada X ----------->
+                                       <div class="form-outline input-group fix mb-3">
+                                        <mat-form-field class="fix w-100">
+                                          <mat-label>Coordenadas Y</mat-label>
+                                          <input matInput placeholder="Ej. -64.188776"  id="coordenadaY" value="coordenadaY" formControlName="coordenadaY" [formControl]="coordenadaY" required>
+                                          <mat-icon matSuffix>my_location</mat-icon>
+                                        </mat-form-field>
+                                      </div>
+                                      <!-- <div class="form-outline input-group mb-3">
+                                        <span class="input-group-text">Coordenadas Y</span>
+                                        <input
+                                          type="text"
+                                          class="form-control"
+                                          id="coordenadaY"
+                                          value="coordenadaY"
+                                          formControlName="coordenadaY"
+                                          required
+                                          readonly
+                                        />
+                                      </div> -->
+                                      <!-- <div class="row"> -->
+                                        <div
+                                          class="example-button-row"
+                                          style="display: flex; justify-content: center"
+                                        >
+                                          <button
+                                            mat-fab
+                                            extended
+                                            color="primary"
+                                            class="btonNuevaConsulta"
+                                            (click)="selectTab(2)"
+                                            
+                                          >
+                                            <mat-icon>add</mat-icon>
+                                            Añadir Servicios
+                                          </button>
+                                        </div>
+                                      <!-- </div> -->
+                                    </div>
+                              
+                                    <div class="col-md-9">
+                                      <!-- Columna 2: Mapa -->
+                                      <div style="background-color: #01C3CC;" class="card">
+                                        <div style="background-color: #01C3CC; color: aliceblue; font-style:normal ;" class="card-header">Elija una ubicación para su Central Meteorológica</div>
+                                        <div class="card-body">
+                                          <div id="map" style="height: 400px"></div>
+                                      </div>
+                                    </div>
+                                    </div>
+                                  </div>
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    <!-- </div> -->
+  
+  
+                  </mat-tab>
+                
+                  <mat-tab>
+                    <ng-template mat-tab-label>
+                      <mat-icon class="example-tab-icon">dew_point</mat-icon>
+                      Añadir Servicios
+                    </ng-template>
+                    <div class="container mt-5">
+                      <div class="row justify-content-center">
+                        <div class="col-md-12">
+                          <div class="card">
+                            <div class="card-header">
+                              <div class="d-flex justify-content-between align-items-center">
+                                <h4 class="mb-0">Servicios</h4>
+                              
+                              </div>
+                            </div>
+                            <div class="card-body" [ngClass]="{ collapse: isCollapsed4 }">
+                              <div class="row">
+                                <div class="col-md-6">
+                                  <h4>Lista de Servicios Disponibles</h4>
+                                  <table class="table" *ngIf="validarFiltradoServicios() == true">
+                                    <thead class="encabezado">
+                                      <tr>
+                                        <th
+                                          (click)="ordenarServicioPor('serId')"
+                                          [appSort]="Servicios"
+                                          data-order="desc"
+                                          data-name="serId"
+                                          style="text-align: center"
+                                        >
+                                          <a>Cod. {{ ordenarIconoServicio("serId") }}</a>
+                                        </th>
+                                        <th
+                                          (click)="ordenarServicioPor('serDescripcion')"
+                                          [appSort]="Servicios"
+                                          data-order="desc"
+                                          data-name="serDescripcion"
+                                          style="text-align: center"
+                                        >
+                                          <a
+                                            >Servicio
+                                            {{ ordenarIconoServicio("serDescripcion") }}</a
+                                          >
+                                        </th>
+                                        <th scope="col">Agregar</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr
+                                        *ngFor="let servicio of Servicios; let i = index"
+                                        [ngClass]="{
+                                          'fila-par': i % 2 == 0,
+                                          'fila-impar': i % 2 == 1
+                                        }"
+                                        (click)="esfilaSeleccionadaServicio(servicio)"
+                                      >
+                                        <th style="vertical-align: middle" class="align-center">
+                                          {{ servicio.serId }}
+                                        </th>
+                                        <td style="vertical-align: middle">
+                                          {{ servicio.serDescripcion }}
+                                        </td>
+                                        <td class="align-center">
+                                          <button
+                                            type="button"
+                                            class="btn"
+                                            data-bs-target="#staticBackdrop"
+                                            (click)="agregarServicio(servicio)"
+                                            title="Agregar Servicio"
+                                          >
+                                          <img
+                            style="width: 50%; height: 50%"
+                            src="../../../assets/agregar.png"
+                            class="image"
+                            alt="..."
+                          />
+                                            <!-- <svg
+                                              xmlns="http://www.w3.org/2000/svg"
+                                              width="25"
+                                              height="25"
+                                              fill="currentColor"
+                                              class="bi bi-node-plus"
+                                              viewBox="0 0 16 16"
+                                            >
+                                              <path
+                                                fill-rule="evenodd"
+                                                d="M11 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM6.025 7.5a5 5 0 1 1 0 1H4A1.5 1.5 0 0 1 2.5 10h-1A1.5 1.5 0 0 1 0 8.5v-1A1.5 1.5 0 0 1 1.5 6h1A1.5 1.5 0 0 1 4 7.5h2.025zM11 5a.5.5 0 0 1 .5.5v2h2a.5.5 0 0 1 0 1h-2v2a.5.5 0 0 1-1 0v-2h-2a.5.5 0 0 1 0-1h2v-2A.5.5 0 0 1 11 5zM1.5 7a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1z"
+                                              />
+                                            </svg> -->
+                                          </button>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                  <div
+                                    class="alert alert-primary text-center"
+                                    role="alert"
+                                    *ngIf="validarFiltradoServicios() == false"
+                                  >
+                                    No hay servicios disponibles
+                                  </div>
+                                </div>
+                                <div class="col-md-6">
+                                  <h4>Lista de Servicios Activos en la Central Meteorológica</h4>
+                                  <table
+                                    class="table"
+                                    *ngIf="validarFiltradoServiciosDeCentral() == true"
+                                  >
+                                    <thead class="encabezado">
+                                      <tr>
+                                        <th
+                                          (click)="ordenarServicioCentralPor('serId')"
+                                          [appSort]="ServiciosNuevos"
+                                          data-order="desc"
+                                          data-name="serId"
+                                          style="text-align: center"
+                                        >
+                                          <a>Cod. {{ ordenarIconoServicioCentral("serId") }}</a>
+                                        </th>
+                                        <th
+                                          (click)="ordenarServicioCentralPor('serDescripcion')"
+                                          [appSort]="ServiciosNuevos"
+                                          data-order="desc"
+                                          data-name="serDescripcion"
+                                          style="text-align: center"
+                                        >
+                                          <a
+                                            >Servicio
+                                            {{ ordenarIconoServicioCentral("serDescripcion") }}</a
+                                          >
+                                        </th>
+                                        <th scope="col">Quitar</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr
+                                        *ngFor="let servicio of ServiciosNuevos; let i = index"
+                                        [ngClass]="{
+                                          'fila-par': i % 2 == 0,
+                                          'fila-impar': i % 2 == 1
+                                        }"
+                                        (click)="esfilaSeleccionadaServicioDeCentral(servicio)"
+                                      >
+                                        <th style="vertical-align: middle" class="align-center">
+                                          {{ servicio.serId }}
+                                        </th>
+                                        <td style="vertical-align: middle">
+                                          {{ servicio.serDescripcion }}
+                                        </td>
+                                        <td class="align-center">
+                                          <button
+                                            type="button"
+                                            class="btn"
+                                            data-bs-target="#staticBackdrop"
+                                            (click)="extraerServicio(servicio)"
+                                            title="Extrar Servicio"
+                                          >
+                                          <img
+                                          style="width: 50%; height: 50%"
+                                              src="../../../assets/minus.png"
+                                              class="image"
+                                              alt="..."
+                                            />
+                                            <!-- <svg
+                                              xmlns="http://www.w3.org/2000/svg"
+                                              width="25"
+                                              height="25"
+                                              fill="currentColor"
+                                              class="bi bi-node-minus"
+                                              viewBox="0 0 16 16"
+                                            >
+                                              <path
+                                                fill-rule="evenodd"
+                                                d="M11 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM6.025 7.5a5 5 0 1 1 0 1H4A1.5 1.5 0 0 1 2.5 10h-1A1.5 1.5 0 0 1 0 8.5v-1A1.5 1.5 0 0 1 1.5 6h1A1.5 1.5 0 0 1 4 7.5h2.025zM1.5 7a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zM8 8a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5A.5.5 0 0 1 8 8z"
+                                              />
+                                            </svg> -->
+                                          </button>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                  <div
+                                    class="alert alert-primary text-center"
+                                    role="alert"
+                                    *ngIf="validarFiltradoServiciosDeCentral() == false"
+                                  >
+                                    No tiene Servicios Activos la Central
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  
+                    <br />
+                    <div class="row">
+                      <div class="modal-footer text-center col-3">
+                        <button
+                          id="btnAceptarModificacion"
+                          type="submit"
+                          class="btn btn-success"
+                          data-bs-toggle="button"
+                          data-bs-dismiss="modal"
+                          (click)="registrarCentral()"
+                        >
+                          Agregar Central
+                        </button>
+                      </div>
+                      <div
+                                          class="example-button-row"
+                                          style="display: flex; justify-content: center"
+                                        >
+                                          <button
+                                            id="btnAceptarModificacion"
+                                            type="submit"
+                                            mat-fab
+                                            extended
+                                            color="primary"
+                                            class="btonNuevaConsulta"
+                                            data-bs-toggle="button"
+                                            data-bs-dismiss="modal"
+                                            (click)="registrarCentral()"
+                                            
+                                          >
+                                            <mat-icon>save</mat-icon>
+                                            Agregar Central
+                                          </button>
+                                          
+                                        </div>
+                    </div>
+                    <br /> 
+                  </mat-tab>
+                </mat-tab-group>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+  
+  
+      </ng-container>
+    
+    
+    </mat-step>
+    </mat-vertical-stepper>
+    
+  </div>
+  
+
+
+
+
+<!-- <div class="container mt-5">
   <div class="row justify-content-center">
     <div class="col-md-12">
       <div class="card">
@@ -621,6 +1551,6 @@
       </button>
     </div>
   </div>
-  <br />
+  <br /> -->
 </div>
 <app-footer-interno></app-footer-interno>

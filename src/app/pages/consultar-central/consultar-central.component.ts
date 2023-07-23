@@ -1,13 +1,15 @@
 //SISTEMA
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit , ViewChild } from '@angular/core';
 import {
   FormBuilder, FormControl, FormGroup,
 } from '@angular/forms';
 import Swal, { SweetAlertOptions } from 'sweetalert2';
+import { MatStepper } from '@angular/material/stepper';
 
 //COMPONENTES
 import { CentralConsultaClass } from 'src/app/core/models/centralConsulta';
 import { CentralClass } from 'src/app/core/models/central';
+import { ServicioEstadoClass } from 'src/app/core/models/servicioEstado';
 
 //SERVICIOS
 import { CentralService } from 'src/app/core/services/central.service';
@@ -19,6 +21,15 @@ import { CentralService } from 'src/app/core/services/central.service';
 })
 
 export class ConsultarCentralComponent implements OnInit   {
+//STEPPER
+titulo1 = 'Seleccione una Central Meteorológica para ver sus datos';
+titulo2 = 'Datos de la Central N°:';
+titulo3 = ':';
+isStep1Completed = false;
+isStep2Completed = false;
+isStep3Completed = false;
+
+@ViewChild(MatStepper, { static: false }) stepper: MatStepper | undefined;
 
 //VARIABLES DE OBJETOS LIST
 CentralConsulta: CentralConsultaClass[] = [];
@@ -46,6 +57,21 @@ myTable = 'myTable';
   estIdSeleccionado: number = 0;
   CentralSeleccionada: any;
 
+  isCollapsed1 = false;
+  isCollapsed2 = false;
+  isCollapsed3 = false;
+
+  //PAGINADO
+  pageSizeCentral = 5; // Número de elementos por página
+  currentPageCentral = 1; // Página actual
+  totalItemsCentral = 0; // Total de elementos en la tabla
+
+  pageSizeServicio = 2; // Número de elementos por página
+  currentPageServicio = 1; // Página actual
+  totalItemsServicio = 0; // Total de elementos en la tabla
+
+  map: L.Map | undefined;
+  marker: L.Marker | undefined;
   //FORMULARIOS DE AGRUPACION DE DATOS
   formfiltro: FormGroup;
 
@@ -183,4 +209,28 @@ myTable = 'myTable';
     }
     return paginas;
   }
+   //STEP
+   goToNextStep(stepNumber: number): void {    
+    if (this.stepper) {
+      this.stepper.selectedIndex = stepNumber;
+    }
+  }
+  
+  goToPreviousStep(): void {     
+    if (this.stepper) {
+      this.stepper.previous();
+    }    
+  }
+  toggleCollapse1() {
+    this.isCollapsed1 = !this.isCollapsed1;
+  }
+
+  toggleCollapse2() {
+    this.isCollapsed2 = !this.isCollapsed2;
+  }
+
+  toggleCollapse3() {
+    this.isCollapsed3 = !this.isCollapsed3;
+  }
+
 }

@@ -23,7 +23,7 @@ import { CentralService } from 'src/app/core/services/central.service';
 export class ConsultarCentralesClienteComponent implements OnInit, AfterViewInit  {
 
   //STEPPER
-  titulo1 = 'Seleccionar Central para Ver sus Datos';
+  titulo1 = 'Seleccione una Central Meteorológica para ver sus datos';
   titulo2 = 'Datos de la Central N°:';
   titulo3 = ':';
   isStep1Completed = false;

@@ -1,9 +1,316 @@
 <app-navbar></app-navbar>
-<div class="body">
-  <h1 class="text-center">Consultar Central Meteorológica</h1>
-  <br />
 
-<form [formGroup]="formfiltro">
+
+
+<div class="body">
+  <h1 class="text-center titulo tituloFuente">Consultar Central Meteorológica</h1>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item" style="padding-left: 310px; font-size: 18px">
+        <a href="/home">Home</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        Consultar Central Meteorológica
+      </li>
+    </ol>
+  </nav>
+  <br />
+  <div class="container mt-12">
+  <!-- --------------------------Inicio de Paso a Paso-------------------------------------------- -->
+    <mat-vertical-stepper>
+      <mat-step
+        [label]="titulo1"
+        [completed]="isStep1Completed"
+        [ngClass]="{ collapse: isCollapsed1 }"
+      >
+        <ng-container contenido-paso-1>
+          <div class="card-body" [ngClass]="{ collapse: isCollapsed2 }">
+            <form [formGroup]="formfiltro">
+            <div class="row justify-content-center">
+              <div class="col-10 cardFiltrado cardAnimate cardFlat">
+                <div>
+                  <div class="row">
+                    <div class="col-md-3 image-container">
+                      <span
+                        ><img
+                          style="width: 102%; height: 102"
+                          src="../../../assets/filtrar_central.png"
+                          class="image"
+                          alt="..."
+                        />
+                        <div class="texto">
+                          <h4
+                            style="
+                              text-align: center;
+                              color: #63ddff;
+                              font-size: 18px;
+                            "
+                          >
+                            Filtrar Central
+                          </h4>
+                        </div></span
+                      >
+                    </div>                 
+    
+                  <div class="col-md-1 vertical-line"
+                  style="width: 2px;padding-left: 60px;"></div>
+                  <div class="col-md-4 margenFiltros">
+                    <div
+                      class="form-outline input-group"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Buscar por Nombre de Cliente"
+                    >
+                      <label class="search-field ">
+                        <mat-label
+                          class="search-field label ng-tns-c97-48 ng-star-inserted"
+                          >Nombre de Cliente</mat-label
+                        >
+                        <input formControlName="cliente"
+                          type="text"
+                          class="form-control inputBusqueda .input-con-color-de-fondo" style="
+                          width: 297px; padding-right: 40px;"
+                          placeholder="Ej. Agustín"
+                          (keyup)="esFiltrar($event)"
+                        />                          
+                        <i
+                          class="fas fa-search FormatoIconos"
+                          style="padding-left: 145px"
+                        ></i>
+                      </label>
+                    </div>                          
+                  </div>
+                  <!-- <div class="col-md-1 ">
+                  </div> -->
+                  <div class="col-md-1 "
+                   style="width: 2px; padding-left: 1px;"></div>
+                  <div class="col-md-4 margenFiltros">
+                    <div
+                      class="form-outline input-group"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Buscar por Nombre del Usuario"
+                    >
+                      <label class="search-field">
+                        <mat-label
+                          class="search-field label ng-tns-c97-48 ng-star-inserted"
+                          >Nombre del Usuario</mat-label
+                        >
+                        <input formControlName="usuario"
+                          type="text"
+                          class="form-control inputBusqueda .input-con-color-de-fondo" style="
+                          width: 297px; padding-right: 40px;"
+                          placeholder="Ej. Usuario1"
+                          (keyup)="esFiltrar($event)"
+                        />                             
+                        <i
+                          class="fas fa-search FormatoIconos"
+                          style="padding-left: 145px"
+                        ></i>
+                      </label>
+                    </div>                          
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+         </form>
+          <br />
+          <br />
+    
+    
+          <div class="row">
+            <div class="col-12 cardFiltrado cardAnimate cardFlat">
+              <table class="table" *ngIf="validarFiltrado() == true">
+                <thead class="encabezado">
+                  <tr>
+                    <th
+                      (click)="ordenarPor('cenNro')"
+                      [appSort]="CentralConsultaFiltrados"
+                      data-order="desc"
+                      data-name="cenNro"
+                      style="text-align: center"
+                    >
+                      <a
+                        >Cod. Central
+                        {{ ordenarIcono("cenNro") }}</a
+                      >
+                    </th>
+                    
+                    <th
+                      (click)="ordenarPor('cliApeNomDen')"
+                      [appSort]="CentralConsultaFiltrados"
+                      data-order="desc"
+                      data-name="cliApeNomDen"
+                      style="text-align: center"
+                    >
+                      <a>Cliente {{ ordenarIcono("cliApeNomDen") }}</a>
+                    </th>
+                    
+                      
+                    <th
+                      (click)="ordenarPor('usuario')"
+                      [appSort]="CentralConsultaFiltrados"
+                      data-order="desc"
+                      data-name="usuario"
+                      style="text-align: center"
+                    >
+                      <a>Usuario {{ ordenarIcono("usuario") }}</a>
+                    </th>
+                    <th
+                      (click)="ordenarPor('estDescripcion')"
+                      [appSort]="CentralConsultaFiltrados"
+                      data-order="desc"
+                      data-name="estDescripcion"
+                      style="text-align: center"
+                    >
+                      <a>Estado {{ ordenarIcono("estDescripcion") }}</a>
+                    </th>
+
+                    <th scope="col" style="text-align: center">Modificar Estado</th>
+                    <th scope="col" style="text-align: center">Ver Más</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    class="table-row"
+                    *ngFor="
+                      let central of CentralConsultaFiltrados
+                        | paginate
+                        : {
+                          itemsPerPage: pageSizeCentral,  
+                          currentPage: currentPageCentral,  
+                          totalItems: totalItemsCentral  
+                        };
+                      let i = index
+                    "
+                    [ngClass]="{
+                      'fila-par': i % 2 == 0,
+                      'fila-impar': i % 2 == 1
+                    }"
+                    (click)="esfilaSeleccionada(central)"
+                  >
+                  <th style="vertical-align: middle" class="align-center">
+                    {{ central.cenNro }}
+                  </th>
+                  <td style="vertical-align: middle">{{ central.cliApeNomDen }}</td>
+                  <td style="vertical-align: middle">{{ central.usuario }}</td>
+                  <td style="vertical-align: middle">{{ central.estDescripcion }}</td>
+                  <td class="align-center">
+                      <button
+                        mat-button
+                        (click)="ModificarEstadoCentral(1, 'Disponible')"
+                        type="button"
+                        class="btn"
+                        data-bs-target="#staticBackdrop"
+                        title="Cambiar Estado Central a Disponible"
+                      >
+                        <img
+                          src="../../../assets/disponible.png"
+                          class="iconosBoton"
+                          alt="..."
+                        />
+                      </button>
+                      <button
+                      mat-button
+                      (click)="ModificarEstadoCentral(2, 'Bloqueada')"
+                      type="button"
+                      class="btn"
+                      data-bs-target="#staticBackdrop"
+                      title="Cambiar Estado Central a Bloqueada"
+                    >
+                      <img
+                        src="../../../assets/bloqueada2.png"
+                        class="iconosBoton"
+                        alt="..."
+                      />
+                    </button>
+                    <button
+                      mat-button
+                      (click)="ModificarEstadoCentral(3, 'Error')"
+                      type="button"
+                      class="btn"
+                      data-bs-target="#staticBackdrop"
+                      title="Cambiar Estado Central a Error"
+                    >
+                      <img
+                        src="../../../assets/error2.png"
+                        class="iconosBoton"
+                        alt="..."
+                      />
+                    </button>
+                    <button
+                      mat-button
+                      (click)="ModificarEstadoCentral(4, 'Baja')"
+                      type="button"
+                      class="btn"
+                      data-bs-target="#staticBackdrop"
+                      title="Cambiar Estado Central a Baja"
+                    >
+                      <img
+                        src="../../../assets/deshabilitada.png"
+                        class="iconosBoton "
+                        alt="..."
+                      />
+                    </button>
+                    </td>
+                    <td class="align-center">
+                      <button
+                      mat-button
+                      routerLink="/modificar-central"
+                      (click)="esfilaSeleccionada(central); enviarDatos()"
+                      type="button"
+                      class="btn"
+                      data-bs-target="#staticBackdrop"
+                      title="Ver Más Opciones"
+                    >
+                      <img
+                        src="../../../assets/ver_mas.png"
+                        class="iconosBoton"
+                        alt="..."
+                      />
+                    </button>
+                    </td>
+
+                  </tr>
+                </tbody>
+              </table>
+              <mat-paginator 
+                [length]=totalItemsCentral
+                [pageSize]=pageSizeCentral
+                [pageSizeOptions]="[5, 10, 25, 100]"
+                aria-label="Select page">
+              </mat-paginator>
+    
+              <div
+                class="align-center"
+                *ngIf="validarFiltrado() == true"
+              >
+                <!-- <pagination-controls
+                  (pageChange)="paginaCambiadaCentral($event)"
+                  itemsPerPage="pageSizeCentral"
+                  totalItems="totalItemsCentral"
+                ></pagination-controls> -->
+    
+              </div>
+            </div>
+            <div
+              class="alert alert-primary text-center"
+              role="alert"
+              *ngIf="validarFiltrado() == false"
+            >
+              No se encontraron centrales que coincidan con su búsqueda.
+            </div>
+          </div>
+    
+            </div>
+          </ng-container>
+      </mat-step>
+    
+     
+        
+    </mat-vertical-stepper>
+<!-- <form [formGroup]="formfiltro">
 
 <div class="row justify-content-center">
   <div class="col-3"></div>
@@ -16,37 +323,9 @@
             d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
         </svg>
       </span>
-      <input formControlName="cliente" type="text" class="form-control" placeholder="Filtrar por Nombre del Cliente" (keyup)="esFiltrar($event)">
-  <!-- <div class="row justify-content-center">
-    <div class="col-3"></div>
-    <div class="col-6 search-container">
-      <div
-        class="form-outline input-group"
-        data-toggle="tooltip"
-        data-placement="top"
-        title="Buscar por Nombre de Cliente"
-      >
-        <span class="input-group-text">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            fill="currentColor"
-            class="bi bi-search"
-            viewBox="0 0 16 16"
-          >
-            <path
-              d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"
-            />
-          </svg>
-        </span>
-        <input
-          type="text"
-          class="form-control"
-          placeholder="Filtrar por Nombre del Cliente"
-          (keyup)="esFiltrar($event, 'cliente')"
-        />
-      </div> -->
+      <input formControlName="cliente" type="text" class="form-control" 
+      placeholder="Filtrar por Nombre del Cliente" (keyup)="esFiltrar($event)">
+  
     </div>
   </div>
   <div class="col-3"></div>
@@ -60,35 +339,7 @@
         </svg>
       </span>
       <input formControlName="usuario" type="text" class="form-control" placeholder="Filtrar por Nombre del Usuario" (keyup)="esFiltrar($event)">
-    <!-- <div class="col-3"></div>
-    <div class="col-6 search-container">
-      <div
-        class="form-outline input-group"
-        data-toggle="tooltip"
-        data-placement="top"
-        title="Buscar por Nombre de Usuario"
-      >
-        <span class="input-group-text">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            fill="currentColor"
-            class="bi bi-search"
-            viewBox="0 0 16 16"
-          >
-            <path
-              d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"
-            />
-          </svg>
-        </span>
-        <input
-          type="text"
-          class="form-control"
-          placeholder="Filtrar por Nombre del Usuario"
-          (keyup)="esFiltrar($event, 'usuario')"
-        />
-      </div> -->
+   
     </div>
   </div>
 </div>
@@ -294,6 +545,6 @@
     >
       ¡No se ha encontrado ninguna Central!
     </div>
-  </div>
+  </div> -->
 </div>
 <app-footer-interno></app-footer-interno>

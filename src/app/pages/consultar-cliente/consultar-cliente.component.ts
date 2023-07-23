@@ -42,7 +42,9 @@ export class ConsultarClienteComponent implements OnInit {
   tiposDocumento: TipoDocumentoClass[] = [
     new TipoDocumentoClass(1, 'DNI'),
     new TipoDocumentoClass(2, 'LE'),
-    new TipoDocumentoClass(3, 'CUIT')
+    new TipoDocumentoClass(3, 'LC'),
+    new TipoDocumentoClass(4, 'CUIT'),
+    new TipoDocumentoClass(5, 'CUIL')
   ];
   //VARIABLES DE DATOS
   propiedadOrdenamientoCliente: string = 'tdDescripcion'; 

@@ -511,3 +511,9 @@
   width: 280px !important;
   max-width: 280px;
 }
+.btnConsultarServicio{
+  background-color: #01C3CC;
+  width: 237px !important;
+  height: 59px !important;
+  border-radius: 50px !important;
+}

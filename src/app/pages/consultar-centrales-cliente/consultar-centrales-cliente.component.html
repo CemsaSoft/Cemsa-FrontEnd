@@ -46,7 +46,7 @@
                   <span
                     ><img
                       style="width: 102%; height: 102"
-                      src="../../../assets/icons8-user-64_1.png"
+                      src="../../../assets/filtrar_central.png"
                       class="image"
                       alt="..."
                     />
@@ -200,11 +200,11 @@
                     type="button"
                     class="btn"
                     data-bs-target="#staticBackdrop"
-                    title="Seleccionar Cliente"
+                    title="Seleccionar Central"
                   >
                     <img
-                      src="../../../assets/seleccionarClie.png"
-                      class="image"
+                      src="../../../assets/seleccionar_central.png"
+                      class="iconosBoton"
                       alt="..."
                     />
                   </button>
@@ -274,7 +274,7 @@
             <div class="d-flex justify-content-between align-items-center">
               <h4 class="mb-0 tituloCard">Ubicación de la Central N°: {{centralNroSeleccionada}} </h4>
               <img
-                src="../../../assets/seleccionar.png"
+                src="../../../assets/central_seleccionada.png"
                 class="image"
                 style="width: 5%; height: 5%; padding-right: 5px"
                 alt="..."
@@ -297,7 +297,7 @@
             <div class="d-flex justify-content-between align-items-center">
               <h4 class="mb-0 tituloCard">Lista de Servicios de la Central N° {{centralNroSeleccionada}} </h4>
               <img
-                src="../../../assets/seleccionar.png"
+                src="../../../assets/cold.png"
                 class="image"
                 style="width: 5%; height: 5%; padding-right: 5px"
                 alt="..."
@@ -330,7 +330,7 @@
                       data-name="serDescripcion"
                       style="text-align: center"
                     >
-                      <a>Nombre de Servicio {{ ordenarIconoServicioCentral("serDescripcion") }}</a>
+                      <a>Servicio {{ ordenarIconoServicioCentral("serDescripcion") }}</a>
                     </th>
                     <th
                       (click)="ordenarServicioCentralPor('serUnidad')"

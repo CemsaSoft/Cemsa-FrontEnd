@@ -1,4 +1,4 @@
-.encabezado {
+/* .encabezado {
     background-color: #006d2c;
     color: white;
   }
@@ -25,4 +25,492 @@
   }
   .body{
     margin-top: 160px;
+  } */
+  /* -----------STEP----------------------- */
+.mat-stepper-vertical {
+  margin-top: 8px !important;
+}
+
+.mat-mdc-form-field {
+  margin-top: 16px;
+}
+.stepper-title {
+  font-size: 20px; /* Ajusta el tamaño de letra según tus necesidades */
+}
+
+/* ------------Tabla----------------- */
+.encabezado {
+  background-color: #f7f9fa23;
+  color: #01C3CC;
+  border-bottom: #01C3CC;
+  border-style: groove;
+  height: 70px;
+  text-align: center;
+  font-size: 18px;
+}
+  
+  .fila-par {
+    background-color:rgba(217, 250, 251, 0.335);
+    border-bottom: rgba(186, 207, 246, 0.472);
   }
+  
+  .fila-impar {
+    background-color:rgba(217, 250, 251, 0.335);
+    border-bottom: rgba(186, 207, 246, 0.472);
+    
+  }
+  .table{
+    border-collapse: collapse;
+    width: 100%;
+    border-radius: 10x;
+  }
+  .table-row:hover {
+    background-color:white;
+  }
+  .empty-column {
+    width: 5px; /* Ancho de columna vacía */
+  }
+
+  .align-center {
+    text-align: center;
+  }
+  div.row {
+    margin-bottom: 10px;
+  }
+  th{
+    text-align: center;height: 67px;padding-bottom: 20px;padding-top: 20px;text-align: center; font: 400 15px/24px Roboto, "Helvetica Neue", sans-serif;
+    letter-spacing: normal;
+    margin: 0 0 16px;
+    color: #63DDFF;
+    font-size: 18px;
+  }
+
+  /* ----------Alineación de campos de Tabla------ */
+  .textIzquierda{
+    text-align: left;
+  }
+  .textDerecha{
+    text-align: right;
+  }
+
+  /* ------------Validaciones---------------------- */
+  .colorLetra{
+    color:red;
+  }
+  
+  .search-container {
+    margin-bottom: 20px;
+  }
+  .container{
+    max-width: 1650px;
+    padding-left: 100px;
+  }
+
+  .card-header {
+    background-color: #e0f9ff; /* verde oscuro */
+    color: #52daff; /* texto en blanco */
+    /* color: #63DDFF;  */
+    font-weight: bold; /* texto en negrita */
+    
+    border: 0;
+  }
+  .tituloCard{
+    font-size: 20px;
+    margin-bottom: 50px;
+    padding-left: 30px;
+  }
+  .card-body {
+    border: 1px solid #ffffff;
+    padding: 20px; 
+    background-color: hsl(36, 38%, 97%, 0,1);
+    border: 0;
+    
+  }
+  .btn-unstyled {
+    border: 0;
+  }
+  .body{
+    margin-top: 100px;
+    background-color: #FAFAFA;
+    font-family:'Roboto', sans-serif; 
+    font-size: 15px;
+  }
+  .navInterno{
+    background-color: #FBF9F6;
+  }
+  /* -------Cards--------- */
+  .card{/* card externa */
+    border-color: #ffffff; 
+    background-color:#FAFAFA ;
+  }
+  .cardInterno{ /* card de busqueda y de tabla */
+    border: 1px solid #01C3CC; 
+    padding: 20px; 
+    border-radius: 35px 35px 0 0;
+  }
+ 
+ /* -------Titulo de la pantalla--------- */
+  .titulo{
+    padding-left: 10px;
+    padding-top: 30px;
+    margin-top: auto;
+    text-align: left;
+    /* font-family: 'Roboto', sans-serif;*/
+    /* font-family: 'Lato', sans-serif; */
+    font-family: 'Montserrat', sans-serif;
+    color: #194c87;
+    /* font-family: 'Source Sans 3', sans-serif;  */
+    /* font-family: 'Kablammo', cursive; */
+    font-size: 36px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+
+
+  }
+  /* ------Estacio entre Botones de la tabla------ */
+  .entreBotones{
+    margin-left: 30px;
+  }
+  /* -----Iconos de Estado Activo /Dar de Baja------- */
+
+.iconosBoton{
+  height: 40px;
+  width: 40px;
+  align-content: center;
+}
+
+.bordeBoton:active {
+  border-color: #0dcaf08a;
+  border-radius: 220px;
+}
+  .botonActivar{
+    --bs-btn-color: #89d631;
+    --bs-btn-border-color:#89d631;
+    --bs-btn-hover-color: #419f00;
+    --bs-btn-hover-bg: #a8e15952;
+    --bs-btn-hover-border-color: #419f00;
+    --bs-btn-focus-shadow-rgb: 13, 202, 240;
+    --bs-btn-active-color: white;
+    --bs-btn-active-bg: #0dcaf0;
+    --bs-btn-active-border-color: #0dcaf0;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #0dcaf0;
+    --bs-btn-disabled-bg: transparent;
+    --bs-btn-disabled-border-color: #0dcaf0;
+    --bs-gradient: none;
+    border-radius: 150px;
+    font-weight: lighter;
+    width: 120px;
+    height: 38px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+  }
+  .botonBaja{
+    --bs-btn-color: #dc3545;
+    --bs-btn-border-color: #dc3545;
+    --bs-btn-hover-color: #ed081f;
+    --bs-btn-hover-bg: #f8132946;
+    --bs-btn-hover-border-color: #dc3545;
+    --bs-btn-focus-shadow-rgb: 220, 53, 69;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #dc3545;
+    --bs-btn-active-border-color: #dc3545;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #dc3545;
+    --bs-btn-disabled-bg: transparent;
+    --bs-btn-disabled-border-color: #dc3545;
+    --bs-gradient: none;
+      border-radius: 150px;
+      font-weight: lighter;
+      width: 145px;
+      height: 38px;
+      padding-bottom: 5px;
+      padding-top: 5px;
+}
+/* ---------------TARJETA DE FILTRADO--------------------------- */
+.cardFiltrado{
+  background-color: #ffffff47;
+    -webkit-border-radius: 6px;
+    border-radius: 8px;
+    border: 2px #63ddff solid!important;
+    font-family: Proxima Nova,-apple-system,Helvetica Neue,Helvetica,Roboto,Arial,sans-serif;
+    box-shadow: 3 3px 3px 0 rgba(0,0,0,.8);
+}
+.cardAnimate{
+  -webkit-transition: -webkit-box-shadow .2s ease-in-out;
+    transition: -webkit-box-shadow .2s ease-in-out;
+    transition: box-shadow .2s ease-in-out;
+    transition: box-shadow .2s ease-in-out,-webkit-box-shadow .2s ease-in-out;
+    box-shadow: 0 3px 3px 1 rgba(0,0,0,.2);
+}
+.cardFlat{
+  -webkit-box-shadow: 0 1px 2px 0 rgba(0,0,0,.12);
+  box-shadow: 8px 10px 8px 1px rgba(0,0,0,.12);
+}
+/* --------------INPUT DE BÚSQUEDA-------------------------- */
+.inputBusqueda{
+    z-index: 915;
+    color: #333;
+    font-size: 16px;
+    margin: 0;
+    font-family: inherit;
+    border-radius: 2px;
+    background-color: #fff;
+    display: -webkit-flex;
+    display: flex;
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.2);
+    height: 50px;
+    width: 150px;
+    padding: 10px 60px 10px 15px;
+    border-style: solid;
+    border-color: rgba(0,0,0,0);
+    border-width: 1.5px;
+    box-shadow: inset 0 0 2px #63ddff;
+    border-radius: 3px;
+}
+.search-field {
+  position: relative;
+  display: inline-block;
+  /* display: flex; */
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    /* text-align: center; */
+}
+
+.search-field input {
+  padding-right: 30px; /* Espacio para el icono de búsqueda */
+}
+
+.search-field i {
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #63ddff;
+}
+.search-field input:focus {
+  border-color: rgb(0, 195, 255); /* Cambia el color del borde en el foco */
+  box-shadow: 0 0 5px rgb(108, 108, 109); /* Añade una sombra en el foco */
+}
+
+.search-field input:not(:placeholder-shown) {
+  border-color: #63ddff; /* Cambia el color del borde cuando se inserta un valor */
+}
+.input-con-color-de-fondo::placeholder {
+  background-color: rgb(255, 255, 255); /* Cambia el color de fondo del placeholder */
+}
+.input-con-color-de-placeholder::placeholder {
+  background-color: white; /* Cambia el color de fondo del placeholder */
+}
+.input-con-color-de-placeholder:not(:placeholder-shown)::placeholder {
+  background-color: lightblue; /* Cambia el color de fondo del placeholder cuando se ha ingresado algo */
+}
+/* ------busqueda DNI---------- */
+
+.margen{
+  margin-top:22px;
+}
+.margenFiltros{
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
+/* -----imágen de Input de Búsqueda----- */
+.image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.image {
+  padding-left: 6px;
+  padding-top: 15px;
+}
+
+/* ---------Label de input de Busqueda--------- */
+.label{
+  position: relative;
+  display: inline-block;
+  background-color: white;
+  text-align: left;
+  color: #80807a;
+  font-size: 11px;
+  top: 10px;
+    left: 10px;
+    border-left-width: 10px;
+    width: 110px;
+    padding-left: 5px;
+}
+.centrarInput{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+}
+/* ---------------Iconos de input---------------- */
+.FormatoIconos{
+  left: 110px;
+    top: 55px;
+    margin-left: 10px;
+    margin-top: 30px;
+    height: 69px;
+    margin-bottom: 20px;
+    margin-top: 38px;
+}
+/* ---------------Formato de Combos----------------*/
+.FormatoCombos{
+  width: 156px;
+   height: 45px;
+    /* margin-top: 0px; */
+    padding-top: 30px;
+    border-color: #3f51b5;; /* Cambia el color del borde en el foco */
+    box-shadow: 0 0 5px rgb(108, 108, 109); /* Añade una sombra en el foco */
+}
+
+/* ----------Formato de Input N° Documento-------- */
+.search-field2{
+  border-color:#3f51b5;
+  
+}
+.search-field2 input:focus {
+  border-color: #3f51b5;
+  
+}
+
+.search-field2 input:not(:placeholder-shown) {
+  border-color: #3f51b5;
+}
+.search-field2 i {
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #3f51b5;
+}
+.inputBusqueda2{
+  /* position: relative; */
+    z-index: 915;
+    color: #333;
+    font-size: 16px;
+    margin: 0;
+    font-family: inherit;
+    background-color: #fff;
+    display: -webkit-flex;
+    display: flex;
+    box-shadow: 0 1px 1px 0 rgba(0,0,0,.2);
+    height: 50px;
+    width: 150px;
+    /* width: 90px; */
+    padding: 10px 60px 10px 15px;
+    border-style: solid;
+    border-color: #dadada;
+    border-width: 1px;
+    box-shadow: inset 0 0 0px #3f51b5;
+}
+ /* -----------Linea vertical--------------------- */
+ .vertical-line {
+  border-left: 3px solid #63ddff23; /* Cambia #000000 por el color que desees */
+  height: 100px; /* Ajusta la altura según tus necesidades */
+  margin-top: 30px;
+}
+
+/* ---------------MENSAJES DE ERROR---------------------------------- */
+.example-form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.example-full-width {
+  width: 100%;
+  top: 10px;
+
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+.error{
+  font-size: 12px;
+}
+.edit{
+  color: #63ddff;
+  font-variation-settings:
+  'FILL' 1,
+  'wght' 200,
+  'GRAD' 200,
+  'opsz' 24
+}
+.enabled {
+  color: #acaaaa;
+  font-variation-settings:
+  'FILL' 1,
+  'wght' 200,
+  'GRAD' 200,
+  'opsz' 24
+}
+/* -------------Botón  Seleccionar Otro Cliente-------------------------------- */
+.example-button-row button,
+.example-button-row a {
+  margin-right: 8px;
+}
+
+.example-disabled {
+  display: inline-block;
+}
+
+.btonNuevaConsulta{
+  background-color: #01C3CC;
+  width: 237px !important;
+  height: 59px !important;
+  border-radius: 50px !important;
+}
+/* -------Botón Guardar------- */
+.btnGuardar{
+  width: 237px !important;
+  height: 59px !important;
+  border-radius: 4px !important;
+  background-color: rgba(0, 63, 138, 1) !important;
+  color: #fff;
+  border-color: #194c87 !important;
+}
+.btnGuardar:hover{/*efecto a pasar por arriba*/
+  color: #fff;
+  background-color: #01C3CC !important;
+  border-color:#194c87 !important;
+  box-shadow: 0 0 10px rgba(var(--bs-btn-focus-shadow-rgb), 0.5); /*sombra*/
+}
+.btnGuardar:active{/*efecto al presionar*/
+  color:  #fff;
+  background-color: #194c873f !important;
+  border-color: #194c8754 !important;
+  box-shadow: var(--bs-btn-active-shadow);
+}
+.btnGuardar:disabled{
+  color: #632626 !important;
+  background-color: #194c8781 !important;
+  border-color: #194c87 !important;
+}
+/* -------Botón Cambiar Contraseña------- */
+.btnBlanqueoContraseña{
+  text-align: center;
+  width: 237px !important;
+  height: 40px !important;
+  border-radius: 1px !important;
+  background-color: #fff !important;
+  color: rgba(0, 63, 138, 1) !important;
+  bottom: 60px;
+}
+.btnBlanqueoContraseña:hover{
+  color: #fff !important;
+  background-color: #9eecf0 !important;
+  border-color:#6ae5ec !important;
+  box-shadow: 0 0 10px rgba(var(--bs-btn-focus-shadow-rgb), 0.5); 
+}
+.btnBlanqueoContraseña:active{/*efecto al presionar*/
+  color:  #194c87 !important;
+  background-color: #fff !important;
+  border-color: #fff!important;
+  box-shadow: var(--bs-btn-active-shadow);
+}
+

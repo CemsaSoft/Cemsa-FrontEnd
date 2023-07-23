@@ -1,5 +1,5 @@
 //SISTEMA
-import { Component, OnInit, Output } from '@angular/core';
+import { Component, OnInit, Output, ViewChild, AfterViewInit} from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -7,6 +7,10 @@ import {
   Validators,
 } from '@angular/forms';
 import Swal, { SweetAlertOptions } from 'sweetalert2';
+import {MatIconModule} from '@angular/material/icon';
+import {MatTabsModule} from '@angular/material/tabs';
+import { MatTabGroup } from '@angular/material/tabs';
+import {MatGridListModule} from '@angular/material/grid-list';
 
 import { Map, Marker, icon } from 'leaflet';
 import * as L from 'leaflet';
@@ -16,24 +20,47 @@ import { CentralClass } from 'src/app/core/models/central';
 import { ServicioClass } from 'src/app/core/models/servicio';
 import { ServicioxCentralClass } from 'src/app/core/models/serviciosxCentral';
 import { CentralClienteConsultaClass } from 'src/app/core/models/centralClienteConsulta';
+import { TipoDocumentoClass } from 'src/app/core/models/tipoDocumento';
 
 //SERVICIOS
 import { CentralService } from 'src/app/core/services/central.service';
 import { ServicioService } from 'src/app/core/services/servicio.service';
+export interface Tile {
+  color: string;
+  cols: number;
+  rows: number;
+  text: string;
+}
 
 @Component({
   selector: 'app-registrar-central',
   templateUrl: './registrar-central.component.html',
   styleUrls: ['./registrar-central.component.css']
 })
-export class RegistrarCentralComponent implements OnInit {
-
+export class RegistrarCentralComponent implements OnInit, AfterViewInit  {
+  @ViewChild(MatTabGroup) tabGroup!: MatTabGroup;
+  //STEPPER
+  titulo1 = 'Consultá información de los clientes:';
+  titulo2 = 'Modificar información de un cliente';
+  titulo3 = 'Título del tercer paso';
+  isStep1Completed = false;
+  isStep2Completed = false;
+  isStep3Completed = false;
+  
+  
   //VARIABLES DE OBJETOS LIST
   Servicios: ServicioClass[] = [];
   ServiciosNuevos: ServicioClass[] = [];
   ServiciosAgregar: ServicioxCentralClass[] = [];
   Clientes: CentralClienteConsultaClass[] = [];
   ClientesFiltrados: CentralClienteConsultaClass[] = [];
+  tiposDocumento: TipoDocumentoClass[] = [
+    new TipoDocumentoClass(1, 'DNI'),
+    new TipoDocumentoClass(2, 'LE'),
+    new TipoDocumentoClass(3, 'LC'),
+    new TipoDocumentoClass(4, 'CUIT'),
+    new TipoDocumentoClass(5, 'CUIL')
+  ];
 
   //VARIABLES DE DATOS
   cliApeNomDenSeleccionado: string = '';
@@ -54,6 +81,7 @@ export class RegistrarCentralComponent implements OnInit {
   tipoOrdenamientoCliente: number = 1;
   tipoOrdenamientoServicio: number = 1;
   tipoOrdenamientoServicioCentral: number = 1;
+  tipoDocumentoSeleccionado: number = 0;
 
   isCollapsed1 = false;
   isCollapsed2 = false;
@@ -64,6 +92,16 @@ export class RegistrarCentralComponent implements OnInit {
   formRegistar: FormGroup;
   formfiltro: FormGroup;
 
+  //GRILLA
+  tiles: Tile[] = [
+    {text: '1', cols: 3, rows: 14, color: 'lightblue'},
+    {text: '2', cols: 2, rows: 1, color: 'lightgreen'},
+    {text: '3', cols: 2, rows: 13, color: 'lightpink'},
+    {text: '4', cols: 5, rows: 1, color: '#DDBDF1'},
+  ];
+
+    map: L.Map | undefined;
+    marker: L.Marker | undefined;
   constructor(
     private servicioConsultar: ServicioService,
     private centralRegistrar: CentralService,
@@ -160,6 +198,18 @@ export class RegistrarCentralComponent implements OnInit {
     this.coordenadaYSeleccionado = "-64.188776";    
     this.coordenadaY = this.coordenadaYSeleccionado;
   }
+  // ngAfterViewInit() {
+    
+  //   this.tabGroup.selectedIndex = 0;
+  // }
+  ngAfterViewInit(): void {
+    this.tabGroup.selectedIndex = 0;
+    this.coordenadaXSeleccionado = '-31.420083';
+    this.coordenadaYSeleccionado = '-64.188776';
+
+    this.map = L.map('map').setView([-31.420083, -64.188776], 10);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(this.map);
+  }
 
   inicializarMapa(): void {
     let self = this;
@@ -214,7 +264,55 @@ export class RegistrarCentralComponent implements OnInit {
       return true;
     }
   }
+  // Placeholder de DNI
+  formatDocumentNumber(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const value = input.value.replace(/\D/g, ''); // Eliminar cualquier carácter que no sea un dígito
 
+    // Aplicar la máscara con puntos solo cuando se pierde el foco o se presiona Enter
+    input.addEventListener('blur', applyMask);
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        applyMask();
+      }
+    });
+
+    const insertDots = (value: string): string => {
+      const digit1 = value.slice(0, 2);
+      const digit2 = value.slice(2, 5);
+      const digit3 = value.slice(5, 8);
+
+      let formattedValue = '';
+
+      if (digit1) {
+        formattedValue += digit1;
+      }
+
+      if (digit2) {
+        formattedValue += `.${digit2}`;
+      }
+
+      if (digit3) {
+        formattedValue += `.${digit3}`;
+      }
+
+      return formattedValue;
+    };
+
+    function applyMask() {
+      const formattedValue = insertDots(value);
+      input.value = formattedValue;
+
+      // Verificar y ajustar el placeholder
+      if (value.length === 0) {
+        input.placeholder = '12.345.678';
+      }
+    }
+  }
+  // Permite controlar la navegación entre las pestañas
+  selectTab(tabIndex: number) {
+    this.tabGroup.selectedIndex = tabIndex;
+  }
   //Almacena los datos del servicio que fue seleccionado en la tabla de servicio filtrados dentro de variables locales.
   esfilaSeleccionadaServicio(servicios: ServicioClass) {
     this.idListaServiciosSeleccionado = servicios.serId;      
@@ -253,6 +351,11 @@ export class RegistrarCentralComponent implements OnInit {
       return '🠋🠉';
     }
   }
+  //Filtro de Tipo de DNI
+  filtrarClientesPorTipoDocumento() {
+    
+    this.ClientesFiltrados = this.Clientes.filter(cliente => cliente.cliTipoDoc === this.tipoDocumentoSeleccionado);
+  }
 
   //Almacena en una variable la propiedad por la cual se quiere ordenar la consulta de Servicio.
   ordenarServicioPor(propiedad: string) {
@@ -287,7 +390,7 @@ export class RegistrarCentralComponent implements OnInit {
   }
   
   //Filtro de Cliente por Tipo, numero, Nombre Cliente o Usuario.
-  esFiltrar(event: Event) {
+  esFiltrar2(event: Event) {
     const filtronTipo = (this.formfiltro.get('tipo') as FormControl).value?.toLowerCase();
     const filtroNumero = (this.formfiltro.get('numero') as FormControl).value?.toLowerCase();
     const filtroCliente = (this.formfiltro.get('cliente') as FormControl).value?.toLowerCase();
@@ -307,7 +410,24 @@ export class RegistrarCentralComponent implements OnInit {
       );
     });
   }
-
+  esFiltrar(event: Event, campo: string) {
+    let txtBuscar = (event.target as HTMLInputElement).value;
+    let filtro = txtBuscar
+      .replace(/[^\w\s]/g, '')
+      .trim()
+      .toLowerCase();
+    this.ClientesFiltrados = [];
+    this.Clientes.forEach((clienteConsulta) => {
+      if (
+        (campo === 'tipo' && clienteConsulta.tdDescripcion.toString().toLowerCase().includes(filtro)) ||
+        (campo === 'numero' && clienteConsulta.cliNroDoc.toString().toLowerCase().includes(filtro)) ||
+        (campo === 'cliente' && clienteConsulta.cliApeNomDen.toString().toLowerCase().includes(filtro)) ||
+        (campo === 'usuario' && clienteConsulta.usuario.toString().toLowerCase().includes(filtro))
+      ) {
+        this.ClientesFiltrados.push(clienteConsulta);
+      }
+    });
+  }
   // Extraer servicios a la central selecciona
   agregarServicio(servicios: ServicioClass): void {  
     const index = this.Servicios.indexOf(servicios);
