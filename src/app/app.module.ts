@@ -59,6 +59,9 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 import {MatIconModule} from '@angular/material/icon';
 import {MatTabsModule} from '@angular/material/tabs';
 
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
+
 //import { TextMaskModule } from 'angular2-text-mask';// npm i angular2-text-mask
 @NgModule({
   //Componentes que va a utilizar el módulo
@@ -129,6 +132,8 @@ import {MatTabsModule} from '@angular/material/tabs';
     MatTabsModule, 
     MatIconModule,
     MatGridListModule,
+    MatSortModule,
+    MatTableModule,
   ],
   // Inyección de dependencias
   providers: [

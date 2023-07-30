@@ -32,7 +32,7 @@
                   <span
                     ><img
                       style="width: 102%; height: 102"
-                      src="../../../assets/icons8-user-64_1.png"
+                      src="../../../assets/filtrar_central.png"
                       class="image"
                       alt="..."
                     />
@@ -107,125 +107,87 @@
       <br />
       <br />
 
-
       <div class="row">
         <div class="col-12 cardFiltrado cardAnimate cardFlat">
-          <table class="table" *ngIf="validarFiltrado() == true" id="servicio">
-            <thead class="encabezado">
-              <tr>
-                <th
-                  (click)="ordenarPor('cenNro')"
-                  [appSort]="CentralConsultaFiltrados"
-                  data-order="desc"
-                  data-name="cenNro"
-                  style="text-align: center"
-                >
-                  <a
-                    >Cod. {{ ordenarIcono("cenNro") }}</a
-                  >
-                </th>
-                <th
-                  (click)="ordenarPor('cenImei')"
-                  [appSort]="CentralConsultaFiltrados"
-                  data-order="desc"
-                  data-name="cenImei"
-                  style="text-align: center"
-                >
-                  <a>IMEI {{ ordenarIcono("cenImei") }}</a>
-                </th>
-                <th
-                  (click)="ordenarPor('cenCoorX')"
-                  [appSort]="CentralConsultaFiltrados"
-                  data-order="desc"
-                  data-name="cenCoorX"
-                  style="text-align: center"
-                >
-                  <a>Coordenada X {{ ordenarIcono("cenCoorX") }}</a>
-                </th>
-                <th
-                  (click)="ordenarPor('cenCoorY')"
-                  [appSort]="CentralConsultaFiltrados"
-                  data-order="desc"
-                  data-name="cenCoorY"
-                  style="text-align: center"
-                >
-                  <a>Coordenada Y {{ ordenarIcono("cenCoorY") }}</a>
-                </th>
-                <th></th>
-                <th scope="col">Seleccionar</th>             
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                class="table-row"
-                *ngFor="
-                  let central of CentralConsultaFiltrados
-                    | paginate
-                    : {
-                      itemsPerPage: pageSizeCentral,  
-                      currentPage: currentPageCentral,  
-                      totalItems: totalItemsCentral  
-                    };
-                  let i = index
-                "
-                [ngClass]="{
-                  'fila-par': i % 2 == 0,
-                  'fila-impar': i % 2 == 1
-                }"
-                (click)="esfilaSeleccionada(central)"
-              >
-                <th style="vertical-align: middle align-center">
-                  {{ central.cenNro }}
-                </th>
-                <td style="vertical-align: middle" class="textDerecha">
-                  {{ central.cenImei }}
-                </td>
-                <td style="vertical-align: middle" class="textDerecha">
-                  {{ central.cenCoorX }}
-                </td>
-                <td style="vertical-align: middle" class="textDerecha">
-                  {{ central.cenCoorY }}
-                </td>  
-                <td class="empty-column"></td>
-                <td class="align-center">
+          <!-- app.component.html -->
+          <div class="table" *ngIf="dataSourceCentral">
+            <table mat-table [dataSource]="dataSourceCentral" matSort #matSortCentral="matSort">
+
+              <!-- Columnas -->
+              <ng-container matColumnDef="cenNro">                                                            
+                <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header>Cod.</th>
+                <td class="table-row first-column" style="vertical-align: middle; text-align: textIzquierda"  mat-cell *matCellDef="let element">{{ element.cenNro }}</td>
+              </ng-container>
+      
+              <ng-container matColumnDef="cenImei">
+                <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header>IMEI</th>
+                <td class="table-row" style="vertical-align: middle; text-align: textIzquierda" mat-cell *matCellDef="let element">{{ element.cenImei }}</td>
+              </ng-container>
+      
+              <ng-container matColumnDef="cenCoorX">
+                <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header>Coordenada X</th>
+                <td class="table-row" style="vertical-align: middle; text-align: textIzquierda" mat-cell *matCellDef="let element">{{ element.cenCoorX }}</td>
+              </ng-container>
+      
+              <ng-container matColumnDef="cenCoorY">
+                <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header>Coordenada Y</th>
+                <td class="table-row" style="vertical-align: middle; text-align: textIzquierda" mat-cell *matCellDef="let element">{{ element.cenCoorY }}</td>
+              </ng-container>
+            
+              <!-- Columna vacia -->
+              <ng-container matColumnDef="columnaVacia">
+                <th class="encabezado text-center" mat-header-cell *matHeaderCellDef></th>
+                <td class="table-row" class="align-center" mat-cell *matCellDef="let element"></td>
+              </ng-container>
+
+              <!-- Columna de acciones -->
+              <ng-container matColumnDef="seleccionar">
+                <th class="encabezado text-center" mat-header-cell *matHeaderCellDef>Seleccionar</th>
+                <td class="table-row" class="align-center" mat-cell *matCellDef="let element">
                   <button
                     mat-button
-                    (click)="esfilaSeleccionada(central) ; seleccionarCentral(); goToNextStep(1)"               
+                    (click)="seleccionarCentral(element)"
                     type="button"
                     class="btn"
                     data-bs-target="#staticBackdrop"
-                    title="Seleccionar Cliente"
+                    title="Seleccionar Central"
                   >
                     <img
-                      src="../../../assets/seleccionarClie.png"
-                      class="image"
+                      src="../../../assets/seleccionar_central.png"
+                      class="iconosBoton"
                       alt="..."
                     />
                   </button>
                 </td>
-
-              </tr>
-            </tbody>
-          </table>
-          <div
-            class="align-center"
-            *ngIf="validarFiltrado() == true"
-          >
-            <pagination-controls
-              (pageChange)="paginaCambiadaCentral($event)"
-              itemsPerPage="pageSizeCentral"
-              totalItems="totalItemsCentral"
-            ></pagination-controls>
+              </ng-container>
+      
+              <!-- Filas -->
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsCentral"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumnsCentral; 
+                let i = index" [ngClass]="{ 'fila-par': i % 2 === 0, 'fila-impar': i % 2 !== 0 }">
+              </tr>      
+            </table>
+      
+            <!-- Paginador -->
+            <mat-paginator *ngIf="dataSourceCentral"
+              [length]="dataSourceCentral.data.length"
+              [pageSize]="pageSizeCentral"
+              [pageSizeOptions]="[5, 10, 25, 100]"
+              (page)="handlePageChangeCentral($event)"
+              showFirstLastButtons
+              #paginatorCentral
+            ></mat-paginator>
+      
+            <div class="align-center" *ngIf="validarFiltrado() == true">
+            </div>
+      
+            <div class="alert alert-primary text-center" role="alert" *ngIf="validarFiltrado() == false">
+              No se encontraron centrales que coincidan con su búsqueda.
+            </div>
+      
           </div>
         </div>
-        <div
-          class="alert alert-primary text-center"
-          role="alert"
-          *ngIf="validarFiltrado() == false"
-        >
-          No se encontraron centrales que coincidan con su búsqueda.
-        </div>
-      </div>
+      </div>  
 
         </div>
     </ng-container>  

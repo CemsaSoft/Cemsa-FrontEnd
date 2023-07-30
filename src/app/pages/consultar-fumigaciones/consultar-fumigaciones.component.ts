@@ -1,14 +1,16 @@
 //SISTEMA
-import { JsonpClientBackend } from '@angular/common/http';
-import { Component, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {
-  FormBuilder,
   FormGroup,
   FormControl,
   Validators,
 } from '@angular/forms';
 import Swal, { SweetAlertOptions } from 'sweetalert2';
+
 import { MatStepper } from '@angular/material/stepper';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
 
 //COMPONENTES
 import { CentralConsultaClass } from 'src/app/core/models/centralConsulta';
@@ -23,7 +25,25 @@ import { FumigacionesService } from 'src/app/core/services/fumigaciones.service'
   templateUrl: './consultar-fumigaciones.component.html',
   styleUrls: ['./consultar-fumigaciones.component.css']
 })
+
 export class ConsultarFumigacionesComponent implements OnInit {
+
+  //TABLA Central
+  displayedColumnsCentral: string[] = ['cenNro', 'cenImei', 'cenCoorX', 'cenCoorY', 'columnaVacia', 'seleccionar'];
+  @ViewChild('paginatorCentral', { static: false }) paginatorCentral: MatPaginator | undefined;
+  @ViewChild('matSortCentral', { static: false }) sortCentral: MatSort | undefined;
+  dataSourceCentral: MatTableDataSource<any>;
+  pageSizeCentral = 5; // Número de elementos por página
+  currentPageCentral = 1; // Página actual
+
+  //TABLA Fumigaciones
+  displayedColumnsFumigacion: string[] = ['serId', 'serDescripcion', 'serUnidad', 'estDescripcion'];
+  @ViewChild('matSortFumigacion', { static: false }) sortFumigacion: MatSort | undefined;
+  @ViewChild('paginatorFumigacion', { static: false }) paginatorFumigacion: MatPaginator | undefined;
+  dataSourceFumigacion: MatTableDataSource<any>;
+  pageSizeFumigacion = 5; // Número de elementos por página
+  currentPageFumigacion = 1; // Página actual
+
   //STEPPER
   titulo1 = 'Seleccionar Central para Consultar sus Fumigaciones';
   titulo2 = 'Fumigaciones de la Central N°:';
@@ -44,6 +64,7 @@ export class ConsultarFumigacionesComponent implements OnInit {
   propiedadOrdenamientoFum: string = "fumId";
   titulo: string = '';
   caracteresValidosObservacion: string = "No se admiten: ! # $ & ' ( ) * + , - . : ; < = > ¿? @ [  ] ^ _` { | } ~";                                        
+  filtroCentral: string = '';
 
   tipoOrdenamiento: number = 1;
   tipoOrdenamientoFum: number = 1;
@@ -54,12 +75,12 @@ export class ConsultarFumigacionesComponent implements OnInit {
   validadorCamposAgregar: string = '1';
 
   //PAGINADO
-  pageSizeCentral = 5; // Número de elementos por página
-  currentPageCentral = 1; // Página actual
-  totalItemsCentral = 0; // Total de elementos en la tabla
+  // pageSizeCentral = 5; // Número de elementos por página
+  // currentPageCentral = 1; // Página actual
+  // totalItemsCentral = 0; // Total de elementos en la tabla
   
-  pageSizeFumigacion = 5; // Número de elementos por página
-  currentPageFumigacion = 1; // Página actual
+  // pageSizeFumigacion = 5; // Número de elementos por página
+  // currentPageFumigacion = 1; // Página actual
   totalItemsFumigacion = 0; // Total de elementos en la tabla
   
   isCollapsed1 = false;
@@ -75,6 +96,8 @@ export class ConsultarFumigacionesComponent implements OnInit {
     private centralConsultar: CentralService, 
     private fumigacionesConsulta: FumigacionesService
   ) {
+    this.dataSourceCentral = new MatTableDataSource<any>();
+    this.dataSourceFumigacion = new MatTableDataSource<any>();
 
     this.formModificar = new FormGroup({
       nroCentral: new FormControl(null, []),
@@ -99,7 +122,25 @@ export class ConsultarFumigacionesComponent implements OnInit {
     this.centralConsultar.listaCentralesCliente(this.idUsuario).subscribe(data => {
       this.CentralConsulta = data;  
       this.CentralConsultaFiltrados = data;
+
+      this.dataSourceCentral = new MatTableDataSource(data);
+      if (this.paginatorCentral) {
+        this.dataSourceCentral.paginator = this.paginatorCentral;
+      }
+      if (this.sortCentral) {
+        this.dataSourceCentral.sort = this.sortCentral;
+      }
     });
+  }
+
+  handlePageChangeCentral(event: any) {
+    this.currentPageCentral = event.pageIndex + 1;
+    this.pageSizeCentral = event.pageSize;
+  }
+
+  handlePageChangeFumigaciones(event: any) {
+    this.currentPageFumigacion = event.pageIndex + 1;
+    this.pageSizeFumigacion = event.pageSize;
   }
 
   set nroCentral(valor: any) {
@@ -165,13 +206,13 @@ export class ConsultarFumigacionesComponent implements OnInit {
     }    
   }
 
-  toggleCollapse1() {
-    this.isCollapsed1 = !this.isCollapsed1;
-  }
+  // toggleCollapse1() {
+  //   this.isCollapsed1 = !this.isCollapsed1;
+  // }
 
-  toggleCollapse2() {
-    this.isCollapsed2 = !this.isCollapsed2;
-  }
+  // toggleCollapse2() {
+  //   this.isCollapsed2 = !this.isCollapsed2;
+  // }
 
   //Valida que exista alguna Central que responda al filtro.
   validarFiltrado(): Boolean {
@@ -191,11 +232,6 @@ export class ConsultarFumigacionesComponent implements OnInit {
     }
   }
   
-  //Almacena los datos del servicio que fue seleccionado en la tabla de servicio filtrados dentro de variables locales.
-  esfilaSeleccionada(centralConsulta: CentralConsultaClass) {
-    this.centralNroSeleccionada = centralConsulta.cenNro;    
-  }
-
   //Almacena los datos de la fumigación que fue seleccionado en la tabla de fumigación filtrados dentro de variables locales.
   esfilaSeleccionadaFumigacion(fumigacionConsulta: FumigacionesClass) {
     this.nroCentral = this.centralNroSeleccionada;
@@ -209,36 +245,44 @@ export class ConsultarFumigacionesComponent implements OnInit {
   //Filtro de Central por código de central.
   esFiltrar(event: Event, campo: string) {
     let txtBuscar = (event.target as HTMLInputElement).value;
-    let filtro = txtBuscar
+    this.filtroCentral = txtBuscar
       .replace(/[^\w\s]/g, '')
       .trim()
       .toLowerCase();
     this.CentralConsultaFiltrados = [];
     this.CentralConsulta.forEach((centralConsulta) => {
       if (
-        (campo === 'codigo' && centralConsulta.cenNro.toString().toLowerCase().includes(filtro)) 
+        (campo === 'codigo' && centralConsulta.cenNro.toString().toLowerCase().includes(this.filtroCentral)) 
       ) {
         this.CentralConsultaFiltrados.push(centralConsulta);
       }
     });
-  }
 
-  //Metodos para grilla
-  //Almacena en una variable la propiedad por la cual se quiere ordenar la consulta de Central.
-  ordenarPor(propiedad: string) {
-    this.tipoOrdenamiento =
-      propiedad === this.propiedadOrdenamiento ? this.tipoOrdenamiento * -1 : 1;
-    this.propiedadOrdenamiento = propiedad;
-  }
-
-  //En base a la propiedad por la que se quiera ordenar y el tipo de orden muestra un icono.
-  ordenarIcono(propiedad: string) {
-    if (propiedad === this.propiedadOrdenamiento) {
-      return this.tipoOrdenamiento === 1 ? '🠉' : '🠋';
-    } else {
-      return '🠋🠉';
+    this.dataSourceCentral = new MatTableDataSource(this.CentralConsultaFiltrados);
+    if (this.paginatorCentral) {
+      this.dataSourceCentral.paginator = this.paginatorCentral;
     }
-  }  
+    if (this.sortCentral) {
+      this.dataSourceCentral.sort = this.sortCentral;
+    }
+  }
+
+  // //Metodos para grilla
+  // //Almacena en una variable la propiedad por la cual se quiere ordenar la consulta de Central.
+  // ordenarPor(propiedad: string) {
+  //   this.tipoOrdenamiento =
+  //     propiedad === this.propiedadOrdenamiento ? this.tipoOrdenamiento * -1 : 1;
+  //   this.propiedadOrdenamiento = propiedad;
+  // }
+
+  // //En base a la propiedad por la que se quiera ordenar y el tipo de orden muestra un icono.
+  // ordenarIcono(propiedad: string) {
+  //   if (propiedad === this.propiedadOrdenamiento) {
+  //     return this.tipoOrdenamiento === 1 ? '🠉' : '🠋';
+  //   } else {
+  //     return '🠋🠉';
+  //   }
+  // }  
 
   //Almacena en una variable la propiedad por la cual se quiere ordenar la consulta de fumigaciones.
   ordenarPorFum(propiedad: string) {
@@ -285,12 +329,27 @@ export class ConsultarFumigacionesComponent implements OnInit {
     this.mostrarBtnEditarModificacion = false;
   }
   
-  seleccionarCentral(){
+  seleccionarCentral(element: any) {
+
+    this.centralNroSeleccionada = element.cenNro;  
+
     this.fumigacionesConsulta.obtenerFumigacionesDeCentral(this.centralNroSeleccionada).subscribe(data => {
       this.Fumigaciones = data; 
+
+      this.dataSourceFumigacion = new MatTableDataSource(data);
+      if (this.paginatorFumigacion) {
+        this.dataSourceFumigacion.paginator = this.paginatorFumigacion;
+        this.paginatorFumigacion.firstPage();
+      }
+      if (this.sortFumigacion) {
+        this.dataSourceFumigacion.sort = this.sortFumigacion;
+      }
+
     })
     this.isCollapsed1 = !this.isCollapsed1;
     this.titulo2 = 'Fumigaciones de la Central N°:' + this.centralNroSeleccionada +':';
+
+    this.goToNextStep(1)
   }
 
   //Valida que los campos descripcion y uniddad se encuentren correctamente ingresados.
@@ -496,18 +555,18 @@ export class ConsultarFumigacionesComponent implements OnInit {
   );
   }
 
-  paginaCambiadaCentral(event: any) {
-    this.currentPageCentral = event;
-    const cantidadPaginasCentral = Math.ceil(
-      this.CentralConsultaFiltrados.length / this.pageSizeCentral
-    );
-    const paginasCentral = [];
+  // paginaCambiadaCentral(event: any) {
+  //   this.currentPageCentral = event;
+  //   const cantidadPaginasCentral = Math.ceil(
+  //     this.CentralConsultaFiltrados.length / this.pageSizeCentral
+  //   );
+  //   const paginasCentral = [];
 
-    for (let i = 1; i <= cantidadPaginasCentral; i++) {
-      paginasCentral.push(i);
-    }
-    return paginasCentral;
-  }   
+  //   for (let i = 1; i <= cantidadPaginasCentral; i++) {
+  //     paginasCentral.push(i);
+  //   }
+  //   return paginasCentral;
+  // }   
 
   paginaCambiadaFumigacion(event: any) {
     this.currentPageFumigacion = event;
