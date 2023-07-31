@@ -184,7 +184,7 @@ export class ConsultarCentralesClienteComponent implements OnInit, AfterViewInit
 
     })
     this.isCollapsed1 = !this.isCollapsed1;
-    this.titulo2 = 'Datos de la Central N°:' + element.cenNro;
+    this.titulo2 = 'Datos de la Central N°' + element.cenNro + ':';
 
     this.centralNroSeleccionada = element.cenNro;
     this.coordenadaXSeleccionado = element.cenCoorX;

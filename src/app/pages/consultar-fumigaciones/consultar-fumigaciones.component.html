@@ -221,91 +221,43 @@
       <br>
       <br>
 
-      <div class="row">
+      <div class="row justify-content-center">
         <div class="col-12 cardFiltrado cardAnimate cardFlat">
-          <table class="table" *ngIf="validarFiltradoFumigacion() == true">
-            <thead class="encabezado">
-              <tr>
-                <th
-                  (click)="ordenarPorFum('fumId')"
-                  [appSort]="Fumigaciones"
-                  data-order="desc"
-                  data-name="fumId"
-                  style="text-align: center"
-                >
-                  <a
-                    >Cod. Fumigación {{ ordenarIconoFum("fumId") }}</a
-                  >
-                </th>
-                <th
-                  (click)="ordenarPorFum('fumFechaAlta')"
-                  [appSort]="Fumigaciones"
-                  data-order="desc"
-                  data-name="fumFechaAlta"
-                  style="text-align: fumFechaAlta"
-                >
-                  <a>Fecha Alta {{ ordenarIconoFum("fumFechaAlta") }}</a>
-                </th>
-                <th
-                  (click)="ordenarPorFum('fumFechaRealizacion')"
-                  [appSort]="Fumigaciones"
-                  data-order="desc"
-                  data-name="fumFechaRealizacion"
-                  style="text-align: center"
-                >
-                  <a>Fecha Realización {{ ordenarIconoFum("fumFechaRealizacion") }}</a>
-                </th>
-                <th
-                  (click)="ordenarPorFum('fumObservacion')"
-                  [appSort]="Fumigaciones"
-                  data-order="desc"
-                  data-name="fumObservacion"
-                  style="text-align: center"
-                >
-                  <a>Observación {{ ordenarIconoFum("fumObservacion") }}</a>
-                </th>                  
-                <th></th>
-                <th scope="col" style="text-align: center">
-                  Desactivar
-                </th>
-                <th scope="col" style="text-align: center">
-                  Ver Más
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                class="table-row"
-                *ngFor="
-                  let fumigacion of Fumigaciones
-                    | paginate
-                      : {
-                          itemsPerPage: pageSizeFumigacion,
-                          currentPage: currentPageFumigacion,
-                          totalItems: totalItemsFumigacion
-                        };
-                  let i = index
-                "
-                [ngClass]="{
-                  'fila-par': i % 2 == 0,
-                  'fila-impar': i % 2 == 1
-                }"
-                (click)="esfilaSeleccionadaFumigacion(fumigacion)"
-              >
-                <th style="vertical-align: middle align-center">
-                  {{ fumigacion.fumId }}
-                </th>
-                <td style="vertical-align: middle" class="textDerecha">
-                  {{ fumigacion.fumFechaAlta | date: 'yyyy-MM-dd' }}
-                </td>
-                <td style="vertical-align: middle" class="textIzquierda">
-                  {{ fumigacion.fumFechaRealizacion | date: 'yyyy-MM-dd'  }}
-                </td>
-                <td style="vertical-align: middle" class="textDerecha">
-                  {{ fumigacion.fumObservacion }}
-                </td>
-                <td class="empty-column"></td>
-                <td class="align-center">
+          <!-- app.component.html -->
+          <div class="table" *ngIf="dataSourceFumigacion">
+              <table mat-table [dataSource]="dataSourceFumigacion" matSort #matSortFumigacion="matSort">
+
+              <!-- Columnas -->
+              <ng-container matColumnDef="fumId">
+                <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header="fumId">Cod. Fumigación </th>
+                <td class="table-row first-column" style="vertical-align: middle; text-align: textIzquierda"  mat-cell *matCellDef="let element">{{ element.fumId }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="fumFechaAlta">
+                <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header="fumFechaAlta">Fecha Alta</th>
+                <td class="table-row" style="vertical-align: middle; text-align: textIzquierda" mat-cell *matCellDef="let element">{{ element.fumFechaAlta | date: 'yyyy-MM-dd'}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="fumFechaRealizacion">
+                <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header="fumFechaRealizacion">Fecha Realización</th>
+                <td class="table-row" style="vertical-align: middle; text-align: textIzquierda" mat-cell *matCellDef="let element">{{ element.fumFechaRealizacion | date: 'yyyy-MM-dd'}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="fumObservacion">
+                <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header="fumObservacion">Observación</th>
+                <td class="table-row" style="vertical-align: middle; text-align: textIzquierda" mat-cell *matCellDef="let element">{{ element.fumObservacion }}</td>
+              </ng-container>                      
+      
+              <!-- Columna vacia -->
+              <ng-container matColumnDef="columnaVacia">
+                <th class="encabezado text-center" mat-header-cell *matHeaderCellDef></th>
+                <td class="table-row" class="align-center" mat-cell *matCellDef="let element"></td>
+              </ng-container>
+      
+              <!-- Columna de acciones -->
+              <ng-container matColumnDef="seleccionar">
+                <th class="encabezado text-center" mat-header-cell *matHeaderCellDef>Ver Más</th>
+                <td class="table-row" class="align-center" mat-cell *matCellDef="let element">
                   <button
                     type="button"
                     class="btn entreBotones bordeBoton"
@@ -320,8 +272,6 @@
                       alt="..."
                     />
                   </button>
-                </td>
-                <td class="align-center">
                   <button                      
                     type="button"
                     class="btn entreBotones bordeBoton"
@@ -336,31 +286,38 @@
                       alt="..."
                     />
                   </button>
-                </td>
+                </td> 
+              </ng-container>
+
+              <!-- Filas -->
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsFumigacion"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumnsFumigacion;
+                let i = index" [ngClass]="{ 'fila-par': i % 2 === 0, 'fila-impar': i % 2 !== 0 }">
               </tr>
-            </tbody>
-          </table>
-          <div
-            class="align-center"
-            *ngIf="validarFiltradoFumigacion() == true"
-          >
-            <pagination-controls
-              (pageChange)="paginaCambiadaFumigacion($event)"
-              itemsPerPage="pageSizeFumigacion"
-              totalItems="totalItemsFumigacion"
-            ></pagination-controls>
+              
+            </table>
+      
+            <!-- Paginador -->
+            <mat-paginator *ngIf="dataSourceFumigacion"
+              [length]="dataSourceFumigacion.data.length"
+              [pageSize]="pageSizeFumigacion"
+              [pageSizeOptions]="[5, 10, 25, 100]"
+              (page)="handlePageChangeFumigacion($event)"
+              showFirstLastButtons
+              #paginatorFumigacion
+            ></mat-paginator>
+      
+            <div class="align-center" *ngIf="validarFiltradoFumigacion() == true">
+            </div>
+      
+            <div class="alert alert-primary text-center" role="alert" *ngIf="validarFiltradoFumigacion() == false">
+              No se encontraron fumigaciones que coincidan con su búsqueda.
+            </div>
+      
           </div>
-        </div>
-        <div
-          class="alert alert-primary text-center"
-          role="alert"
-          *ngIf="validarFiltradoFumigacion() == false"
-        >
-          No se encontraron fumigaciones que coincidan con su búsqueda.
-        </div>
+        </div>      
       </div>
-
-
+      
       <br>
     </ng-container>
   </mat-step>
@@ -369,15 +326,6 @@
 </div>  
 <br />
 </div>
-
-<div class="row">
-  <div class="modal-footer text-center col-3" *ngIf="this.centralNroSeleccionada !== 0">
-    <button type="submit" id="btnAgregar" class="btn btn-success" data-bs-toggle="modal"
-      data-bs-target="#staticBackdrop" (click)="abrirModal('Agregar Fumigación')">Agregar Fumigación
-    </button>
-  </div>
-</div>     
-    
 
 <br/>
 
@@ -521,60 +469,6 @@
     </div>
   </div>
 </div>
-
-
-<div *ngIf="titulo == 'Agregar Fumigación'">
-  <form [formGroup]="formAgregar" class="row g-3">
-      <fieldset id="fieldset">
-          
-        <div class="col-md-12">
-          <div class="form-outline input-group mb-3">
-              <span class="input-group-text">Nro Central </span>
-              <input type="text" class="form-control" id="nroCentralA" value="nroCentralA"
-                  formControlName="nroCentralA" readonly/>
-          </div>        
-        </div> 
-        <div class="col-md-12">
-          <div class="form-outline input-group mb-3" id="datepicker">
-            <span class="input-group-text">Fecha de Realización</span>
-            <input type="date" id="fechaRealizacionA" class="form-control" formControlName="fechaRealizacionA">
-          </div>             
-        </div>    
-        <div class="col-md-12">
-              <div class="form-outline input-group mb-3">
-                  <span class="input-group-text">Observación</span>
-                  <input type="text" class="form-control" id="observacionA" value="observacionA"
-                      formControlName="observacionA"/>
-                       <span class="input-group-text" title="{{caracteresValidosObservacion}}"><svg                    
-                        xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                        class="bi bi-question-circle" viewBox="0 0 16 16">
-                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                        <path
-                            d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z" />
-                      </svg>
-                  </span>
-              </div>
-             <div *ngIf="observacionA?.invalid && (observacionA?.dirty || observacionA?.touched)" class="text-danger">
-                <div *ngIf="observacionA?.errors?.['pattern']">
-                  No debe contener caracteres especiales ni tener más de 50 caracteres. </div>
-              </div> 
-          </div>
-      </fieldset>
-  </form>
-  <div class="row">
-    <div class="modal-footer text-center col-3">
-        <button type="submit" id="Validar" class="btn btn-success" (click)="agregarFumigacion()">
-          Agregar</button>
-    </div>
-    <div class="modal-footer text-center col-8">
-      <button style="background-color: #0e3c53;" id="Cancelar" type="button" class="btn text-white"
-        data-bs-dismiss="modal">Cancelar</button>        
-    </div>
-    <div *ngIf="validarControlesAgregar() == '2' " class="text-danger">
-      Verifique los campos ingresados
-    </div>
-  </div>
-</div>   
 
 </app-modal>
 

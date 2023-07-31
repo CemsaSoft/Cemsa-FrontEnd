@@ -1,10 +1,14 @@
 //SISTEMA
 import { Component, OnInit, ViewChild } from '@angular/core';
-import {
-  FormBuilder,
-} from '@angular/forms';
 import Swal, { SweetAlertOptions } from 'sweetalert2';
+
 import { MatStepper } from '@angular/material/stepper';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
+
+import * as echarts from 'echarts';
+import { EChartsOption, PictorialBarSeriesOption } from 'echarts/types/dist/shared';
 
 //COMPONENTES
 import { CentralConsultaClass } from 'src/app/core/models/centralConsulta';
@@ -14,20 +18,6 @@ import { MedicionesConsultaClass } from 'src/app/core/models/medicionesConsulta'
 import { CentralService } from 'src/app/core/services/central.service';
 import { MedicionesService } from 'src/app/core/services/mediciones.service'
 
-
-import * as echarts from 'echarts';
-//import * as echarts from 'echarts/core';
-import { GaugeChart, GaugeSeriesOption } from 'echarts/charts';
-import { CanvasRenderer } from 'echarts/renderers';
-import { EChartsOption, PictorialBarSeriesOption } from 'echarts/types/dist/shared';
-
-import { TreeChart } from 'echarts/charts';
-import { SVGRenderer } from 'echarts/renderers';
-import { IfStmt } from '@angular/compiler';
-
-//echarts.use([SVGRenderer, GaugeChart, CanvasRenderer]);
-//echarts.use([GaugeChart, CanvasRenderer]);
-
 @Component({
   selector: 'app-consultar-mediciones-actuales',
   templateUrl: './consultar-mediciones-actuales.component.html',
@@ -35,6 +25,15 @@ import { IfStmt } from '@angular/compiler';
 })
 
 export class ConsultarMedicionesActualesComponent implements OnInit {
+
+  //TABLA Central
+  displayedColumnsCentral: string[] = ['cenNro', 'cenImei', 'cenCoorX', 'cenCoorY', 'columnaVacia', 'seleccionar'];
+  @ViewChild('paginatorCentral', { static: false }) paginatorCentral: MatPaginator | undefined;
+  @ViewChild('matSortCentral', { static: false }) sortCentral: MatSort | undefined;
+  dataSourceCentral: MatTableDataSource<any>;
+  pageSizeCentral = 5; // Número de elementos por página
+  currentPageCentral = 1; // Página actual
+    
   //STEPPER
   titulo1 = 'Seleccionar Central para Ver sus Mediciones Actuales';
   titulo2 = 'Mediciones Actuales de la Central N°:';
@@ -52,15 +51,11 @@ export class ConsultarMedicionesActualesComponent implements OnInit {
 
   //VARIABLES DE DATOS
   propiedadOrdenamiento: string = 'cenNro';
+  filtroCentral: string = '';
 
   tipoOrdenamiento: number = 1;
   centralNroSeleccionada: number=0;
   idUsuario: any = 0;
-
-  //PAGINADO
-  pageSizeCentral = 5; // Número de elementos por página
-  currentPageCentral = 1; // Página actual
-  totalItemsCentral = 0; // Total de elementos en la tabla
 
   isCollapsed1 = false;
   isCollapsed2 = false;
@@ -71,14 +66,28 @@ export class ConsultarMedicionesActualesComponent implements OnInit {
     private MedicionesService: MedicionesService,
   ) 
   { 
+    this.dataSourceCentral = new MatTableDataSource<any>();
   }
   
   ngOnInit(): void {
     this.idUsuario = localStorage.getItem('idUsuario');
     this.centralConsultar.listaCentralesCliente(this.idUsuario).subscribe(data => {
-      this.CentralConsulta = data;
+      this.CentralConsulta = data;  
       this.CentralConsultaFiltrados = data;
+
+      this.dataSourceCentral = new MatTableDataSource(data);
+      if (this.paginatorCentral) {
+        this.dataSourceCentral.paginator = this.paginatorCentral;
+      }
+      if (this.sortCentral) {
+        this.dataSourceCentral.sort = this.sortCentral;
+      }
     });
+  }
+
+  handlePageChangeCentral(event: any) {
+    this.currentPageCentral = event.pageIndex + 1;
+    this.pageSizeCentral = event.pageSize;
   }
 
   graf5(medicion: number): void {
@@ -222,13 +231,6 @@ export class ConsultarMedicionesActualesComponent implements OnInit {
       this.stepper.previous();
     }    
   }
-  
-  toggleCollapse1() {
-    this.isCollapsed1 = !this.isCollapsed1;
-  }
-  toggleCollapse2() {
-    this.isCollapsed2 = !this.isCollapsed2;
-  }
 
   //Valida que exista alguna Central que responda al filtro.
   validarFiltrado(): Boolean {
@@ -239,48 +241,35 @@ export class ConsultarMedicionesActualesComponent implements OnInit {
     }
   }
 
-  //Almacena los datos del servicio que fue seleccionado en la tabla de servicio filtrados dentro de variables locales.
-  esfilaSeleccionada(centralConsulta: CentralConsultaClass) {
-    this.centralNroSeleccionada = centralConsulta.cenNro;
-  }
-
   //Filtro de Central por código de central.
   esFiltrar(event: Event, campo: string) {
     let txtBuscar = (event.target as HTMLInputElement).value;
-    let filtro = txtBuscar
+    this.filtroCentral = txtBuscar
       .replace(/[^\w\s]/g, '')
       .trim()
       .toLowerCase();
     this.CentralConsultaFiltrados = [];
     this.CentralConsulta.forEach((centralConsulta) => {
       if (
-        (campo === 'codigo' && centralConsulta.cenNro.toString().toLowerCase().includes(filtro)) 
+        (campo === 'codigo' && centralConsulta.cenNro.toString().toLowerCase().includes(this.filtroCentral)) 
       ) {
         this.CentralConsultaFiltrados.push(centralConsulta);
-      }
+      }    
     });
-  }                                 
 
-  //Metodos para grilla
-  //Almacena en una variable la propiedad por la cual se quiere ordenar la consulta de Central.
-  ordenarPor(propiedad: string) {
-    this.tipoOrdenamiento =
-      propiedad === this.propiedadOrdenamiento ? this.tipoOrdenamiento * -1 : 1;
-    this.propiedadOrdenamiento = propiedad;
-  }
-
-  //En base a la propiedad por la que se quiera ordenar y el tipo de orden muestra un icono.
-  ordenarIcono(propiedad: string) {
-    if (propiedad === this.propiedadOrdenamiento) {
-      return this.tipoOrdenamiento === 1 ? '🠉' : '🠋';
-    } else {
-      return '🠋🠉';
+    this.dataSourceCentral = new MatTableDataSource(this.CentralConsultaFiltrados);
+    if (this.paginatorCentral) {
+      this.dataSourceCentral.paginator = this.paginatorCentral;
     }
-  }  
+    if (this.sortCentral) {
+      this.dataSourceCentral.sort = this.sortCentral;
+    }
+  }                            
 
-  seleccionarCentral(){
+  seleccionarCentral(element: any) {
     this.isCollapsed1 = !this.isCollapsed1;
-    this.titulo2 = 'Mediciones Actuales de la Central N°:' + this.centralNroSeleccionada;
+    this.centralNroSeleccionada = element.cenNro;
+    this.titulo2 = 'Mediciones Actuales de la Central N°' + element.cenNro + ':';
 
     this.MedicionesConsulta = [];
     // Obtén el contenedor de los gráficos
@@ -291,7 +280,7 @@ export class ConsultarMedicionesActualesComponent implements OnInit {
       contenedor.removeChild(contenedor.firstChild);
     }   
 
-    this.MedicionesService.obtenerUltimaMedicionesXCentral(this.centralNroSeleccionada).subscribe(data => {
+    this.MedicionesService.obtenerUltimaMedicionesXCentral(element.cenNro).subscribe(data => {
       this.MedicionesConsulta = data;
   
       if (this.MedicionesConsulta.length == 0) {
@@ -552,19 +541,9 @@ export class ConsultarMedicionesActualesComponent implements OnInit {
 
     });
   
+    this.goToNextStep(1)
+
   }
 
-  paginaCambiadaCentral(event: any) {
-    this.currentPageCentral = event;
-    const cantidadPaginasCentral = Math.ceil(
-      this.CentralConsultaFiltrados.length / this.pageSizeCentral
-    );
-    const paginasCentral = [];
-
-    for (let i = 1; i <= cantidadPaginasCentral; i++) {
-      paginasCentral.push(i);
-    }
-    return paginasCentral;
-  } 
 }
 

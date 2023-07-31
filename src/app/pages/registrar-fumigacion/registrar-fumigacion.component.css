@@ -495,3 +495,8 @@
   margin-top: 10px;
   width: 100%;
 }
+.first-column {
+  background-color: #f7f9fa23;
+  color: #01C3CC;
+  font-size: 18px;  
+}
