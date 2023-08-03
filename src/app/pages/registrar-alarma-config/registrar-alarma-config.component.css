@@ -490,3 +490,9 @@
   height: 59px !important;
   border-radius: 50px !important;
 }
+
+.first-column {
+  background-color: #f7f9fa23;
+  color: #01C3CC;
+  font-size: 18px;  
+}

@@ -26,7 +26,6 @@ import { FumigacionesService } from 'src/app/core/services/fumigaciones.service'
   styleUrls: ['./registrar-fumigacion.component.css'],
 })
 
-
 export class RegistrarFumigacionComponent implements OnInit {
 
   //TABLA Central

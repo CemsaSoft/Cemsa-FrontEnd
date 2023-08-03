@@ -37,7 +37,7 @@ export class ConsultarFumigacionesComponent implements OnInit {
   currentPageCentral = 1; // Página actual
 
   //TABLA Fumigaciones
-  displayedColumnsFumigacion: string[] = ['fumId', 'fumFechaAlta', 'fumFechaRealizacion', 'fumObservacion', 'columnaVacia', 'seleccionar'];
+  displayedColumnsFumigacion: string[] = ['fumId', 'fumFechaAlta', 'fumFechaRealizacion', 'fumObservacion', 'columnaVacia', 'desactivar', 'seleccionar'];
   @ViewChild('matSortFumigacion', { static: false }) sortFumigacion: MatSort | undefined;
   @ViewChild('paginatorFumigacion', { static: false }) paginatorFumigacion: MatPaginator | undefined;
   dataSourceFumigacion: MatTableDataSource<any>;
@@ -47,7 +47,7 @@ export class ConsultarFumigacionesComponent implements OnInit {
   //STEPPER
   titulo1 = 'Seleccionar Central para Consultar sus Fumigaciones';
   titulo2 = 'Fumigaciones de la Central N°:';
-  titulo3 = ':';
+  titulo3 = 'Modificar Datos de la Fumigación N°:';
   isStep1Completed = false;
   isStep2Completed = false;
   isStep3Completed = false;
@@ -66,18 +66,13 @@ export class ConsultarFumigacionesComponent implements OnInit {
   caracteresValidosObservacion: string = "No se admiten: ! # $ & ' ( ) * + , - . : ; < = > ¿? @ [  ] ^ _` { | } ~";                                        
   filtroCentral: string = '';
 
-  tipoOrdenamiento: number = 1;
-  tipoOrdenamientoFum: number = 1;
   centralNroSeleccionada: number=0;
   idFumSeleccionado: number=0;
   idUsuario: any = 0;
-  validadorCamposModif: string = '1';
-  validadorCamposAgregar: string = '1';
   
   isCollapsed1 = false;
   isCollapsed2 = false;
-  mostrarBtnEditarModificacion = true;
-  mostrarBtnAceptarModificacion = false;
+  isCollapsed3 = false;
 
   //FORMULARIOS DE AGRUPACION DE DATOS
   formModificar: FormGroup;
@@ -189,16 +184,6 @@ export class ConsultarFumigacionesComponent implements OnInit {
     }
   }
   
-  //Almacena los datos de la fumigación que fue seleccionado en la tabla de fumigación filtrados dentro de variables locales.
-  esfilaSeleccionadaFumigacion(fumigacionConsulta: FumigacionesClass) {
-    this.nroCentral = this.centralNroSeleccionada;
-    this.idFum = fumigacionConsulta.fumId;  
-    this.idFumSeleccionado = fumigacionConsulta.fumId;  
-    this.fechaAlta= fumigacionConsulta.fumFechaAlta ? new Date(fumigacionConsulta.fumFechaAlta).toLocaleDateString("es-AR") : '';
-    this.fechaRealizacion=fumigacionConsulta.fumFechaRealizacion ? new Date(fumigacionConsulta.fumFechaRealizacion).toLocaleDateString("es-AR") : ''; ;
-    this.observacion = fumigacionConsulta.fumObservacion;
-  }
-  
   //Filtro de Central por código de central.
   esFiltrar(event: Event, campo: string) {
     let txtBuscar = (event.target as HTMLInputElement).value;
@@ -224,31 +209,6 @@ export class ConsultarFumigacionesComponent implements OnInit {
     }
   }
 
-  //Permite abrir un Modal u otro en función del titulo pasado como parametro.
-  abrirModal(opcion: string) {
-    if (opcion == 'Ver Mas') {
-      this.titulo = opcion;
-      this.bloquearEditar();
-    } 
-    if (opcion == 'Eliminar Fumigación') {
-        this.titulo = opcion;
-    }
-  }
-
-  //Bloquea los campos ante una consulta.
-  bloquearEditar(): void {
-    this.formModificar.get('observacion')?.disable();
-    this.mostrarBtnAceptarModificacion = false;
-    this.mostrarBtnEditarModificacion = true;
-  }
-
-  //Desbloquea los campos para su modificación.
-  desbloquearEditar(): void {
-    this.formModificar.get('observacion')?.enable();
-    this.mostrarBtnAceptarModificacion = true;   
-    this.mostrarBtnEditarModificacion = false;
-  }
-  
   seleccionarCentral(element: any) {
 
     this.centralNroSeleccionada = element.cenNro;  
@@ -272,13 +232,19 @@ export class ConsultarFumigacionesComponent implements OnInit {
     this.goToNextStep(1)
   }
 
-  //Valida que los campos descripcion y uniddad se encuentren correctamente ingresados.
-  validarControlesMod(): string {
-    if (this.formModificar.valid == false) {
-      return (this.validadorCamposModif = '2');
-    } else {
-      return (this.validadorCamposModif = '1');
-    }
+  seleccionarFumigacion(element: any) {
+
+    this.nroCentral = this.centralNroSeleccionada;
+    this.idFum = element.fumId;  
+    this.idFumSeleccionado = element.fumId;  
+    this.fechaAlta= element.fumFechaAlta ? new Date(element.fumFechaAlta).toLocaleDateString("es-AR") : '';
+    this.fechaRealizacion=element.fumFechaRealizacion ? new Date(element.fumFechaRealizacion).toLocaleDateString("es-AR") : ''; ;
+    this.observacion = element.fumObservacion;
+
+    this.isCollapsed2 = !this.isCollapsed2;
+    this.titulo3 = 'Modificar Datos de la Fumigación N°' + element.fumId + ':';
+
+    this.goToNextStep(2)
   }
 
   //Modificación de la fumigacion seleccionado.
@@ -291,6 +257,7 @@ export class ConsultarFumigacionesComponent implements OnInit {
         text: `Verificar los datos ingresados:              
           ${this.observacion?.invalid && this.observacion.errors?.['pattern'] ? '\n* Observación no debe contener caracteres especiales ni tener más de 50 caracteres.' : ''}`,                      
         icon: 'warning',
+        position: 'center',
         confirmButtonColor: '#0f425b',
         confirmButtonText: 'Aceptar',
         footer: 'Por favor, corrija los errores e inténtelo de nuevo.'
@@ -314,7 +281,7 @@ export class ConsultarFumigacionesComponent implements OnInit {
           ' y la fecha de realización ' +
           this.formModificar.get('fechaRealizacion')?.value ,
           icon: 'success',
-          position: 'top',
+          position: 'center',
           showConfirmButton: true,
           confirmButtonColor: '#0f425b',
           confirmButtonText: 'Aceptar',
@@ -339,37 +306,55 @@ export class ConsultarFumigacionesComponent implements OnInit {
     }
   }
 
-  desactivarFumigacion() {
-    this.fumigacionesConsulta.eliminarFumigacion(this.idFumSeleccionado).subscribe(() => {
-      Swal.fire({
-        text:
-          'Se ha eliminado con éxito la fumigación identificada con el código ' +
-          this.idFumSeleccionado +
-          ' y la fecha de realización ' +
-          this.formModificar.get('fechaRealizacion')?.value ,
-        icon: 'success',
-        position: 'top',
-        showConfirmButton: true,
-        confirmButtonColor: '#0f425b',
-        confirmButtonText: 'Aceptar',
-      } as SweetAlertOptions).then((result) => {
-        if (result.value == true) {
-          window.scrollTo(0, 0); 
-          location.reload();  
-          window.scrollTo(0, 0);    
-          return;     
-        }
-      });
-    }, (error) => {
-      Swal.fire({
-        text: 'No es posible eliminar esta fumigación',
-        icon: 'error',
-        position: 'top',
-        showConfirmButton: true,
-        confirmButtonColor: '#0f425b',
-        confirmButtonText: 'Aceptar',
-      } as SweetAlertOptions);    
-   });
+  //Baja fisica del servicio seleccionado.
+  desactivarFumigacion(element: any) {
+
+    const fechaAlta = new Date(element.fumFechaAlta);
+    const dia = fechaAlta.getDate();
+    const mes = fechaAlta.getMonth() + 1;
+    const año = fechaAlta.getFullYear();
+
+    const fechaFormateada = `${dia < 10 ? '0' : ''}${dia}-${mes < 10 ? '0' : ''}${mes}-${año}`;
+
+    Swal.fire({
+      text: '¿Estás seguro que deseas eliminar la Fumigación con Código ' + element.fumId + ', realizada en la fecha ' + fechaFormateada + '?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#0f425b',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar'
+    } as SweetAlertOptions).then((result) => {
+      if (result.isConfirmed) {
+        this.fumigacionesConsulta    
+        .eliminarFumigacion(element.fumId)
+        .subscribe(() => {
+          Swal.fire({
+            text:
+            'Se ha eliminado con éxito la fumigación identificada con el código ' +
+            element.fumId + ' y la fecha de realización ' + fechaFormateada,
+            icon: 'success',
+            position: 'center',
+            showConfirmButton: true,
+            confirmButtonColor: '#0f425b',
+            confirmButtonText: 'Aceptar',
+          } as SweetAlertOptions).then((result) => {
+            if (result.value == true) {
+              return location.reload();
+            }
+          });
+        },(error) => {
+          Swal.fire({
+            text: 'No es posible eliminar esta fumigación',
+            icon: 'error',
+            position: 'center',
+            showConfirmButton: true,
+            confirmButtonColor: '#0f425b',
+            confirmButtonText: 'Aceptar',
+          } as SweetAlertOptions);    
+        });
+      }
+    });
   }
 
 }

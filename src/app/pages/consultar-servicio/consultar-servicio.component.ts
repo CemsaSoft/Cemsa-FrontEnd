@@ -1,5 +1,4 @@
 //SISTEMA
-import { JsonpClientBackend } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {
   FormBuilder,
@@ -8,7 +7,11 @@ import {
   Validators,
 } from '@angular/forms';
 import Swal, { SweetAlertOptions } from 'sweetalert2';
+
 import { MatStepper } from '@angular/material/stepper';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
 
 //COMPONENTES 
 import { ServicioClass } from 'src/app/core/models/servicio';
@@ -23,9 +26,17 @@ import { ServicioService } from 'src/app/core/services/servicio.service';
 })
 export class ConsultarServicioComponent implements OnInit {
 
+  //TABLA Servicios
+  displayedColumnsServicio: string[] = ['serId', 'serDescripcion', 'serUnidad', 'columnaVacia', 'desactivar', 'verMas'];
+  @ViewChild('matSortServicio', { static: false }) sortServicio: MatSort | undefined;
+  @ViewChild('paginatorServicio', { static: false }) paginatorServicio: MatPaginator | undefined;
+  dataSourceServicio: MatTableDataSource<any>;
+  pageSizeServicio = 5; // Número de elementos por página
+  currentPageServicio = 1; // Página actual
+  
   //STEPPER
   titulo1 = 'Consultá información de los servicios:';
-  titulo2 = 'Agregar servicio:';
+  titulo2 = 'Modificar servicio';
   titulo3 = '';
   isStep1Completed = false;
   isStep2Completed = false;
@@ -37,15 +48,16 @@ export class ConsultarServicioComponent implements OnInit {
   Servicios: ServicioClass[] = [];
   ServiciosFiltrados: ServicioClass [] = [];
 
+  opcionesTipoGrafico = [
+    { codigo: 1, descripcion: 'Humedad de Suelo' },
+    { codigo: 2, descripcion: 'Humedad del Ambiente' },
+    { codigo: 3, descripcion: 'Temperatura' },
+    { codigo: 4, descripcion: 'Velocidad del Viento' },
+    { codigo: 5, descripcion: 'Dirección del Viento' }
+  ];
+
   isCollapsed1 = false;
   isCollapsed2 = false;  
-
-  //PAGINADO
-  pageSize = 5; // Número de elementos por página
-  currentPage = 1; // Página actual
-  totalItems = 0; // Total de elementos en la tabla
-
-  //myTable = 'myTable';
 
   //VARIABLES DE DATOS
   titulo: string = '';
@@ -53,8 +65,6 @@ export class ConsultarServicioComponent implements OnInit {
   validadorCamposAgregar: string = '1';
   serDescripcion: string = '';
   serUnidad: string = '';
-  unidadSeleccionada: string = '';
-  despcionSeleccionado: string = '';
   propiedadOrdenamiento: string = 'serId';
   caracteresValidosNombreServicio: string =
     "La primera letra del Nombre del Servicio debe ser Mayúscula, más de 3 caracteres y no se admiten: ! # $ % & ' ( ) * + , - . : ; < = > ¿? @ [  ] ^ _` { | } ~";
@@ -71,9 +81,10 @@ export class ConsultarServicioComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private servicioRegistrar: ServicioService,
     private servicioConsultar: ServicioService) 
     { 
+      this.dataSourceServicio = new MatTableDataSource<any>();
+
       this.formModificar = this.fb.group({
         id: new FormControl(null, []),
         descripcion: new FormControl(null, [
@@ -89,10 +100,28 @@ export class ConsultarServicioComponent implements OnInit {
   }
   
   ngOnInit(): void {
+
+    this.tipoGrafico = 1;
+    
     this.servicioConsultar.obtenerServicios().subscribe(data => {
       this.Servicios = data;  
       this.ServiciosFiltrados = data;
-    })
+
+      this.dataSourceServicio = new MatTableDataSource(data);
+      if (this.paginatorServicio) {
+        this.dataSourceServicio.paginator = this.paginatorServicio;
+        this.paginatorServicio.firstPage();
+      }
+      if (this.sortServicio) {
+        this.dataSourceServicio.sort = this.sortServicio;
+      }
+
+    });
+  }
+
+  handlePageChangeServicio(event: any) {
+    this.currentPageServicio = event.pageIndex + 1;
+    this.pageSizeServicio = event.pageSize;
   }
 
   set id(valor: any) {
@@ -123,7 +152,6 @@ export class ConsultarServicioComponent implements OnInit {
 
   //STEP
   goToNextStep(stepNumber: number): void {
-    console.log(`Pasando al siguiente paso: ${stepNumber}`);
     if (this.stepper) {
       this.stepper.selectedIndex = stepNumber;
     }
@@ -134,23 +162,6 @@ export class ConsultarServicioComponent implements OnInit {
       this.stepper.previous();
     }
   }
-
-  getTipoGraficoTexto(serTipoGrafico: number): string {
-    switch (serTipoGrafico) {
-      case 1:
-        return 'Humedad de Suelo';
-      case 2:
-        return 'Humedad del Ambiente';
-      case 3:
-        return 'Temperatura';
-      case 4:
-        return 'Velocidad del Viento';
-      case 5:
-        return 'Dirección del Viento';
-      default:
-        return '';
-    }
-  }  
   
   //Filtro de Servicios por Descripcion.
   esFiltrar(event: Event){
@@ -169,6 +180,15 @@ export class ConsultarServicioComponent implements OnInit {
       }
     }
     );
+
+    this.dataSourceServicio = new MatTableDataSource(this.ServiciosFiltrados);
+    if (this.paginatorServicio) {
+      this.dataSourceServicio.paginator = this.paginatorServicio;
+      this.paginatorServicio.firstPage();
+    }
+    if (this.sortServicio) {
+      this.dataSourceServicio.sort = this.sortServicio;
+    }
   }
 
   //Valida que exista algún servicio que responda al filtro.
@@ -180,88 +200,18 @@ export class ConsultarServicioComponent implements OnInit {
     }
   }
 
-  //Almacena los datos del servicio que fue seleccionado en la tabla de servicio filtrados dentro de variables locales.
-  esfilaSeleccionada(servicios: ServicioClass) {
-    this.idSeleccionado = servicios.serId;
-    this.despcionSeleccionado = servicios.serDescripcion;
-    this.unidadSeleccionada = servicios.serUnidad;
-    this.id = servicios.serId;
-    this.descripcion = servicios.serDescripcion;
-    this.unidad = servicios.serUnidad;
-    this.tipoGrafico = servicios.serTipoGrafico;
-  }
+  seleccionarServicio(element: any) {
 
-  //Permite abrir un Modal u otro en función del titulo pasado como parametro.
-  abrirModal(opcion: string) {
-    if (opcion == 'Ver Mas') {
-      this.titulo = opcion;
-      this.bloquearEditar();
-    } 
-    if (opcion == 'Eliminar Servicio') {
-        this.titulo = opcion;
-    }
-    if (opcion == 'Agregar Servicio') {
-          this.titulo = opcion;
-    }
-  }
+    this.idSeleccionado = element.serId;
+    this.id = element.serId;
+    this.descripcion = element.serDescripcion;
+    this.unidad = element.serUnidad;
+    this.tipoGrafico = element.serTipoGrafico;
 
-  //Valida que los campos descripcion y uniddad se encuentren correctamente ingresados.
-  validarControlesMod(): string {
-    if (this.formModificar.valid == false) {
-      return (this.validadorCamposModif = '2');
-    } else {
-      return (this.validadorCamposModif = '1');
-    }
-  }
+    this.isCollapsed1 = !this.isCollapsed1;
+    this.titulo2 = 'Modificar servicio' + element.serDescripcion + ':';
 
-  //Metodos para grilla
-  //Almacena en una variable la propiedad por la cual se quiere ordenar la consulta de Servicios.
-  ordenarPor(propiedad: string) {
-    this.tipoOrdenamiento =
-      propiedad === this.propiedadOrdenamiento ? this.tipoOrdenamiento * -1 : 1;
-    this.propiedadOrdenamiento = propiedad;
-  }
-
-  //En base a la propiedad por la que se quiera ordenar y el tipo de orden muestra un icono.
-  ordenarIcono(propiedad: string) {
-    if (propiedad === this.propiedadOrdenamiento) {
-      return this.tipoOrdenamiento === 1 ? '🠉' : '🠋';
-    } else {
-      return '🠋🠉';
-    }
-  }
-
-  //Bloquea los campos ante una consulta.
-  bloquearEditar(): void {
-    this.formModificar.get('id')?.disable();
-    this.formModificar.get('descripcion')?.disable();
-    this.formModificar.get('unidad')?.disable(); 
-    this.formModificar.get('tipoGrafico')?.disable();      
-    this.mostrarBtnAceptarModificacion = false;
-    this.mostrarBtnEditarModificacion = true;
-  }
-
-  //Desbloquea los campos para su modificación.
-  desbloquearEditar(): void {
-    this.formModificar.get('descripcion')?.enable();   
-    this.formModificar.get('unidad')?.enable();   
-    this.formModificar.get('tipoGrafico')?.enable();       
-    this.mostrarBtnAceptarModificacion = true;   
-    this.mostrarBtnEditarModificacion = false;
-    
-  }
-
-  //Consulta los Servicio que se encuentran registrados y los guarda en una lista de Servicio.
-  obtenerServicio() {
-    this.servicioConsultar.obtenerServicios().subscribe((data) => {
-      this.Servicios = data;
-      this.totalItems = this.Servicios.length;
-      this.Servicios.forEach((servicio) => {
-        servicio.serDescripcion = this.serDescripcion;
-        servicio.serUnidad = this.serUnidad;
-        
-      });
-    });
+    this.goToNextStep(1)
   }
 
   //Modificación del servicio seleccionado.
@@ -302,7 +252,7 @@ export class ConsultarServicioComponent implements OnInit {
             this.idSeleccionado +
             ' ha sido modificado con éxito.',
           icon: 'success',
-          position: 'top',
+          position: 'center',
           showConfirmButton: true,
           confirmButtonColor: '#0f425b',
           confirmButtonText: 'Aceptar',
@@ -325,50 +275,48 @@ export class ConsultarServicioComponent implements OnInit {
   }
 
   //Baja fisica del servicio seleccionado.
-  desactivarServicio() {
-    this.servicioConsultar    
-    .eliminarServicio(this.idSeleccionado)
-    .subscribe(() => {
-      Swal.fire({
-        text:
-          'Se ha eliminado con éxito el servicio  ' +
-          this.despcionSeleccionado +
-          ' identificado con el código ' +
-          this.idSeleccionado,
-        icon: 'success',
-        position: 'top',
-        showConfirmButton: true,
-        confirmButtonColor: '#0f425b',
-        confirmButtonText: 'Aceptar',
-      } as SweetAlertOptions).then((result) => {
-        if (result.value == true) {
-          return location.reload();
-        }
-      });
-    }, (error) => {
-      Swal.fire({
-        text: 'No es posible eliminar este servicio',
-        icon: 'error',
-        position: 'top',
-        showConfirmButton: true,
-        confirmButtonColor: '#0f425b',
-        confirmButtonText: 'Aceptar',
-      } as SweetAlertOptions);    
+  desactivarServicio(element: any) {
+    Swal.fire({
+      text: '¿ Estás seguro que deseas eliminar el servicio ' + element.serDescripcion + '?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#0f425b',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar'
+    } as SweetAlertOptions).then((result) => {
+      if (result.isConfirmed) {
+        this.servicioConsultar    
+        .eliminarServicio(element.serId)
+        .subscribe(() => {
+          Swal.fire({
+            text:
+              'Se ha eliminado con éxito el servicio  ' +
+              element.serDescripcion +
+              ' identificado con el código ' +
+              element.serId,
+            icon: 'success',
+            position: 'center',
+            showConfirmButton: true,
+            confirmButtonColor: '#0f425b',
+            confirmButtonText: 'Aceptar',
+          } as SweetAlertOptions).then((result) => {
+            if (result.value == true) {
+              return location.reload();
+            }
+          });
+        },(error) => {
+          Swal.fire({
+            text: 'No es posible eliminar este servicio',
+            icon: 'error',
+            position: 'center',
+            showConfirmButton: true,
+            confirmButtonColor: '#0f425b',
+            confirmButtonText: 'Aceptar',
+          } as SweetAlertOptions);    
+        });
+      }
     });
-  }
-
-  
-  paginaCambiada(event: any) {
-    this.currentPage = event;
-    const cantidadPaginas = Math.ceil(
-      this.ServiciosFiltrados.length / this.pageSize
-    );
-    const paginas = [];
-
-    for (let i = 1; i <= cantidadPaginas; i++) {
-      paginas.push(i);
-    }
-    return paginas;
   }
   
 }

@@ -9,9 +9,9 @@
       <li class="breadcrumb-item active" aria-current="page">
         Consultar Alarmas
       </li>
-    </ol>    
+    </ol>
   </nav>
-  
+
   <div class="container mt-12">
 
 <!-- ----------------------------Inicio de Paso a Paso-------------------------------------------- -->
@@ -23,7 +23,7 @@
     [ngClass]="{ collapse: isCollapsed1 }"
   >
     <ng-container contenido-paso-1>
-      <div class="card-body" [ngClass]="{ collapse: isCollapsed2 }">                      
+      <div class="card-body" [ngClass]="{ collapse: isCollapsed2 }">
         <form [formGroup]="formfiltro">
 
         <div class="row justify-content-center">
@@ -32,7 +32,7 @@
               <div class="col-md-2">
                 <div class="col-md-12 image-container">
                   <span>
-                    <img style="width: 100%; height: 100%" src="../../../assets/icons8-user-64_1.png" class="image" alt="..." />
+                    <img style="width: 95%; height: 95%" src="../../../assets/notification-bell.png" class="image" alt="..." />
                     <div class="texto">
                       <h4 style="text-align: center; color: #63ddff; font-size: 18px;">Filtrar Alarma</h4>
                     </div>
@@ -51,7 +51,7 @@
                       </label>
                     </div>
                   </div>
-                  
+
                   <div class="col-md-4 margenFiltros">
                     <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por número de Central">
                       <label class="search-field">
@@ -61,7 +61,7 @@
                       </label>
                     </div>
                   </div>
-                  
+
                   <div class="col-md-4 margenFiltros">
                     <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por número de Medición">
                       <label class="search-field">
@@ -72,7 +72,7 @@
                     </div>
                   </div>
                 </div>
-                
+
                 <div class="row">
                   <div class="col-md-4 margenFiltros">
                     <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por nombre de Servicio">
@@ -83,7 +83,7 @@
                       </label>
                     </div>
                   </div>
-                  
+
                   <div class="col-md-4 margenFiltros">
                     <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por descripción Mensaje">
                       <label class="search-field">
@@ -93,7 +93,7 @@
                       </label>
                     </div>
                   </div>
-                  
+
                   <div class="col-md-4 margenFiltros">
                     <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por valor de Medición">
                       <label class="search-field">
@@ -112,8 +112,8 @@
                       <mat-slide-toggle id="op1" (change)="filtroFecha($event)">Filtrar por Fecha</mat-slide-toggle>
                     </div>
                   </div>
-                  
-                  <div class="col-md-4 margenFiltrosFecha">
+
+                  <div class="col-md-2 margenFiltrosFecha">
                     <mat-form-field [formGroup]="formfiltro">
                       <mat-label>Ingrese Rango de Fecha</mat-label>
                       <div class="input-container">
@@ -127,7 +127,7 @@
                       <mat-date-range-picker #picker></mat-date-range-picker>
                     </mat-form-field>
                   </div>
-                  
+
                   <div class="col-md-4 margenFiltros">
                       <div class="row margenFiltrosBtn">
                         <div
@@ -139,169 +139,126 @@
                             extended
                             color="primary"
                             class="btnAplicarFiltro"
-                            (click)="filtarXFechas()" 
+                            (click)="filtarXFechas()"
                             [disabled]="!habilitarBoton"
                             >
                             <mat-icon>touch_app</mat-icon>
                             Aplicar Filtro
                           </button>
                         </div>
-                      </div>                      
+                      </div>
                   </div>
 
                 </div>
 
-              </div>            
+              </div>
             </div>
           </div>
-        </div>      
+        </div>
       </form>
       <br />
       <br />
 
       </div>
 
-      <div class="row">
+
+      <div class="row justify-content-center">
         <div class="col-12 cardFiltrado cardAnimate cardFlat">
-          <table class="table" *ngIf="validarFiltradoAlarma() == true">
-            <thead class="encabezado">
-              <tr>
-                <th
-                  (click)="ordenarPor('almId')"
-                  [appSort]="AlarmaConsultaFiltrados"
-                  data-order="asc"
-                  data-name="almId"
-                  style="text-align: center"
-                >
-                  <a
-                    >Alarma Nro. {{ ordenarIcono("almId") }}</a
-                  >
-                </th>
-                <th
-                  (click)="ordenarPor('almIdMedicion')"
-                  [appSort]="AlarmaConsultaFiltrados"
-                  data-order="desc"
-                  data-name="almIdMedicion"
-                  style="text-align: center"
-                >
-                  <a>Med. Nro. {{ ordenarIcono("almIdMedicion") }}</a>
-                </th>
-                <th
-                  (click)="ordenarPor('cenNro')"
-                  [appSort]="AlarmaConsultaFiltrados"
-                  data-order="desc"
-                  data-name="cenNro"
-                  style="text-align: center"
-                >
-                  <a>Central Nro. {{ ordenarIcono("cenNro") }}</a>
-                </th>
-                <th
-                  (click)="ordenarPor('serDescripcion')"
-                  [appSort]="AlarmaConsultaFiltrados"
-                  data-order="desc"
-                  data-name="serDescripcion"
-                  style="text-align: center"
-                >
-                  <a>Servicio {{ ordenarIcono("serDescripcion") }}</a>
-                </th>
-                <th
-                  (click)="ordenarPor('almMensaje')"
-                  [appSort]="AlarmaConsultaFiltrados"
-                  data-order="desc"
-                  data-name="almMensaje"
-                  style="text-align: center"
-                >
-                  <a>Mensaje {{ ordenarIcono("almMensaje") }}</a>
-                </th>
-                <th
-                  (click)="ordenarPor('medValor')"
-                  [appSort]="AlarmaConsultaFiltrados"
-                  data-order="desc"
-                  data-name="medValor"
-                  style="text-align: center"
-                >
-                  <a>Valor Medición {{ ordenarIcono("medValor") }}</a>
-                </th>
-                <th
-                  (click)="ordenarPor('almFechaHoraBD')"
-                  [appSort]="AlarmaConsultaFiltrados"
-                  data-order="desc"
-                  data-name="almFechaHoraBD"
-                  style="text-align: center"
-                >
-                  <a>Fecha Medición {{ ordenarIcono("almFechaHoraBD") }}</a>
-                </th>         
-                <th></th>
-                <th scope="col" style="text-align: center">
-                  Nueva Alarma
-                </th>
+          <!-- app.component.html -->
+          <div class="table" *ngIf="dataSourceAlarmas">
+              <table mat-table [dataSource]="dataSourceAlarmas" matSort #matSortAlarmas="matSort">
+
+              <!-- Columnas -->
+              <ng-container matColumnDef="almId">
+                <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header="almId">Alarma Nro.</th>
+                <td class="table-row first-column" style="vertical-align: middle; text-align: textIzquierda"  mat-cell *matCellDef="let element">{{ element.almId }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="almIdMedicion">
+                <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header="almIdMedicion">Med. Nro.</th>
+                <td class="table-row" style="vertical-align: middle; text-align: textIzquierda" mat-cell *matCellDef="let element">{{ element.almIdMedicion }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="cenNro">
+                <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header="cenNro">Central Nro.</th>
+                <td class="table-row" style="vertical-align: middle; text-align: textIzquierda" mat-cell *matCellDef="let element">{{ element.cenNro }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="serDescripcion">
+                <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header="serDescripcion">Servicio</th>
+                <td class="table-row" style="vertical-align: middle; text-align: textIzquierda" mat-cell *matCellDef="let element">{{ element.serDescripcion }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="almMensaje">
+                <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header="almMensaje">Mensaje</th>
+                <td class="table-row" style="vertical-align: middle; text-align: textIzquierda" mat-cell *matCellDef="let element">{{ element.almMensaje }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="medValor">
+                <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header="medValor">Valor Medición</th>
+                <td class="table-row" style="vertical-align: middle; text-align: textIzquierda" mat-cell *matCellDef="let element">{{ element.medValor }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="almFechaHoraBD">
+                <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header="almFechaHoraBD">Servicio</th>
+                <td class="table-row" style="vertical-align: middle; text-align: textIzquierda" mat-cell *matCellDef="let element">{{ element.almFechaHoraBD | date: 'dd-MM-yyyy' }}</td>
+              </ng-container>
+
+              <!-- Columna vacia -->
+              <ng-container matColumnDef="columnaVacia">
+                <th class="encabezado text-center" mat-header-cell *matHeaderCellDef></th>
+                <td class="table-row" class="align-center" mat-cell *matCellDef="let element"></td>
+              </ng-container>
+
+              <!-- Columna de acciones -->
+              <ng-container matColumnDef="visto">
+                <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header="visto">Estado</th>
+                <td class="table-row" class="align-center" mat-cell *matCellDef="let element">
+                  <!-- <span *ngIf="element.almVisto === false">Nueva</span>
+                  <span *ngIf="element.almVisto === true">Visto</span> -->
+                  <span *ngIf="element.almVisto === false">
+                    <img
+                      src="../../../assets/recibidoAlarma.png"
+                      class="iconosBoton"
+                      alt="..."
+                    />
+                    <!-- src="../../../assets/recib.png" -->
+                  </span>
+                  <span *ngIf="element.almVisto === true">
+                    <img
+                      src="../../../assets/vistoAlarma.png"
+                      class="iconosBoton">
+                  </span>
+
+                </td>
+              </ng-container>
+
+              <!-- Filas -->
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsAlarmas"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumnsAlarmas;
+                let i = index" [ngClass]="{ 'fila-par': i % 2 === 0, 'fila-impar': i % 2 !== 0 }">
               </tr>
-            </thead>
-            <tbody>
-              <tr
-                class="table-row"
-                *ngFor="
-                  let alarma of AlarmaConsultaFiltrados
-                    | paginate
-                      : {
-                          itemsPerPage: pageSize,
-                          currentPage: currentPage,
-                          totalItems: totalItems
-                        };
-                  let i = index
-                "
-                [ngClass]="{
-                  'fila-par': i % 2 == 0,
-                  'fila-impar': i % 2 == 1
-                }"
-                (click)="esfilaSeleccionadaAlarma(alarma)"
-              >
-                <th style="vertical-align: middle align-center">
-                  {{ alarma.almId }}
-                </th>
-                <td style="vertical-align: middle" class="textDerecha">
-                  {{ alarma.almIdMedicion }}
-                </td>
-                <td style="vertical-align: middle" class="textDerecha">
-                  {{ alarma.cenNro }}
-                </td>
-                <td style="vertical-align: middle" class="textIzquierda">
-                  {{ alarma.serDescripcion }}
-                </td>
-                <td style="vertical-align: middle" class="textIzquierda">
-                  {{ alarma.almMensaje }}
-                </td>
-                <td style="vertical-align: middle" class="textDerecha">
-                  {{ alarma.medValor }}
-                </td>
-                <td style="vertical-align: middle" class="textIzquierda">
-                  {{ alarma.almFechaHoraBD | date: 'dd-MM-yyyy' }}
-                </td>
-                <td class="empty-column"></td>
-                <td style="vertical-align: middle" class="textIzquierda">
-                  <span *ngIf="alarma.almVisto === false">Nueva</span>
-                  <span *ngIf="alarma.almVisto === true">Visto</span>
-                </td>          
-              </tr>
-            </tbody>
-          </table>
-          <div
-            class="align-center"
-            *ngIf="validarFiltradoAlarma() == true"
-          >
-            <pagination-controls
-              (pageChange)="paginaCambiada($event)"
-              itemsPerPage="pageSize"
-              totalItems="totalItems"
-            ></pagination-controls>
+
+            </table>
+
+            <!-- Paginador -->
+            <mat-paginator *ngIf="dataSourceAlarmas"
+              [length]="dataSourceAlarmas.data.length"
+              [pageSize]="pageSizeAlarmas"
+              [pageSizeOptions]="[5, 15, 25, 50, 100]"
+              (page)="handlePageChangeAlarmas($event)"
+              showFirstLastButtons
+              #paginatorAlarmas
+            ></mat-paginator>
+
+            <div class="align-center" *ngIf="validarFiltradoAlarma() == true">
+            </div>
+
+            <div class="alert alert-primary text-center" role="alert" *ngIf="validarFiltradoAlarma() == false">
+              No se encontraron alarma que coincidan con su búsqueda.
+            </div>
+
           </div>
-        </div>
-        <div
-          class="alert alert-primary text-center"
-          role="alert"
-          *ngIf="validarFiltradoAlarma() == false"
-        >
-          No se encontraron alarma que coincidan con su búsqueda.
         </div>
       </div>
 
@@ -310,4 +267,4 @@
 
     </ng-container>
   </mat-step>
-</mat-vertical-stepper>      
+</mat-vertical-stepper>

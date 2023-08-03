@@ -16,6 +16,7 @@
                   <h4 class="mt-1 mb-5 pb-1">Bienvenido!</h4>
                 </div>
                 <p class="text-center">Por favor, ingrese a su cuenta</p>
+                
                 <form [formGroup]="formInicio" class="row">
                           
                   <!-- Campo Usuario -->
@@ -42,9 +43,7 @@
                           <span class="input-group-text">Contraseña</span>
                           <input type="password" class="form-control" value="Password" placeholder="**********"
                               formControlName="password" required />
-                      </div>
-
-                      
+                      </div>                    
 
                       <!-- Validaciones Contraseña -->
                       <div *ngIf="password?.invalid && (password?.dirty || password?.touched)"
@@ -60,24 +59,22 @@
                   <div *ngIf="esInicioValido == 2" class="text-danger">
                       <p>Usuario y/o contraseña incorrectos</p>
                   </div>
+
                   <li style="list-style: none;"><a href="olvido-password">¿Olvidaste tu Constraseña?</a></li>
+                  
+                  <br>
+                  <br>
 
                   <!-- Validaciones Boton Ingresar -->
                   <div class="col-8"></div>
                   <div class="text-center pt-1 mb-5 pb-1">
-                      <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" style="background-color: #0e3c53;" type="button"
+                      <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" style="background-color: #0e3c53; height: 50px;" type="button"
                           (click)="login()" [routerLink]="[redireccionar()]" *ngIf="validarIngresar(usuario?.value, password?.value) == true">Ingresar 
                       </button>
                       <br>
-                      <a class="text-muted" href="#!">Ha olvidado su contraseña?</a>
                   </div>
-              </form>
-
-
+                </form>
              
-
- 
-
               </div>
             </div>
             
@@ -98,13 +95,7 @@
     </div>
   </div>
 </section>
-
-      
-
-
-
-
-                           
+                        
 
                             <!-- Validaciones Boton Ingresar -->
                             <!-- <div class="col-8"></div>

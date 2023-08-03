@@ -1,36 +1,21 @@
 //SISTEMA
-import { JsonpClientBackend } from '@angular/common/http';
-import { Component, OnInit, Output } from '@angular/core';
+import { Component, OnInit, Output, ViewChild } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
   FormControl,
-  Validators,
 } from '@angular/forms';
 import Swal, { SweetAlertOptions } from 'sweetalert2';
-import { NgModule } from '@angular/core';
 
 import {ThemePalette} from '@angular/material/core';
-import {FormsModule} from '@angular/forms';
-import {MatRadioModule} from '@angular/material/radio';
-import { MatCardModule } from '@angular/material/card';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-
-import {ReactiveFormsModule} from '@angular/forms';
-import {NgIf, JsonPipe} from '@angular/common';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatNativeDateModule} from '@angular/material/core';
-
-import { MatDateRangeInput, MatDateRangePicker, MatStartDate, MatEndDate } from '@angular/material/datepicker';
-
-
+import { MatStepper } from '@angular/material/stepper';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
 
 //COMPONENTES
 import { AlarmaConsultaClass } from 'src/app/core/models/alarmaConsulta';
-import { AlarmaClass } from 'src/app/core/models/alarma';
 
 //SERVICIOS
 import { AlarmaService } from 'src/app/core/services/alarma.service';
@@ -43,23 +28,25 @@ import { AlarmaService } from 'src/app/core/services/alarma.service';
 
 export class ConsultarAlarmaComponent implements OnInit {  
     
-    //STEPPER
-    titulo1 = 'Alarmas';
-    titulo2 = '';
-    titulo3 = '';
-    isStep1Completed = false;
-    isStep2Completed = false;
-    isStep3Completed = false;
+  //TABLA Alarmas
+  displayedColumnsAlarmas: string[] = ['almId', 'almIdMedicion', 'cenNro', 'serDescripcion', 'almMensaje', 'medValor', 'almFechaHoraBD', 'columnaVacia', 'visto'];
+  @ViewChild('paginatorAlarmas', { static: false }) paginatorAlarmas: MatPaginator | undefined;
+  @ViewChild('matSortAlarmas', { static: false }) sortAlarmas: MatSort | undefined;
+  dataSourceAlarmas: MatTableDataSource<any>;
+  pageSizeAlarmas = 15; // Número de elementos por página
+  currentPageAlarmas = 1; // Página actual
 
-    color: ThemePalette = 'accent';
-    checked = true;
-    disabled = false;
+  //STEPPER
+  titulo1 = 'Alarmas';
+  titulo2 = '';
+  titulo3 = '';
+  isStep1Completed = false;
+  isStep2Completed = false;
+  isStep3Completed = false;
 
-    //PAGINADO
-    pageSize = 5; // Número de elementos por página
-    currentPage = 1; // Página actual
-    totalItems = 0; // Total de elementos en la tabla
-
+  color: ThemePalette = 'accent';
+  checked = true;
+  disabled = false;
 
   //VARIABLES DE OBJETOS LIST
   AlarmaConsulta: AlarmaConsultaClass[] = [];
@@ -82,6 +69,8 @@ export class ConsultarAlarmaComponent implements OnInit {
   constructor(
     private alarmaConsultar: AlarmaService, 
   ) {     
+    this.dataSourceAlarmas = new MatTableDataSource<any>();
+
     this.formfiltro = new FormGroup({
       nroAlarma: new FormControl(null, []),
       nroCentral: new FormControl(null, []),
@@ -99,10 +88,24 @@ export class ConsultarAlarmaComponent implements OnInit {
     this.alarmaConsultar.obtenerAlarmasClienteModificaEstado(this.idUsuario).subscribe(data => {
       this.AlarmaConsulta = data.sort((a: { almId: number; }, b: { almId: number; }) => b.almId - a.almId);
       this.AlarmaConsultaFiltrados = data.sort((a: { almId: number; }, b: { almId: number; }) => b.almId - a.almId);       
+    
+      this.dataSourceAlarmas = new MatTableDataSource(this.AlarmaConsultaFiltrados);
+      if (this.paginatorAlarmas) {
+        this.dataSourceAlarmas.paginator = this.paginatorAlarmas;
+      }
+      if (this.sortAlarmas) {
+        this.dataSourceAlarmas.sort = this.sortAlarmas;
+      }
+    
     });    
 
     this.formfiltro.get('fecha_desde')?.disable();
     this.formfiltro.get('fecha_hasta')?.disable();
+  }
+
+  handlePageChangeAlarmas(event: any) {
+    this.currentPageAlarmas = event.pageIndex + 1;
+    this.pageSizeAlarmas = event.pageSize;
   }
 
   //Filtro de Alarmas
@@ -131,6 +134,14 @@ export class ConsultarAlarmaComponent implements OnInit {
         (!filtroValorMed || valorMedValor.includes(filtroValorMed))
       );
     });
+
+    this.dataSourceAlarmas = new MatTableDataSource(this.AlarmaConsultaFiltrados);
+    if (this.paginatorAlarmas) {
+      this.dataSourceAlarmas.paginator = this.paginatorAlarmas;
+    }
+    if (this.sortAlarmas) {
+      this.dataSourceAlarmas.sort = this.sortAlarmas;
+    }
   }  
   
   //filtro de Alarma por Fecha
@@ -176,7 +187,6 @@ export class ConsultarAlarmaComponent implements OnInit {
       // Agregar un día a la fecha 'hasta'
       hasta.setDate(hasta.getDate() + 1);
 
-
       const filtronNoAlarma = (this.formfiltro.get('nroAlarma') as FormControl).value?.toLowerCase();
       const filtroNroCentral = (this.formfiltro.get('nroCentral') as FormControl).value?.toLowerCase();
       const filtroNroMed = (this.formfiltro.get('nroMed') as FormControl).value?.toLowerCase();
@@ -209,6 +219,14 @@ export class ConsultarAlarmaComponent implements OnInit {
       //   return fechaAlarma >= desde && fechaAlarma < hasta;
       // });
     }
+
+    this.dataSourceAlarmas = new MatTableDataSource(this.AlarmaConsultaFiltrados);
+    if (this.paginatorAlarmas) {
+      this.dataSourceAlarmas.paginator = this.paginatorAlarmas;
+    }
+    if (this.sortAlarmas) {
+      this.dataSourceAlarmas.sort = this.sortAlarmas;
+    }
   }
 
   // valida para que un solo selector de frecuencia este seleccionado a la vez
@@ -237,23 +255,6 @@ export class ConsultarAlarmaComponent implements OnInit {
     }
   }
     
-  //Metodos para grilla
-  //Almacena en una variable la propiedad por la cual se quiere ordenar la consulta de alarma.
-  ordenarPor(propiedad: string) {
-    this.tipoOrdenamiento =
-      propiedad === this.propiedadOrdenamiento ? this.tipoOrdenamiento * -1 : 1;
-    this.propiedadOrdenamiento = propiedad;
-  }
-
-  //En base a la propiedad por la que se quiera ordenar y el tipo de orden muestra un icono.
-  ordenarIcono(propiedad: string) {
-    if (propiedad === this.propiedadOrdenamiento) {
-      return this.tipoOrdenamiento === 1 ? '🠉' : '🠋';
-    } else {
-      return '🠋🠉';
-    }
-  }  
-
   //Valida que exista alguna Alarma en el Usuario que responda al filtro.
   validarFiltradoAlarma(): Boolean {
     if (this.AlarmaConsultaFiltrados.length == 0) {
@@ -266,18 +267,5 @@ export class ConsultarAlarmaComponent implements OnInit {
   esfilaSeleccionadaAlarma(alarma: AlarmaConsultaClass) {
     // this.centralNroSeleccionada = centralConsulta.cenNro;    
   }
-
-  paginaCambiada(event: any) {
-    this.currentPage = event;
-    const cantidadPaginas = Math.ceil(
-      this.AlarmaConsultaFiltrados.length / this.pageSize
-    );
-    const paginas = [];
-
-    for (let i = 1; i <= cantidadPaginas; i++) {
-      paginas.push(i);
-    }
-    return paginas;
-  } 
-  
+ 
 }

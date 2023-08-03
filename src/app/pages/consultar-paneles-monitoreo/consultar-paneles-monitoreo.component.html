@@ -1,374 +1,680 @@
+<div class="body">
+  <h1 class="text-center titulo tituloFuente">Consultar Paneles de Monitoreo</h1>
+  <!-- Contenido de breadcrumb -->
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item" style="padding-left: 310px; font-size: 18px">
+        <a href="/home">Home</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        Consultar Paneles de Monitoreo
+      </li>
+    </ol>
+  </nav>
+  <div class="container mt-12">
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<h1 class="text-center">Consultar Mis Paneles De Monitoreo</h1>
-
-<div class="container mt-5">
-  <div class="row justify-content-center">
-    <div class="col-md-12">
-      <div class="card">
-        <div class="card-header">
-          <div class="d-flex justify-content-between align-items-center">
-            <h4 class="mb-0">Seleccionar Central para ver Mis Paneles de Monitoreo</h4>            
-            <button type="button" class="btn-unstyled" (click)="toggleCollapse1()">
-              <svg *ngIf="!isCollapsed1" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
-                <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
-              </svg>
-              <svg *ngIf="isCollapsed1" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 16 16">
-                <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
-              </svg>
-            </button>
-          </div>
-        </div>
-        <div class="card-body" [ngClass]="{'collapse': isCollapsed1}">
-
-
-          <div class="row">
-              <div class="col-3"></div>
-              <div class="col-6 search-container">
-                <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por Código de Central">
-                  <span class="input-group-text">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                      class="bi bi-search" viewBox="0 0 16 16">
-                      <path
-                        d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-                    </svg>
-                  </span>
-                  <input type="text" class="form-control" placeholder="Filtrar por Código de Central" (keyup)="esFiltrar($event , 'codigo')">
-                </div>
-              </div>
-            </div>
-
-          <div class="row">
-            <div class=".col-xxl-4"></div>
-            <div class="col-12">      
-                <table class="table">
-                  <thead class="encabezado">
-                      <tr>            
-                        <th (click)="ordenarPor('cenNro')" [appSort]="CentralConsultaFiltrados" data-order="desc"
-                            data-name="cenNro" style="text-align: center;"><a>Cod. Central {{ordenarIcono('cenNro')}}</a></th>
-                        <th (click)="ordenarPor('cenImei')" [appSort]="CentralConsultaFiltrados" data-order="desc"
-                            data-name="cenImei" style="text-align: center;"><a>IMEI {{ordenarIcono('cenImei')}}</a></th>
-                        <th (click)="ordenarPor('cenCoorX')" [appSort]="CentralConsultaFiltrados" data-order="desc"
-                            data-name="cenCoorX" style="text-align: center;"><a>Coordenada X {{ordenarIcono('cenCoorX')}}</a></th>             
-                        <th (click)="ordenarPor('cenCoorY')" [appSort]="CentralConsultaFiltrados" data-order="desc"
-                            data-name="cenCoorY" style="text-align: center;"><a>Coordenada Y {{ordenarIcono('cenCoorY')}}</a></th>             
-                                    
-                        <th scope="col" style="text-align: center;">Seleccionar</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let central of CentralConsultaFiltrados; let i=index"
-                      [ngClass]="{'fila-par': i%2==0, 'fila-impar': i%2==1}"
-                      (click)="esfilaSeleccionada(central)">
-                        <th style="vertical-align: middle" class="align-center">{{ central.cenNro }}</th>
-                        <td style="vertical-align: middle" class="align-center">{{ central.cenImei }}</td>
-                        <td style="vertical-align: middle" class="align-center">{{ central.cenCoorX }}</td>
-                        <td style="vertical-align: middle" class="align-center">{{ central.cenCoorY }}</td>              
-                        <td class="align-center">
-                          <button type="button" class="btn" (click)="esfilaSeleccionada(central); seleccionarCentral()" title="Ver Más Opciones">     
-                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-box-arrow-down" viewBox="0 0 16 16">
-                              <path fill-rule="evenodd" d="M3.5 10a.5.5 0 0 1-.5-.5v-8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 0 0 1h2A1.5 1.5 0 0 0 14 9.5v-8A1.5 1.5 0 0 0 12.5 0h-9A1.5 1.5 0 0 0 2 1.5v8A1.5 1.5 0 0 0 3.5 11h2a.5.5 0 0 0 0-1h-2z"/>
-                              <path fill-rule="evenodd" d="M7.646 15.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 14.293V5.5a.5.5 0 0 0-1 0v8.793l-2.146-2.147a.5.5 0 0 0-.708.708l3 3z"/>
-                            </svg>        
-                          </button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-              </div>
-              <div class="alert alert-primary text-center" role="alert" *ngIf="validarFiltrado() == false">      ¡No se ha encontrado ninguna Central!
-            </div>
-
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="container mt-5">
-  <div class="row justify-content-center">
-    <div class="col-md-12">
-      <div class="card">
-        <div class="card-header">
-          <div class="d-flex justify-content-between align-items-center">
-            <h4 class="mb-0">Paneles de Monitoreo</h4>            
-            <button type="button" class="btn-unstyled" (click)="toggleCollapse2()">
-              <svg *ngIf="!isCollapsed2" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
-                <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
-              </svg>
-              <svg *ngIf="isCollapsed2" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 16 16">
-                <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
-              </svg>
-            </button>
-          </div>
-        </div>
-        <div class="card-body" [ngClass]="{'collapse': isCollapsed2}">
-
-          <h4> Seleccione los Servicios a Monitorear:  </h4>
-          <br>
-
-          <div class="row">
-            <div class="col-md-6">
-              <h4> Servicios Disponibles </h4>
-              <table class="table" *ngIf="validarFiltradoServicios() == true">
-                <thead class="encabezado">
-                    <tr>     
-                      <th (click)="ordenarServicioPor('serId')" [appSort]="ServiciosCentral" data-order="desc"
-                      data-name="serId" style="text-align: center;"><a>Cod. {{ordenarIconoServicio('serId')}}</a></th>            
-                      <th (click)="ordenarServicioPor('serDescripcion')" [appSort]="ServiciosCentral" data-order="desc"
-                      data-name="serDescripcion" style="text-align: center;"><a>Nombre de Servicio {{ordenarIconoServicio('serDescripcion')}}</a></th>                        
-                      <th scope="col">Agregar Serv.</th> 
-                    </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let servicio of ServiciosCentral let i=index"
-                  [ngClass]="{'fila-par': i%2==0, 'fila-impar': i%2==1}"
-                  (click)="esfilaSeleccionadaServicio(servicio)">
-                  <th style="vertical-align: middle" class="align-center">{{ servicio.serId }}</th>
-                  <td style="vertical-align: middle">{{ servicio.serDescripcion }}</td>
-                  <td class="align-center">
-                    <button type="button" class="btn"
-                    data-bs-target="#staticBackdrop" (click)="agregarServicio(servicio)" title="Agregar Servicio">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-node-plus" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M11 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM6.025 7.5a5 5 0 1 1 0 1H4A1.5 1.5 0 0 1 2.5 10h-1A1.5 1.5 0 0 1 0 8.5v-1A1.5 1.5 0 0 1 1.5 6h1A1.5 1.5 0 0 1 4 7.5h2.025zM11 5a.5.5 0 0 1 .5.5v2h2a.5.5 0 0 1 0 1h-2v2a.5.5 0 0 1-1 0v-2h-2a.5.5 0 0 1 0-1h2v-2A.5.5 0 0 1 11 5zM1.5 7a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1z"/>
-                      </svg>
-                    </button>
-                  </tr>
-                </tbody>
-              </table>
-              <div class="alert alert-primary text-center" role="alert" *ngIf="validarFiltradoServicios() == false">
-                No hay Servicios disposable
-              </div>
-            </div>
-            <div class="col-md-6">
-              <h4> Servicios a Graficar </h4>
-              <table class="table" *ngIf="validarFiltradoServiciosGraficar() == true">
-                <thead class="encabezado">
-                    <tr>              
-                      <th (click)="ordenarServicioGraficarPor('serId')" [appSort]="ServiciosGraficar" data-order="desc"
-                      data-name="serId" style="text-align: center;"><a>Cod. {{ordenarIconoServicioGraficar('serId')}}</a></th>            
-                      <th (click)="ordenarServicioGraficarPor('serDescripcion')" [appSort]="ServiciosGraficar" data-order="desc"
-                      data-name="serDescripcion" style="text-align: center;"><a>Nombre de Servicio {{ordenarIconoServicioGraficar('serDescripcion')}}</a></th>                        
-                      <th scope="col">Extraer Serv.</th> 
-                    </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let servicio of ServiciosGraficar let i=index"
-                  [ngClass]="{'fila-par': i%2==0, 'fila-impar': i%2==1}"
-                  (click)="esfilaSeleccionadaServicioGraficar(servicio)">
-                  <th style="vertical-align: middle" class="align-center">{{ servicio.serId }}</th>
-                  <td style="vertical-align: middle">{{ servicio.serDescripcion }}</td>
-                  <td class="align-center">
-                    <button type="button" class="btn"
-                    data-bs-target="#staticBackdrop" (click)="extraerServicio(servicio)" title="Extrar Servicio">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-node-minus" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M11 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM6.025 7.5a5 5 0 1 1 0 1H4A1.5 1.5 0 0 1 2.5 10h-1A1.5 1.5 0 0 1 0 8.5v-1A1.5 1.5 0 0 1 1.5 6h1A1.5 1.5 0 0 1 4 7.5h2.025zM1.5 7a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zM8 8a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5A.5.5 0 0 1 8 8z"/>
-                      </svg>
-                    </button>
-                  </tr>
-                </tbody>
-              </table>
-              <div class="alert alert-primary text-center" role="alert" *ngIf="validarFiltradoServiciosGraficar() == false">
-                No tiene Servicios Activos para Graficar
-              </div>
-            </div>
-          </div> 
-
-          <div>
-            <div style="display: flex;">
-              <div style="flex: 1;">
-                <h4>Visualización de los Servicios:</h4>
-                <br>
-                <div class="container">
-                  <div class="custom-control custom-switch mb-3">
-                    <input type="checkbox" class="custom-control-input" id="op1G" [checked]="op1G" (change)="selOpG($event)">
-                    <label class="custom-control-label" for="op1G">Todos los Servicios en un solo Gráfico</label>
-                  </div>
-                  <div class="custom-control custom-switch mb-3">
-                    <input type="checkbox" class="custom-control-input" id="op2G" [checked]="op2G" (change)="selOpG($event)">
-                    <label class="custom-control-label" for="op2G">Cada Servicio en un Gráfico</label>
-                  </div>
-                </div>
-              </div>
-              <div style="flex: 1;">
-                <h4>Visualización de los Servicios en Tabla:</h4>
-                <br>
-                <div class="container">
-                  <div class="custom-control custom-switch mb-3">
-                    <input type="checkbox" class="custom-control-input" id="op1T" [checked]="op1T" (change)="selOpT($event)">
-                    <label class="custom-control-label" for="op1T">Sí</label>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <br>
-          <h4> Seleccione el periodo a monitorear: </h4>
-          <br>
-          <form [formGroup]="formGraficar">     
-          <div class="container">
-              <div class="custom-control custom-switch mb-3">
-                <input type="checkbox" class="custom-control-input" id="op1" [checked]="op1" (change)="selOp($event)">
-                <label class="custom-control-label" for="op1">Última semana</label>
-              </div>            
-              <div class="custom-control custom-switch mb-3">
-                <input type="checkbox" class="custom-control-input" id="op2" [checked]="op2" (change)="selOp($event)">
-                <label class="custom-control-label" for="op2">Últimos 15 días</label>
-              </div>
-              <div class="custom-control custom-switch mb-3">
-                <input type="checkbox" class="custom-control-input" id="op3" [checked]="op3" (change)="selOp($event)">
-                <label class="custom-control-label" for="op3">Último mes</label>
-              </div>
+<!-- ----------------------------Inicio de Paso a Paso-------------------------------------------- -->
+<mat-vertical-stepper>
+  <mat-step
+    [label]="titulo1"
+    [completed]="isStep1Completed"
+    [ngClass]="{ collapse: isCollapsed1 }"
+  >
+    <ng-container contenido-paso-1>
+      <div class="card-body" [ngClass]="{ collapse: isCollapsed2 }">
+  
+        <div class="row containerCard">
+  
+          <div class="col-12 cardFiltrado cardAnimate cardFlat cardSeparacion">
+            <div>
               <div class="row">
-                <div class="col">
-                  <div class="custom-control custom-switch mb-3">
-                    <input type="checkbox" class="custom-control-input" id="op4" [checked]="op4" (change)="selOp($event)">
-                    <label class="custom-control-label" for="op4">Personalizar</label>
-                  </div>
-                </div>    
-                  <div class="col">
-                    <div class="form-outline input-group mb-2" id="datepicker">
-                      <span class="input-group-text">Desde</span>
-                      <input type="date" id="desde" class="form-control" formControlName="fecha_desde">
-                    </div>
-                  </div>
-                  <div class="col">
-                    <div class="form-outline input-group mb-2" id="datepicker">
-                      <span class="input-group-text">Hasta</span>
-                      <input type="date" id="hasta" class="form-control" formControlName="fecha_hasta">
-                    </div>             
-                  </div>                
-              </div>            
+                <div class="col-md-2 image-container">
+                  <span
+                    ><img
+                      style="width: 102%; height: 102"
+                      src="../../../assets/filtrar_central.png"
+                      class="image"
+                      alt="..."
+                    />
+                    <div class="texto">
+                      <h4
+                        style="
+                          text-align: center;
+                          color: #63ddff;
+                          font-size: 18px;
+                        "
+                      >
+                        Filtrar Central
+                      </h4>
+                    </div></span
+                  >
+                </div>                 
+
+                <div
+                class="col-md-1 vertical-line"
+                style="width: 20px"
+              ></div>
+              <div class="col-md-2 margenFiltros">
+                <div
+                  class="form-outline input-group"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title="Buscar por Código de Central"
+                >
+                  <label class="search-field">
+                    <mat-label
+                      class="search-field label ng-tns-c97-48 ng-star-inserted"
+                      >Código de Central</mat-label
+                    >
+                    <input
+                      type="text"
+                      class="form-control inputBusqueda .input-con-color-de-fondo"
+                      placeholder="Ej. 1"
+                      (keyup)="esFiltrar($event , 'codigo')"
+                    />                             
+                    <i
+                      class="fas fa-search FormatoIconos"
+                      style="padding-left: 20px"
+                    ></i>
+                  </label>
+                </div>                          
+              </div>
+            </div>
           </div>
-          </form>
+        </div>
 
-          <br>             
-          <div class="col-12 text-center">
-            <button type="submit" class="btn btn-success" data-bs-toggle="button"                        
-              (click)="graficar()"> Gráficar y Visualizar
-            </button>
-          </div>     
-          
-          <div  *ngIf="op1T">
-            <br>
-            <h4> Tabla: </h4>
-            <br>
-                  <br>
-                    <h5>Filtros:</h5>
-                    <form [formGroup]="formfiltro">
-                      <div class="row">
-                        <div class="col-4">
-                          <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por número de Medición">
-                            <span class="input-group-text">
-                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                class="bi bi-search" viewBox="0 0 16 16">
-                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-                              </svg>
-                            </span>
-                            <input formControlName="medId" type="text" class="form-control" placeholder="Buscar por número de Medición" (keyup)="esFiltrarMedicion($event)">
-                          </div>
-                        </div>
-                        <div class="col-4">
-                          <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por nombre de Servicio">
-                            <span class="input-group-text">
-                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                class="bi bi-search" viewBox="0 0 16 16">
-                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-                              </svg>
-                            </span>
-                            <input formControlName="serDescripcion" type="text" class="form-control" placeholder="Buscar por nombre de Servicio" (keyup)="esFiltrarMedicion($event)">
-                          </div>
-                        </div>
-                        <div class="col-4">
-                          <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por valor de Medición">
-                            <span class="input-group-text">
-                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                class="bi bi-search" viewBox="0 0 16 16">
-                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-                              </svg>
-                            </span>
-                            <input formControlName="medValor" type="text" class="form-control" placeholder="Buscar por valor de Medición" (keyup)="esFiltrarMedicion($event)">
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <br>
-
-                      <div class="row align-items-center justify-content-center text-center"> 
-                        <div class="col ">
-                          <div class="custom-control custom-switch mb-3">
-                            <input type="checkbox" class="custom-control-input" id="opFF" (change)="filtroFecha($event)">
-                            <label class="custom-control-label" for="opFF">Filtar por Fecha</label>
-                          </div>                 
-                        </div>
-                        <div class="col-4">
-                          <div class="form-outline input-group mb-2" >
-                            <span class="input-group-text">Desde</span>
-                            <input type="date" id="fecha_desde" class="form-control" formControlName="fecha_desde">
-                          </div>
-                        </div>
-                        <div class="col-4">
-                          <div class="form-outline input-group mb-2">
-                            <span class="input-group-text">Hasta</span>
-                            <input type="date" id="fecha_hasta" class="form-control" formControlName="fecha_hasta">
-                          </div>             
-                        </div>   
-                        <div class="col">
-                          <button type="submit" class="btn btn-success" data-bs-toggle="button" 
-                            (click)="filtarXFechas()" [disabled]="!habilitarBoton">
-                            Aplicar Filtro
-                          </button>
-                        </div>      
-                      </div>
-
-                    </form>          
-            <br>
-
-            <div class="row" >
-              <div class=".col-xxl-4"></div>
-              <div class="col-12">      
-                  <table class="table">
-                    <thead class="encabezado">
-                        <tr>            
-                          <th (click)="ordenarMedicionPor('medId')" [appSort]="MedicionesTablaFiltrados" data-order="desc"
-                              data-name="medId" style="text-align: center;"><a>Num. Medición {{ordenarIconoMedicion('medId')}}</a></th>
-                          <th (click)="ordenarMedicionPor('serDescripcion')" [appSort]="MedicionesTablaFiltrados" data-order="desc"
-                              data-name="serDescripcion" style="text-align: center;"><a>Servicio {{ordenarIconoMedicion('serDescripcion')}}</a></th>
-                          <th (click)="ordenarMedicionPor('medValor')" [appSort]="MedicionesTablaFiltrados" data-order="desc"
-                              data-name="medValor" style="text-align: center;"><a>Valor {{ordenarIconoMedicion('medValor')}}</a></th>
-                          <th (click)="ordenarMedicionPor('medFechaHoraSms')" [appSort]="MedicionesTablaFiltrados" data-order="desc"
-                              data-name="medFechaHoraSms" style="text-align: center;"><a>Fecha Medición {{ordenarIconoMedicion('medFechaHoraSms')}}</a></th>             
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr *ngFor="let medicion of MedicionesTablaFiltrados; let i=index"
-                        [ngClass]="{'fila-par': i%2==0, 'fila-impar': i%2==1}"
-                        >
-                          <th style="vertical-align: middle" class="align-center">{{ medicion.medId }}</th>
-                          <td style="vertical-align: middle" class="align-center">{{ medicion.serDescripcion }}</td>
-                          <td style="vertical-align: middle" class="align-center">{{ medicion.medValor }}</td>
-                          <td style="vertical-align: middle" class="align-center">{{ medicion.medFechaHoraSms | date: 'yyyy-MM-dd hh:mm' }}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-              </div>
-              <div class="alert alert-primary text-center" role="alert" *ngIf="validarFiltradoMedicion() == false">
-                ¡No se ha encontrado ninguna Medición!
-              </div>
-            </div>  
-          </div>  
-
-          <br>
-          <h4> Grafico: </h4>
-          <br>
-          <div id="contenedor-graficos"></div>
-          <!-- <div id="grafico2" style="width: 1000px; height: 500px;"></div> -->
+        <div class="col-12 cardFiltrado cardAnimate cardFlat cardSeparacion">
+          <div class="h-100 d-flex align-items-center justify-content-center">
+            <div
+              class="example-button-row"
+              style="display: flex; justify-content: flex-end"
+            >
+              <button
+                mat-fab
+                extended
+                color="primary"
+                class="btnAgregar"
+                routerLink="/consultar-mediciones-actuales"
+              >
+                <mat-icon>touch_app</mat-icon>
+                Mediciones Actuales
+              </button>
+            </div>
+          </div>
+        </div>   
+     
+      </div>
+      <br />
+      <br />
 
 
+      <div class="row">
+        <div class="col-12 cardFiltrado cardAnimate cardFlat">
+          <!-- app.component.html -->
+          <div class="table" *ngIf="dataSourceCentral">
+            <table mat-table [dataSource]="dataSourceCentral" matSort #matSortCentral="matSort">
+
+              <!-- Columnas -->
+              <ng-container matColumnDef="cenNro">                                                            
+                <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header>Cod.</th>
+                <td class="table-row first-column" style="vertical-align: middle; text-align: textIzquierda"  mat-cell *matCellDef="let element">{{ element.cenNro }}</td>
+              </ng-container>
+      
+              <ng-container matColumnDef="cenImei">
+                <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header>IMEI</th>
+                <td class="table-row" style="vertical-align: middle; text-align: textIzquierda" mat-cell *matCellDef="let element">{{ element.cenImei }}</td>
+              </ng-container>
+      
+              <ng-container matColumnDef="cenCoorX">
+                <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header>Coordenada X</th>
+                <td class="table-row" style="vertical-align: middle; text-align: textIzquierda" mat-cell *matCellDef="let element">{{ element.cenCoorX }}</td>
+              </ng-container>
+      
+              <ng-container matColumnDef="cenCoorY">
+                <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header>Coordenada Y</th>
+                <td class="table-row" style="vertical-align: middle; text-align: textIzquierda" mat-cell *matCellDef="let element">{{ element.cenCoorY }}</td>
+              </ng-container>    
+      
+              <!-- Columna vacia -->
+              <ng-container matColumnDef="columnaVacia">
+                <th class="encabezado text-center" mat-header-cell *matHeaderCellDef></th>
+                <td class="table-row" class="align-center" mat-cell *matCellDef="let element"></td>
+              </ng-container>
+      
+              <!-- Columna de acciones -->
+              <ng-container matColumnDef="seleccionar">
+                <th class="encabezado text-center" mat-header-cell *matHeaderCellDef>Seleccionar</th>
+                <td class="table-row" class="align-center" mat-cell *matCellDef="let element">
+                  <button
+                    mat-button
+                    (click)="seleccionarCentral(element)"
+                    type="button"
+                    class="btn"
+                    data-bs-target="#staticBackdrop"
+                    title="Seleccionar Central"
+                  >
+                    <img
+                      src="../../../assets/seleccionar_central.png"
+                      class="iconosBoton"
+                      alt="..."
+                    />
+                  </button>
+                </td>
+              </ng-container>
+      
+              <!-- Filas -->
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsCentral"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumnsCentral; 
+                let i = index" [ngClass]="{ 'fila-par': i % 2 === 0, 'fila-impar': i % 2 !== 0 }">
+              </tr>      
+            </table>
+      
+            <!-- Paginador -->
+            <mat-paginator *ngIf="dataSourceCentral"
+              [length]="dataSourceCentral.data.length"
+              [pageSize]="pageSizeCentral"
+              [pageSizeOptions]="[5, 10, 25, 100]"
+              (page)="handlePageChangeCentral($event)"
+              showFirstLastButtons
+              #paginatorCentral
+            ></mat-paginator>
+      
+            <div class="align-center" *ngIf="validarFiltrado() == true">
+            </div>
+      
+            <div class="alert alert-primary text-center" role="alert" *ngIf="validarFiltrado() == false">
+              No se encontraron centrales que coincidan con su búsqueda.
+            </div>
+      
+          </div>
         </div>
       </div>
-    </div>
-  </div>
+
+        </div>
+    </ng-container>  
+  </mat-step>
+
+  <mat-step
+  [label]="titulo2"
+  [completed]="isStep2Completed"
+  [ngClass]="{ collapse: isCollapsed2 }"
+  >
+    <ng-container contenido-paso-2>  
+      <!-- Botón ver otra central -->
+      <div class="row">
+        <div
+          class="example-button-row"
+          style="display: flex; justify-content: flex-end"
+        >
+          <button
+            mat-fab
+            extended
+            color="primary"
+            class="btonNuevaConsulta"
+            (click)="goToPreviousStep()"
+          >
+            <mat-icon>touch_app</mat-icon>
+            Nueva Consulta
+          </button>
+        </div>
+      </div>
+
+      <br>
+      <br>
+
+      <div class="card cardFiltrado cardAnimate cardFlat">
+        <div class="card-header">
+          <div class="d-flex justify-content-between align-items-center">
+            <h4 class="mb-0 tituloCard">Seleccione los Servicios a Monitorear de la Central N° {{centralNroSeleccionada}} </h4>
+            <img
+              src="../../../assets/seleccionar.png"
+              class="image"
+              style="width: 5%; height: 5%; padding-right: 5px"
+              alt="..."
+            />
+          </div>
+        </div>
+        <br>
+
+        <div class="row">          
+          <div class="col-md-6">
+
+            <h2 class="align-center"> Servicios Disponibles </h2>
+
+            <!-- app.component.html -->
+            <div class="table" *ngIf="dataSourceServicioDisponible">
+              <table mat-table [dataSource]="dataSourceServicioDisponible" matSort #matSortServicioDisponible="matSort">
+
+              <!-- Columnas -->
+              <ng-container matColumnDef="serId">
+                <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header="serId">Cod.</th>
+                <td class="table-row first-column" style="vertical-align: middle; text-align: textIzquierda"  mat-cell *matCellDef="let element">{{ element.serId }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="serDescripcion">
+                <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header="serDescripcion">Servicio</th>
+                <td class="table-row" style="vertical-align: middle; text-align: textIzquierda" mat-cell *matCellDef="let element">{{ element.serDescripcion }}</td>
+              </ng-container>               
+                    
+              <!-- Columna de acciones -->
+              <ng-container matColumnDef="AgregarServ">
+                <th class="encabezado text-center" mat-header-cell *matHeaderCellDef>Agregar Serv.</th>
+                <td class="table-row" class="align-center" mat-cell *matCellDef="let element">
+                  <button type="button" class="btn"
+                  data-bs-target="#staticBackdrop" (click)="agregarServicio(element)" title="Agregar Servicio">                    
+                  <img
+                    style="width: 50%; height: 50%"
+                    src="../../../assets/agregar.png"
+                    class="image"
+                    alt="..."
+                    />                      
+                  </button>
+                </td>
+              </ng-container>
+              
+              <!-- Filas -->
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsServicioDisponible"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumnsServicioDisponible;
+                let i = index" [ngClass]="{ 'fila-par': i % 2 === 0, 'fila-impar': i % 2 !== 0 }">
+              </tr>
+              
+            </table>
+      
+            <!-- Paginador -->
+            <mat-paginator *ngIf="dataSourceServicioDisponible"
+              [length]="dataSourceServicioDisponible.data.length"
+              [pageSize]="pageSizeServicioDisponible"
+              [pageSizeOptions]="[5, 10, 25, 100]"
+              (page)="handlePageChangeServicioDisponible($event)"
+              showFirstLastButtons
+              #paginatorServicioDisponible
+            ></mat-paginator>
+      
+            <div class="align-center" *ngIf="validarFiltradoServicios() == true">
+            </div>
+      
+            <div class="alert alert-primary text-center" role="alert" *ngIf="validarFiltradoServicios() == false">
+              No hay Servicios Disponible
+            </div>
+      
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <h2 class="align-center"> Servicios a Graficar </h2>
+
+            <!-- app.component.html -->
+            <div class="table" *ngIf="dataSourceServicioGraficar">
+              <table mat-table [dataSource]="dataSourceServicioGraficar" matSort #matSortServicioGraficar="matSort">
+
+              <!-- Columnas -->
+              <ng-container matColumnDef="serId">
+                <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header="serId">Cod.</th>
+                <td class="table-row first-column" style="vertical-align: middle; text-align: textIzquierda"  mat-cell *matCellDef="let element">{{ element.serId }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="serDescripcion">
+                <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header="serDescripcion">Servicio</th>
+                <td class="table-row" style="vertical-align: middle; text-align: textIzquierda" mat-cell *matCellDef="let element">{{ element.serDescripcion }}</td>
+              </ng-container>               
+                    
+              <!-- Columna de acciones -->
+              <ng-container matColumnDef="ExtraerServ">
+                <th class="encabezado text-center" mat-header-cell *matHeaderCellDef>Extraer Serv.</th>
+                <td class="table-row" class="align-center" mat-cell *matCellDef="let element">
+                  <button type="button" class="btn"
+                  data-bs-target="#staticBackdrop" (click)="extraerServicio(element)" title="Extrar Servicio">
+                    <img
+                    style="width: 50%; height: 50%"
+                      src="../../../assets/minus.png"
+                      class="image"
+                      alt="..."
+                    />
+                  </button>
+                </td>
+              </ng-container>
+              
+              <!-- Filas -->
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsServicioGraficar"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumnsServicioGraficar;
+                let i = index" [ngClass]="{ 'fila-par': i % 2 === 0, 'fila-impar': i % 2 !== 0 }">
+              </tr>
+              
+            </table>
+      
+            <!-- Paginador -->
+            <mat-paginator *ngIf="dataSourceServicioGraficar"
+              [length]="dataSourceServicioGraficar.data.length"
+              [pageSize]="pageSizeServicioGraficar"
+              [pageSizeOptions]="[5, 10, 25, 100]"
+              (page)="handlePageChangeServicioGraficar($event)"
+              showFirstLastButtons
+              #paginatorServicioGraficar
+            ></mat-paginator>
+      
+            <div class="align-center" *ngIf="validarFiltradoServiciosGraficar() == true">
+            </div>
+      
+            <div class="alert alert-primary text-center" role="alert" *ngIf="validarFiltradoServiciosGraficar() == false">
+              No tiene Servicios Activos para Graficar
+            </div>
+      
+            </div>
+          </div>
+        </div> 
+      </div>
+
+      <br>
+      <br>
+
+      <div class="card cardFiltrado cardAnimate cardFlat">
+        <div class="card-header">
+          <div class="d-flex justify-content-between align-items-center">
+            <h4 class="mb-0 tituloCard">Visualización </h4>
+            <img
+              src="../../../assets/seleccionar.png"
+              class="image"
+              style="width: 5%; height: 5%; padding-right: 5px"
+              alt="..."
+            />
+          </div>
+        </div>
+        <br>
+
+        <div>
+          <div style="display: flex;">
+            <div style="flex: 1;">
+              <h2 class="align-center">Visualización de los Servicios</h2>
+              <br>
+              <div class="container">
+
+                <div class="custom-control custom-switch mb-3">
+                  <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Visualizar Todos los Servicios en un solo Gráfico">
+                    <mat-slide-toggle id="op1G" [checked]="op1G" (change)="selOpG('op1G', $event)">Todos los Servicios en un solo Gráfico</mat-slide-toggle>
+                  </div>
+                </div>
+
+                <div class="custom-control custom-switch mb-3">
+                  <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Visualizar Cada Servicio en un Gráfico">
+                    <mat-slide-toggle id="op2G" [checked]="op2G" (change)="selOpG('op2G', $event)">Cada Servicio en un Gráfico</mat-slide-toggle>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            <div style="flex: 1;">
+              <h2 class="align-center">Visualización de los Servicios en Tabla</h2>
+              <br>
+              <div class="container">
+
+                <div class="custom-control custom-switch mb-3">
+                  <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Visualización de los Servicios en Tabla">
+                    <mat-slide-toggle id="op1T" [checked]="op1T" (change)="selOpT($event)">Sí</mat-slide-toggle>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <br>
+        <h2 class="align-center"> Seleccione el periodo a monitorear: </h2>
+        <br>
+        <form [formGroup]="formGraficar">     
+        <div class="container">
+
+          <div class="custom-control custom-switch mb-3">
+            <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Visualizar Última semana">
+              <mat-slide-toggle id="op1" [checked]="op1" (change)="selOp('op1', $event)">Última semana</mat-slide-toggle>
+            </div>
+          </div>
+
+          <div class="custom-control custom-switch mb-3">
+            <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Visualizar Últimos 15 días">
+              <mat-slide-toggle id="op2" [checked]="op2" (change)="selOp('op2', $event)">Últimos 15 días</mat-slide-toggle>
+            </div>
+          </div>
+
+          <div class="custom-control custom-switch mb-3">
+            <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Visualizar Último mes">
+              <mat-slide-toggle id="op3" [checked]="op3" (change)="selOp('op3', $event)">Último mes</mat-slide-toggle>
+            </div>
+          </div>
+
+          <div class="row">
+              <div class="col-md-4 margenFiltrosSlite">
+                <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Personalizar Visualización por Rango de Fecha">
+                  <mat-slide-toggle id="op4" [checked]="op4" (change)="selOp('op4', $event)">Personalizar</mat-slide-toggle>
+                </div>
+            </div>                   
+              <div class="col-md-2 margenFiltrosFecha">
+                <mat-form-field [formGroup]="formGraficar">
+                  <mat-label>Ingrese Rango de Fecha</mat-label>
+                  <div class="input-container">
+                    <mat-date-range-input [rangePicker]="picker">
+                      <input matStartDate formControlName="fecha_desde" placeholder="Desde">
+                      <input matEndDate formControlName="fecha_hasta" placeholder="Hasta">
+                    </mat-date-range-input>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  </div>
+                  <mat-hint>DD/MM/AAAA – DD/MM/AAAA</mat-hint>
+                  <mat-date-range-picker #picker></mat-date-range-picker>
+                </mat-form-field>
+              </div>
+          </div>            
+        </div>
+        </form>
+
+        <br>             
+        <div class="col-12 text-center">
+          <button
+            mat-fab
+            extended
+            color="primary"
+            type="submit"
+            id="btnAgregar"
+            class="btn btnConfirmar"
+            data-bs-target="#staticBackdrop"
+            (click)="graficar()"
+          >
+          Gráficar y Visualizar
+          </button>
+        </div>
+
+        <br>
+      </div>
+
+      <br>
+      <br>
+      <form [formGroup]="formfiltro">
+
+      <div class="card cardFiltrado cardAnimate cardFlat" *ngIf="op1T">
+        <div class="card-header">
+          <div class="d-flex justify-content-between align-items-center">
+            <h4 class="mb-0 tituloCard"> Tabla </h4>
+            <img
+              src="../../../assets/seleccionar.png"
+              class="image"
+              style="width: 5%; height: 5%; padding-right: 5px"
+              alt="..."
+            />
+          </div>
+        </div>
+        <br>
+
+        <div class="row">
+          <div class="col-md-4 d-flex justify-content-center">
+            <div class="input-container">
+              <!-- Input 1 -->
+              <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por número de Medición">
+                <label class="search-field">
+                  <mat-label class="search-field label2 ng-tns-c97-48 ng-star-inserted">Buscar por número de Medición</mat-label>
+                  <input formControlName="medId" type="text" class="form-control inputBusqueda2 .input-con-color-de-fondo" placeholder="Ej. 2323" (keyup)="esFiltrarMedicion($event)" />
+                  <i class="fas fa-search FormatoIconos2" ></i>
+                </label>
+              </div>
+            </div>
+          </div>
+        
+          <div class="col-md-4 d-flex justify-content-center">
+            <div class="input-container">
+              <!-- Input 2 -->
+              <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por nombre de Servicio">
+                <label class="search-field">
+                  <mat-label class="search-field label2 ng-tns-c97-48 ng-star-inserted">Buscar por nombre de Servicio</mat-label>
+                  <input formControlName="serDescripcion" type="text" class="form-control inputBusqueda2 .input-con-color-de-fondo" placeholder="Ej. Temperatura" (keyup)="esFiltrarMedicion($event)" />
+                  <i class="fas fa-search FormatoIconos2" ></i>
+                </label>
+              </div>
+            </div>
+          </div>
+        
+          <div class="col-md-4 d-flex justify-content-center">
+            <div class="input-container">
+              <!-- Input 3 -->
+              <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por valor de Medición">
+                <label class="search-field">
+                  <mat-label class="search-field label2 ng-tns-c97-48 ng-star-inserted">Buscar por valor de Medición</mat-label>
+                  <input formControlName="medValor" type="text" class="form-control inputBusqueda2 .input-con-color-de-fondo" placeholder="Ej. 35" (keyup)="esFiltrarMedicion($event)" />
+                  <i class="fas fa-search FormatoIconos2" ></i>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <br>
+        <br>
+
+        <div class="row d-flex justify-content-center">
+
+            <!-- Columna 1 -->
+            <div class="col-md-4 d-flex justify-content-center margenFiltrosSlite2 ">
+              <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Filtrar por Fecha">
+                <mat-slide-toggle id="opFF" (change)="filtroFecha($event)">Filtrar por Fecha</mat-slide-toggle>
+              </div>
+            </div>
+
+            <!-- Columna 2 -->
+            <div class="col-md-4 d-flex justify-content-center margenFiltrosFecha">
+              <mat-form-field [formGroup]="formfiltro">
+                <mat-label>Ingrese Rango de Fecha</mat-label>
+                <div class="input-container">
+                  <mat-date-range-input [rangePicker]="picker">
+                    <input matStartDate formControlName="fecha_desde" placeholder="Desde">
+                    <input matEndDate formControlName="fecha_hasta" placeholder="Hasta">
+                  </mat-date-range-input>
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                </div>
+                <mat-hint>DD/MM/AAAA – DD/MM/AAAA</mat-hint>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+              </mat-form-field>
+            </div>
+
+            <!-- Columna 3 -->
+            <div class="col-md-4 d-flex justify-content-center margenFiltrosSlite">
+              <div class="row margenFiltrosBtn">
+                <div class="example-button-row">
+                  <button mat-fab extended color="primary" class="btnAplicarFiltro" (click)="filtarXFechas()" [disabled]="!habilitarBoton">
+                    <mat-icon>touch_app</mat-icon>
+                    Aplicar Filtro
+                  </button>
+                </div>
+              </div>
+            </div>
+
+        </div>
+
+        <br>
+
+        <div class="row d-flex justify-content-center"> 
+          <div class="col-md-9">
+
+          <!-- app.component.html -->
+          <div class="table" *ngIf="dataSourceMediciones">
+            <table mat-table [dataSource]="dataSourceMediciones" matSort #matSortMediciones="matSort">
+
+            <!-- Columnas -->
+            <ng-container matColumnDef="medId">
+              <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header="medId">Num. Medición</th>
+              <td class="table-row first-column" style="vertical-align: middle; text-align: textIzquierda"  mat-cell *matCellDef="let element">{{ element.medId }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="serDescripcion">
+              <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header="serDescripcion">Servicio</th>
+              <td class="table-row" style="vertical-align: middle; text-align: textIzquierda" mat-cell *matCellDef="let element">{{ element.serDescripcion }}</td>
+            </ng-container>               
+                  
+            <ng-container matColumnDef="medValor">
+              <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header="medValor">Valor</th>
+              <td class="table-row" style="vertical-align: middle; text-align: textIzquierda" mat-cell *matCellDef="let element">{{ element.medValor }}</td>
+            </ng-container>  
+
+            <ng-container matColumnDef="medFechaHoraSms">
+              <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header="medFechaHoraSms">Fecha Medición</th>
+              <td class="table-row" style="vertical-align: middle; text-align: textIzquierda" mat-cell *matCellDef="let element">{{ element.medFechaHoraSms | date: 'yyyy-MM-dd hh:mm' }}</td>
+            </ng-container>              
+            
+            <!-- Filas -->
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsMediciones"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsMediciones;
+              let i = index" [ngClass]="{ 'fila-par': i % 2 === 0, 'fila-impar': i % 2 !== 0 }">
+            </tr>
+            
+          </table>
+    
+          <!-- Paginador -->
+          
+          <mat-paginator *ngIf="dataSourceMediciones "
+            [length]="dataSourceMediciones.data.length"
+            [pageSize]="pageSizeMediciones"
+            [pageSizeOptions]="[5, 10, 25, 50, 100]"
+            (page)="handlePageChangeMediciones($event)"
+            showFirstLastButtons
+            #paginatorMediciones
+          ></mat-paginator>
+    
+          <div class="align-center" *ngIf="validarFiltradoMedicion() == true">
+          </div>
+    
+          <div class="alert alert-primary text-center" role="alert" *ngIf="validarFiltradoMedicion() == false">
+            ¡No se ha encontrado ninguna Medición!
+          </div>    
+          </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      </form>
+
+      <br>
+      <br>
+
+      <div class="card cardFiltrado cardAnimate cardFlat">
+        <div class="card-header">
+          <div class="d-flex justify-content-between align-items-center">
+            <h4 class="mb-0 tituloCard"> Gráfico </h4>
+            <img
+              src="../../../assets/seleccionar.png"
+              class="image"
+              style="width: 5%; height: 5%; padding-right: 5px"
+              alt="..."
+            />
+          </div>
+        </div>
+        <br>
+
+          <div id="contenedor-graficos"></div>
+
+      </div>
+
+    </ng-container>
+    
+    </mat-step>
+</mat-vertical-stepper>
+</div>  
+<br />
 </div>
-<br/>

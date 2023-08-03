@@ -1,5 +1,4 @@
 //SISTEMA
-import { JsonpClientBackend } from '@angular/common/http';
 import { Component, OnInit, Output, ViewChild } from '@angular/core';
 import {
   FormBuilder,
@@ -8,14 +7,16 @@ import {
   Validators,
 } from '@angular/forms';
 import Swal, { SweetAlertOptions } from 'sweetalert2';
+
 import { MatStepper } from '@angular/material/stepper';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
 
 //COMPONENTES
 import { ClienteClass } from 'src/app/core/models/cliente';
 import { ClienteConsultaClass } from 'src/app/core/models/clienteConsulta';
-import { StepComponent } from 'src/app/shared/step/step.component';
 import { TipoDocumentoClass } from 'src/app/core/models/tipoDocumento';
-
 
 //SERVICIOS
 import { ClienteService } from 'src/app/core/services/cliente.service';
@@ -26,15 +27,24 @@ import { ClienteService } from 'src/app/core/services/cliente.service';
   styleUrls: ['./consultar-cliente.component.css']
 })
 export class ConsultarClienteComponent implements OnInit {
-    //STEPPER
-    titulo1 = 'Consultá información de los clientes:';
-    titulo2 = 'Modificar información de un cliente';
-    titulo3 = 'Título del tercer paso';
-    isStep1Completed = false;
-    isStep2Completed = false;
-    isStep3Completed = false;
-   
-    @ViewChild(MatStepper, { static: false }) stepper: MatStepper | undefined;
+
+  //TABLA Cliente
+  displayedColumnsCliente: string[] = ['tdDescripcion', 'cliNroDoc', 'cliApeNomDen', 'usuario', 'fechaBaja', 'columnaVacia', 'modEstado', 'seleccionar'];
+  @ViewChild('paginatorCliente', { static: false }) paginatorCliente: MatPaginator | undefined;
+  @ViewChild('matSortCliente', { static: false }) sortCliente: MatSort | undefined;
+  dataSourceCliente: MatTableDataSource<any>;
+  pageSizeCliente = 10; // Número de elementos por página
+  currentPageCliente = 1; // Página actual
+  
+  //STEPPER
+  titulo1 = 'Consultá información de los clientes:';
+  titulo2 = 'Modificar información de un cliente';
+  titulo3 = 'Título del tercer paso';
+  isStep1Completed = false;
+  isStep2Completed = false;
+  isStep3Completed = false;
+  
+  @ViewChild(MatStepper, { static: false }) stepper: MatStepper | undefined;
 
   //VARIABLES DE OBJETOS LIST
   Clientes: ClienteConsultaClass[] = [];
@@ -66,8 +76,6 @@ export class ConsultarClienteComponent implements OnInit {
   telefonoValido: string =
   "Ingrese un número de teléfono válido. Los formatos permitidos son: '1234567890', '123-4567890', '1234-567890' o '1234-56-7890'";
   
-
-
   cliTipoDocSeleccionado : number = 0;
   cliIdUsuarioSeleccionado : number = 0;
   tipoOrdenamientoCliente: number = 1;
@@ -78,22 +86,18 @@ export class ConsultarClienteComponent implements OnInit {
   isCollapsed1 = false;
   isCollapsed2 = false;  
 
-  //PAGINADO
-  pageSize = 5; // Número de elementos por página
-  currentPage = 1; // Página actual
-  totalItems = 0; // Total de elementos en la tabla
-
-
   //FORMULARIOS DE AGRUPACION DE DATOS
   formModificar: FormGroup;
   formfiltro: FormGroup;
   constructor(
     private clienteConsultar: ClienteService, private formBuilder: FormBuilder 
   ) { 
+    this.dataSourceCliente = new MatTableDataSource<any>();
+
     this.formModificar = new FormGroup({
-      tipoDocumento: new FormControl(null, [ Validators.required,
-        Validators.minLength(7),
-        Validators.maxLength(8)]),
+      tipoDocumento: new FormControl(null, [ 
+        Validators.required,
+        ]),
       nroDoc: new FormControl(null, []),
       cliApeNomDen: new FormControl(null, [
         Validators.required,
@@ -124,21 +128,26 @@ export class ConsultarClienteComponent implements OnInit {
       usuario: new FormControl(null, []),
     });   
   }
- 
-
-  toggleCollapse1() {
-    this.isCollapsed1 = !this.isCollapsed1;
-  }
-
-  toggleCollapse2() {
-    this.isCollapsed2 = !this.isCollapsed2;
-  }
-  
+   
   ngOnInit(): void {      
     this.clienteConsultar.listaClientes().subscribe(data => {
       this.Clientes = data;  
       this.ClientesFiltrados = data;
+
+      this.dataSourceCliente = new MatTableDataSource(data);
+      if (this.paginatorCliente) {
+        this.dataSourceCliente.paginator = this.paginatorCliente;
+      }
+      if (this.sortCliente) {
+        this.dataSourceCliente.sort = this.sortCliente;
+      }
+
     })
+  }
+  
+  handlePageChangeCliente(event: any) {
+    this.currentPageCliente = event.pageIndex + 1;
+    this.pageSizeCliente= event.pageSize;
   }
   
   set tipoDocumento(valor: any) {
@@ -199,9 +208,9 @@ export class ConsultarClienteComponent implements OnInit {
       return true;
     }
   }
+
   //STEP
   goToNextStep(stepNumber: number): void {
-    console.log(`Pasando al siguiente paso: ${stepNumber}`);
     if (this.stepper) {
       this.stepper.selectedIndex = stepNumber;
     }
@@ -212,6 +221,7 @@ export class ConsultarClienteComponent implements OnInit {
       this.stepper.previous();
     }
   }
+
   // Placeholder de DNI
   formatDocumentNumber(event: Event) {
     const input = event.target as HTMLInputElement;
@@ -284,28 +294,21 @@ export class ConsultarClienteComponent implements OnInit {
     this.telefono= this.cliTelefonoSeleccionado;    
     
     this.isCollapsed1 = !this.isCollapsed1;
+
+    this.goToNextStep(1);
   }
 
-  //Metodos para grilla
-  //Almacena en una variable la propiedad por la cual se quiere ordenar la consulta de Cliente.
-  ordenarClientePor(propiedad: string) {
-    this.tipoOrdenamientoCliente =
-      propiedad === this.propiedadOrdenamientoCliente ? this.tipoOrdenamientoCliente * -1 : 1;
-    this.propiedadOrdenamientoCliente = propiedad;
-  }
-
-  //En base a la propiedad por la que se quiera ordenar y el tipo de orden muestra un icono.
-  ordenarIconoCliente(propiedad: string) {
-    if (propiedad === this.propiedadOrdenamientoCliente) {
-      return this.tipoOrdenamientoCliente === 1 ? '🠉' : '🠋';
-    } else {
-      return '🠋🠉';
-    }
-  }
   //Filtro de Tipo de DNI
   filtrarClientesPorTipoDocumento() {
-    
     this.ClientesFiltrados = this.Clientes.filter(cliente => cliente.cliTipoDoc === this.tipoDocumentoSeleccionado);
+    
+    this.dataSourceCliente = new MatTableDataSource(this.ClientesFiltrados);
+    if (this.paginatorCliente) {
+      this.dataSourceCliente.paginator = this.paginatorCliente;
+    }
+    if (this.sortCliente) {
+      this.dataSourceCliente.sort = this.sortCliente;
+    }
   }
   
   //Filtro de Central por Nombre Cliente o Usuario.
@@ -326,28 +329,18 @@ export class ConsultarClienteComponent implements OnInit {
         this.ClientesFiltrados.push(clienteConsulta);
       }
     });
+
+    this.dataSourceCliente = new MatTableDataSource(this.ClientesFiltrados);
+    if (this.paginatorCliente) {
+      this.dataSourceCliente.paginator = this.paginatorCliente;
+    }
+    if (this.sortCliente) {
+      this.dataSourceCliente.sort = this.sortCliente;
+    }
+
   }
-  // esFiltrar(event: Event) {
-  //   const filtronTipo = (this.formfiltro.get('tipo') as FormControl).value?.toLowerCase();
-  //   const filtroNumero = (this.formfiltro.get('numero') as FormControl).value?.toLowerCase();
-  //   const filtroCliente = (this.formfiltro.get('cliente') as FormControl).value?.toLowerCase();
-  //   const filtronUsuario = (this.formfiltro.get('usuario') as FormControl).value?.toLowerCase();
 
-  //   this.ClientesFiltrados = this.Clientes.filter((cli) => {
-  //     const valorTdDescripcion= cli.tdDescripcion.toString().toLowerCase();
-  //     const valorCliNroDoc = cli.cliNroDoc.toString().toLowerCase();
-  //     const valorCliApeNomDen = cli.cliApeNomDen.toString().toLowerCase();
-  //     const valorUsuario = cli.usuario.toString().toLowerCase();
-
-  //     return (
-  //       (!filtronTipo || valorTdDescripcion.includes(filtronTipo)) &&
-  //       (!filtroNumero || valorCliNroDoc.includes(filtroNumero)) &&
-  //       (!filtroCliente || valorCliApeNomDen.includes(filtroCliente)) &&
-  //       (!filtronUsuario || valorUsuario.includes(filtronUsuario))
-  //     );
-  //   });
-  // }
-  modificarEstadoCliente(accion: number, estado:string): void {
+  modificarEstadoCliente(element: any, accion: number, estado:string): void {
     Swal.fire({
       text: '¿Estás seguro que deseas modificar el estado del Cliente a "' + estado + '"?',
       icon: 'warning',
@@ -358,12 +351,12 @@ export class ConsultarClienteComponent implements OnInit {
       cancelButtonText: 'Cancelar'
     } as SweetAlertOptions).then((result) => {
       if (result.isConfirmed) {
-        this.clienteConsultar.modificarEstado(accion, this.cliTipoDocSeleccionado, this.cliNroDocSeleccionado).subscribe(
+        this.clienteConsultar.modificarEstado(accion, element.cliTipoDoc, element.cliNroDoc).subscribe(
           result => {
             Swal.fire({
-              text: 'Se ha actualizado el estado del cliente: '+ this.cliApeNomDenSeleccionado,
+              text: 'Se ha actualizado el estado del cliente: '+ element.cliApeNomDen,
               icon: 'success',
-              position: 'top',
+              position: 'center',
               showConfirmButton: true,
               confirmButtonColor: '#0f425b',
               confirmButtonText: 'Aceptar',
@@ -375,9 +368,9 @@ export class ConsultarClienteComponent implements OnInit {
           },
           error => {
             Swal.fire({
-              text: 'No es posible modificar el estado del Cliente: ' + this.cliApeNomDenSeleccionado,
+              text: 'No es posible modificar el estado del Cliente: ' + element.cliApeNomDen,
               icon: 'error',
-              position: 'top',
+              position: 'center',
               showConfirmButton: true,
               confirmButtonColor: '#0f425b',
               confirmButtonText: 'Aceptar',
@@ -393,7 +386,7 @@ export class ConsultarClienteComponent implements OnInit {
       Swal.fire({
         text: 'Debe Seleccionar un Usuario ',
         icon: 'error',
-        position: 'top',
+        position: 'center',
         showConfirmButton: true,
         confirmButtonColor: '#0f425b',
         confirmButtonText: 'Aceptar',
@@ -415,7 +408,7 @@ export class ConsultarClienteComponent implements OnInit {
               Swal.fire({
                 text: 'Se ha Blanqueado el Password al Usuario: '+ this.usuarioSeleccionado + ' el nuevo Password es: 123456',
                 icon: 'success',
-                position: 'top',
+                position: 'center',
                 showConfirmButton: true,
                 confirmButtonColor: '#0f425b',
                 confirmButtonText: 'Aceptar',
@@ -429,7 +422,7 @@ export class ConsultarClienteComponent implements OnInit {
               Swal.fire({
                 text: 'No es posible Blanquear el Password del Usuario: ' + this.usuarioSeleccionado,
                 icon: 'error',
-                position: 'top',
+                position: 'center',
                 showConfirmButton: true,
                 confirmButtonColor: '#0f425b',
                 confirmButtonText: 'Aceptar',
@@ -440,12 +433,13 @@ export class ConsultarClienteComponent implements OnInit {
       });
     }
   }
+
   modificarCliente(): void {
     if (!this.usuarioSeleccionado){
       Swal.fire({
         text: 'Debe Seleccionar un Cliente',
         icon: 'error',
-        position: 'top',
+        position: 'center',
         showConfirmButton: true,
         confirmButtonColor: '#0f425b',
         confirmButtonText: 'Aceptar',
@@ -517,17 +511,5 @@ export class ConsultarClienteComponent implements OnInit {
       }
     }
   }
-  paginaCambiada(event: any) {
-    this.currentPage = event;
-    const cantidadPaginas = Math.ceil(
-      this.ClientesFiltrados.length / this.pageSize
-    );
-    const paginas = [];
-
-    for (let i = 1; i <= cantidadPaginas; i++) {
-      paginas.push(i);
-    }
-    return paginas;
-  } 
 
 }

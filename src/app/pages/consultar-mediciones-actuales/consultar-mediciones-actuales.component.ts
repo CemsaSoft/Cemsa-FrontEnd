@@ -35,7 +35,7 @@ export class ConsultarMedicionesActualesComponent implements OnInit {
   currentPageCentral = 1; // Página actual
     
   //STEPPER
-  titulo1 = 'Seleccionar Central para Ver sus Mediciones Actuales';
+  titulo1 = 'Seleccionar Central para Ver Sus Mediciones Actuales';
   titulo2 = 'Mediciones Actuales de la Central N°:';
   titulo3 = ':';
   isStep1Completed = false;

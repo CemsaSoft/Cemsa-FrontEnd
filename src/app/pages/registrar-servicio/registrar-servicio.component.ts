@@ -111,6 +111,7 @@ export class RegistrarServicioComponent implements OnInit {
 //Agregar un servicio
 agregarServicio(): void {
   //Verifica que este completo el formulario y que no tenga errores.
+  console.log(    this.formAgregar.get('tipoGraficoA')?.value)
   if (this.formAgregar.valid == false) {      
     Swal.fire({
       title: 'Error',
@@ -144,7 +145,7 @@ agregarServicio(): void {
         ' ha sido registrado con éxito con el número de Cod.: ' +
         data.serId,
       icon: 'success',
-      position: 'top',
+      position: 'center',
       showConfirmButton: true,
       confirmButtonColor: '#0f425b',
       confirmButtonText: 'Aceptar',

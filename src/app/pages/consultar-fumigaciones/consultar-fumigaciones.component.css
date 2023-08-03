@@ -488,7 +488,32 @@
   border-color: #fff!important;
   box-shadow: var(--bs-btn-active-shadow);
 }
-
+/* -------Botón Modificar------- */
+.btnModificar{
+  width: 237px !important;
+  height: 59px !important;
+  border-radius: 4px !important;
+  background-color: rgba(0, 63, 138, 1) !important;
+  color: #fff;
+  border-color: #194c87 !important;
+}
+.btnModificar:hover{/*efecto a pasar por arriba*/
+  color: #fff;
+  background-color: #01C3CC !important;
+  border-color:#194c87 !important;
+  box-shadow: 0 0 10px rgba(var(--bs-btn-focus-shadow-rgb), 0.5); /*sombra*/
+}
+.btnModificar:active{/*efecto al presionar*/
+  color:  #fff;
+  background-color: #194c873f !important;
+  border-color: #194c8754 !important;
+  box-shadow: var(--bs-btn-active-shadow);
+}
+.btnModificar:disabled{
+  color: #632626 !important;
+  background-color: #194c8781 !important;
+  border-color: #194c87 !important;
+}
 .first-column {
   background-color: #f7f9fa23;
   color: #01C3CC;

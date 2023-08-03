@@ -108,89 +108,45 @@
             </div>
             <br />
             <br />
-            
+
             <div class="row">
               <div class="col-12 cardFiltrado cardAnimate cardFlat">
-                <table class="table" *ngIf="validarFiltrado() == true">
-                  <thead class="encabezado">
-                    <tr>
-                      <th
-                        (click)="ordenarPor('serId')"
-                        [appSort]="ServiciosFiltrados"
-                        data-order="desc"
-                        data-name="serId"
-                        style="text-align: center"
-                      >
-                        <a
-                          >Cod.
-                          {{ ordenarIcono("serId") }}</a
-                        >
-                      </th>
-                      <th
-                        (click)="ordenarPor('serDescripcion')"
-                        [appSort]="ServiciosFiltrados"
-                        data-order="desc"
-                        data-name="serDescripcion"
-                        style="text-align: center"
-                      >
-                        <a>Nombre de Servicio {{ ordenarIcono("serDescripcion") }}</a>
-                      </th>
-                      <th
-                        (click)="ordenarPor('serUnidad')"
-                        [appSort]="ServiciosFiltrados"
-                        data-order="desc"
-                        data-name="serUnidad"
-                        style="text-align: center"
-                      >
-                        <a>Unidad de Medida {{ ordenarIcono("serUnidad") }}</a>
-                      </th>
-                      <th></th>
-                      <th scope="col" style="text-align: center">
-                        Desactivar
-                      </th>
-                      <th scope="col" style="text-align: center">                        
-                        Ver Más
-                      </th>                      
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr
-                      class="table-row"
-                      *ngFor="
-                        let servicio of ServiciosFiltrados
-                          | paginate
-                            : {
-                                itemsPerPage: pageSize,
-                                currentPage: currentPage,
-                                totalItems: totalItems
-                              };
-                        let i = index
-                      "
-                      [ngClass]="{
-                        'fila-par': i % 2 == 0,
-                        'fila-impar': i % 2 == 1
-                      }"
-                      (click)="esfilaSeleccionada(servicio)"
-                    >
-                      <th style="vertical-align: middle align-center">
-                        {{ servicio.serId }}
-                      </th>
-                      <td style="vertical-align: middle" class="textIzquierda">
-                        {{ servicio.serDescripcion }}
-                      </td>
-                      <td style="vertical-align: middle" class="textIzquierda">
-                        {{ servicio.serUnidad }}
-                      </td>
+                <!-- app.component.html -->
+                <div class="table" *ngIf="dataSourceServicio">
+                    <table mat-table [dataSource]="dataSourceServicio" matSort #matSortServicio="matSort">
+  
+                    <!-- Columnas -->
+                    <ng-container matColumnDef="serId">
+                      <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header="serId">Cod.</th>
+                      <td class="table-row first-column" style="vertical-align: middle; text-align: textIzquierda"  mat-cell *matCellDef="let element">{{ element.serId }}</td>
+                    </ng-container>
+  
+                    <ng-container matColumnDef="serDescripcion">
+                      <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header="serDescripcion">Servicio</th>
+                      <td class="table-row" style="vertical-align: middle; text-align: textIzquierda" mat-cell *matCellDef="let element">{{ element.serDescripcion }}</td>
+                    </ng-container>
+  
+                    <ng-container matColumnDef="serUnidad">
+                      <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header="serUnidad">Unidad</th>
+                      <td class="table-row" style="vertical-align: middle; text-align: textIzquierda" mat-cell *matCellDef="let element">{{ element.serUnidad }}</td>
+                    </ng-container>                  
 
-                      <td class="empty-column"></td>
-                      <td class="align-center">
+                    <!-- Columna vacia -->
+                    <ng-container matColumnDef="columnaVacia">
+                      <th class="encabezado text-center" mat-header-cell *matHeaderCellDef></th>
+                      <td class="table-row" class="align-center" mat-cell *matCellDef="let element"></td>
+                    </ng-container>
+            
+                    <!-- Columna de acciones -->
+                    <ng-container matColumnDef="desactivar">
+                      <th class="encabezado text-center" mat-header-cell *matHeaderCellDef>Desactivar</th>
+                      <td class="table-row" class="align-center" mat-cell *matCellDef="let element">
                         <button
                           type="button"                          
                           class="btn" 
-                          data-bs-toggle="modal"
                           data-bs-target="#staticBackdrop"    
                           mat-button                      
-                          (click)="abrirModal('Eliminar Servicio')"
+                          (click)="desactivarServicio(element)"
                           title="Eliminar Servicio"
                         >
                           <img
@@ -198,51 +154,338 @@
                             class="iconosBoton"
                             alt="..."
                           />
-                        </button>                        
+                        </button>  
                       </td>
-                      <td class="align-center">
+                    </ng-container>
+
+                    <ng-container matColumnDef="verMas">
+                      <th class="encabezado text-center" mat-header-cell *matHeaderCellDef>Modificar Servicio</th>
+                      <td class="table-row" class="align-center" mat-cell *matCellDef="let element">
                         <button
                           type="button"
                           class="btn"
-                          data-bs-toggle="modal"
                           data-bs-target="#staticBackdrop"  
                           mat-button
-                          (click)="abrirModal('Ver Mas')"
-                          title="Ver Más Opciones"
+                          (click)="seleccionarServicio(element)"
+                          title="Modificar Servicio"
                         >
                           <img
                             src="../../../assets/ver_mas.png"
                             class="iconosBoton"
                             alt="..."
                           />
-                        </button>
+                        </button>       
                       </td>
+                    </ng-container>
+                    <!-- Filas -->
+                    <tr mat-header-row *matHeaderRowDef="displayedColumnsServicio"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumnsServicio;
+                      let i = index" [ngClass]="{ 'fila-par': i % 2 === 0, 'fila-impar': i % 2 !== 0 }">
                     </tr>
-                  </tbody>
-                </table>
-                <div
-                  class="align-center"
-                  *ngIf="validarFiltrado() == true"
-                >
-                  <pagination-controls
-                    (pageChange)="paginaCambiada($event)"
-                    itemsPerPage="pageSize"
-                    totalItems="totalItems"
-                  ></pagination-controls>
+                    
+                  </table>
+            
+                  <!-- Paginador -->
+                  <mat-paginator *ngIf="dataSourceServicio"
+                    [length]="dataSourceServicio.data.length"
+                    [pageSize]="pageSizeServicio"
+                    [pageSizeOptions]="[5, 10, 25, 100]"
+                    (page)="handlePageChangeServicio($event)"
+                    showFirstLastButtons
+                    #paginatorServicio 
+                  ></mat-paginator>
+            
+                  <div class="align-center" *ngIf="validarFiltrado() == true">
+                  </div>
+            
+                  <div class="alert alert-primary text-center" role="alert" *ngIf="validarFiltrado() == false">
+                    No se encontrado servicio que coincidan con su búsqueda.
+                  </div>
+            
                 </div>
-              </div>
-              <div
-                class="alert alert-primary text-center"
-                role="alert"
-                *ngIf="validarFiltrado() == false"
-              >                
-                No se encontrado servicio que coincidan con su búsqueda.
-              </div>
-            </div>          
+              </div>          
+            </div>
+                        
+      
           </div>
         </ng-container>
       </mat-step>
-            
+
+      <mat-step
+      [label]="titulo2"
+      [completed]="isStep2Completed"
+      [ngClass]="{ collapse: isCollapsed2 }"
+      >
+      <ng-container contenido-paso-2>
+        <!-- Botón ver otro servicio -->
+        <div class="row ">
+          <div
+            class="example-button-row"
+            style="display: flex; justify-content: flex-end"
+          >
+            <button
+              mat-fab
+              extended
+              color="primary"
+              class="btnAgregar"
+              (click)="goToPreviousStep()"
+            >
+              <mat-icon>touch_app</mat-icon>
+              Nueva Consulta
+            </button>
+          </div>
+        </div>
+
+        <div class="card cardFiltrado cardAnimate cardFlat">
+          <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center">
+              <h4 class="mb-0 tituloCard">Modificar Servicio</h4>
+              <img
+                src="../../../assets/registrar_servicio.png"
+                class="image"
+                style="width: 5%; height: 5%; padding-right: 5px"
+                alt="..."
+              />
+            </div>
+          </div>
+          
+          <br/>
+
+          <form [formGroup]="formModificar">
+            <div class="container">
+              <div class="row">
+                <div class="col-sm-9" style="justify-content: right">
+                  <div class="row justify-content-center">
+                    <div class="col-50 col-sm-50">
+                      <div class="row">
+                        <div class="col-md-6">
+
+                          <div class="form-outline input-group mb-3">
+                            <mat-form-field
+                              appearance="fill"
+                              class="example-full-width form-outline input-group"
+                            >
+                              <mat-label>Codigo del Servicio</mat-label>
+                              <input
+                                type="text"
+                                style="padding-left: 20px"
+                                matInput
+                                id="id"
+                                value="id"
+                                formControlName="id"
+                                required
+                                readonly
+                              />
+                              <mat-icon class="edit" matSuffix
+                                >edit_off</mat-icon
+                              >
+                            </mat-form-field>
+                            
+                          </div>
+                          
+                          <div class="form-outline input-group mb-3">
+                            <mat-form-field
+                              appearance="fill"
+                              class="example-full-width form-outline input-group"
+                            >
+                              <mat-label>Nombre de Servicio</mat-label>
+                              <input
+                                type="text"
+                                style="padding-left: 20px"
+                                matInput
+                                id="descripcion"
+                                value="descripcion"
+                                formControlName="descripcion"
+                                required
+                              />
+                              <mat-icon class="edit" matSuffix
+                                >edit</mat-icon
+                              >
+                            </mat-form-field>
+                            <mat-error
+                              *ngIf="
+                              descripcion?.invalid &&
+                                (descripcion?.dirty ||
+                                descripcion?.touched)
+                              "
+                              class="text-danger"
+                            >
+                              <mat-error
+                                class="error"
+                                *ngIf="descripcion?.errors?.['required']"
+                              >
+                                La descripción es requerida.
+                              </mat-error>
+                              <mat-error
+                                class="error"
+                                *ngIf="descripcion?.errors?.['pattern']"
+                              >
+                                La primera letra debe ser mayúscula y no debe contener caracteres especiales. 
+                                Además, debe tener más de 3 caracteres y menos de 30 caracteres. 
+                              </mat-error>
+                            </mat-error>
+                          </div>
+
+                          <div class="form-outline input-group mb-3">
+                            <mat-form-field
+                              appearance="fill"
+                              class="example-full-width form-outline input-group"
+                            >
+                              <mat-label>Unidad de Medida</mat-label>
+                              <input
+                                type="text"
+                                style="padding-left: 20px"
+                                matInput
+                                id="unidad"
+                                value="unidad"
+                                formControlName="unidad"
+                                required
+                              />
+                              <mat-icon class="edit" matSuffix
+                                >edit</mat-icon
+                              >
+                            </mat-form-field>
+                            <mat-error
+                              *ngIf="
+                              unidad?.invalid &&
+                                (unidad?.dirty ||
+                                unidad?.touched)
+                              "
+                              class="text-danger"
+                            >
+                              <mat-error
+                                class="error"
+                                *ngIf="unidad?.errors?.['required']"
+                              >
+                                La unidad es requerida.
+                              </mat-error>
+                              <mat-error
+                                class="error"
+                                *ngIf="unidad?.errors?.['pattern']"
+                              >
+                                La primera letra debe ser mayúscula y no debe contener caracteres especiales. 
+                                Además, debe tener más de 3 caracteres y menos de 30 caracteres.                              
+                              </mat-error>
+                            </mat-error>
+                          </div>
+
+                          <div class="form-outline input-group mb-3">
+                            <mat-form-field                            
+                              style="width: 525px"
+                              >
+                              <mat-label>Seleccione un Tipo Grafico</mat-label>
+                              <mat-select 
+                                style="padding-left: 30px"                              
+                                placeholder="Seleccionar Tipo Grafico" 
+                                required
+                                id="tipoGrafico"
+                                formControlName="tipoGrafico"
+                                >
+                                <mat-option *ngFor="let opcion of opcionesTipoGrafico" [value]="opcion.codigo">
+                                  {{ opcion.descripcion }}
+                                </mat-option>
+
+                              </mat-select>
+                            </mat-form-field>  
+                            <mat-error
+                            *ngIf="
+                            tipoGrafico?.invalid &&
+                              (tipoGrafico?.dirty ||
+                              tipoGrafico?.touched)
+                            "
+                            class="text-danger"
+                          >
+                            <mat-error
+                              class="error"
+                              *ngIf="tipoGrafico?.errors?.['required']"
+                            >
+                              Debe seleccionar un tipo grafico.
+                            </mat-error>
+                          </mat-error>                          
+                          </div>
+
+                          <br>
+                          <div
+                            class="col-12 text-center"
+                            style="display: flex; justify-content: center"
+                          >
+                            <div class="modal-footer example-button-row">
+                              <button
+                                mat-fab
+                                extended
+                                color="primary"
+                                type="submit"
+                                id="btnModificar"
+                                class="btn btnModificar"
+                                data-bs-target="#staticBackdrop"
+                                (click)="modificarServicio()"
+                              >
+                                Modificar Servicio
+                              </button>
+                            </div>
+                          </div> 
+
+                        </div>
+                      </div>
+                  
+
+                    </div>
+                  </div>
+                </div>
+
+                <!-------------------- Ir a Consultar Servicio: .col-sm-4 ---------------------------------->
+                <div
+                class="col-sm-3"
+                style="display: flex; justify-content: left"
+              >
+                <div class="col-md-2 image-container">
+                  <span
+                    ><img
+                      style="
+                        width: 100%;
+                        height: 100%;
+                        margin-bottom: 100px;
+                      "
+                      src="../../../assets/cold.png"
+                      class="image"
+                      alt="..."
+                    />
+                  
+                  <!-- Botón Consultar Servicio -->
+                  <div class="row">
+                    <div
+                      class="example-button-row"
+                      style="display: flex; justify-content: flex-end"
+                    >
+                      <button
+                        mat-fab
+                        extended
+                        color="primary"
+                        class="btnAgregar"
+                        routerLink="/registrar-servicio"
+                        >
+                        <mat-icon>touch_app</mat-icon>
+                        Registrar un Nuevo Servicios
+                      </button>
+                    </div>
+                  </div>
+                  </span>
+                </div>
+              </div>
+
+
+              </div>
+            </div>
+          </form>
+
+        </div>
+
+        <br>
+        <br>
+      
+      </ng-container>
+    </mat-step>
+
     </mat-vertical-stepper>
   </div>  
   <br />
@@ -250,174 +493,5 @@
 
 <app-footer-interno></app-footer-interno>
 
-<app-modal titulo="{{ titulo }}">
-  <!-- Seccion de Modificación de Servicio -->
-  <div *ngIf="titulo == 'Ver Mas'">
-    <form [formGroup]="formModificar" class="row g-3">
-      <fieldset id="fieldset">
-        <div class="col-md-12">
-          <div class="form-outline input-group mb-3">
-            <span class="input-group-text">Cod.</span>
-            <input
-              type="text"
-              class="form-control"
-              id="id"
-              value="id"
-              formControlName="id"
-            />
-          </div>
-        </div>
 
-            <div class="col-md-12">
-                <div class="form-outline input-group mb-3">
-                    <span class="input-group-text">Nombre de Servicio</span>
-                    <input type="text" class="form-control" id="descripcion" value="descripcion"
-                        formControlName="descripcion" required />
-                    <span class="input-group-text" title="{{caracteresValidosNombreServicio}}"><svg
-                          xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                          class="bi bi-question-circle" viewBox="0 0 16 16">
-                          <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                          <path
-                              d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z" />
-                        </svg>
-                    </span>
-                </div>
-                <div *ngIf="descripcion?.invalid && (descripcion?.dirty || descripcion?.touched)" class="text-danger">
-                  <div *ngIf="descripcion?.errors?.['required']">
-                      La descripción es requerida.
-                  </div>
-                  <div *ngIf="descripcion?.errors?.['pattern']">
-                    La primera letra debe ser mayúscula y no debe contener caracteres especiales. Además, debe tener más de 3 caracteres y menos de 30 caracteres. </div>
-                </div>
-            </div>
-
-            <div class="col-md-12">
-              <div class="form-outline input-group mb-3">
-                  <span class="input-group-text">Unidad de Medida</span>
-                  <input type="text" class="form-control" id="unidad" value="unidad"
-                      formControlName="unidad" />
-                  <span class="input-group-text" title="{{caracteresValidosUnidad}}"><svg
-                          xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                          class="bi bi-question-circle" viewBox="0 0 16 16">
-                          <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                          <path
-                              d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z" />
-                      </svg>
-                  </span>
-              </div> 
-              <div *ngIf="unidad?.invalid && (unidad?.dirty || unidad?.touched)" class="text-danger">
-                <div *ngIf="unidad?.errors?.['required']">
-                    La unidad es requerida.
-                </div>
-                <div *ngIf="unidad?.errors?.['pattern']">
-                    No debe contener caracteres especiales ni tener más de 12 caracteres.
-                </div>
-              </div>          
-            </div>
-
-            <div class="col-md-12 ">
-              <div class="form-outline input-group mb-3">
-                <span class="input-group-text">Tipo Grafico</span> 
-                <select name="tipoGrafico" id="tipoGrafico" value="tipoGrafico" formControlName="tipoGrafico" style="width: 320px;">
-                  <option value="1">Humedad de Suelo</option>
-                  <option value="2">Humedad del Ambiente</option>
-                  <option value="3">Temperatura</option>
-                  <option value="4">Velocidad del Viento</option>
-                  <option value="5">Dirección del Viento</option>
-                </select>           
-              </div>
-            </div>
-        </fieldset>
-    </form>
-    <div class="row">
-      <div class="modal-footer text-center col-3">
-          <button [disabled]="!mostrarBtnEditarModificacion" type="submit" id="btnEditar" class="btn btn-success" (click)="desbloquearEditar()">Editar</button>
-      </div>
-      <div class="modal-footer text-center col-3">
-          <button [disabled]="!mostrarBtnAceptarModificacion" id="btnAceptarModificacion" type="submit" class="btn btn-success" (click)="modificarServicio()">Aceptar</button>
-      </div>
-      <div class="modal-footer text-center col-3">
-        <button
-          style="background-color: #0e3c53"
-          id="CancelarModificacion"
-          type="button"
-          class="btn text-white"
-          data-bs-dismiss="modal"
-        >
-          Cancelar
-        </button>
-      </div>
-      <div
-        *ngIf="
-          validarControlesMod() == '2' && mostrarBtnAceptarModificacion == true
-        "
-        class="text-danger"
-      >
-        Verifique los campos ingresados
-      </div>
-    </div>
-  </div>
-
-  <!-- Seccion de Baja de servicio -->
-  <div *ngIf="titulo == 'Eliminar Servicio'">
-    <h5>Está seguro que desea dar de baja al Servicio:</h5>
-    <br />
-    <div class="form-outline input-group mb-3">
-      <span class="input-group-text">Cod. </span>
-      <input
-        type="text"
-        class="form-control"
-        required
-        [(ngModel)]="idSeleccionado"
-        readonly
-      />
-    </div>
-    <div class="form-outline input-group mb-3">
-      <span class="input-group-text">Nombre del Servicio </span>
-      <input
-        type="text"
-        class="form-control"
-        required
-        [(ngModel)]="despcionSeleccionado"
-        readonly
-      />
-    </div>
-    <div class="form-outline input-group mb-3">
-      <span class="input-group-text">Unidad de Medida </span>
-      <input
-        type="text"
-        class="form-control"
-        required
-        [(ngModel)]="unidadSeleccionada"
-        readonly
-      />
-    </div>
-
-    <div class="row">
-      <div class="modal-footer text-center col-3">
-        <button
-          type="submit"
-          class="btn btn-success"
-          data-bs-toggle="button"
-          data-bs-dismiss="modal"
-          (click)="desactivarServicio()"
-        >
-          Confirmar
-        </button>
-      </div>
-      <div class="modal-footer text-center col-8">
-        <button
-          style="background-color: #0e3c53"
-          id="Cancelar"
-          type="button"
-          class="btn text-white"
-          data-bs-dismiss="modal"
-        >
-          Cancelar
-        </button>
-      </div>
-    </div>
-  </div>
-
-</app-modal>
 

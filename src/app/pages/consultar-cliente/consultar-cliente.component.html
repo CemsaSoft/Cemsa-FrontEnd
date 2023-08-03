@@ -170,108 +170,58 @@
           <!-- </form> -->
             <br />
             <br />
+
             <div class="row">
               <div class="col-12 cardFiltrado cardAnimate cardFlat">
-                <table class="table" *ngIf="validarFiltradoClientes() == true">
-                  <thead class="encabezado">
-                    <tr>
-                      <th
-                        (click)="ordenarClientePor('tdDescripcion')"
-                        [appSort]="ClientesFiltrados"
-                        data-order="desc"
-                        data-name="tdDescripcion"
-                        style="text-align: center"
-                      >
-                        <a
-                          >Tipo Doc.
-                          {{ ordenarIconoCliente("tdDescripcion") }}</a
-                        >
-                      </th>
-                      <th
-                        (click)="ordenarClientePor('cliNroDoc')"
-                        [appSort]="ClientesFiltrados"
-                        data-order="desc"
-                        data-name="cliNroDoc"
-                        style="text-align: center"
-                      >
-                        <a>Num. Doc. {{ ordenarIconoCliente("cliNroDoc") }}</a>
-                      </th>
-                      <th
-                        (click)="ordenarClientePor('cliApeNomDen')"
-                        [appSort]="ClientesFiltrados"
-                        data-order="desc"
-                        data-name="cliApeNomDen"
-                        style="text-align: center"
-                      >
-                        <a>Cliente {{ ordenarIconoCliente("cliApeNomDen") }}</a>
-                      </th>
-                      <th
-                        (click)="ordenarClientePor('usuario')"
-                        [appSort]="ClientesFiltrados"
-                        data-order="desc"
-                        data-name="usuario"
-                        style="text-align: center"
-                      >
-                        <a>Usuario {{ ordenarIconoCliente("usuario") }}</a>
-                      </th>
-                      <th
-                        (click)="ordenarClientePor('fechaBaja')"
-                        [appSort]="ClientesFiltrados"
-                        data-order="desc"
-                        data-name="fechaBaja"
-                        style="text-align: center"
-                      >
-                        <a>Estado {{ ordenarIconoCliente("fechaBaja") }}</a>
-                      </th>
-                      <th></th>
-                      <th scope="col" style="text-align: center">
-                        Modificar Estado
-                      </th>
-                      <th scope="col">Seleccionar</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr
-                      class="table-row"
-                      *ngFor="
-                        let cliente of ClientesFiltrados
-                          | paginate
-                            : {
-                                itemsPerPage: pageSize,
-                                currentPage: currentPage,
-                                totalItems: totalItems
-                              };
-                        let i = index
-                      "
-                      [ngClass]="{
-                        'fila-par': i % 2 == 0,
-                        'fila-impar': i % 2 == 1
-                      }"
-                      (click)="esfilaSeleccionadaCliente(cliente)"
-                    >
-                      <th style="vertical-align: middle align-center">
-                        {{ cliente.tdDescripcion }}
-                      </th>
-                      <td style="vertical-align: middle" class="textDerecha">
-                        {{ cliente.cliNroDoc }}
+                <!-- app.component.html -->
+                <div class="table" *ngIf="dataSourceCliente">
+                    <table mat-table [dataSource]="dataSourceCliente" matSort #matSortCliente="matSort">
+      
+                    <!-- Columnas -->
+                    <ng-container matColumnDef="tdDescripcion">
+                      <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header="tdDescripcion">Tipo Doc.</th>
+                      <td class="table-row first-column" style="vertical-align: middle; text-align: textIzquierda"  mat-cell *matCellDef="let element">{{ element.tdDescripcion }}</td>
+                    </ng-container>
+      
+                    <ng-container matColumnDef="cliNroDoc">
+                      <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header="cliNroDoc">Num. Doc. </th>
+                      <td class="table-row" style="vertical-align: middle; text-align: textIzquierda" mat-cell *matCellDef="let element">{{ element.cliNroDoc }}</td>
+                    </ng-container>
+      
+                    <ng-container matColumnDef="cliApeNomDen">
+                      <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header="cliApeNomDen">Cliente</th>
+                      <td class="table-row" style="vertical-align: middle; text-align: textIzquierda" mat-cell *matCellDef="let element">{{ element.cliApeNomDen }}</td>
+                    </ng-container>
+      
+                    <ng-container matColumnDef="usuario">
+                      <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header="usuario">Usuario</th>
+                      <td class="table-row" style="vertical-align: middle; text-align: textIzquierda" mat-cell *matCellDef="let element">{{ element.usuario }}</td>
+                    </ng-container>                      
+      
+                    <ng-container matColumnDef="fechaBaja">
+                      <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header="fechaBaja">Estado</th>
+                      <td class="table-row" style="vertical-align: middle; text-align: textIzquierda" mat-cell *matCellDef="let element">
+                        <span *ngIf="element.fechaBaja === null">Activo</span>
+                        <span *ngIf="element.fechaBaja !== null">Baja</span>
                       </td>
-                      <td style="vertical-align: middle" class="textIzquierda">
-                        {{ cliente.cliApeNomDen }}
-                      </td>
-                      <td style="vertical-align: middle" class="textIzquierda">
-                        {{ cliente.usuario }}
-                      </td>
-                      <td style="vertical-align: middle" class="textIzquierda">
-                        <span *ngIf="cliente.fechaBaja === null">Activo</span>
-                        <span *ngIf="cliente.fechaBaja !== null">Baja</span>
-                      </td>
-                      <td class="empty-column"></td>
-                      <td class="align-center">
+                    </ng-container>   
+            
+                    <!-- Columna vacia -->
+                    <ng-container matColumnDef="columnaVacia">
+                      <th class="encabezado text-center" mat-header-cell *matHeaderCellDef></th>
+                      <td class="table-row" class="align-center" mat-cell *matCellDef="let element"></td>
+                    </ng-container>
+            
+                    <!-- Columna de acciones -->
+                    <ng-container matColumnDef="modEstado">
+                      <th class="encabezado text-center" mat-header-cell *matHeaderCellDef >Modificar Estado</th>
+                      <td class="table-row" class="align-center" mat-cell *matCellDef="let element">
                         <button
                           type="button"
-                          class="btn bordeBoton"
+                          *ngIf="element.fechaBaja !== null"
+                          class="btn "
                           data-bs-target="#staticBackdrop"
-                          (click)="modificarEstadoCliente(0, 'Disponible')"
+                          (click)="modificarEstadoCliente(element, 0, 'Disponible')"
                           title="Activar Cliente"
                         >
                           <img
@@ -282,9 +232,10 @@
                         </button>
                         <button
                           type="button"
-                          class="btn entreBotones bordeBoton"
+                          *ngIf="element.fechaBaja === null"
+                          class="btn "
                           data-bs-target="#staticBackdrop"
-                          (click)="modificarEstadoCliente(1, 'Baja')"
+                          (click)="modificarEstadoCliente(element, 1, 'Baja')"
                           title="Dar de Baja Cliente"
                         >
                           <img
@@ -294,10 +245,15 @@
                           />
                         </button>
                       </td>
-                      <td class="align-center">
+                    </ng-container>
+
+                    <ng-container matColumnDef="seleccionar">
+                      <th class="encabezado text-center" mat-header-cell *matHeaderCellDef >Seleccionar</th>
+                      <td class="table-row" class="align-center" mat-cell *matCellDef="let element">
                         <button
                           mat-button
-                          (click)="goToNextStep(1)"
+                          (click)="esfilaSeleccionadaCliente(element)"
+                          
                           type="button"
                           class="btn"
                           data-bs-target="#staticBackdrop"
@@ -310,29 +266,37 @@
                           />
                         </button>
                       </td>
+                    </ng-container>
+
+                    <!-- Filas -->
+                    <tr mat-header-row *matHeaderRowDef="displayedColumnsCliente"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumnsCliente;
+                      let i = index" [ngClass]="{ 'fila-par': i % 2 === 0, 'fila-impar': i % 2 !== 0 }">
                     </tr>
-                  </tbody>
-                </table>
-                <!-- <div class="alert alert-primary text-center" role="alert" *ngIf="validarFiltradoClientes() == false"> -->
-                <div
-                  class="align-center"
-                  *ngIf="validarFiltradoClientes() == true"
-                >
-                  <pagination-controls
-                    (pageChange)="paginaCambiada($event)"
-                    itemsPerPage="pageSize"
-                    totalItems="totalItems"
-                  ></pagination-controls>
+                    
+                  </table>
+            
+                  <!-- Paginador -->
+                  <mat-paginator *ngIf="dataSourceCliente"
+                    [length]="dataSourceCliente.data.length"
+                    [pageSize]="pageSizeCliente"
+                    [pageSizeOptions]="[5, 15, 25, 50, 100]"
+                    (page)="handlePageChangeCliente($event)"
+                    showFirstLastButtons
+                    #paginatorCliente
+                  ></mat-paginator>
+            
+                  <div class="align-center" *ngIf="validarFiltradoClientes() == true">
+                  </div>
+            
+                  <div class="alert alert-primary text-center" role="alert" *ngIf="validarFiltradoClientes() == false">
+                    No se encontraron clientes que coincidan con su búsqueda.
+                  </div>
+            
                 </div>
-              </div>
-              <div
-                class="alert alert-primary text-center"
-                role="alert"
-                *ngIf="validarFiltradoClientes() == false"
-              >
-                No se encontraron clientes que coincidan con su búsqueda.
-              </div>
+              </div>          
             </div>
+
           </div>
         </ng-container>
       </mat-step>

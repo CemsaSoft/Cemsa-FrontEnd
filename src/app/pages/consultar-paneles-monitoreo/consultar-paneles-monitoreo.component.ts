@@ -1,13 +1,17 @@
 //SISTEMA
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {
-  FormBuilder, FormControl, FormGroup,
+  FormControl, FormGroup,
 } from '@angular/forms';
 import Swal, { SweetAlertOptions } from 'sweetalert2';
 
+import { MatStepper } from '@angular/material/stepper';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
+
 //libreria para los graficos
 import * as echarts from 'echarts';
-import { EChartsOption, PictorialBarSeriesOption, SeriesOption } from 'echarts/types/dist/shared';
 
 //COMPONENTES
 import { CentralConsultaClass } from 'src/app/core/models/centralConsulta';
@@ -27,46 +31,94 @@ import { ServicioService } from 'src/app/core/services/servicio.service';
 
 export class ConsultarPanelesMonitoreoComponent implements OnInit {
   
-//VARIABLES DE OBJETOS LIST
-CentralConsulta: CentralConsultaClass[] = [];
-CentralConsultaFiltrados: CentralConsultaClass [] = [];
-Mediciones: MedicionesClass[] = []; 
-MedicionesTabla: MedicionesClass[] = []; 
-MedicionesTablaFiltrados: MedicionesClass[] = []; 
-ServiciosCentral: ServicioClass[] = [];
-ServiciosGraficar: ServicioClass[] = [];
+  //TABLA Central
+  displayedColumnsCentral: string[] = ['cenNro', 'cenImei', 'cenCoorX', 'cenCoorY', 'columnaVacia', 'seleccionar'];
+  @ViewChild('paginatorCentral', { static: false }) paginatorCentral: MatPaginator | undefined;
+  @ViewChild('matSortCentral', { static: false }) sortCentral: MatSort | undefined;
+  dataSourceCentral: MatTableDataSource<any>;
+  pageSizeCentral = 5; // Número de elementos por página
+  currentPageCentral = 1; // Página actual
 
-//VARIABLES DE DATOS
-propiedadOrdenamiento: string = 'cenNro';
-propiedadOrdenamientoServicio: string = 'serId';
-propiedadOrdenamientoServicioGraficar: string = 'serId';
-propiedadOrdenamientoMedicion: string = 'medId';
+  //TABLA Servicios Disponibles
+  displayedColumnsServicioDisponible: string[] = ['serId', 'serDescripcion', 'AgregarServ'];
+  @ViewChild('matSortServicioDisponible', { static: false }) sortServicioDisponible: MatSort | undefined;
+  @ViewChild('paginatorServicioDisponible', { static: false }) paginatorServicioDisponible: MatPaginator | undefined;
+  dataSourceServicioDisponible: MatTableDataSource<any>;
+  pageSizeServicioDisponible = 5; // Número de elementos por página
+  currentPageServicioDisponible = 1; // Página actual
 
-tipoOrdenamiento: number = 1;
-centralNroSeleccionada: number=0;
-tipoOrdenamientoServicio: number = 1;
-tipoOrdenamientoServicioGraficar: number = 1;
-tipoOrdenamientoMedicion: number = 1;
-idUsuario: any = 0;
-idListaServiciosSeleccionado: number=0;
-idListaServiciosGraficarSeleccionado: number=0;
+  //TABLA Servicios Graficar
+  displayedColumnsServicioGraficar: string[] = ['serId', 'serDescripcion', 'ExtraerServ'];
+  @ViewChild('matSortServicioGraficar', { static: false }) sortServicioGraficar: MatSort | undefined;
+  @ViewChild('paginatorServicioGraficar', { static: false }) paginatorServicioGraficar: MatPaginator | undefined;
+  dataSourceServicioGraficar: MatTableDataSource<any>;
+  pageSizeServicioGraficar = 5; // Número de elementos por página
+  currentPageServicioGraficar = 1; // Página actual
 
-isCollapsed1 = false;
-isCollapsed2 = false;
-op1 = true; op2 = false; op3 = false; op4 = false;
-op1G = true; op2G = false;
-op1T = true;
-ingresoDireViento = false;
-public habilitarBoton: boolean = false;
+  //TABLA Mediciones
+  displayedColumnsMediciones: string[] = ['medId', 'serDescripcion', 'medValor', 'medFechaHoraSms'];
+  @ViewChild('matSortMediciones', { static: false }) sortMediciones: MatSort | undefined;
+  @ViewChild('paginatorMediciones', { static: false }) paginatorMediciones: MatPaginator | undefined;
+  dataSourceMediciones: MatTableDataSource<any>;
+  pageSizeMediciones = 50; // Número de elementos por página
+  currentPageMediciones = 1; // Página actual
 
-//FORMS PARA LA AGRUPACIÓN DE DATOS
-formGraficar: FormGroup;
-formfiltro: FormGroup;
+  //STEPPER
+  titulo1 = 'Seleccionar Central para Ver Panel de Monitoreo';
+  titulo2 = 'Panel de Monitoreo de la Central N°:';
+  titulo3 = ':';
+  isStep1Completed = false;
+  isStep2Completed = false;
+  isStep3Completed = false;
+
+  @ViewChild(MatStepper, { static: false }) stepper: MatStepper | undefined;
+  
+  //VARIABLES DE OBJETOS LIST
+  CentralConsulta: CentralConsultaClass[] = [];
+  CentralConsultaFiltrados: CentralConsultaClass [] = [];
+  Mediciones: MedicionesClass[] = []; 
+  MedicionesTabla: MedicionesClass[] = []; 
+  MedicionesTablaFiltrados: MedicionesClass[] = []; 
+  ServiciosCentral: ServicioClass[] = [];
+  ServiciosGraficar: ServicioClass[] = [];
+
+  //VARIABLES DE DATOS
+  propiedadOrdenamiento: string = 'cenNro';
+  propiedadOrdenamientoServicio: string = 'serId';
+  propiedadOrdenamientoServicioGraficar: string = 'serId';
+  propiedadOrdenamientoMedicion: string = 'medId';
+  filtroCentral: string = '';
+
+  tipoOrdenamiento: number = 1;
+  centralNroSeleccionada: number=0;
+  tipoOrdenamientoServicio: number = 1;
+  tipoOrdenamientoServicioGraficar: number = 1;
+  tipoOrdenamientoMedicion: number = 1;
+  idUsuario: any = 0;
+  idListaServiciosSeleccionado: number=0;
+  idListaServiciosGraficarSeleccionado: number=0;
+
+  isCollapsed1 = false;
+  isCollapsed2 = false;
+  op1 = true; op2 = false; op3 = false; op4 = false;
+  op1G = true; op2G = false;
+  op1T = true;
+  ingresoDireViento = false;
+  public habilitarBoton: boolean = false;
+
+  //FORMS PARA LA AGRUPACIÓN DE DATOS
+  formGraficar: FormGroup;
+  formfiltro: FormGroup;
 
   constructor(
     private centralConsultar: CentralService, 
     private medicionesConsultar: MedicionesService, 
   ) { 
+    this.dataSourceCentral = new MatTableDataSource<any>();
+    this.dataSourceServicioDisponible = new MatTableDataSource<any>();
+    this.dataSourceServicioGraficar = new MatTableDataSource<any>();
+    this.dataSourceMediciones = new MatTableDataSource<any>();
+
     this.formGraficar = new FormGroup({
       fecha_desde: new FormControl(null, []),
       fecha_hasta: new FormControl(null, []),
@@ -86,33 +138,85 @@ formfiltro: FormGroup;
     this.centralConsultar.listaCentralesCliente(this.idUsuario).subscribe(data => {
       this.CentralConsulta = data;  
       this.CentralConsultaFiltrados = data;
-    });        
+
+      this.dataSourceCentral = new MatTableDataSource(data);
+      if (this.paginatorCentral) {
+        this.dataSourceCentral.paginator = this.paginatorCentral;
+      }
+      if (this.sortCentral) {
+        this.dataSourceCentral.sort = this.sortCentral;
+      }
+    });  
+
+    this.formfiltro.get('fecha_desde')?.disable();
+    this.formfiltro.get('fecha_hasta')?.disable();
+
+    this.formGraficar.get('fecha_desde')?.disable();
+    this.formGraficar.get('fecha_hasta')?.disable();
   }
 
-  toggleCollapse1() {
-    this.isCollapsed1 = !this.isCollapsed1;
+  handlePageChangeCentral(event: any) {
+    this.currentPageCentral = event.pageIndex + 1;
+    this.pageSizeCentral = event.pageSize;
   }
 
-  toggleCollapse2() {
-    this.isCollapsed2 = !this.isCollapsed2;
+  handlePageChangeServicioDisponible(event: any) {
+    this.currentPageServicioDisponible = event.pageIndex + 1;
+    this.pageSizeServicioDisponible = event.pageSize;
+  }
+
+  handlePageChangeServicioGraficar(event: any) {
+    this.currentPageServicioGraficar = event.pageIndex + 1;
+    this.pageSizeServicioGraficar = event.pageSize;
+  }
+
+  handlePageChangeMediciones(event: any) {
+    this.currentPageMediciones = event.pageIndex + 1;
+    this.pageSizeMediciones = event.pageSize;
+  }
+  
+  //STEP
+  goToNextStep(stepNumber: number): void {    
+    if (this.stepper) {
+      this.stepper.selectedIndex = stepNumber;
+    }
+  }
+  
+  goToPreviousStep(): void {     
+    if (this.stepper) {
+      this.stepper.previous();
+    }    
   }
 
   // valida para que un solo selector de frecuencia este seleccionado a la vez
-  selOp(event: any) {
+  selOp(option: string, event: any) {
     this.op1 = this.op2 = this.op3 = this.op4 = false;
-    if (event.target.id === 'op1') { this.op1 = event.target.checked; } 
-    if (event.target.id === 'op2') { this.op2 = event.target.checked; }
-    if (event.target.id === 'op3') { this.op3 = event.target.checked; } 
-    if (event.target.id === 'op4') { this.op4 = event.target.checked; }    
+    this.formGraficar.get('fecha_desde')?.disable();
+    this.formGraficar.get('fecha_hasta')?.disable();
+
+    if (option === 'op1') { this.op1 = event.checked; } 
+    if (option === 'op2') { this.op2 = event.checked; }
+    if (option === 'op3') { this.op3 = event.checked; } 
+    if (option === 'op4') { 
+      this.op4 = event.checked; 
+      this.formGraficar.get('fecha_desde')?.enable();
+      this.formGraficar.get('fecha_hasta')?.enable();
+    }    
   }
 
   // valida para que un solo selector de tipo de representar los servicios este seleccionado a la vez
-  selOpG(event: any) {
+  selOpG(option: string, event: any) {
     this.op1G = this.op2G = false;
-    if (event.target.id === 'op1G') { this.op1G = event.target.checked; } 
-    if (event.target.id === 'op2G') { this.op2G = event.target.checked; }     
+    if (option === 'op1G') {
+      this.op1G = event.checked;
+      this.op2G = !event.checked;
+    } 
+    if (option === 'op2G') {
+      this.op2G = event.checked;
+      this.op1G = !event.checked; 
+    }   
   }
-  
+
   // valida para msotrar tabla con mediciones
   selOpT(event: any) {
     this.op1T = !this.op1T; 
@@ -153,38 +257,31 @@ formfiltro: FormGroup;
       return true;
     }
   }
-  
-  //Almacena los datos del servicio que fue seleccionado en la tabla de servicio filtrados dentro de variables locales.
-  esfilaSeleccionada(centralConsulta: CentralConsultaClass) {
-    this.centralNroSeleccionada = centralConsulta.cenNro;
-  }
-
-     //Almacena los datos del servicio que fue seleccionado en la tabla de servicio filtrados dentro de variables locales.
-  esfilaSeleccionadaServicio(servicios: ServicioClass) {
-    this.idListaServiciosSeleccionado = servicios.serId;      
-  }
-
-  //Almacena los datos del servicio que fue seleccionado en la tabla de servicio filtrados dentro de variables locales.
-  esfilaSeleccionadaServicioGraficar(servicios: ServicioClass) {      
-    this.idListaServiciosGraficarSeleccionado = servicios.serId;
-  }
 
   //Filtro de Central por código de central.
   esFiltrar(event: Event, campo: string) {
     let txtBuscar = (event.target as HTMLInputElement).value;
-    let filtro = txtBuscar
+    this.filtroCentral = txtBuscar
       .replace(/[^\w\s]/g, '')
       .trim()
       .toLowerCase();
     this.CentralConsultaFiltrados = [];
     this.CentralConsulta.forEach((centralConsulta) => {
       if (
-        (campo === 'codigo' && centralConsulta.cenNro.toString().toLowerCase().includes(filtro)) 
+        (campo === 'codigo' && centralConsulta.cenNro.toString().toLowerCase().includes(this.filtroCentral)) 
       ) {
         this.CentralConsultaFiltrados.push(centralConsulta);
-      }
+      }    
     });
-  }
+
+    this.dataSourceCentral = new MatTableDataSource(this.CentralConsultaFiltrados);
+    if (this.paginatorCentral) {
+      this.dataSourceCentral.paginator = this.paginatorCentral;
+    }
+    if (this.sortCentral) {
+      this.dataSourceCentral.sort = this.sortCentral;
+    }
+  } 
 
   //Filtro de Mediciones
   esFiltrarMedicion(event: Event) {
@@ -203,11 +300,20 @@ formfiltro: FormGroup;
         (!filtroMedValor || valorMedValor.includes(filtroMedValor))
       );
     });
+
+    this.dataSourceMediciones = new MatTableDataSource(this.MedicionesTablaFiltrados);
+    if (this.paginatorMediciones) {
+      this.dataSourceMediciones.paginator = this.paginatorMediciones;
+      this.paginatorMediciones.firstPage();
+    }
+    if (this.sortMediciones) {
+      this.dataSourceMediciones.sort = this.sortMediciones;
+    }  
   }
   
   // valida para que un solo selector de frecuencia este seleccionado a la vez
   filtroFecha(event: any) {
-    if (event.target.checked === true) {
+    if (event.checked === true) {
       this.formfiltro.get('medId')?.disable();
       this.formfiltro.get('serDescripcion')?.disable();
       this.formfiltro.get('medValor')?.disable();
@@ -232,17 +338,17 @@ formfiltro: FormGroup;
     var desde = new Date();
     var hasta = new Date();
 
-    var fechaDesde = document.getElementById('fecha_desde') as HTMLInputElement;
-    var fechaSeleccionada = new Date(fechaDesde.value);
-    fechaSeleccionada.setDate(fechaSeleccionada.getDate() + 1); // Sumar un día
+    var fechaDesde = this.formfiltro.value.fecha_desde ?? null;
+    var fechaSeleccionada = new Date(fechaDesde);
+    fechaSeleccionada.setDate(fechaSeleccionada.getDate() ); // Sumar un día
     fechaSeleccionada.setHours(0, 0, 0, 0);
     desde = fechaSeleccionada;
 
-    var fechaHasta = document.getElementById('fecha_hasta') as HTMLInputElement;
-    fechaSeleccionada = new Date(fechaHasta.value);
-    fechaSeleccionada.setDate(fechaSeleccionada.getDate() + 1); // Sumar un día
+    var fechaHasta = this.formfiltro.value.fecha_hasta ?? null;
+    fechaSeleccionada = new Date(fechaHasta);
+    fechaSeleccionada.setDate(fechaSeleccionada.getDate() ); // Sumar un día
     fechaSeleccionada.setHours(0, 0, 0, 0);
-    hasta = fechaSeleccionada;      
+    hasta = fechaSeleccionada;     
 
     function mostrarError(mensaje: string, footer: string) {
       Swal.fire({
@@ -255,9 +361,9 @@ formfiltro: FormGroup;
       });
     }
 
-    if (isNaN(desde.getTime())) {
+    if (fechaDesde === null || isNaN(desde.getTime())) {
       mostrarError('Ingrese una fecha de desde válida.', 'Por favor, ingrese una fecha de hasta válida para generar el filtro.');
-    } else if (isNaN(hasta.getTime())) {
+    } else if (fechaHasta === null || isNaN(hasta.getTime())) {
       mostrarError('Ingrese una fecha de hasta válida.', 'Por favor, ingrese una fecha de hasta válida para generar el filtro.');
     } else if (desde > hasta) {
       mostrarError('La fecha "desde" es posterior a la fecha "hasta".', 'Por favor, cambie el rango de fechas seleccionado para generar el filtro.');
@@ -285,107 +391,99 @@ formfiltro: FormGroup;
         );
       });
 
-      // this.MedicionesTablaFiltrados = this.MedicionesTabla.filter((medicion) => {
-      //   const fechaAlarma = new Date(medicion.medFechaHoraSms);
-      //   return fechaAlarma >= desde && fechaAlarma < hasta;
-      // });
+      this.dataSourceMediciones = new MatTableDataSource(this.MedicionesTablaFiltrados);
+      if (this.paginatorMediciones) {
+        this.dataSourceMediciones.paginator = this.paginatorMediciones;
+        this.paginatorMediciones.firstPage();
+      }
+      if (this.sortMediciones) {
+        this.dataSourceMediciones.sort = this.sortMediciones;
+      }  
     }
-  }
-
-  //Metodos para grilla
-  //Almacena en una variable la propiedad por la cual se quiere ordenar la consulta de Central.
-  ordenarPor(propiedad: string) {
-    this.tipoOrdenamiento =
-      propiedad === this.propiedadOrdenamiento ? this.tipoOrdenamiento * -1 : 1;
-    this.propiedadOrdenamiento = propiedad;
-  }
-
-  //En base a la propiedad por la que se quiera ordenar y el tipo de orden muestra un icono.
-  ordenarIcono(propiedad: string) {
-    if (propiedad === this.propiedadOrdenamiento) {
-      return this.tipoOrdenamiento === 1 ? '🠉' : '🠋';
-    } else {
-      return '🠋🠉';
-    }
-  }  
-  
-  //En base a la propiedad por la que se quiera ordenar y el tipo de orden muestra un icono.
-  ordenarIconoServicio(propiedad: string) {
-    if (propiedad === this.propiedadOrdenamientoServicio) {
-      return this.tipoOrdenamientoServicio === 1 ? '🠉' : '🠋';
-    } else {
-      return '🠋🠉';
-    }
-  }
-
-  //Almacena en una variable la propiedad por la cual se quiere ordenar la consulta de Servicio.
-  ordenarServicioPor(propiedad: string) {
-    this.tipoOrdenamientoServicio =
-      propiedad === this.propiedadOrdenamientoServicio ? this.tipoOrdenamientoServicio * -1 : 1;
-    this.propiedadOrdenamientoServicio = propiedad;
-  }
-
-  //Almacena en una variable la propiedad por la cual se quiere ordenar la consulta de Servicio Graficar.
-  ordenarServicioGraficarPor(propiedad: string) {
-    this.tipoOrdenamientoServicioGraficar =
-      propiedad === this.propiedadOrdenamientoServicioGraficar ? this.tipoOrdenamientoServicioGraficar * -1 : 1;
-    this.propiedadOrdenamientoServicioGraficar = propiedad;
-  }
-
-  //En base a la propiedad por la que se quiera ordenar y el tipo de orden muestra un icono.
-  ordenarIconoServicioGraficar(propiedad: string) {
-    if (propiedad === this.propiedadOrdenamientoServicioGraficar) {
-      return this.tipoOrdenamientoServicioGraficar === 1 ? '🠉' : '🠋';
-    } else {
-      return '🠋🠉';
-    }
-  }
-
-  //En base a la propiedad por la que se quiera ordenar y el tipo de orden muestra un icono.
-  ordenarIconoMedicion(propiedad: string) {
-    if (propiedad === this.propiedadOrdenamientoMedicion) {
-      return this.tipoOrdenamientoMedicion === 1 ? '🠉' : '🠋';
-    } else {
-      return '🠋🠉';
-    }
-  }
-
-  //Almacena en una variable la propiedad por la cual se quiere ordenar la consulta de Medicion.
-  ordenarMedicionPor(propiedad: string) {
-    this.tipoOrdenamientoMedicion =
-      propiedad === this.propiedadOrdenamientoMedicion ? this.tipoOrdenamientoMedicion * -1 : 1;
-    this.propiedadOrdenamientoMedicion = propiedad;
   }
 
   // Extraer servicios a la central selecciona
-  agregarServicio(servicios: ServicioClass): void { 
-    if (servicios.serTipoGrafico==5)  { this.ingresoDireViento = true; }
-    const index = this.ServiciosCentral.indexOf(servicios);
+  agregarServicio(element: any): void { 
+    if (element.serTipoGrafico==5)  { this.ingresoDireViento = true; }
+    const index = this.ServiciosCentral.indexOf(element);
     if (index !== -1) {
       this.ServiciosCentral.splice(index, 1);
-      this.ServiciosGraficar.push(servicios);
+      this.ServiciosGraficar.push(element);
     }
-    this.validarFiltradoServicios();        
+    this.validarFiltradoServicios();   
+
+    this.dataSourceServicioDisponible = new MatTableDataSource(this.ServiciosCentral);
+    if (this.paginatorServicioDisponible) {
+      this.dataSourceServicioDisponible.paginator = this.paginatorServicioDisponible;
+      this.paginatorServicioDisponible.firstPage();
+    }
+    if (this.sortServicioDisponible) {
+      this.dataSourceServicioDisponible.sort = this.sortServicioDisponible;
+    }     
+
+    this.dataSourceServicioGraficar = new MatTableDataSource(this.ServiciosGraficar);
+    if (this.paginatorServicioGraficar) {
+      this.dataSourceServicioGraficar.paginator = this.paginatorServicioGraficar;
+      this.paginatorServicioGraficar.firstPage();
+    }
+    if (this.sortServicioGraficar) {
+      this.dataSourceServicioGraficar.sort = this.sortServicioGraficar;
+    }  
   }
 
   // Extraer servicios a la central selecciona
-  extraerServicio(servicios: ServicioClass): void {
-    if (servicios.serTipoGrafico==5)  { this.ingresoDireViento = false; }
-    const index = this.ServiciosGraficar.indexOf(servicios);
+  extraerServicio(element: any): void {
+    if (element.serTipoGrafico==5)  { this.ingresoDireViento = false; }
+    const index = this.ServiciosGraficar.indexOf(element);
     if (index !== -1) {
       this.ServiciosGraficar.splice(index, 1);
-      this.ServiciosCentral.push(servicios);
+      this.ServiciosCentral.push(element);
     }
     this.validarFiltradoServiciosGraficar();  
+
+    this.dataSourceServicioDisponible = new MatTableDataSource(this.ServiciosCentral);
+    if (this.paginatorServicioDisponible) {
+      this.dataSourceServicioDisponible.paginator = this.paginatorServicioDisponible;
+      this.paginatorServicioDisponible.firstPage();
+    }
+    if (this.sortServicioDisponible) {
+      this.dataSourceServicioDisponible.sort = this.sortServicioDisponible;
+    }     
+    
+    this.dataSourceServicioGraficar = new MatTableDataSource(this.ServiciosGraficar);
+    if (this.paginatorServicioGraficar) {
+      this.dataSourceServicioGraficar.paginator = this.paginatorServicioGraficar;
+      this.paginatorServicioGraficar.firstPage();
+    }
+    if (this.sortServicioGraficar) {
+      this.dataSourceServicioGraficar.sort = this.sortServicioGraficar;
+    }  
   } 
 
-  seleccionarCentral(): void {
+  seleccionarCentral(element: any) {
+    this.isCollapsed1 = !this.isCollapsed1;
+    this.centralNroSeleccionada = element.cenNro;
+    this.titulo2 = 'Panel de Monitoreo de la Central N°' + element.cenNro + ':';
+
     this.ingresoDireViento = false;
     this.isCollapsed1 = !this.isCollapsed1;
     this.ServiciosGraficar = [];
     this.centralConsultar.obtenerServicioXCentralEstado(this.centralNroSeleccionada).subscribe(data => {
       this.ServiciosCentral = data; 
+
+      this.dataSourceServicioDisponible = new MatTableDataSource(data);
+      if (this.paginatorServicioDisponible) {
+        this.dataSourceServicioDisponible.paginator = this.paginatorServicioDisponible;
+        this.paginatorServicioDisponible.firstPage();
+      }
+      if (this.sortServicioDisponible) {
+        this.dataSourceServicioDisponible.sort = this.sortServicioDisponible;
+      }
+
     })    
+
+    this.goToNextStep(1)
+
   }
 
   graficar(): void {
@@ -396,17 +494,18 @@ formfiltro: FormGroup;
     if (this.op2) { desde.setDate(desde.getDate() - 15); }
     if (this.op3) { desde.setMonth(desde.getMonth() - 1); }
     if (this.op4) {
-      var fechaDesde = document.getElementById('desde') as HTMLInputElement;
-      var fechaSeleccionada = new Date(fechaDesde.value);
-      fechaSeleccionada.setDate(fechaSeleccionada.getDate() + 1); // Sumar un día
+
+      var fechaDesde = this.formGraficar.value.fecha_desde ?? null;
+      var fechaSeleccionada = new Date(fechaDesde);
+      fechaSeleccionada.setDate(fechaSeleccionada.getDate() ); // Sumar un día
       fechaSeleccionada.setHours(0, 0, 0, 0);
       desde = fechaSeleccionada;
-
-      var fechaHasta = document.getElementById('hasta') as HTMLInputElement;
-      fechaSeleccionada = new Date(fechaHasta.value);
-      fechaSeleccionada.setDate(fechaSeleccionada.getDate() + 1); // Sumar un día
+  
+      var fechaHasta = this.formGraficar.value.fecha_hasta ?? null;
+      fechaSeleccionada = new Date(fechaHasta);
+      fechaSeleccionada.setDate(fechaSeleccionada.getDate() ); // Sumar un día
       fechaSeleccionada.setHours(0, 0, 0, 0);
-      hasta = fechaSeleccionada;      
+      hasta = fechaSeleccionada;        
     }
 
     function mostrarError(mensaje: string, footer: string) {
@@ -426,9 +525,9 @@ formfiltro: FormGroup;
       mostrarError('Por favor, ingrese un tipo de visualización de los Servicios.', 'Por favor, introduzca un tipo de visualización de los Servicios.');
     } else if (!this.op1 && !this.op2 && !this.op3 && !this.op4) {
       mostrarError('Por favor, ingrese un periodo a monitorear.', 'Por favor, introduzca un periodo a monitorear.');
-    }else if (isNaN(desde.getTime())) {
+    }else if (fechaDesde === null || isNaN(desde.getTime())) {
       mostrarError('Ingrese una fecha de desde válida.', 'Por favor, ingrese una fecha de hasta válida para generar el gráfico.');
-    } else if (isNaN(hasta.getTime())) {
+    } else if (fechaHasta === null || isNaN(hasta.getTime())) {
       mostrarError('Ingrese una fecha de hasta válida.', 'Por favor, ingrese una fecha de hasta válida para generar el gráfico.');
     } else if (desde > hasta) {
       mostrarError('La fecha "desde" es posterior a la fecha "hasta".', 'Por favor, cambie el rango de fechas seleccionado para generar el gráfico.');
@@ -450,7 +549,16 @@ formfiltro: FormGroup;
       this.Mediciones = data; 
       this.MedicionesTabla = data; 
       this.MedicionesTablaFiltrados = data;
-      console.log(this.MedicionesTabla );
+
+      this.dataSourceMediciones = new MatTableDataSource(this.MedicionesTablaFiltrados);
+      if (this.paginatorMediciones) {
+        this.dataSourceMediciones.paginator = this.paginatorMediciones;
+        this.paginatorMediciones.firstPage();
+      }
+      if (this.sortMediciones) {
+        this.dataSourceMediciones.sort = this.sortMediciones;
+      }  
+
       const contenedor = document.getElementById('contenedor-graficos')!;
 
       if ( (this.op1G && this.ServiciosGraficar.length > 1) || (this.op1G && !this.ingresoDireViento && this.ServiciosGraficar.length === 1) ) {

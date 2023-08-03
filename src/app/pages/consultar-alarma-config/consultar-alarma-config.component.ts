@@ -1,15 +1,16 @@
 //SISTEMA
-import { JsonpClientBackend } from '@angular/common/http';
-import { Component, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {
-  FormBuilder,
   FormGroup,
   FormControl,
   Validators,
-  AbstractControl, ValidatorFn, ValidationErrors
 } from '@angular/forms';
 import Swal, { SweetAlertOptions } from 'sweetalert2';
+
 import { MatStepper } from '@angular/material/stepper';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
 
 //COMPONENTES
 import { CentralConsultaClass } from 'src/app/core/models/centralConsulta';
@@ -21,7 +22,6 @@ import { ServicioClass } from 'src/app/core/models/servicio';
 import { CentralService } from 'src/app/core/services/central.service';
 import { AlarmaConfigService } from 'src/app/core/services/alarmaConfig.service';
 
-
 @Component({
   selector: 'app-consultar-alarma-config',
   templateUrl: './consultar-alarma-config.component.html',
@@ -29,10 +29,26 @@ import { AlarmaConfigService } from 'src/app/core/services/alarmaConfig.service'
 })
 export class ConsultarAlarmaConfigComponent implements OnInit {
 
+  //TABLA Central
+  displayedColumnsCentral: string[] = ['cenNro', 'cenImei', 'cenCoorX', 'cenCoorY', 'columnaVacia', 'seleccionar'];
+  @ViewChild('paginatorCentral', { static: false }) paginatorCentral: MatPaginator | undefined;
+  @ViewChild('matSortCentral', { static: false }) sortCentral: MatSort | undefined;
+  dataSourceCentral: MatTableDataSource<any>;
+  pageSizeCentral = 5; // Número de elementos por página
+  currentPageCentral = 1; // Página actual
+  
+  //TABLA Alarma
+  displayedColumnsAlarma: string[] = ['cfgId', 'serDescripcion', 'cfgNombre', 'cfgFechaAlta', 'cfgFechaBaja', 'cfgValorSuperiorA', 'cfgValorInferiorA', 'cfgObservacion', 'modEstado', 'seleccionar'];
+  @ViewChild('paginatorAlarma', { static: false }) paginatorAlarma: MatPaginator | undefined;
+  @ViewChild('matSortAlarma', { static: false }) sortAlarma: MatSort | undefined;
+  dataSourceAlarma: MatTableDataSource<any>;
+  pageSizeAlarma = 5; // Número de elementos por página
+  currentPageAlarma = 1; // Página actual
+  
   //STEPPER
   titulo1 = 'Seleccionar Central para Consultar Configuración de Alarma';
   titulo2 = 'Alarmas Configurada de la Central N°:';
-  titulo3 = ':';
+  titulo3 = 'Modificar Datos de la Alamra N°:';
   isStep1Completed = false;
   isStep2Completed = false;
   isStep3Completed = false;
@@ -44,7 +60,6 @@ export class ConsultarAlarmaConfigComponent implements OnInit {
   CentralConsultaFiltrados: CentralConsultaClass [] = [];
   AlarmaConfigConsulta: AlarmaConfigConsultaClass[] = [];
   ServiciosCentral: ServicioClass[] = [];
-  ServiciosCentralA: ServicioClass[] = [];
 
   //VARIABLES DE DATOS
   propiedadOrdenamiento: string = "cenNro";
@@ -55,38 +70,30 @@ export class ConsultarAlarmaConfigComponent implements OnInit {
   caracteresValidosLimites: string = "Solo se admiten números y no se admiten: ! # $ & ' ( ) * + , - . : ; < = > ¿? @ [  ] ^ _` { | } ~";
   validadorCamposAgregar: string = '1';
   validadorCamposModif: string = '1';
+  filtroCentral: string = '';
 
-  tipoOrdenamiento: number = 1;
-  tipoOrdenamientoCA: number = 1;
   centralNroSeleccionada: number=0;
   idServicioSeleccionado: number=0;
   alarmaIdSeleccionado: number=0;
+  nombreServicioSeleccionado: number=0;
   smallestId: number=0;
 
   idUsuario: any = 0;
 
   isCollapsed1 = false;
   isCollapsed2 = false;
-  mostrarBtnEditarModificacion = true;
-  mostrarBtnAceptarModificacion = false;
-
-  //PAGINADO
-  pageSizeCentral = 5; // Número de elementos por página
-  currentPageCentral = 1; // Página actual
-  totalItemsCentral = 0; // Total de elementos en la tabla
-
-  pageSizeAlarma = 5; // Número de elementos por página
-  currentPageAlarma = 1; // Página actual
-  totalItemsAlarma = 0; // Total de elementos en la tabla
+  isCollapsed3 = false;
 
   //FORMULARIOS DE AGRUPACION DE DATOS
   formModificar: FormGroup;
-  formAgregar: FormGroup;
 
   constructor(
     private centralConsultar: CentralService, 
     private alarmaConfigConsula: AlarmaConfigService,
   ) {
+    this.dataSourceCentral = new MatTableDataSource<any>();
+    this.dataSourceAlarma = new MatTableDataSource<any>();
+
     this.formModificar = new FormGroup({
       nroCentral: new FormControl(null, []),
       cfgId: new FormControl(null, []), 
@@ -109,25 +116,6 @@ export class ConsultarAlarmaConfigComponent implements OnInit {
         Validators.pattern("^[A-Za-zÑñáéíóúÁÉÍÓÚ'°0-9/%ºª ]{1,100}$"),
       ]),
     });
-    this.formAgregar = new FormGroup({
-      nroCentralA: new FormControl(null, []),
-      nombreAlarmaA: new FormControl(null, [
-        Validators.required,
-        Validators.pattern("^[A-Za-zÑñáéíóúÁÉÍÓÚ'°0-9/%ºª ]{1,50}$"),
-      ]),
-      nombreServicioA: new FormControl(null, []),
-      cfgValorSuperiorAA: new FormControl(null, [
-        Validators.required,
-        Validators.pattern(/^-?\d+([.,]\d{1,2})?$/)
-      ]),
-      cfgValorInferiorAA: new FormControl(null, [
-        Validators.required,
-        Validators.pattern(/^-?\d+([.,]\d{1,2})?$/)
-      ]),
-      cfgObservacionA: new FormControl(null, [
-        Validators.pattern("^[A-Za-zÑñáéíóúÁÉÍÓÚ'°0-9/%ºª ]{1,100}$"),
-      ]),
-    });
   }
 
   ngOnInit(): void {
@@ -135,7 +123,25 @@ export class ConsultarAlarmaConfigComponent implements OnInit {
     this.centralConsultar.listaCentralesCliente(this.idUsuario).subscribe(data => {
       this.CentralConsulta = data;  
       this.CentralConsultaFiltrados = data;
+
+      this.dataSourceCentral = new MatTableDataSource(data);
+      if (this.paginatorCentral) {
+        this.dataSourceCentral.paginator = this.paginatorCentral;
+      }
+      if (this.sortCentral) {
+        this.dataSourceCentral.sort = this.sortCentral;
+      }
     });
+  }
+
+  handlePageChangeCentral(event: any) {
+    this.currentPageCentral = event.pageIndex + 1;
+    this.pageSizeCentral = event.pageSize;
+  }
+
+  handlePageChangeAlarma(event: any) {
+    this.currentPageAlarma = event.pageIndex + 1;
+    this.pageSizeAlarma = event.pageSize;
   }
 
   set nroCentral(valor: any) {
@@ -165,25 +171,7 @@ export class ConsultarAlarmaConfigComponent implements OnInit {
   set cfgObservacion(valor: any) {
     this.formModificar.get('cfgObservacion')?.setValue(valor);
   }
-  set nroCentralA(valor: any) {
-    this.formAgregar.get('nroCentralA')?.setValue(valor);
-  }
-  set nombreAlarmaA(valor: any) {
-    this.formAgregar.get('nombreAlarmaA')?.setValue(valor);
-  }
-  set nombreServicioA(valor: any) {
-    this.formAgregar.get('nombreServicioA')?.setValue(valor);
-  }
-  set cfgValorSuperiorAA(valor: any) {
-    this.formAgregar.get('cfgValorSuperiorAA')?.setValue(valor);
-  }
-  set cfgValorInferiorAA(valor: any) {
-    this.formAgregar.get('cfgValorInferiorAA')?.setValue(valor);
-  }
-  set cfgObservacionA(valor: any) {
-    this.formAgregar.get('cfgObservacionA')?.setValue(valor);
-  }
-
+  
   get nroCentral() {
     return this.formModificar.get('nroCentral');
   }
@@ -211,25 +199,7 @@ export class ConsultarAlarmaConfigComponent implements OnInit {
   get cfgObservacion() {
     return this.formModificar.get('cfgObservacion');
   }
-  get nroCentralA() {
-    return this.formAgregar.get('nroCentralA');
-  }
-  get nombreAlarmaA() {
-    return this.formAgregar.get('nombreAlarmaA');
-  }
-  get nombreServicioA() {
-    return this.formAgregar.get('nombreServicioA');
-  }
-  get cfgValorSuperiorAA() {
-    return this.formAgregar.get('cfgValorSuperiorAA');
-  }
-  get cfgValorInferiorAA() {
-    return this.formAgregar.get('cfgValorInferiorAA');
-  }
-  get cfgObservacionA() {
-    return this.formAgregar.get('cfgObservacionA');
-  }
-
+  
   //STEP
   goToNextStep(stepNumber: number): void {    
     if (this.stepper) {
@@ -243,14 +213,6 @@ export class ConsultarAlarmaConfigComponent implements OnInit {
     }    
   }
   
-  toggleCollapse1() {
-    this.isCollapsed1 = !this.isCollapsed1;
-  }
-
-  toggleCollapse2() {
-    this.isCollapsed2 = !this.isCollapsed2;
-  }
-
   //Valida que exista alguna Central que responda al filtro.
   validarFiltrado(): Boolean {
     if (this.CentralConsultaFiltrados.length == 0) {
@@ -268,26 +230,6 @@ export class ConsultarAlarmaConfigComponent implements OnInit {
       return true;
     }
   }
-
-  //Almacena los datos de la central que fue seleccionado en la tabla de central filtrados dentro de variables locales.
-  esfilaSeleccionada(centralConsulta: CentralConsultaClass) {
-    this.centralNroSeleccionada = centralConsulta.cenNro;    
-  }
-
-  //Almacena los datos de la Alarma que fue seleccionado en la tabla de Alarma filtrados dentro de variables locales.
-  esfilaSeleccionadaAlarma(alarma: AlarmaConfigConsultaClass) {
-    this.alarmaIdSeleccionado = alarma.cfgId
-
-    this.nroCentral = alarma.cfgNro;
-    this.cfgId = alarma.cfgId;
-    this.nombreAlarma = alarma.cfgNombre;
-    this.cfgFechaAlta= alarma.cfgFechaAlta ? new Date(alarma.cfgFechaAlta).toLocaleDateString("es-AR") : '';
-    this.cfgFechaBaja= alarma.cfgFechaBaja ? new Date(alarma.cfgFechaBaja).toLocaleDateString("es-AR") : '';
-    this.cfgValorSuperiorA = alarma.cfgValorSuperiorA
-    this.cfgValorInferiorA = alarma.cfgValorInferiorA
-    this.cfgObservacion = alarma.cfgObservacion
-    this.nombreServicio = alarma.cfgSer;    
-  }
   
   //Filtro de Central por código de central.
   esFiltrar(event: Event, campo: string) {
@@ -304,162 +246,123 @@ export class ConsultarAlarmaConfigComponent implements OnInit {
         this.CentralConsultaFiltrados.push(centralConsulta);
       }
     });
-  }
 
-  //Permite abrir un Modal u otro en función del titulo pasado como parametro.
-  abrirModal(opcion: string) {
-    if (opcion == 'Ver Mas') {
-      this.titulo = opcion;
-      this.bloquearEditar();
-      this.centralConsultar.obtenerServicioXCentral(this.centralNroSeleccionada).subscribe(data => {
-        this.ServiciosCentral = data.filter((servicio: { serTipoGrafico: number; }) => servicio.serTipoGrafico != 5);
-      });
-      
-    } 
-    if (opcion == 'Agregar Alarma') {
-        this.titulo = opcion;
-        this.nroCentralA = this.centralNroSeleccionada;
-        this.centralConsultar.obtenerServicioXCentral(this.centralNroSeleccionada).subscribe(data => {
-          this.ServiciosCentralA = data.filter((servicio: { serTipoGrafico: number; }) => servicio.serTipoGrafico != 5)
-          
-          //Verifico que la central tenga servicios
-          function mostrarError(mensaje: string, footer: string): Promise<void> {
-            return new Promise<void>((resolve) => {
-              Swal.fire({
-                title: 'Error',
-                text: mensaje,
-                icon: 'warning',
-                confirmButtonColor: '#0f425b',
-                confirmButtonText: 'Aceptar',
-                footer: footer
-              }).then(() => {
-                resolve();
-              });
-            });
-          }          
-          if (this.ServiciosCentralA.length == 0) {
-            mostrarError('La Central Seleccionada No tiene Servicios asignados', 'Por favor, comunicarse con su Administrador.')
-              .then(() => {
-                location.reload();
-              });
-          } else {
-            this.nombreServicioA = this.ServiciosCentralA[0].serId;   
-          }       
-        });        
+    this.dataSourceCentral = new MatTableDataSource(this.CentralConsultaFiltrados);
+    if (this.paginatorCentral) {
+      this.dataSourceCentral.paginator = this.paginatorCentral;
     }
+    if (this.sortCentral) {
+      this.dataSourceCentral.sort = this.sortCentral;
+    }    
   }
 
-  //Metodos para grilla
-  //Almacena en una variable la propiedad por la cual se quiere ordenar la consulta de Central.
-  ordenarPor(propiedad: string) {
-    this.tipoOrdenamiento =
-      propiedad === this.propiedadOrdenamiento ? this.tipoOrdenamiento * -1 : 1;
-    this.propiedadOrdenamiento = propiedad;
-  }
+  seleccionarCentral(element: any) {
+    this.centralNroSeleccionada = element.cenNro;    
 
-  //En base a la propiedad por la que se quiera ordenar y el tipo de orden muestra un icono.
-  ordenarIcono(propiedad: string) {
-    if (propiedad === this.propiedadOrdenamiento) {
-      return this.tipoOrdenamiento === 1 ? '🠉' : '🠋';
-    } else {
-      return '🠋🠉';
-    }
-  }  
-
-  //Almacena en una variable la propiedad por la cual se quiere ordenar la consulta de Configuracion de Alarma.
-  ordenarPorCA(propiedad: string) {
-    this.tipoOrdenamientoCA =
-      propiedad === this.propiedadOrdenamientoCA ? this.tipoOrdenamientoCA * -1 : 1;
-    this.propiedadOrdenamientoCA = propiedad;
-  }
-
-  //En base a la propiedad por la que se quiera ordenar y el tipo de orden muestra un icono.
-  ordenarIconoCA(propiedad: string) {
-    if (propiedad === this.propiedadOrdenamientoCA) {
-      return this.tipoOrdenamientoCA === 1 ? '🠉' : '🠋';
-    } else {
-      return '🠋🠉';
-    }
-  } 
-
-  seleccionarCentral(){
     this.alarmaConfigConsula.obtenerAlarmaConfigDeCentral(this.centralNroSeleccionada).subscribe(data => {
       this.AlarmaConfigConsulta = data; 
-    })
-    this.isCollapsed1 = !this.isCollapsed1;
-    this.titulo2 = 'Alarmas Configurada de la Central N°:' + this.centralNroSeleccionada;
-  }
 
-   //Bloquea los campos ante una consulta.
-   bloquearEditar(): void {
-    this.formModificar.get('nombreAlarma')?.disable();
-    this.formModificar.get('cfgValorSuperiorA')?.disable();
-    this.formModificar.get('cfgValorInferiorA')?.disable();
-    this.formModificar.get('cfgObservacion')?.disable();
-    this.formModificar.get('nombreServicio')?.disable();
-    this.mostrarBtnAceptarModificacion = false;
-    this.mostrarBtnEditarModificacion = true;
-  }
-
-  //Desbloquea los campos para su modificación.
-  desbloquearEditar(): void {
-    this.formModificar.get('nombreAlarma')?.enable();
-    this.formModificar.get('cfgValorSuperiorA')?.enable();
-    this.formModificar.get('cfgValorInferiorA')?.enable();
-    this.formModificar.get('cfgObservacion')?.enable();
-    this.formModificar.get('nombreServicio')?.enable();
-    this.mostrarBtnAceptarModificacion = true;   
-    this.mostrarBtnEditarModificacion = false;
-  }
-
-  ModificarEstadoAlarma(estIdSeleccionado: number, estado:string): void {
-    Swal.fire({
-      text: '¿Estás seguro que deseas modificar el estado de esta alarma a "' + estado + '"?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#0f425b',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Aceptar',
-      cancelButtonText: 'Cancelar'
-    } as SweetAlertOptions).then((result) => {
-      if (result.isConfirmed) {
-        this.alarmaConfigConsula.modificarEstado(estIdSeleccionado, this.alarmaIdSeleccionado, ).subscribe(
-          result => {
-            Swal.fire({
-              text: 'Se ha actualizado el estado a '+ estado,
-              icon: 'success',
-              position: 'top',
-              showConfirmButton: true,
-              confirmButtonColor: '#0f425b',
-              confirmButtonText: 'Aceptar',
-            } as SweetAlertOptions).then((result) => {
-              if (result.value == true) {
-                return location.reload();
-              }
-            });
-          },
-          error => {
-            Swal.fire({
-              text: 'No es posible modificar el estado de esta Alarma',
-              icon: 'error',
-              position: 'top',
-              showConfirmButton: true,
-              confirmButtonColor: '#0f425b',
-              confirmButtonText: 'Aceptar',
-            } as SweetAlertOptions);    
-          }
-        );
+      this.dataSourceAlarma = new MatTableDataSource(this.AlarmaConfigConsulta);
+      if (this.paginatorAlarma) {
+        this.dataSourceAlarma.paginator = this.paginatorAlarma;
       }
-    });
+      if (this.sortAlarma) {
+        this.dataSourceAlarma.sort = this.sortAlarma;
+      }    
+    })
+    
+    this.isCollapsed1 = !this.isCollapsed1;
+    this.titulo2 = 'Alarmas Configurada de la Central N°' + this.centralNroSeleccionada + ':';
+
+    this.goToNextStep(1)
+
   }
 
-  //Valida que los campos descripcion y uniddad se encuentren correctamente ingresados.
-  validarControlesMod(): string {
-    if (this.formModificar.valid == false) {
-      return (this.validadorCamposModif = '2');
-    } else {
-      return (this.validadorCamposModif = '1');
+  seleccionarAlarma(element: any) {
+    this.alarmaIdSeleccionado = element.cfgId
+
+    this.nroCentral = element.cfgNro;
+
+    this.centralConsultar.obtenerServicioXCentral(this.centralNroSeleccionada).subscribe(data => {
+      this.ServiciosCentral = data.filter((servicio: { serTipoGrafico: number; }) => servicio.serTipoGrafico != 5);
+    });
+
+    this.cfgId = element.cfgId;
+    this.nombreAlarma = element.cfgNombre;
+    this.cfgFechaAlta= element.cfgFechaAlta ? new Date(element.cfgFechaAlta).toLocaleDateString("es-AR") : '';
+    this.cfgFechaBaja= element.cfgFechaBaja ? new Date(element.cfgFechaBaja).toLocaleDateString("es-AR") : '';
+    this.cfgValorSuperiorA = element.cfgValorSuperiorA
+    this.cfgValorInferiorA = element.cfgValorInferiorA
+    this.cfgObservacion = element.cfgObservacion
+    this.nombreServicio = element.cfgSer;  
+    this.nombreServicioSeleccionado = element.cfgSer;  
+
+    this.isCollapsed2 = !this.isCollapsed2;
+    this.titulo3 = 'Modificar Datos de la Alamra N°' + this.alarmaIdSeleccionado + ':';
+
+    this.goToNextStep(2)
+
+  }
+
+  ModificarEstadoAlarma(element: any, estIdSeleccionado: number, estado:string): void {
+
+    if (estIdSeleccionado===0)
+    {
+      const filteredAlarms = this.AlarmaConfigConsulta.filter(alarma => alarma.cfgId !== element.cfgId && alarma.cfgSer === element.cfgSer);
+      const areAllSameServiceAndActive = filteredAlarms.every(alarma => alarma.cfgFechaBaja);
+      if (!areAllSameServiceAndActive) {
+        Swal.fire({
+          text: 'NO es posible, ya que hay otras alarmas activas para el mismo servicio.',
+          icon: 'error',
+          position: 'center',
+          showConfirmButton: true,
+          confirmButtonColor: '#0f425b',
+          confirmButtonText: 'Aceptar',
+        } as SweetAlertOptions);
+        return; // Sale de la función si se cumple la condición de error
+      }
     }
+
+      Swal.fire({
+        text: '¿Estás seguro de que deseas modificar el estado de la alarma: ' + element.cfgNombre + ' del servicio: ' + element.serDescripcion + ' al estado ' + estado + '?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#0f425b',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Aceptar',
+        cancelButtonText: 'Cancelar',
+        position: 'center' 
+
+      } as SweetAlertOptions).then((result) => {
+        if (result.isConfirmed) {
+          this.alarmaConfigConsula.modificarEstado(estIdSeleccionado, element.cfgId ).subscribe(
+            result => {
+              Swal.fire({
+                text: 'Se ha actualizado el estado a '+ estado,
+                icon: 'success',
+                position: 'center',
+                showConfirmButton: true,
+                confirmButtonColor: '#0f425b',
+                confirmButtonText: 'Aceptar',
+              } as SweetAlertOptions).then((result) => {
+                if (result.value == true) {
+                  return location.reload();
+                }
+              });
+            },
+            error => {
+              Swal.fire({
+                text: 'No es posible modificar el estado de esta Alarma',
+                icon: 'error',
+                position: 'center',
+                showConfirmButton: true,
+                confirmButtonColor: '#0f425b',
+                confirmButtonText: 'Aceptar',
+              } as SweetAlertOptions);    
+            }
+          );
+        }
+      });    
   }
   
   modificarAlarmaConfig():void {
@@ -485,7 +388,16 @@ export class ConsultarAlarmaConfigComponent implements OnInit {
       cfgValorInferiorA = cfgValorInferiorA.replace(',', '.');
     }
 
-    if (!(this.centralNroSeleccionada !=0 )) {
+    var areAllSameServiceAndActive = true;
+    if ( this.formModificar.get('nombreServicio')?.value != this.nombreServicioSeleccionado )
+    {
+      const filteredAlarms = this.AlarmaConfigConsulta.filter(alarma => alarma.cfgId !== this.formModificar.get('cfgId')?.value && alarma.cfgSer === this.formModificar.get('nombreServicio')?.value );
+      areAllSameServiceAndActive = filteredAlarms.every(alarma => alarma.cfgFechaBaja);
+    }
+
+    if (!areAllSameServiceAndActive) {
+      mostrarError('Ese Servicio ya tiene una alarma activa', 'Por favor, seleccione otro servicio.');
+    } else if (!(this.centralNroSeleccionada !=0 )) {
       mostrarError('Debe ingresar una central', 'Por favor, seleccione una Central.');
     } else if (this.nombreAlarma?.invalid && this.nombreAlarma.errors?.['required'] ) {
       mostrarError('Debe ingresar un nombre de alarma', 'Por favor, introduzca un nombre de alarma.');
@@ -526,7 +438,7 @@ export class ConsultarAlarmaConfigComponent implements OnInit {
           ' de la central número ' +
           this.formModificar.get('nroCentral')?.value,
           icon: 'success',
-          position: 'top',
+          position: 'center',
           showConfirmButton: true,
           confirmButtonColor: '#0f425b',
           confirmButtonText: 'Aceptar',
@@ -542,7 +454,7 @@ export class ConsultarAlarmaConfigComponent implements OnInit {
         Swal.fire({
           text: 'No es posible modificar esta Alarma',
           icon: 'error',
-          position: 'top',
+          position: 'center',
           showConfirmButton: true,
           confirmButtonColor: '#0f425b',
           confirmButtonText: 'Aceptar',
@@ -552,127 +464,4 @@ export class ConsultarAlarmaConfigComponent implements OnInit {
 
   }
 
-  //Valida que los campos descripcion y uniddad se encuentren correctamente ingresados.
-  validarControlesAgregar(): string {
-    if (this.formAgregar.valid == false) {
-      return (this.validadorCamposAgregar = '2');
-    } else {
-      return (this.validadorCamposAgregar = '1');
-    }
-  }
-
-  //Agregar una Alarma Configuracion 
-  agregarAlarmaConfig(): void {
-    
-    //Verifica que este completo el formulario y que no tenga errores.
-    function mostrarError(mensaje: string, footer: string) {
-      Swal.fire({
-        title: 'Error',
-        text: mensaje,
-        icon: 'warning',
-        confirmButtonColor: '#0f425b',
-        confirmButtonText: 'Aceptar',
-        footer: footer
-      });
-    }
-
-    let cfgValorSuperiorA = this.formAgregar.get('cfgValorSuperiorAA')?.value;
-    let cfgValorInferiorA = this.formAgregar.get('cfgValorInferiorAA')?.value;
-    
-    if (typeof cfgValorSuperiorA === 'string') {
-      cfgValorSuperiorA = cfgValorSuperiorA.replace(',', '.');
-    }    
-    if (typeof cfgValorInferiorA === 'string') {
-      cfgValorInferiorA = cfgValorInferiorA.replace(',', '.');
-    }
-
-    if (this.nombreAlarmaA?.invalid && this.nombreAlarmaA.errors?.['required'] ) {
-      mostrarError('Debe ingresar un nombre de alarma', 'Por favor, introduzca un nombre de alarma.');
-    } else if (this.nombreAlarmaA?.invalid && this.nombreAlarmaA.errors?.['pattern'] ) {
-      mostrarError('El nombre no debe contener caracteres especiales ni tener más de 50 carácteres.', 'Por favor, corrija el nombre e inténtelo de nuevo.');
-    } else if (this.cfgValorSuperiorAA?.invalid && this.cfgValorSuperiorAA.errors?.['required'] ) {
-      mostrarError('Debe ingresar un límite superior', 'Por favor, introduzca un límite superior.');    
-    } else if (this.cfgValorSuperiorAA?.invalid && this.cfgValorSuperiorAA.errors?.['pattern'] ) {
-      mostrarError('El límite superior no es valido', 'Por favor, corrija el límite superior e inténtelo de nuevo.');        
-    } else if (this.cfgValorInferiorAA?.invalid && this.cfgValorInferiorAA.errors?.['required'] ) {
-      mostrarError('Debe ingresar un límite inferior', 'Por favor, introduzca un límite límite.');
-    } else if (this.cfgValorSuperiorAA?.invalid && this.cfgValorSuperiorAA.errors?.['pattern'] ) {
-      mostrarError('El límite inferior no es valido', 'Por favor, corrija el límite inferior e inténtelo de nuevo.');    
-    } else if (cfgValorInferiorA >= cfgValorSuperiorA) {
-      mostrarError('El valor del límete inferior debe ser menor que límite superior', 'Por favor, cambie el limite');  
-    } else if (this.cfgObservacionA?.invalid && this.cfgObservacionA.errors?.['pattern'] ) {
-      mostrarError('La observación no debe contener caracteres especiales ni tener más de 100 carácteres.', 'Por favor, Por favor, corrija la observación e inténtelo de nuevo.');
-    } else {
-    
-    let alarmaC: AlarmaConfigClass = new AlarmaConfigClass(
-      0,
-      this.formAgregar.get('nroCentralA')?.value,
-      this.formAgregar.get('nombreServicioA')?.value,
-      this.formAgregar.get('nombreAlarmaA')?.value,
-      new Date(),
-      new Date(),
-      cfgValorSuperiorA,
-      cfgValorInferiorA,
-      this.formAgregar.get('cfgObservacionA')?.value
-    );
-    console.log(alarmaC);
-    this.alarmaConfigConsula
-      .registrarAlarmaConfig(alarmaC)  
-      .subscribe(() => {
-        Swal.fire({
-          text:
-          'Se ha registrado con éxito la Configuración de esta Alarma, para la central número ' +
-          this.formAgregar.get('nroCentralA')?.value,
-          icon: 'success',
-          position: 'top',
-          showConfirmButton: true,
-          confirmButtonColor: '#0f425b',
-          confirmButtonText: 'Aceptar',
-        } as SweetAlertOptions).then((result) => {
-          if (result.value == true) {
-            window.scrollTo(0, 0); 
-            location.reload();  
-            window.scrollTo(0, 0);    
-            return;     
-          }
-        });
-    }, (error) => {
-        Swal.fire({
-          text: 'No es posible agregar esta Configuración de Alarma',
-          icon: 'error',
-          position: 'top',
-          showConfirmButton: true,
-          confirmButtonColor: '#0f425b',
-          confirmButtonText: 'Aceptar',
-        } as SweetAlertOptions);    
-      });          
-    }
-  }
-
-  paginaCambiadaCentral(event: any) {
-    this.currentPageCentral = event;
-    const cantidadPaginasCentral = Math.ceil(
-      this.CentralConsultaFiltrados.length / this.pageSizeCentral
-    );
-    const paginasCentral = [];
-
-    for (let i = 1; i <= cantidadPaginasCentral; i++) {
-      paginasCentral.push(i);
-    }
-    return paginasCentral;
-  } 
-
-  
-  paginaCambiadaAlarma(event: any) {
-    this.currentPageAlarma = event;
-    const cantidadPaginasAlarma = Math.ceil(
-      this.AlarmaConfigConsulta.length / this.pageSizeAlarma
-    );
-    const paginasAlarma = [];
-
-    for (let i = 1; i <= cantidadPaginasAlarma; i++) {
-      paginasAlarma.push(i);
-    }
-    return paginasAlarma;
-  } 
 }

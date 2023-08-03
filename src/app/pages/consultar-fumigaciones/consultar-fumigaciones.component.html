@@ -255,37 +255,43 @@
               </ng-container>
       
               <!-- Columna de acciones -->
-              <ng-container matColumnDef="seleccionar">
-                <th class="encabezado text-center" mat-header-cell *matHeaderCellDef>Ver Más</th>
+              <ng-container matColumnDef="desactivar">
+                <th class="encabezado text-center" mat-header-cell *matHeaderCellDef>Desactivar</th>
                 <td class="table-row" class="align-center" mat-cell *matCellDef="let element">
                   <button
-                    type="button"
-                    class="btn entreBotones bordeBoton"
-                    data-bs-target="#staticBackdrop"
-                    data-bs-toggle="modal"
-                    (click)="abrirModal('Eliminar Fumigación')"
-                    title="Eliminar Fumigación"
+                    type="button"                          
+                    class="btn" 
+                    data-bs-target="#staticBackdrop"    
+                    mat-button                      
+                    (click)="desactivarFumigacion(element)"
+                    title="Eliminar Fumigacion"
                   >
                     <img
-                      src="../../../assets/no check.png"
+                    src="../../../assets/deshabilitada.png"
                       class="iconosBoton"
                       alt="..."
                     />
-                  </button>
-                  <button                      
+                  </button>  
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="seleccionar">
+                <th class="encabezado text-center" mat-header-cell *matHeaderCellDef>Modificar Fumigación</th>
+                <td class="table-row" class="align-center" mat-cell *matCellDef="let element">
+                  <button
                     type="button"
-                    class="btn entreBotones bordeBoton"
-                    data-bs-target="#staticBackdrop"
-                    data-bs-toggle="modal"
-                    (click)="abrirModal('Ver Mas')"
-                    title="Ver Más Opciones"
+                    class="btn"
+                    data-bs-target="#staticBackdrop"  
+                    mat-button
+                    (click)="seleccionarFumigacion(element)"
+                    title="Modificar Fumigación"
                   >
                     <img
-                      src="../../../assets/seleccionarClie.png"
-                      class="image"
+                      src="../../../assets/icons8-agriculture-51.png"
+                      class="iconosBoton"
                       alt="..."
                     />
-                  </button>
+                  </button>    
                 </td> 
               </ng-container>
 
@@ -322,156 +328,265 @@
     </ng-container>
   </mat-step>
 
+
+  <mat-step
+  [label]="titulo3"
+  [completed]="isStep3Completed"
+  [ngClass]="{ collapse: isCollapsed3 }"
+  >
+    <ng-container contenido-paso-3>    
+
+    <!-- Botón ver otra fumigacion -->
+    <div class="row ">
+      <div
+        class="example-button-row"
+        style="display: flex; justify-content: flex-end"
+      >
+        <button
+          mat-fab
+          extended
+          color="primary"
+          class="btnAgregar"
+          (click)="goToPreviousStep()"
+        >
+          <mat-icon>touch_app</mat-icon>
+          Nueva Consulta
+        </button>
+      </div>
+    </div>
+
+    <div class="card cardFiltrado cardAnimate cardFlat">
+      <div class="card-header">
+        <div class="d-flex justify-content-between align-items-center">
+          <h4 class="mb-0 tituloCard">Modificar Fumigación</h4>
+          <img
+            src="../../../assets/fumigaciones.png"
+            class="image"
+            style="width: 5%; height: 5%; padding-right: 5px"
+            alt="..."
+          />
+        </div>
+      </div>
+      
+      <br/>
+
+      <form [formGroup]="formModificar">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-9" style="justify-content: right">
+              <div class="row justify-content-center">
+                <div class="col-50 col-sm-50">
+                  <div class="row">
+                    <div class="col-md-6">
+
+                      <div class="form-outline input-group mb-3">
+                        <mat-form-field
+                          appearance="fill"
+                          class="example-full-width form-outline input-group"
+                        >
+                          <mat-label>Número de Central</mat-label>
+                          <input
+                            type="text"
+                            style="padding-left: 20px"
+                            matInput
+                            id="nroCentral"
+                            value="nroCentral"
+                            formControlName="nroCentral"
+                            required
+                            readonly
+                          />
+                          <mat-icon class="edit" matSuffix
+                            >edit_off</mat-icon
+                          >
+                        </mat-form-field>                        
+                      </div>
+                      
+                      <div class="form-outline input-group mb-3">
+                        <mat-form-field
+                          appearance="fill"
+                          class="example-full-width form-outline input-group"
+                        >
+                          <mat-label>Código de Fumigación</mat-label>
+                          <input
+                            type="text"
+                            style="padding-left: 20px"
+                            matInput
+                            id="idFum"
+                            value="idFum"
+                            formControlName="idFum"
+                            required
+                            readonly
+                          />
+                          <mat-icon class="edit" matSuffix
+                            >edit_off</mat-icon
+                          >
+                        </mat-form-field>
+                      </div>
+
+                      <div class="form-outline input-group mb-3">
+                        <mat-form-field
+                          appearance="fill"
+                          class="example-full-width form-outline input-group"
+                        >
+                          <mat-label>Fecha de Alta</mat-label>
+                          <input
+                            type="text"
+                            style="padding-left: 20px"
+                            matInput
+                            id="fechaAlta"
+                            value="fechaAlta"
+                            formControlName="fechaAlta"
+                            required
+                            readonly
+                          />
+                          <mat-icon class="edit" matSuffix
+                            >edit_off</mat-icon
+                          >
+                        </mat-form-field>
+                      </div>
+
+                      <div class="form-outline input-group mb-3">
+                        <mat-form-field
+                          appearance="fill"
+                          class="example-full-width form-outline input-group"
+                        >
+                          <mat-label>Fecha de Realización</mat-label>
+                          <input
+                            type="text"
+                            style="padding-left: 20px"
+                            matInput
+                            id="fechaRealizacion"
+                            value="fechaRealizacion"
+                            formControlName="fechaRealizacion"
+                            required
+                            readonly
+                          />
+                          <mat-icon class="edit" matSuffix
+                            >edit_off</mat-icon
+                          >
+                        </mat-form-field>
+                      </div>
+
+                      <div class="form-outline input-group mb-3">
+                        <mat-form-field
+                          appearance="fill"
+                          class="example-full-width form-outline input-group"
+                        >
+                          <mat-label>Observación </mat-label>
+                          <input
+                            type="text"
+                            style="padding-left: 20px"
+                            matInput
+                            id="observacion"
+                            value="observacion"
+                            formControlName="observacion"
+                          />
+                          <mat-icon class="edit" matSuffix
+                            >edit</mat-icon
+                          >
+                        </mat-form-field>
+                        <mat-error
+                          *ngIf="
+                          observacion?.invalid &&
+                            (observacion?.dirty ||
+                            observacion?.touched)
+                          "
+                          class="text-danger"
+                        >                        
+                          <mat-error
+                            class="error"
+                            *ngIf="observacion?.errors?.['pattern']"
+                          >
+                            No debe contener caracteres especiales ni tener más de 50 caracteres.                             
+                          </mat-error>
+                        </mat-error>
+                      </div>                        
+                      <br>
+                      <div
+                        class="col-12 text-center"
+                        style="display: flex; justify-content: center"
+                      >
+                        <div class="modal-footer example-button-row">
+                          <button
+                            mat-fab
+                            extended
+                            color="primary"
+                            type="submit"
+                            id="btnModificar"
+                            class="btn btnModificar"
+                            data-bs-target="#staticBackdrop"
+                            (click)="modificarFumigacion()"
+                          >
+                            Modificar Fumigación
+                          </button>
+                        </div>
+                      </div> 
+
+                    </div>
+                  </div>
+              
+
+                </div>
+              </div>
+            </div>
+
+            <!-------------------- Ir a Registrar Fumigación: .col-sm-4 ---------------------------------->
+            <div
+            class="col-sm-3"
+            style="display: flex; justify-content: left"
+          >
+            <div class="col-md-2 image-container">
+              <span
+                ><img
+                  style="
+                    width: 100%;
+                    height: 100%;
+                    margin-bottom: 100px;
+                  "
+                  src="../../../assets/pesticide.png"
+                  class="image"
+                  alt="..."
+                />
+              
+              <!-- Botón Registrar Fumigación -->
+              <div class="row">
+                <div
+                  class="example-button-row"
+                  style="display: flex; justify-content: flex-end"
+                >
+                  <button
+                    mat-fab
+                    extended
+                    color="primary"
+                    class="btnAgregar"
+                    routerLink="/registrar-fumigaciones"
+                    >
+                    <mat-icon>touch_app</mat-icon>
+                    Registrar Nueva Fumigación
+                  </button>
+                </div>
+              </div>
+              </span>
+            </div>
+          </div>
+
+
+          </div>
+        </div>
+      </form>
+
+    </div>
+
+    <br>
+    <br>
+
+    </ng-container>
+  </mat-step>
+
 </mat-vertical-stepper>
 </div>  
 <br />
 </div>
 
 <br/>
-
-
-<app-modal titulo="{{titulo}}">
-  <!-- Seccion de Modificación de Fumigacion --> 
- <div *ngIf="titulo == 'Ver Mas'">
-   <form [formGroup]="formModificar" class="row g-3">
-       <fieldset id="fieldset">
-           
-        <div class="col-md-12">
-          <div class="form-outline input-group mb-3">
-              <span class="input-group-text">Nro Central </span>
-              <input type="text" class="form-control" id="nroCentral" value="nroCentral"
-                  formControlName="nroCentral" readonly/>
-          </div>        
-        </div>
-        <div class="col-md-12">
-            <div class="form-outline input-group mb-3">
-              <span class="input-group-text">Cod. Fumigación</span>                    
-              <input type="text" class="form-control" id="idFum" value="idFum" 
-                formControlName="idFum" readonly/>                    
-            </div>              
-          </div>
-
-           <div class="col-md-12">
-             <div class="form-outline input-group mb-3">
-                 <span class="input-group-text">Fecha de Alta</span>
-                 <input type="text" class="form-control" id="fechaAlta" value="fechaAlta"
-                     formControlName="fechaAlta" readonly/>
-             </div>   
-           </div>
-
-           <div class="col-md-12">
-             <div class="form-outline input-group mb-3">
-                 <span class="input-group-text">Fecha de Realización</span>
-                 <input type="text" class="form-control" id="fechaRealizacion" value="fechaRealizacion"
-                     formControlName="fechaRealizacion" readonly/>
-             </div>       
-           </div>
-
-         <div class="col-md-12">
-               <div class="form-outline input-group mb-3">
-                   <span class="input-group-text">Observación</span>
-                   <input type="text" class="form-control" id="observacion" value="observacion"
-                       formControlName="observacion" />
-                        <span class="input-group-text" title="{{caracteresValidosObservacion}}"><svg                    
-                         xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                         class="bi bi-question-circle" viewBox="0 0 16 16">
-                         <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                         <path
-                             d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z" />
-                       </svg>
-                   </span>
-               </div>
-              <div *ngIf="observacion?.invalid && (observacion?.dirty || observacion?.touched)" class="text-danger">
-                 <div *ngIf="observacion?.errors?.['pattern']">
-                  No debe contener caracteres especiales ni tener más de 50 caracteres. </div>
-               </div> 
-           </div>
-
-       </fieldset>
-   </form>
-   <div class="row">
-     <div class="modal-footer text-center col-3">
-         <button [disabled]="!mostrarBtnEditarModificacion" type="submit" id="btnEditar" class="btn btn-success" (click)="desbloquearEditar()">Editar</button>
-     </div>
-     <div class="modal-footer text-center col-3">
-         <button [disabled]="!mostrarBtnAceptarModificacion" id="btnAceptarModificacion" type="submit" class="btn btn-success" (click)="modificarFumigacion()">Aceptar</button>
-     </div>
-     <div class="modal-footer text-center col-3"> 
-         <button style="background-color: #0e3c53;" id="CancelarModificacion" type="button" class="btn text-white"data-bs-dismiss="modal">Cancelar</button>        
-     </div>
-     <div *ngIf="validarControlesMod() == '2'" class="text-danger">
-       Verifique los campos ingresados
-     </div>
-   </div>
- </div>   
-
- <div *ngIf="titulo == 'Eliminar Fumigación'">
-  <form [formGroup]="formModificar" class="row g-3">
-      <fieldset id="fieldset">
-          
-       <div class="col-md-12">
-         <div class="form-outline input-group mb-3">
-             <span class="input-group-text">Nro Central </span>
-             <input type="text" class="form-control" id="nroCentral" value="nroCentral"
-                 formControlName="nroCentral" readonly/>
-         </div>        
-       </div>
-       <div class="col-md-12">
-           <div class="form-outline input-group mb-3">
-             <span class="input-group-text">Cod. Fumigación</span>                    
-             <input type="text" class="form-control" id="idFum" value="idFum" 
-               formControlName="idFum" readonly/>                    
-           </div>              
-         </div>
-
-          <div class="col-md-12">
-            <div class="form-outline input-group mb-3">
-                <span class="input-group-text">Fecha de Alta</span>
-                <input type="text" class="form-control" id="fechaAlta" value="fechaAlta"
-                    formControlName="fechaAlta" readonly/>
-            </div>   
-          </div>
-
-          <div class="col-md-12">
-            <div class="form-outline input-group mb-3">
-                <span class="input-group-text">Fecha de Realización</span>
-                <input type="text" class="form-control" id="fechaRealizacion" value="fechaRealizacion"
-                    formControlName="fechaRealizacion" readonly/>
-            </div>       
-          </div>
-
-        <div class="col-md-12">
-              <div class="form-outline input-group mb-3">
-                  <span class="input-group-text">Observación</span>
-                  <input type="text" class="form-control" id="observacion" value="observacion"
-                      formControlName="observacion" readonly />
-                      <span class="input-group-text" title="{{caracteresValidosObservacion}}"><svg 
-                        xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                        class="bi bi-question-circle" viewBox="0 0 16 16">
-                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                        <path
-                            d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z" />
-                      </svg>
-                  </span>
-              </div>
-          </div>
-
-      </fieldset>
-  </form>
-  <div class="row">
-    <div class="modal-footer text-center col-3">
-      <button type="submit" class="btn btn-success" data-bs-toggle="button"             
-      data-bs-dismiss="modal" (click)="desactivarFumigacion()">Confirmar</button>
-    </div>
-    <div class="modal-footer text-center col-8">
-      <button style="background-color: #0e3c53;" id="Cancelar" type="button" class="btn text-white"
-        data-bs-dismiss="modal">Cancelar</button>        
-    </div>
-  </div>
-</div>
-
-</app-modal>
-
-
-
 

@@ -133,15 +133,16 @@
                           </div>
 
                           <div class="form-outline input-group mb-3">
-                            <mat-form-field
-                              class="FormatoCombos;"
+                            <mat-form-field                            
                               style="width: 525px"
-                              appearance="outline"
                               >
-                              <mat-label>Tipo Grafico</mat-label>
+                              <mat-label>Seleccione un Tipo Grafico</mat-label>
                               <mat-select 
-                                style="text-align: center; border-color: #63ddff" 
+                                style="padding-left: 30px"                              
                                 placeholder="Seleccionar Tipo Grafico" 
+                                required
+                                id="tipoGraficoA"
+                                formControlName="tipoGraficoA"
                                 >
                                 <mat-option value="1">Humedad de Suelo</mat-option>
                                 <mat-option value="2">Humedad del Ambiente</mat-option>
@@ -149,7 +150,22 @@
                                 <mat-option value="4">Velocidad del Viento</mat-option>
                                 <mat-option value="5">Dirección del Viento</mat-option>
                               </mat-select>
-                            </mat-form-field>
+                            </mat-form-field>  
+                            <mat-error
+                            *ngIf="
+                            tipoGraficoA?.invalid &&
+                              (tipoGraficoA?.dirty ||
+                              tipoGraficoA?.touched)
+                            "
+                            class="text-danger"
+                          >
+                            <mat-error
+                              class="error"
+                              *ngIf="tipoGraficoA?.errors?.['required']"
+                            >
+                              Debe seleccionar un tipo grafico.
+                            </mat-error>
+                          </mat-error>                          
                           </div>
 
                           <br>
@@ -165,7 +181,6 @@
                                 type="submit"
                                 id="btnAgregar"
                                 class="btn btnAgregar"
-                                data-bs-toggle="modal"
                                 data-bs-target="#staticBackdrop"
                                 (click)="agregarServicio()"
                               >
@@ -214,7 +229,7 @@
                         routerLink="/consultar-servicio"
                         >
                         <mat-icon>touch_app</mat-icon>
-                        Consultar Otro Servicio
+                        Consultar Servicios
                       </button>
                     </div>
                   </div>

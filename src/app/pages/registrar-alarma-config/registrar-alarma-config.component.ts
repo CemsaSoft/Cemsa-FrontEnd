@@ -1,20 +1,22 @@
 //SISTEMA
-import { JsonpClientBackend } from '@angular/common/http';
-import { Component, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {
-  FormBuilder,
   FormGroup,
   FormControl,
   Validators,
 } from '@angular/forms';
 import Swal, { SweetAlertOptions } from 'sweetalert2';
+
 import { MatStepper } from '@angular/material/stepper';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
 
 //COMPONENTES
 import { CentralConsultaClass } from 'src/app/core/models/centralConsulta';
-import { AlarmaConfigConsultaClass } from 'src/app/core/models/alarmaConfigConsulta';
 import { AlarmaConfigClass } from 'src/app/core/models/alarmaConfig';
 import { ServicioClass } from 'src/app/core/models/servicio';
+import { AlarmaConfigConsultaClass } from 'src/app/core/models/alarmaConfigConsulta';
 
 //SERVICIOS
 import { CentralService } from 'src/app/core/services/central.service';
@@ -27,6 +29,14 @@ import { AlarmaConfigService } from 'src/app/core/services/alarmaConfig.service'
 })
 export class RegistrarAlarmaConfigComponent implements OnInit {
 
+  //TABLA Central
+  displayedColumnsCentral: string[] = ['cenNro', 'cenImei', 'cenCoorX', 'cenCoorY', 'columnaVacia', 'seleccionar'];
+  @ViewChild('paginatorCentral', { static: false }) paginatorCentral: MatPaginator | undefined;
+  @ViewChild('matSortCentral', { static: false }) sortCentral: MatSort | undefined;
+  dataSourceCentral: MatTableDataSource<any>;
+  pageSizeCentral = 5; // Número de elementos por página
+  currentPageCentral = 1; // Página actual
+  
   //STEPPER
   titulo1 = 'Seleccionar Central para Registar Configuración de Alarma';
   titulo2 = 'Registrar Configuración de Alarma a la Central N°:';
@@ -41,12 +51,15 @@ export class RegistrarAlarmaConfigComponent implements OnInit {
   CentralConsulta: CentralConsultaClass[] = [];
   CentralConsultaFiltrados: CentralConsultaClass [] = [];
   ServiciosCentralA: ServicioClass[] = [];
+  AlarmaConfigConsulta: AlarmaConfigConsultaClass[] = [];
+
 
   //VARIABLES DE DATOS
   propiedadOrdenamiento: string = "cenNro";
   caracteresValidosObservacion: string = "No se admiten: ! # $ & ' ( ) * + , - . : ; < = > ¿? @ [  ] ^ _` { | } ~";
   caracteresValidosNombre: string = "No se admiten: ! # $ & ' ( ) * + , - . : ; < = > ¿? @ [  ] ^ _` { | } ~";
   caracteresValidosLimites: string = "Solo se admiten números y no se admiten: ! # $ & ' ( ) * + , - . : ; < = > ¿? @ [  ] ^ _` { | } ~";
+  filtroCentral: string = '';
                                         
   tipoOrdenamiento: number = 1;
   centralNroSeleccionada: number=0;
@@ -56,11 +69,6 @@ export class RegistrarAlarmaConfigComponent implements OnInit {
   isCollapsed1 = false;
   isCollapsed2 = false;
 
-  //PAGINADO
-  pageSizeCentral = 5; // Número de elementos por página
-  currentPageCentral = 1; // Página actual
-  totalItemsCentral = 0; // Total de elementos en la tabla
-
   //FORMULARIOS DE AGRUPACION DE DATOS
   formAgregar: FormGroup;
 
@@ -68,6 +76,8 @@ export class RegistrarAlarmaConfigComponent implements OnInit {
     private centralConsultar: CentralService, 
     private alarmaConfigConsula: AlarmaConfigService,
   ) {
+    this.dataSourceCentral = new MatTableDataSource<any>();
+
     this.formAgregar = new FormGroup({
       nroCentralA: new FormControl(null, []),
       nombreAlarmaA: new FormControl(null, [
@@ -96,7 +106,20 @@ export class RegistrarAlarmaConfigComponent implements OnInit {
     this.centralConsultar.listaCentralesCliente(this.idUsuario).subscribe(data => {
       this.CentralConsulta = data;  
       this.CentralConsultaFiltrados = data;
+
+      this.dataSourceCentral = new MatTableDataSource(data);
+      if (this.paginatorCentral) {
+        this.dataSourceCentral.paginator = this.paginatorCentral;
+      }
+      if (this.sortCentral) {
+        this.dataSourceCentral.sort = this.sortCentral;
+      }
     });
+  }
+
+  handlePageChangeCentral(event: any) {
+    this.currentPageCentral = event.pageIndex + 1;
+    this.pageSizeCentral = event.pageSize;
   }
 
   set nroCentralA(valor: any) {
@@ -150,14 +173,6 @@ export class RegistrarAlarmaConfigComponent implements OnInit {
     }    
   }
   
-  toggleCollapse1() {
-    this.isCollapsed1 = !this.isCollapsed1;
-  }
-
-  toggleCollapse2() {
-    this.isCollapsed2 = !this.isCollapsed2;
-  }
-
   //Valida que exista alguna Central que responda al filtro.
   validarFiltrado(): Boolean {
     if (this.CentralConsultaFiltrados.length == 0) {
@@ -167,13 +182,41 @@ export class RegistrarAlarmaConfigComponent implements OnInit {
     }
   }
 
-  //Almacena los datos del servicio que fue seleccionado en la tabla de servicio filtrados dentro de variables locales.
-  esfilaSeleccionada(centralConsulta: CentralConsultaClass) {
-    this.centralNroSeleccionada = centralConsulta.cenNro;    
-    this.nroCentralA = centralConsulta.cenNro;
-        this.centralConsultar.obtenerServicioXCentral(centralConsulta.cenNro).subscribe(data => {
+  //Filtro de Central por código de central.
+  esFiltrar(event: Event, campo: string) {
+    let txtBuscar = (event.target as HTMLInputElement).value;
+    let filtro = txtBuscar
+      .replace(/[^\w\s]/g, '')
+      .trim()
+      .toLowerCase();
+    this.CentralConsultaFiltrados = [];
+    this.CentralConsulta.forEach((centralConsulta) => {
+      if (
+        (campo === 'codigo' && centralConsulta.cenNro.toString().toLowerCase().includes(filtro)) 
+      ) {
+        this.CentralConsultaFiltrados.push(centralConsulta);
+      }
+    });
+
+    this.dataSourceCentral = new MatTableDataSource(this.CentralConsultaFiltrados);
+    if (this.paginatorCentral) {
+      this.dataSourceCentral.paginator = this.paginatorCentral;
+    }
+    if (this.sortCentral) {
+      this.dataSourceCentral.sort = this.sortCentral;
+    }    
+  }
+
+  seleccionarCentral(element: any) {
+    this.centralNroSeleccionada = element.cenNro;
+
+    this.isCollapsed1 = !this.isCollapsed1;
+    this.titulo2 = 'Registrar Configuración de Alarma a la Central N°' + this.centralNroSeleccionada + ':';
+
+    this.centralNroSeleccionada = element.cenNro;    
+    this.nroCentralA = element.cenNro;        
+        this.centralConsultar.obtenerServicioXCentral(element.cenNro).subscribe(data => {
           this.ServiciosCentralA = data.filter((servicio: { serTipoGrafico: number; }) => servicio.serTipoGrafico != 5)
-          
           //Verifico que la central tenga servicios
           function mostrarError(mensaje: string, footer: string): Promise<void> {
             return new Promise<void>((resolve) => {
@@ -197,46 +240,11 @@ export class RegistrarAlarmaConfigComponent implements OnInit {
           } else {
             this.nombreServicioA = this.ServiciosCentralA[0].serId;   
           }       
+
         });        
-  }
 
-  //Filtro de Central por código de central.
-  esFiltrar(event: Event, campo: string) {
-    let txtBuscar = (event.target as HTMLInputElement).value;
-    let filtro = txtBuscar
-      .replace(/[^\w\s]/g, '')
-      .trim()
-      .toLowerCase();
-    this.CentralConsultaFiltrados = [];
-    this.CentralConsulta.forEach((centralConsulta) => {
-      if (
-        (campo === 'codigo' && centralConsulta.cenNro.toString().toLowerCase().includes(filtro)) 
-      ) {
-        this.CentralConsultaFiltrados.push(centralConsulta);
-      }
-    });
-  }
+    this.goToNextStep(1)
 
-  //Metodos para grilla
-  //Almacena en una variable la propiedad por la cual se quiere ordenar la consulta de Central.
-  ordenarPor(propiedad: string) {
-    this.tipoOrdenamiento =
-      propiedad === this.propiedadOrdenamiento ? this.tipoOrdenamiento * -1 : 1;
-    this.propiedadOrdenamiento = propiedad;
-  }
-
-  //En base a la propiedad por la que se quiera ordenar y el tipo de orden muestra un icono.
-  ordenarIcono(propiedad: string) {
-    if (propiedad === this.propiedadOrdenamiento) {
-      return this.tipoOrdenamiento === 1 ? '🠉' : '🠋';
-    } else {
-      return '🠋🠉';
-    }
-  }  
-
-  seleccionarCentral(){
-    this.isCollapsed1 = !this.isCollapsed1;
-    this.titulo2 = 'Registrar Configuración de Alarma a la Central N°:' + this.centralNroSeleccionada;
   }
 
   //Valida que los campos descripcion y uniddad se encuentren correctamente ingresados.
@@ -273,8 +281,17 @@ export class RegistrarAlarmaConfigComponent implements OnInit {
     cfgValorInferiorA = cfgValorInferiorA.replace(',', '.');
   }
 
-  if ((this.centralNroSeleccionada !=0 )) {
+  var areAllSameServiceAndActive = true;
+  this.alarmaConfigConsula.obtenerAlarmaConfigDeCentral(this.centralNroSeleccionada).subscribe(data => {
+    this.AlarmaConfigConsulta = data; 
+
+    const filteredAlarms = this.AlarmaConfigConsulta.filter(alarma => alarma.cfgSer === this.formAgregar.get('nombreServicioA')?.value );
+    const areAllSameServiceAndActive = filteredAlarms.every(alarma => alarma.cfgFechaBaja);
+
+  if (!(this.centralNroSeleccionada !=0 )) {
     mostrarError('Debe ingresar una central', 'Por favor, seleccione una Central.');
+  } else if (!areAllSameServiceAndActive) {
+    mostrarError('Ese Servicio ya tiene una alarma activa', 'Por favor, seleccione otro servicio.');
   } else if (this.nombreAlarmaA?.invalid && this.nombreAlarmaA.errors?.['required'] ) {
     mostrarError('Debe ingresar un nombre de alarma', 'Por favor, introduzca un nombre de alarma.');
   } else if (this.nombreAlarmaA?.invalid && this.nombreAlarmaA.errors?.['pattern'] ) {
@@ -304,7 +321,6 @@ export class RegistrarAlarmaConfigComponent implements OnInit {
     cfgValorInferiorA,
     this.formAgregar.get('cfgObservacionA')?.value
   );
-  console.log(alarmaC);
   this.alarmaConfigConsula
     .registrarAlarmaConfig(alarmaC)  
     .subscribe(() => {
@@ -336,19 +352,8 @@ export class RegistrarAlarmaConfigComponent implements OnInit {
       } as SweetAlertOptions);    
     });          
   }
-} 
-    
-  paginaCambiadaCentral(event: any) {
-    this.currentPageCentral = event;
-    const cantidadPaginasCentral = Math.ceil(
-      this.CentralConsultaFiltrados.length / this.pageSizeCentral
-    );
-    const paginasCentral = [];
 
-    for (let i = 1; i <= cantidadPaginasCentral; i++) {
-      paginasCentral.push(i);
-    }
-    return paginasCentral;
+  }) //cierro la busqueda de los servicios para esa central
   } 
 
 }
