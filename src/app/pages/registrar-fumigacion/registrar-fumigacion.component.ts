@@ -264,7 +264,7 @@ export class RegistrarFumigacionComponent implements OnInit {
         Swal.fire({
           text: 'La fumigación ha sido registrado con éxito con el número de Cod.: ' + data.fumId,
           icon: 'success',
-          position: 'top',
+          position: 'center',
           showConfirmButton: true,
           confirmButtonColor: '#0f425b',
           confirmButtonText: 'Aceptar',
@@ -281,7 +281,7 @@ export class RegistrarFumigacionComponent implements OnInit {
       Swal.fire({
         text: 'No es posible Agregar esta fumigación',
         icon: 'error',
-        position: 'top',
+        position: 'center',
         showConfirmButton: true,
         confirmButtonColor: '#0f425b',
         confirmButtonText: 'Aceptar',

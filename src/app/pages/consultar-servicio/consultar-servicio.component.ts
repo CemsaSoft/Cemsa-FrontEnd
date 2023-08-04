@@ -35,8 +35,8 @@ export class ConsultarServicioComponent implements OnInit {
   currentPageServicio = 1; // Página actual
   
   //STEPPER
-  titulo1 = 'Consultá información de los servicios:';
-  titulo2 = 'Modificar servicio';
+  titulo1 = 'Consultá la información de los servicios:';
+  titulo2 = 'Modificar servicio ';
   titulo3 = '';
   isStep1Completed = false;
   isStep2Completed = false;
@@ -93,8 +93,9 @@ export class ConsultarServicioComponent implements OnInit {
         ]),
         unidad: new FormControl(null, [
           Validators.required,
-          Validators.pattern("^[A-Za-zÑñáéíóúÁÉÍÓÚ'°0-9/%ºª ]{1,12}$"),
-        ]),
+          Validators.pattern("^[A-Za-zÑñáéíóúÁÉÍÓÚ'°/%ºª ]{1,12}$"),
+          Validators.pattern("^[^0-9]*$"), 
+          ]),
         tipoGrafico: new FormControl(null, []),
       })      
   }
@@ -209,7 +210,7 @@ export class ConsultarServicioComponent implements OnInit {
     this.tipoGrafico = element.serTipoGrafico;
 
     this.isCollapsed1 = !this.isCollapsed1;
-    this.titulo2 = 'Modificar servicio' + element.serDescripcion + ':';
+    this.titulo2 = 'Modificar servicio ' + element.serDescripcion + ':';
 
     this.goToNextStep(1)
   }
@@ -225,7 +226,7 @@ export class ConsultarServicioComponent implements OnInit {
           ${this.descripcion?.invalid && this.descripcion.errors?.['required'] ? '\n* La descripción es requerida.' : ''}          
           ${this.descripcion?.invalid && this.descripcion.errors?.['pattern'] ? '\n* La primera letra debe ser mayúscula y no debe contener caracteres especiales. Además, debe tener más de 3 caracteres y menos de 30 caracteres.' : ''}
           ${this.unidad?.invalid && this.unidad.errors?.['required'] ? '\n* La unidad es requerida.' : ''}          
-          ${this.unidad?.invalid && this.unidad.errors?.['pattern'] ? '\n* La unidad no debe contener caracteres especiales ni tener más de 12 caracteres.' : ''}`,      
+          ${this.unidad?.invalid && this.unidad.errors?.['pattern'] ? '\n* La unidad no debe contener números ni caracteres especiales, y su longitud no debe superar los 12 caracteres.' : ''}`,      
         icon: 'warning',
         confirmButtonColor: '#0f425b',
         confirmButtonText: 'Aceptar',

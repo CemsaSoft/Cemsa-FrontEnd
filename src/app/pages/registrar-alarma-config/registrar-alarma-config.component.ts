@@ -305,7 +305,7 @@ export class RegistrarAlarmaConfigComponent implements OnInit {
   } else if (this.cfgValorSuperiorAA?.invalid && this.cfgValorSuperiorAA.errors?.['pattern'] ) {
     mostrarError('El límite inferior no es valido', 'Por favor, corrija el límite inferior e inténtelo de nuevo.');    
   } else if (cfgValorInferiorA >= cfgValorSuperiorA) {
-    mostrarError('El valor del límite inferior debe ser menor que el límite superior', 'Por favor, cambie el límite.');
+    mostrarError('El valor del límite inferior debe ser menor que el límite superior', 'Por favor, cambie el límite');  
   } else if (this.cfgObservacionA?.invalid && this.cfgObservacionA.errors?.['pattern'] ) {
     mostrarError('La observación no debe contener caracteres especiales ni tener más de 100 carácteres.', 'Por favor, Por favor, corrija la observación e inténtelo de nuevo.');
   } else {
@@ -329,7 +329,7 @@ export class RegistrarAlarmaConfigComponent implements OnInit {
         'Se ha registrado con éxito la Configuración de esta Alarma, para la central número ' +
         this.formAgregar.get('nroCentralA')?.value,
         icon: 'success',
-        position: 'top',
+        position: 'center',
         showConfirmButton: true,
         confirmButtonColor: '#0f425b',
         confirmButtonText: 'Aceptar',
@@ -345,7 +345,7 @@ export class RegistrarAlarmaConfigComponent implements OnInit {
       Swal.fire({
         text: 'No es posible agregar esta Configuración de Alarma',
         icon: 'error',
-        position: 'top',
+        position: 'center',
         showConfirmButton: true,
         confirmButtonColor: '#0f425b',
         confirmButtonText: 'Aceptar',

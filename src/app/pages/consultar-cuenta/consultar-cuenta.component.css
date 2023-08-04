@@ -1,0 +1,60 @@
+/* Estilos generales */
+.form-outline {
+    position: relative;
+  }
+  
+  /* Estilo para el ícono de edición */
+  .edit {
+    color: #ffffff;
+  }
+  
+  /* Estilo para el ícono de edición cuando está deshabilitado */
+  .edit.disabled {
+    color: #ffffff;
+  }
+  
+  /* Estilo para el input */
+  .mat-input-element {
+    padding-left: 20px;
+    color: #ffffff;
+  }
+  
+  /* Estilo para el ícono de edición cuando el input está deshabilitado */
+  .mat-icon-disabled {
+    color: #ffffff;
+  }
+  
+  /* Estilo para el contenedor principal */
+  .col-md-6 {
+    width: 50%;
+    padding: 0 15px;
+    box-sizing: border-box;
+  }
+  
+  /* Estilo para el formulario */
+  .mat-form-field {
+    width: 100%;   
+  }
+  
+  /* Estilo para el label */
+  .mat-form-field-label {
+    font-size: 16px;
+    color: #ffffff;
+  }
+  
+  /* Estilo para el input en estado de solo lectura */
+  .mat-input-readonly {
+    background-color: #ffffff;
+  }
+  
+  /* Estilo para el ícono de edición cuando el input está en estado de solo lectura */
+  .mat-icon-readonly {
+    color: #ffffff;
+  }
+  
+  /* Estilo para la línea debajo del input */
+  .mat-form-field-appearance-fill .mat-form-field-underline {
+    background-color: #ffffff; /* Cambia el color de fondo de la línea a blanco */
+    height: 2px; /* Ajusta la altura de la línea */
+  }
+  

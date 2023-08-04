@@ -297,7 +297,7 @@ export class ConsultarFumigacionesComponent implements OnInit {
         Swal.fire({
           text: 'No es posible modificar esta Fumigación',
           icon: 'error',
-          position: 'top',
+          position: 'center',
           showConfirmButton: true,
           confirmButtonColor: '#0f425b',
           confirmButtonText: 'Aceptar',

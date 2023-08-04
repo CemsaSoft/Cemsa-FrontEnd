@@ -51,7 +51,7 @@
                               appearance="fill"
                               class="example-full-width form-outline input-group"
                             >
-                              <mat-label>Nombre de Servicio</mat-label>
+                              <mat-label>Nombre del Servicio</mat-label>
                               <input
                                 type="text"
                                 style="padding-left: 20px"
@@ -83,7 +83,7 @@
                                 class="error"
                                 *ngIf="descripcionA?.errors?.['pattern']"
                               >
-                                La primera letra debe ser mayúscula y no debe contener caracteres especiales. 
+                                La primera letra debe ser en mayúscula y no debe contener caracteres especiales. 
                                 Además, debe tener más de 3 caracteres y menos de 30 caracteres. 
                               </mat-error>
                             </mat-error>
@@ -126,8 +126,8 @@
                                 class="error"
                                 *ngIf="unidadA?.errors?.['pattern']"
                               >
-                                La primera letra debe ser mayúscula y no debe contener caracteres especiales. 
-                                Además, debe tener más de 3 caracteres y menos de 30 caracteres.                              
+                                No debe contener número ni caracteres especiales. 
+                                Además, debe tener menos de 12 caracteres.                              
                               </mat-error>
                             </mat-error>
                           </div>

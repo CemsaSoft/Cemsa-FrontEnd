@@ -77,7 +77,7 @@
                   <div class="col-md-4 margenFiltros">
                     <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por nombre de Servicio">
                       <label class="search-field">
-                        <mat-label class="search-field label ng-tns-c97-48 ng-star-inserted">Nombre de Servicio</mat-label>
+                        <mat-label class="search-field label ng-tns-c97-48 ng-star-inserted">Nombre del Servicio</mat-label>
                         <input formControlName="nombreServ" type="text" class="form-control inputBusqueda .input-con-color-de-fondo" placeholder="Ej. Temperatura" (keyup)="esFiltrar($event)" />
                         <i class="fas fa-search FormatoIconos" style="padding-left: 20px"></i>
                       </label>
@@ -185,12 +185,12 @@
               </ng-container>
 
               <ng-container matColumnDef="serDescripcion">
-                <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header="serDescripcion">Servicio</th>
+                <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header="serDescripcion">Nombre del Servicio </th>
                 <td class="table-row" style="vertical-align: middle; text-align: textIzquierda" mat-cell *matCellDef="let element">{{ element.serDescripcion }}</td>
               </ng-container>
 
               <ng-container matColumnDef="almMensaje">
-                <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header="almMensaje">Mensaje</th>
+                <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header="almMensaje">Descripción del Mensaje</th>
                 <td class="table-row" style="vertical-align: middle; text-align: textIzquierda" mat-cell *matCellDef="let element">{{ element.almMensaje }}</td>
               </ng-container>
 
@@ -200,7 +200,7 @@
               </ng-container>
 
               <ng-container matColumnDef="almFechaHoraBD">
-                <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header="almFechaHoraBD">Servicio</th>
+                <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header="almFechaHoraBD">Fecha</th>
                 <td class="table-row" style="vertical-align: middle; text-align: textIzquierda" mat-cell *matCellDef="let element">{{ element.almFechaHoraBD | date: 'dd-MM-yyyy' }}</td>
               </ng-container>
 
@@ -255,7 +255,7 @@
             </div>
 
             <div class="alert alert-primary text-center" role="alert" *ngIf="validarFiltradoAlarma() == false">
-              No se encontraron alarma que coincidan con su búsqueda.
+              No se encontraron alarmas que coincidan con su búsqueda.
             </div>
 
           </div>

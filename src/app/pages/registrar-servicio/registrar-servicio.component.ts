@@ -68,7 +68,8 @@ export class RegistrarServicioComponent implements OnInit {
         ]),
         unidadA: new FormControl(null, [
           Validators.required,
-          Validators.pattern("^[A-Za-zÑñáéíóúÁÉÍÓÚ'°0-9/%ºª ]{1,12}$"),
+          Validators.pattern("^[A-Za-zÑñáéíóúÁÉÍÓÚ'°/%ºª ]{1,12}$"),
+          Validators.pattern("^[^0-9]*$"), 
         ]),
         tipoGraficoA: new FormControl(null, [
           Validators.required,
@@ -119,7 +120,7 @@ agregarServicio(): void {
         ${this.descripcionA?.invalid && this.descripcionA.errors?.['required'] ? '\n* La descripción es requerida.' : ''}          
         ${this.descripcionA?.invalid && this.descripcionA.errors?.['pattern'] ? '\n* La primera letra debe ser mayúscula y no debe contener caracteres especiales. Además, debe tener más de 3 caracteres y menos de 30 caracteres.' : ''}
         ${this.unidadA?.invalid && this.unidadA.errors?.['required'] ? '\n* La unidad es requerida.' : ''}          
-        ${this.unidadA?.invalid && this.unidadA.errors?.['pattern'] ? '\n* La unidad no debe contener caracteres especiales ni tener más de 12 caracteres.' : ''}      
+        ${this.unidadA?.invalid && this.unidadA.errors?.['pattern'] ? '\n* La unidad no debe contener números ni caracteres especiales, y su longitud no debe superar los 12 caracteres.' : ''}      
         ${this.tipoGraficoA?.invalid && this.tipoGraficoA.errors?.['required'] ? '\n* Seleccione un tipo de grafico.' : ''}`,      
 
       icon: 'warning',

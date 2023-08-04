@@ -1,7 +1,7 @@
 <app-navbar></app-navbar>
 
 <div class="body">
-  <h1 class="text-center titulo tituloFuente">Consultar Servicio</h1>
+  <h1 class="text-center titulo tituloFuente">Consulta de Servicios</h1>
   <!-- Contenido de breadcrumb -->
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
@@ -9,7 +9,7 @@
         <a href="/home">Home</a>
       </li>
       <li class="breadcrumb-item active" aria-current="page">
-        Consultar Servicio
+        Consulta de Servicios
       </li>
     </ol>
   </nav>
@@ -65,7 +65,7 @@
                         <label class="search-field">
                           <mat-label
                             class="search-field label ng-tns-c97-48 ng-star-inserted"
-                            >Nombre de Servicio</mat-label
+                            >Nombre del Servicio</mat-label
                           >
                           <input
                             type="text"
@@ -117,7 +117,7 @@
   
                     <!-- Columnas -->
                     <ng-container matColumnDef="serId">
-                      <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header="serId">Cod.</th>
+                      <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header="serId">Código</th>
                       <td class="table-row first-column" style="vertical-align: middle; text-align: textIzquierda"  mat-cell *matCellDef="let element">{{ element.serId }}</td>
                     </ng-container>
   
@@ -265,7 +265,7 @@
                               appearance="fill"
                               class="example-full-width form-outline input-group"
                             >
-                              <mat-label>Codigo del Servicio</mat-label>
+                              <mat-label>Código del Servicio</mat-label>
                               <input
                                 type="text"
                                 style="padding-left: 20px"
@@ -288,7 +288,7 @@
                               appearance="fill"
                               class="example-full-width form-outline input-group"
                             >
-                              <mat-label>Nombre de Servicio</mat-label>
+                              <mat-label>Nombre del Servicio</mat-label>
                               <input
                                 type="text"
                                 style="padding-left: 20px"
@@ -320,7 +320,7 @@
                                 class="error"
                                 *ngIf="descripcion?.errors?.['pattern']"
                               >
-                                La primera letra debe ser mayúscula y no debe contener caracteres especiales. 
+                                La primera letra debe ser en mayúscula y no debe contener caracteres especiales. 
                                 Además, debe tener más de 3 caracteres y menos de 30 caracteres. 
                               </mat-error>
                             </mat-error>
@@ -363,8 +363,8 @@
                                 class="error"
                                 *ngIf="unidad?.errors?.['pattern']"
                               >
-                                La primera letra debe ser mayúscula y no debe contener caracteres especiales. 
-                                Además, debe tener más de 3 caracteres y menos de 30 caracteres.                              
+                                No debe contener número ni caracteres especiales. 
+                                Además, debe tener menos de 12 caracteres.                              
                               </mat-error>
                             </mat-error>
                           </div>
@@ -465,7 +465,7 @@
                         routerLink="/registrar-servicio"
                         >
                         <mat-icon>touch_app</mat-icon>
-                        Registrar un Nuevo Servicios
+                        Registrar un Nuevo Servicio
                       </button>
                     </div>
                   </div>

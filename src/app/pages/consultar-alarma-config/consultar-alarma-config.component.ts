@@ -48,7 +48,7 @@ export class ConsultarAlarmaConfigComponent implements OnInit {
   //STEPPER
   titulo1 = 'Seleccionar Central para Consultar Configuración de Alarma';
   titulo2 = 'Alarmas Configurada de la Central N°:';
-  titulo3 = 'Modificar Datos de la Alamra N°:';
+  titulo3 = 'Modificar Datos de la Alarma N°:';
   isStep1Completed = false;
   isStep2Completed = false;
   isStep3Completed = false;
@@ -298,7 +298,7 @@ export class ConsultarAlarmaConfigComponent implements OnInit {
     this.nombreServicioSeleccionado = element.cfgSer;  
 
     this.isCollapsed2 = !this.isCollapsed2;
-    this.titulo3 = 'Modificar Datos de la Alamra N°' + this.alarmaIdSeleccionado + ':';
+    this.titulo3 = 'Modificar Datos de la Alarma N°' + this.alarmaIdSeleccionado + ':';
 
     this.goToNextStep(2)
 
@@ -412,7 +412,7 @@ export class ConsultarAlarmaConfigComponent implements OnInit {
     } else if (this.cfgValorSuperiorA?.invalid && this.cfgValorSuperiorA.errors?.['pattern'] ) {
       mostrarError('El límite inferior no es valido', 'Por favor, corrija el límite inferior e inténtelo de nuevo.');    
     } else if (cfgValorInferiorA >= cfgValorSuperiorA) {
-      mostrarError('El valor del límete inferior debe ser menor que límite superior', 'Por favor, cambie el limite');  
+      mostrarError('El valor del límite inferior debe ser menor que el límite superior', 'Por favor, cambie el límite');  
     } else if (this.cfgObservacion?.invalid && this.cfgObservacion.errors?.['pattern'] ) {
       mostrarError('La observación no debe contener caracteres especiales ni tener más de 100 carácteres.', 'Por favor, Por favor, corrija la observación e inténtelo de nuevo.');
     } else {
