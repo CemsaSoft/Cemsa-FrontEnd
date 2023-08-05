@@ -90,4 +90,12 @@ export class OlvidoPasswordComponent implements OnInit {
     }
   }
   
+  //Valida que el usuario y la email ingresada sean correctas.
+  validarIngresar(usuario: string, email: string): Boolean {
+    if (usuario != '' && email != '' && usuario && email != null) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

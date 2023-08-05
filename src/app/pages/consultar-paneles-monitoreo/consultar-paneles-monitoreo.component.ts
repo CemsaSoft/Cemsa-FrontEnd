@@ -387,7 +387,7 @@ export class ConsultarPanelesMonitoreoComponent implements OnInit {
           (!filtroMedId || valorMedId.includes(filtroMedId)) &&
           (!filtroSerDescripcion || valorSerDescripcion.includes(filtroSerDescripcion)) &&
           (!filtroMedValor || valorMedValor.includes(filtroMedValor)) &&
-          (fechaAlarma >= desde && fechaAlarma < hasta)
+          (fechaAlarma >= desde && fechaAlarma <= hasta)
         );
       });
 
@@ -542,6 +542,10 @@ export class ConsultarPanelesMonitoreoComponent implements OnInit {
     while (contenedor?.firstChild) {
       contenedor.removeChild(contenedor.firstChild);
     }   
+
+    // Agregar un día a la fecha 'hasta'    
+    hasta.setDate(hasta.getDate() + 1);
+    
 
     var mostrarValores: boolean = true;
 

@@ -1,13 +1,17 @@
 //SISTEMA
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {
-  FormBuilder, FormControl, FormGroup,
+  FormControl, FormGroup,
 } from '@angular/forms';
 import Swal, { SweetAlertOptions } from 'sweetalert2';
 
+import { MatStepper } from '@angular/material/stepper';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
+
 //libreria para los graficos
 import * as echarts from 'echarts';
-import { EChartsOption, PictorialBarSeriesOption, SeriesOption } from 'echarts/types/dist/shared';
 
 //Libreria para generer los reportes
 import { jsPDF } from 'jspdf';
@@ -30,50 +34,98 @@ import { ServicioService } from 'src/app/core/services/servicio.service';
 })
 export class ConsultarReportesComponent implements OnInit {
   
-//VARIABLES DE OBJETOS LIST
-CentralConsulta: CentralConsultaClass[] = [];
-CentralConsultaFiltrados: CentralConsultaClass [] = [];
-Mediciones: MedicionesClass[] = []; 
-MedMin: MedicionesClass[] = []; 
-MedMax: MedicionesClass[] = [];
-ServiciosCentral: ServicioClass[] = [];
-ServiciosGraficar: ServicioClass[] = [];
-MedicionesTabla: MedicionesClass[] = []; 
-MedicionesTablaFiltrados: MedicionesClass[] = []; 
+  //TABLA Central
+  displayedColumnsCentral: string[] = ['cenNro', 'cenImei', 'cenCoorX', 'cenCoorY', 'columnaVacia', 'seleccionar'];
+  @ViewChild('paginatorCentral', { static: false }) paginatorCentral: MatPaginator | undefined;
+  @ViewChild('matSortCentral', { static: false }) sortCentral: MatSort | undefined;
+  dataSourceCentral: MatTableDataSource<any>;
+  pageSizeCentral = 5; // Número de elementos por página
+  currentPageCentral = 1; // Página actual
 
-//VARIABLES DE DATOS
-propiedadOrdenamiento: string = 'cenNro';
-propiedadOrdenamientoServicio: string = 'serId';
-propiedadOrdenamientoServicioGraficar: string = 'serId';
-propiedadOrdenamientoMedicion: string = 'medId';
-coorXSeleccionada: string = '';
-coorYSeleccionada: string = '';
+  //TABLA Servicios Disponibles
+  displayedColumnsServicioDisponible: string[] = ['serId', 'serDescripcion', 'AgregarServ'];
+  @ViewChild('matSortServicioDisponible', { static: false }) sortServicioDisponible: MatSort | undefined;
+  @ViewChild('paginatorServicioDisponible', { static: false }) paginatorServicioDisponible: MatPaginator | undefined;
+  dataSourceServicioDisponible: MatTableDataSource<any>;
+  pageSizeServicioDisponible = 5; // Número de elementos por página
+  currentPageServicioDisponible = 1; // Página actual
 
-tipoOrdenamiento: number = 1;
-centralNroSeleccionada: number=0;
-tipoOrdenamientoServicio: number = 1;
-tipoOrdenamientoServicioGraficar: number = 1;
-tipoOrdenamientoMedicion: number = 1;
-idUsuario: any = 0;
-idListaServiciosSeleccionado: number=0;
-idListaServiciosGraficarSeleccionado: number=0;
+  //TABLA Servicios Graficar
+  displayedColumnsServicioGraficar: string[] = ['serId', 'serDescripcion', 'ExtraerServ'];
+  @ViewChild('matSortServicioGraficar', { static: false }) sortServicioGraficar: MatSort | undefined;
+  @ViewChild('paginatorServicioGraficar', { static: false }) paginatorServicioGraficar: MatPaginator | undefined;
+  dataSourceServicioGraficar: MatTableDataSource<any>;
+  pageSizeServicioGraficar = 5; // Número de elementos por página
+  currentPageServicioGraficar = 1; // Página actual
 
-isCollapsed1 = false;
-isCollapsed2 = false;
-op1 = true; op2 = false; op3 = false; op4 = false; op5 = false; op6 = false; op7 = false;
-op1T = true;
-public habilitarBoton: boolean = false;
-public habilitarBotonPDF: boolean = false;
+  //TABLA Mediciones
+  displayedColumnsMediciones: string[] = ['medId', 'serDescripcion', 'medValor', 'medFechaHoraSms'];
+  @ViewChild('matSortMediciones', { static: false }) sortMediciones: MatSort | undefined;
+  @ViewChild('paginatorMediciones', { static: false }) paginatorMediciones: MatPaginator | undefined;
+  dataSourceMediciones: MatTableDataSource<any>;
+  pageSizeMediciones = 50; // Número de elementos por página
+  currentPageMediciones = 1; // Página actual
 
-//FORMS PARA LA AGRUPACIÓN DE DATOS
-formReporte: FormGroup;
-formfiltro: FormGroup;
+  //VARIABLES DE OBJETOS LIST
+  CentralConsulta: CentralConsultaClass[] = [];
+  CentralConsultaFiltrados: CentralConsultaClass [] = [];
+  Mediciones: MedicionesClass[] = []; 
+  MedMin: MedicionesClass[] = []; 
+  MedMax: MedicionesClass[] = [];
+  ServiciosCentral: ServicioClass[] = [];
+  ServiciosGraficar: ServicioClass[] = [];
+  MedicionesTabla: MedicionesClass[] = []; 
+  MedicionesTablaFiltrados: MedicionesClass[] = []; 
+
+  //VARIABLES DE DATOS
+  propiedadOrdenamiento: string = 'cenNro';
+  propiedadOrdenamientoServicio: string = 'serId';
+  propiedadOrdenamientoServicioGraficar: string = 'serId';
+  propiedadOrdenamientoMedicion: string = 'medId';
+  coorXSeleccionada: string = '';
+  coorYSeleccionada: string = '';
+  filtroCentral: string = '';
+
+  tipoOrdenamiento: number = 1;
+  centralNroSeleccionada: number=0;
+  tipoOrdenamientoServicio: number = 1;
+  tipoOrdenamientoServicioGraficar: number = 1;
+  tipoOrdenamientoMedicion: number = 1;
+  idUsuario: any = 0;
+  idListaServiciosSeleccionado: number=0;
+  idListaServiciosGraficarSeleccionado: number=0;
+
+  //STEPPER
+  titulo1 = 'Seleccionar Central para Consultar Reportes';
+  titulo2 = 'General Reporte para la Central N°:';
+  titulo3 = ':';
+  isStep1Completed = false;
+  isStep2Completed = false;
+  isStep3Completed = false;
+
+  @ViewChild(MatStepper, { static: false }) stepper: MatStepper | undefined;
+
+  op1 = true; op2 = false; op3 = false; op4 = false; op5 = false; op6 = false; op7 = false;
+  op1T = true;
+  public habilitarBoton: boolean = false;
+  public habilitarBotonPDF: boolean = false;
+
+  isCollapsed1 = false;
+  isCollapsed2 = false;
+
+  //FORMS PARA LA AGRUPACIÓN DE DATOS
+  formReporte: FormGroup;
+  formfiltro: FormGroup;
 
   constructor(
     private centralConsultar: CentralService, 
     private medicionesConsultar: MedicionesService, 
-    private servicioConsultar: ServicioService,
   ) { 
+    this.dataSourceCentral = new MatTableDataSource<any>();
+    this.dataSourceServicioDisponible = new MatTableDataSource<any>();
+    this.dataSourceServicioGraficar = new MatTableDataSource<any>();
+    this.dataSourceMediciones = new MatTableDataSource<any>();
+
     this.formReporte = new FormGroup({
       fecha_desde: new FormControl(null, []),
       fecha_hasta: new FormControl(null, []),
@@ -95,8 +147,55 @@ formfiltro: FormGroup;
     this.centralConsultar.listaCentralesCliente(this.idUsuario).subscribe(data => {
       this.CentralConsulta = data;  
       this.CentralConsultaFiltrados = data;
+
+      this.dataSourceCentral = new MatTableDataSource(data);
+      if (this.paginatorCentral) {
+        this.dataSourceCentral.paginator = this.paginatorCentral;
+      }
+      if (this.sortCentral) {
+        this.dataSourceCentral.sort = this.sortCentral;
+      }
     });
     
+    this.formfiltro.get('fecha_desde')?.disable();
+    this.formfiltro.get('fecha_hasta')?.disable();
+
+    this.formReporte.get('fecha_desde')?.disable();
+    this.formReporte.get('fecha_hasta')?.disable();
+
+  }
+
+  handlePageChangeCentral(event: any) {
+    this.currentPageCentral = event.pageIndex + 1;
+    this.pageSizeCentral = event.pageSize;
+  }
+
+  handlePageChangeServicioDisponible(event: any) {
+    this.currentPageServicioDisponible = event.pageIndex + 1;
+    this.pageSizeServicioDisponible = event.pageSize;
+  }
+
+  handlePageChangeServicioGraficar(event: any) {
+    this.currentPageServicioGraficar = event.pageIndex + 1;
+    this.pageSizeServicioGraficar = event.pageSize;
+  }
+
+  handlePageChangeMediciones(event: any) {
+    this.currentPageMediciones = event.pageIndex + 1;
+    this.pageSizeMediciones = event.pageSize;
+  }
+
+  //STEP
+  goToNextStep(stepNumber: number): void {    
+    if (this.stepper) {
+      this.stepper.selectedIndex = stepNumber;
+    }
+  }
+  
+  goToPreviousStep(): void {     
+    if (this.stepper) {
+      this.stepper.previous();
+    }    
   }
 
   reportePDF():void {
@@ -110,17 +209,17 @@ formfiltro: FormGroup;
       if (this.op5) { desde.setMonth(desde.getMonth() - 6); }
       if (this.op6) { desde.setMonth(desde.getMonth() - 12); }
       if (this.op7) {
-        var fechaDesde = document.getElementById('desde') as HTMLInputElement;
-        var fechaSeleccionada = new Date(fechaDesde.value);
-        fechaSeleccionada.setDate(fechaSeleccionada.getDate() + 1); // Sumar un día
+        var fechaDesde = this.formReporte.value.fecha_desde ?? null;
+        var fechaSeleccionada = new Date(fechaDesde);
+        fechaSeleccionada.setDate(fechaSeleccionada.getDate() ); // Sumar un día
         fechaSeleccionada.setHours(0, 0, 0, 0);
         desde = fechaSeleccionada;
-
-        var fechaHasta = document.getElementById('hasta') as HTMLInputElement;
-        fechaSeleccionada = new Date(fechaHasta.value);
-        fechaSeleccionada.setDate(fechaSeleccionada.getDate() + 1); // Sumar un día
+    
+        var fechaHasta = this.formReporte.value.fecha_hasta ?? null;
+        fechaSeleccionada = new Date(fechaHasta);
+        fechaSeleccionada.setDate(fechaSeleccionada.getDate() ); // Sumar un día
         fechaSeleccionada.setHours(0, 0, 0, 0);
-        hasta = fechaSeleccionada;      
+        hasta = fechaSeleccionada;        
       }
       
       // Crear el documento PDF
@@ -397,27 +496,27 @@ formfiltro: FormGroup;
     return this.formReporte.get('comentario');
   }
 
-  toggleCollapse1() {
-    this.isCollapsed1 = !this.isCollapsed1;
-  }
-  toggleCollapse2() {
-    this.isCollapsed2 = !this.isCollapsed2;
-  }
-
   // valida para que un solo selector de frecuencia este seleccionado a la vez
-  selOp(event: any) {
-    this.op1 = this.op2 = this.op3 = this.op4 = this.op5 = this.op6 = this.op7 =false;
-    if (event.target.id === 'op1') { this.op1 = event.target.checked; } 
-    if (event.target.id === 'op2') { this.op2 = event.target.checked; }
-    if (event.target.id === 'op3') { this.op3 = event.target.checked; } 
-    if (event.target.id === 'op4') { this.op4 = event.target.checked; }    
-    if (event.target.id === 'op5') { this.op5 = event.target.checked; }   
-    if (event.target.id === 'op6') { this.op6 = event.target.checked; }   
-    if (event.target.id === 'op7') { this.op7 = event.target.checked; }   
+  selOp(option: string, event: any) {
+    this.op1 = this.op2 = this.op3 = this.op4 = this.op5 = this.op6 = this.op7 = false;
+    this.formReporte.get('fecha_desde')?.disable();
+    this.formReporte.get('fecha_hasta')?.disable();
+
+    if (option === 'op1') { this.op1 = event.checked; } 
+    if (option === 'op2') { this.op2 = event.checked; }
+    if (option === 'op3') { this.op3 = event.checked; } 
+    if (option === 'op4') { this.op4 = event.checked; } 
+    if (option === 'op5') { this.op5 = event.checked; }
+    if (option === 'op6') { this.op6 = event.checked; } 
+    if (option === 'op7') { 
+      this.op7 = event.checked; 
+      this.formReporte.get('fecha_desde')?.enable();
+      this.formReporte.get('fecha_hasta')?.enable();
+    } 
   }
   
-  // valida para msotrar tabla con mediciones en reporte
-  selOpT(event: any) {
+  // valida para mastrar tabla con mediciones en reporte
+  selOpT() {
     this.op1T = !this.op1T; 
   }
 
@@ -475,13 +574,6 @@ formfiltro: FormGroup;
     }
   }
 
-  //Almacena los datos del servicio que fue seleccionado en la tabla de servicio filtrados dentro de variables locales.
-  esfilaSeleccionada(centralConsulta: CentralConsultaClass) {
-    this.centralNroSeleccionada = centralConsulta.cenNro;
-    this.coorXSeleccionada = centralConsulta.cenCoorX;
-    this.coorYSeleccionada= centralConsulta.cenCoorY;
-  }
-
      //Almacena los datos del servicio que fue seleccionado en la tabla de servicio filtrados dentro de variables locales.
   esfilaSeleccionadaServicio(servicios: ServicioClass) {
     this.idListaServiciosSeleccionado = servicios.serId;      
@@ -495,19 +587,27 @@ formfiltro: FormGroup;
   //Filtro de Central por código de central.
   esFiltrar(event: Event, campo: string) {
     let txtBuscar = (event.target as HTMLInputElement).value;
-    let filtro = txtBuscar
+    this.filtroCentral = txtBuscar
       .replace(/[^\w\s]/g, '')
       .trim()
       .toLowerCase();
     this.CentralConsultaFiltrados = [];
     this.CentralConsulta.forEach((centralConsulta) => {
       if (
-        (campo === 'codigo' && centralConsulta.cenNro.toString().toLowerCase().includes(filtro)) 
+        (campo === 'codigo' && centralConsulta.cenNro.toString().toLowerCase().includes(this.filtroCentral)) 
       ) {
         this.CentralConsultaFiltrados.push(centralConsulta);
-      }
+      }    
     });
-  }
+
+    this.dataSourceCentral = new MatTableDataSource(this.CentralConsultaFiltrados);
+    if (this.paginatorCentral) {
+      this.dataSourceCentral.paginator = this.paginatorCentral;
+    }
+    if (this.sortCentral) {
+      this.dataSourceCentral.sort = this.sortCentral;
+    }
+  } 
 
   //Filtro de Mediciones
   esFiltrarMedicion(event: Event) {
@@ -526,11 +626,20 @@ formfiltro: FormGroup;
         (!filtroMedValor || valorMedValor.includes(filtroMedValor))
       );
     });
+
+    this.dataSourceMediciones = new MatTableDataSource(this.MedicionesTablaFiltrados);
+    if (this.paginatorMediciones) {
+      this.dataSourceMediciones.paginator = this.paginatorMediciones;
+      this.paginatorMediciones.firstPage();
+    }
+    if (this.sortMediciones) {
+      this.dataSourceMediciones.sort = this.sortMediciones;
+    }  
   }
   
   // valida para que un solo selector de frecuencia este seleccionado a la vez
   filtroFecha(event: any) {
-    if (event.target.checked === true) {
+    if (event.checked === true) {
       this.formfiltro.get('medId')?.disable();
       this.formfiltro.get('serDescripcion')?.disable();
       this.formfiltro.get('medValor')?.disable();
@@ -554,17 +663,17 @@ formfiltro: FormGroup;
     var desde = new Date();
     var hasta = new Date();
 
-    var fechaDesde = document.getElementById('fecha_desde') as HTMLInputElement;
-    var fechaSeleccionada = new Date(fechaDesde.value);
-    fechaSeleccionada.setDate(fechaSeleccionada.getDate() + 1); // Sumar un día
+    var fechaDesde = this.formfiltro.value.fecha_desde ?? null;
+    var fechaSeleccionada = new Date(fechaDesde);
+    fechaSeleccionada.setDate(fechaSeleccionada.getDate() ); // Sumar un día
     fechaSeleccionada.setHours(0, 0, 0, 0);
     desde = fechaSeleccionada;
 
-    var fechaHasta = document.getElementById('fecha_hasta') as HTMLInputElement;
-    fechaSeleccionada = new Date(fechaHasta.value);
-    fechaSeleccionada.setDate(fechaSeleccionada.getDate() + 1); // Sumar un día
+    var fechaHasta = this.formfiltro.value.fecha_hasta ?? null;
+    fechaSeleccionada = new Date(fechaHasta);
+    fechaSeleccionada.setDate(fechaSeleccionada.getDate() ); // Sumar un día
     fechaSeleccionada.setHours(0, 0, 0, 0);
-    hasta = fechaSeleccionada;      
+    hasta = fechaSeleccionada;        
 
     function mostrarError(mensaje: string, footer: string) {
       Swal.fire({
@@ -577,9 +686,9 @@ formfiltro: FormGroup;
       });
     }
 
-    if (isNaN(desde.getTime())) {
+    if (fechaDesde === null || isNaN(desde.getTime())) {
       mostrarError('Ingrese una fecha de desde válida.', 'Por favor, ingrese una fecha de hasta válida para generar el filtro.');
-    } else if (isNaN(hasta.getTime())) {
+    } else if (fechaHasta === null || isNaN(hasta.getTime())) {
       mostrarError('Ingrese una fecha de hasta válida.', 'Por favor, ingrese una fecha de hasta válida para generar el filtro.');
     } else if (desde > hasta) {
       mostrarError('La fecha "desde" es posterior a la fecha "hasta".', 'Por favor, cambie el rango de fechas seleccionado para generar el filtro.');
@@ -603,80 +712,19 @@ formfiltro: FormGroup;
           (!filtroMedId || valorMedId.includes(filtroMedId)) &&
           (!filtroSerDescripcion || valorSerDescripcion.includes(filtroSerDescripcion)) &&
           (!filtroMedValor || valorMedValor.includes(filtroMedValor)) &&
-          (fechaAlarma >= desde && fechaAlarma < hasta)
+          (fechaAlarma >= desde && fechaAlarma <= hasta)
         );
       });
 
-      // this.MedicionesTablaFiltrados = this.MedicionesTabla.filter((medicion) => {
-      //   const fechaAlarma = new Date(medicion.medFechaHoraSms);
-      //   return fechaAlarma >= desde && fechaAlarma < hasta;
-      // });
+      this.dataSourceMediciones = new MatTableDataSource(this.MedicionesTablaFiltrados);
+      if (this.paginatorMediciones) {
+        this.dataSourceMediciones.paginator = this.paginatorMediciones;
+        this.paginatorMediciones.firstPage();
+      }
+      if (this.sortMediciones) {
+        this.dataSourceMediciones.sort = this.sortMediciones;
+      }  
     }
-  }
-
-  //Metodos para grilla
-  //Almacena en una variable la propiedad por la cual se quiere ordenar la consulta de Central.
-  ordenarPor(propiedad: string) {
-    this.tipoOrdenamiento =
-      propiedad === this.propiedadOrdenamiento ? this.tipoOrdenamiento * -1 : 1;
-    this.propiedadOrdenamiento = propiedad;
-  }
-
-  //En base a la propiedad por la que se quiera ordenar y el tipo de orden muestra un icono.
-  ordenarIcono(propiedad: string) {
-    if (propiedad === this.propiedadOrdenamiento) {
-      return this.tipoOrdenamiento === 1 ? '🠉' : '🠋';
-    } else {
-      return '🠋🠉';
-    }
-  }  
-  
-  //En base a la propiedad por la que se quiera ordenar y el tipo de orden muestra un icono.
-  ordenarIconoServicio(propiedad: string) {
-    if (propiedad === this.propiedadOrdenamientoServicio) {
-      return this.tipoOrdenamientoServicio === 1 ? '🠉' : '🠋';
-    } else {
-      return '🠋🠉';
-    }
-  }
-
-  //Almacena en una variable la propiedad por la cual se quiere ordenar la consulta de Servicio.
-  ordenarServicioPor(propiedad: string) {
-    this.tipoOrdenamientoServicio =
-      propiedad === this.propiedadOrdenamientoServicio ? this.tipoOrdenamientoServicio * -1 : 1;
-    this.propiedadOrdenamientoServicio = propiedad;
-  }
-
-  //Almacena en una variable la propiedad por la cual se quiere ordenar la consulta de Servicio Graficar.
-  ordenarServicioGraficarPor(propiedad: string) {
-    this.tipoOrdenamientoServicioGraficar =
-      propiedad === this.propiedadOrdenamientoServicioGraficar ? this.tipoOrdenamientoServicioGraficar * -1 : 1;
-    this.propiedadOrdenamientoServicioGraficar = propiedad;
-  }
-
-  //En base a la propiedad por la que se quiera ordenar y el tipo de orden muestra un icono.
-  ordenarIconoServicioGraficar(propiedad: string) {
-    if (propiedad === this.propiedadOrdenamientoServicioGraficar) {
-      return this.tipoOrdenamientoServicioGraficar === 1 ? '🠉' : '🠋';
-    } else {
-      return '🠋🠉';
-    }
-  }
-
-  //En base a la propiedad por la que se quiera ordenar y el tipo de orden muestra un icono.
-  ordenarIconoMedicion(propiedad: string) {
-    if (propiedad === this.propiedadOrdenamientoMedicion) {
-      return this.tipoOrdenamientoMedicion === 1 ? '🠉' : '🠋';
-    } else {
-      return '🠋🠉';
-    }
-  }
-
-  //Almacena en una variable la propiedad por la cual se quiere ordenar la consulta de Medicion.
-  ordenarMedicionPor(propiedad: string) {
-    this.tipoOrdenamientoMedicion =
-      propiedad === this.propiedadOrdenamientoMedicion ? this.tipoOrdenamientoMedicion * -1 : 1;
-    this.propiedadOrdenamientoMedicion = propiedad;
   }
 
   // Extraer servicios a la central selecciona
@@ -688,6 +736,24 @@ formfiltro: FormGroup;
         this.ServiciosGraficar.push(servicios);
       }
       this.validarFiltradoServicios();   
+
+      this.dataSourceServicioDisponible = new MatTableDataSource(this.ServiciosCentral);
+      if (this.paginatorServicioDisponible) {
+        this.dataSourceServicioDisponible.paginator = this.paginatorServicioDisponible;
+        this.paginatorServicioDisponible.firstPage();
+      }
+      if (this.sortServicioDisponible) {
+        this.dataSourceServicioDisponible.sort = this.sortServicioDisponible;
+      }     
+  
+      this.dataSourceServicioGraficar = new MatTableDataSource(this.ServiciosGraficar);
+      if (this.paginatorServicioGraficar) {
+        this.dataSourceServicioGraficar.paginator = this.paginatorServicioGraficar;
+        this.paginatorServicioGraficar.firstPage();
+      }
+      if (this.sortServicioGraficar) {
+        this.dataSourceServicioGraficar.sort = this.sortServicioGraficar;
+      }  
     } else {
       Swal.fire({
         title: 'Error',
@@ -708,15 +774,54 @@ formfiltro: FormGroup;
       this.ServiciosCentral.push(servicios);
     }
     this.validarFiltradoServiciosGraficar();  
+
+    this.dataSourceServicioDisponible = new MatTableDataSource(this.ServiciosCentral);
+    if (this.paginatorServicioDisponible) {
+      this.dataSourceServicioDisponible.paginator = this.paginatorServicioDisponible;
+      this.paginatorServicioDisponible.firstPage();
+    }
+    if (this.sortServicioDisponible) {
+      this.dataSourceServicioDisponible.sort = this.sortServicioDisponible;
+    }     
+    
+    this.dataSourceServicioGraficar = new MatTableDataSource(this.ServiciosGraficar);
+    if (this.paginatorServicioGraficar) {
+      this.dataSourceServicioGraficar.paginator = this.paginatorServicioGraficar;
+      this.paginatorServicioGraficar.firstPage();
+    }
+    if (this.sortServicioGraficar) {
+      this.dataSourceServicioGraficar.sort = this.sortServicioGraficar;
+    }  
   } 
 
-  seleccionarCentral(): void {
+  seleccionarCentral(element: any) {
+
+    this.isCollapsed1 = !this.isCollapsed1;
+    this.centralNroSeleccionada = element.cenNro;
+    this.titulo2 = 'General Reporte para la Central N°' + element.cenNro + ':';
+
+    this.centralNroSeleccionada = element.cenNro;
+    this.coorXSeleccionada = element.cenCoorX;
+    this.coorYSeleccionada= element.cenCoorY;
+
     this.isCollapsed1 = !this.isCollapsed1;
     this.ServiciosGraficar = [];
     this.centralConsultar.obtenerServicioXCentralEstado(this.centralNroSeleccionada).subscribe(data => {
       this.ServiciosCentral = data.filter((servicio: { serTipoGrafico: number; }) => servicio.serTipoGrafico != 5);
+
+      this.dataSourceServicioDisponible = new MatTableDataSource(this.ServiciosCentral);
+      if (this.paginatorServicioDisponible) {
+        this.dataSourceServicioDisponible.paginator = this.paginatorServicioDisponible;
+        this.paginatorServicioDisponible.firstPage();
+      }
+      if (this.sortServicioDisponible) {
+        this.dataSourceServicioDisponible.sort = this.sortServicioDisponible;
+      }
+
     });
     
+    this.goToNextStep(1)
+
   }
 
   GenerarReporte(): void {
@@ -729,18 +834,18 @@ formfiltro: FormGroup;
     if (this.op4) { desde.setMonth(desde.getMonth() - 3); }
     if (this.op5) { desde.setMonth(desde.getMonth() - 6); }
     if (this.op6) { desde.setMonth(desde.getMonth() - 12); }
-    if (this.op7) {
-      var fechaDesde = document.getElementById('desde') as HTMLInputElement;
-      var fechaSeleccionada = new Date(fechaDesde.value);
-      fechaSeleccionada.setDate(fechaSeleccionada.getDate() + 1); // Sumar un día
+    if (this.op7) {      
+      var fechaDesde = this.formReporte.value.fecha_desde ?? null;
+      var fechaSeleccionada = new Date(fechaDesde);
+      fechaSeleccionada.setDate(fechaSeleccionada.getDate() ); // Sumar un día
       fechaSeleccionada.setHours(0, 0, 0, 0);
       desde = fechaSeleccionada;
-
-      var fechaHasta = document.getElementById('hasta') as HTMLInputElement;
-      fechaSeleccionada = new Date(fechaHasta.value);
-      fechaSeleccionada.setDate(fechaSeleccionada.getDate() + 1); // Sumar un día
+  
+      var fechaHasta = this.formReporte.value.fecha_hasta ?? null;
+      fechaSeleccionada = new Date(fechaHasta);
+      fechaSeleccionada.setDate(fechaSeleccionada.getDate() ); // Sumar un día
       fechaSeleccionada.setHours(0, 0, 0, 0);
-      hasta = fechaSeleccionada;      
+      hasta = fechaSeleccionada;    
     }
 
     function mostrarError(mensaje: string, footer: string) {
@@ -758,15 +863,17 @@ formfiltro: FormGroup;
       mostrarError('Debe seleccionar al menos un servicio para graficar.', 'Ingrese un Servicio para Graficar.');
     } else if (!this.op1 && !this.op2 && !this.op3 && !this.op4 && !this.op5 && !this.op6 && !this.op7 ) {
       mostrarError('Por favor, ingrese un periodo a monitorear.', 'Por favor, introduzca un periodo a monitorear.');
-    }else if (isNaN(desde.getTime())) {
+    }else if (fechaDesde === null || isNaN(desde.getTime())) {
       mostrarError('Ingrese una fecha de desde válida.', 'Por favor, ingrese una fecha de hasta válida para generar el gráfico.');
-    } else if (isNaN(hasta.getTime())) {
+    } else if (fechaHasta === null || isNaN(hasta.getTime())) {
       mostrarError('Ingrese una fecha de hasta válida.', 'Por favor, ingrese una fecha de hasta válida para generar el gráfico.');
     } else if (desde > hasta) {
       mostrarError('La fecha "desde" es posterior a la fecha "hasta".', 'Por favor, cambie el rango de fechas seleccionado para generar el gráfico.');
     } else if (hasta > hoy) {
       mostrarError('La fecha "desde" no puede ser posterior a la fecha actual.', 'Por favor, cambie el rango de fechas seleccionado para generar el gráfico.');
     } else {
+
+    this.habilitarBotonPDF = true;
 
     // Obtén el contenedor de los gráficos
     const contenedor = document.getElementById('contenedor-graficos');
@@ -776,8 +883,10 @@ formfiltro: FormGroup;
       contenedor.removeChild(contenedor.firstChild);
     }   
 
-    var mostrarValores: boolean = true;
+    // Agregar un día a la fecha 'hasta'    
+    hasta.setDate(hasta.getDate() + 1);    
 
+    var mostrarValores: boolean = true;
     this.medicionesConsultar.obtenerMediciones(this.centralNroSeleccionada, desde, hasta)      
       .subscribe(data => { this.Mediciones = data.filter((medicion: { medSer: number; }) => medicion.medSer === this.ServiciosGraficar[0].serId); 
 
@@ -793,8 +902,13 @@ formfiltro: FormGroup;
     
       // saco el promedio de las mediciones
       const valoresPorm = this.Mediciones.map(medicion => medicion.medValor);
-      const p = valoresPorm.reduce((sum, val) => sum + val, 0) / valoresPorm.length;
-      this.promedio = p.toFixed(2).toString();
+      const p = valoresPorm.reduce((sum, val) => sum + val, 0);
+      
+      if (this.Mediciones.length > 0) {
+        this.promedio = (p / valoresPorm.length).toFixed(2).toString();
+      } else {
+        this.promedio = '0.00'; // Mostrar 0 cuando no hay valores
+      }
 
       // saco la cantidad de mediciones
       this.cantMed = this.Mediciones.length;
@@ -807,7 +921,15 @@ formfiltro: FormGroup;
 
       createAndRenderChart(contenedor, this.Mediciones, 1, [this.ServiciosGraficar[0]], 1);
       
-      this.habilitarBotonPDF = true;
+      this.dataSourceMediciones = new MatTableDataSource(this.MedicionesTablaFiltrados);
+      if (this.paginatorMediciones) {
+        this.dataSourceMediciones.paginator = this.paginatorMediciones;
+        this.paginatorMediciones.firstPage();
+      }
+      if (this.sortMediciones) {
+        this.dataSourceMediciones.sort = this.sortMediciones;
+      }  
+      
     });    
 
     function createAndRenderChart(container: HTMLElement, mediciones: any[], i: number, servicios: any[], nroIf: number): void {

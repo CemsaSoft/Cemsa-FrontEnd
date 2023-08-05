@@ -15,8 +15,8 @@ export class MedicionesService {
   obtenerMediciones(medNro: number, desde: Date, hasta: Date): Observable<any> {
     const params = new HttpParams()
       .set('medNro', medNro.toString())
-      .set('desde', desde.toISOString())
-      .set('hasta', hasta.toISOString());
+      .set('desde', desde.toISOString().split('T')[0])
+      .set('hasta', hasta.toISOString().split('T')[0]);
   
     return this.http.get(this.url + '/obtenerMediciones', { params });
   }

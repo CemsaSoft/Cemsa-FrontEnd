@@ -69,7 +69,9 @@
                   <div class="col-8"></div>
                   <div class="text-center pt-1 mb-5 pb-1">
                       <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" style="background-color: #0e3c53; height: 50px;" type="button"
-                          (click)="login()" [routerLink]="[redireccionar()]" *ngIf="validarIngresar(usuario?.value, password?.value) == true">Ingresar 
+                          (click)="login()" [routerLink]="[redireccionar()]" [disabled]="validarIngresar(usuario?.value, password?.value) == false">Ingresar 
+                          
+
                       </button>
                       <br>
                   </div>
