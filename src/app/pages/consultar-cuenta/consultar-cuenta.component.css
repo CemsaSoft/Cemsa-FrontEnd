@@ -1,60 +1,30 @@
-/* Estilos generales */
-.form-outline {
-    position: relative;
-  }
-  
-  /* Estilo para el ícono de edición */
-  .edit {
-    color: #ffffff;
-  }
-  
-  /* Estilo para el ícono de edición cuando está deshabilitado */
-  .edit.disabled {
-    color: #ffffff;
-  }
-  
-  /* Estilo para el input */
-  .mat-input-element {
-    padding-left: 20px;
-    color: #ffffff;
-  }
-  
-  /* Estilo para el ícono de edición cuando el input está deshabilitado */
-  .mat-icon-disabled {
-    color: #ffffff;
-  }
-  
-  /* Estilo para el contenedor principal */
-  .col-md-6 {
-    width: 50%;
-    padding: 0 15px;
-    box-sizing: border-box;
-  }
-  
-  /* Estilo para el formulario */
-  .mat-form-field {
-    width: 100%;   
-  }
-  
-  /* Estilo para el label */
-  .mat-form-field-label {
-    font-size: 16px;
-    color: #ffffff;
-  }
-  
-  /* Estilo para el input en estado de solo lectura */
-  .mat-input-readonly {
-    background-color: #ffffff;
-  }
-  
-  /* Estilo para el ícono de edición cuando el input está en estado de solo lectura */
-  .mat-icon-readonly {
-    color: #ffffff;
-  }
-  
-  /* Estilo para la línea debajo del input */
-  .mat-form-field-appearance-fill .mat-form-field-underline {
-    background-color: #ffffff; /* Cambia el color de fondo de la línea a blanco */
-    height: 2px; /* Ajusta la altura de la línea */
-  }
-  
+/* -------Botón Guardar------- */
+.btnGuardar{
+  width: 237px !important;
+  height: 59px !important;
+  border-radius: 4px !important;
+  background-color: rgba(0, 63, 138, 1) !important;
+  color: #fff;
+  border-color: #194c87 !important;
+}
+.btnGuardar:hover{/*efecto a pasar por arriba*/
+  color: #fff;
+  background-color: #01C3CC !important;
+  border-color:#194c87 !important;
+  box-shadow: 0 0 10px rgba(var(--bs-btn-focus-shadow-rgb), 0.5); /*sombra*/
+}
+.btnGuardar:active{/*efecto al presionar*/
+  color:  #fff;
+  background-color: #194c873f !important;
+  border-color: #194c8754 !important;
+  box-shadow: var(--bs-btn-active-shadow);
+}
+.btnGuardar:disabled{
+  color: #632626 !important;
+  background-color: #194c8781 !important;
+  border-color: #194c87 !important;
+}
+
+.custom-offset {
+  transform: translateX(5px); /* Ajusta el valor según sea necesario */
+}

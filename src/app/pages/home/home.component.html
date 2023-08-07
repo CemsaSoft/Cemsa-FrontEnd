@@ -14,7 +14,8 @@
               <div class="col">
                 <div class="card">
                   <div class="card-body">
-                    <h5 class="card-title">Mi perfil</h5>
+                    <h5 class="card-title" *ngIf="!habilitarDatoPerfil">Mi Perfil</h5>
+                    <h5 class="card-title" *ngIf="!habilitarModContrasena">Ingrese los datos para Cambiar Password </h5>
                     <p class="card-text">
                     </p>
                   </div>
@@ -28,7 +29,26 @@
               <div class="col">
                 <div class="card">
                   <div class="card-body">
-                    <app-consultar-cuenta></app-consultar-cuenta>
+                    <app-consultar-cuenta *ngIf="!habilitarDatoPerfil"></app-consultar-cuenta>
+                    <app-modificar-password *ngIf="!habilitarModContrasena"></app-modificar-password>
+
+                    <br>
+                    <br>
+                    <div class="col-12" style="display: flex; justify-content: center" *ngIf="habilitarModContrasena">
+                      <div class="col-md-6" style="display: flex; justify-content: center">
+                        <button mat-fab extended color="primary" type="submit" class="btn btnGuardar" data-bs-toggle="button"
+                          (click)="modContr()" > Modificar Contraseña
+                        </button>
+                      </div>
+                    </div>
+                    <div class="col-12" style="display: flex; justify-content: center" *ngIf="habilitarDatoPerfil">                      
+                      <div class="col-md-6" style="display: flex; justify-content: center">
+                        <button mat-fab extended color="primary" type="submit" class="btn btnGuardar" data-bs-toggle="button"
+                          (click)="datoPerfil()" > Datos de Perfil 
+                        </button>
+                      </div>
+                    </div>
+
                   </div>
                 </div>
               </div>
@@ -156,7 +176,7 @@
         </div>
         <br />
 
-        <div class="card-container2">
+        <div class="card-container2" *ngIf="rol != 1">
           <a routerLink="/consultar-paneles-monitoreo" class="accesosDirectos accesosDirectos:hover">
             <img src="../../../assets/tempe.png" class="image" alt="..." />
             <h5 class="efecto-texto content">Mi Panel de Control</h5>
@@ -168,6 +188,21 @@
           <a routerLink="/consultar-mediciones-actuales" class="accesosDirectos accesosDirectos:hover">
             <img src="./assets/informe-estadistico.png" class="image" alt="..." />
             <h5 class="efecto-texto content">Estado Actual</h5>
+          </a>
+        </div>
+
+        <div class="card-container2" *ngIf="rol != 0">
+          <a routerLink="/consultar-cliente" class="accesosDirectos accesosDirectos:hover">            
+            <svg class="bi pe-none" width="40" height="40" role="img" aria-label="Customers"><use xlink:href="#people-circle"/></svg>
+            <h5 class="efecto-texto content">Consultar Cliente</h5>
+          </a>
+          <a routerLink="/consultar-central" class="accesosDirectos accesosDirectos:hover">
+            <svg class="bi pe-none" width="40" height="40" role="img" aria-label="Dashboard"><use xlink:href="#speedometer2"/></svg>
+            <h5 class="efecto-texto content">Consultar Central</h5>
+          </a>
+          <a routerLink="/consultar-servicio" class="accesosDirectos accesosDirectos:hover">
+            <svg class="bi pe-none me-2" width="40" height="40"><use xlink:href="#table"/></svg>
+            <h5 class="efecto-texto content">Consultar Servicios</h5>
           </a>
         </div>
 

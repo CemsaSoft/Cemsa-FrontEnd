@@ -73,7 +73,8 @@ export class IngresarUsuarioComponent implements OnInit {
         return (location.href = '/home');
        } else { 
         localStorage.setItem('cambiarPassword', "1");
-        return (location.href = '/modificar-password');                   
+        // return (location.href = '/modificar-password'); 
+        return (location.href = '/home');                  
        }       
      } else {
        return '';

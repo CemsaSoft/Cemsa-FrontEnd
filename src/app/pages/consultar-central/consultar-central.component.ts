@@ -4,7 +4,11 @@ import {
   FormBuilder, FormControl, FormGroup,
 } from '@angular/forms';
 import Swal, { SweetAlertOptions } from 'sweetalert2';
+
 import { MatStepper } from '@angular/material/stepper';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
 
 //COMPONENTES
 import { CentralConsultaClass } from 'src/app/core/models/centralConsulta';
@@ -21,23 +25,32 @@ import { CentralService } from 'src/app/core/services/central.service';
 })
 
 export class ConsultarCentralComponent implements OnInit   {
-//STEPPER
-titulo1 = 'Seleccione una Central Meteorológica para ver sus datos';
-titulo2 = 'Datos de la Central N°:';
-titulo3 = ':';
-isStep1Completed = false;
-isStep2Completed = false;
-isStep3Completed = false;
+  
+  //TABLA Central
+  displayedColumnsCentral: string[] = ['cenNro', 'cliApeNomDen', 'usuario', 'estDescripcion', 'columnaVacia', 'modEstado', 'verMas'];
+  @ViewChild('paginatorCentral', { static: false }) paginatorCentral: MatPaginator | undefined;
+  @ViewChild('matSortCentral', { static: false }) sortCentral: MatSort | undefined;
+  dataSourceCentral: MatTableDataSource<any>;
+  pageSizeCentral = 10; // Número de elementos por página
+  currentPageCentral = 1; // Página actual
 
-@ViewChild(MatStepper, { static: false }) stepper: MatStepper | undefined;
+  //STEPPER
+  titulo1 = 'Seleccione una Central Meteorológica para ver sus datos';
+  titulo2 = 'Datos de la Central N°:';
+  titulo3 = ':';
+  isStep1Completed = false;
+  isStep2Completed = false;
+  isStep3Completed = false;
 
-//VARIABLES DE OBJETOS LIST
-CentralConsulta: CentralConsultaClass[] = [];
-CentralConsultaFiltrados: CentralConsultaClass [] = [];
-pageSize = 5; // Número de elementos por página
-currentPage = 1; // Página actual
-totalItems = 0; // Total de elementos en la tabla
-myTable = 'myTable';
+  @ViewChild(MatStepper, { static: false }) stepper: MatStepper | undefined;
+
+  //VARIABLES DE OBJETOS LIST
+  CentralConsulta: CentralConsultaClass[] = [];
+  CentralConsultaFiltrados: CentralConsultaClass [] = [];
+  pageSize = 10; // Número de elementos por página
+  currentPage = 1; // Página actual
+  totalItems = 0; // Total de elementos en la tabla
+  myTable = 'myTable';
 
   //VARIABLES DE DATOS
   titulo: string = '';
@@ -61,15 +74,6 @@ myTable = 'myTable';
   isCollapsed2 = false;
   isCollapsed3 = false;
 
-  //PAGINADO
-  pageSizeCentral = 5; // Número de elementos por página
-  currentPageCentral = 1; // Página actual
-  totalItemsCentral = 0; // Total de elementos en la tabla
-
-  pageSizeServicio = 2; // Número de elementos por página
-  currentPageServicio = 1; // Página actual
-  totalItemsServicio = 0; // Total de elementos en la tabla
-
   map: L.Map | undefined;
   marker: L.Marker | undefined;
   //FORMULARIOS DE AGRUPACION DE DATOS
@@ -82,19 +86,35 @@ myTable = 'myTable';
     private servicioCentral: CentralService,
     )    
   {
+    this.dataSourceCentral = new MatTableDataSource<any>();
+
     this.formfiltro = new FormGroup({
+      idCentral: new FormControl(null, []),
       cliente: new FormControl(null, []),
       usuario: new FormControl(null, []),
     });
    }
         
-    ngOnInit(): void {          
-      this.centralConsultar.obtenerCentral().subscribe(data => {
-        this.CentralConsulta = data;  
-        this.CentralConsultaFiltrados = data;     
-      });    
-    }
-    
+  ngOnInit(): void {          
+    this.centralConsultar.obtenerCentral().subscribe(data => {
+      this.CentralConsulta = data;  
+      this.CentralConsultaFiltrados = data;     
+
+      this.dataSourceCentral = new MatTableDataSource(data);
+      if (this.paginatorCentral) {
+        this.dataSourceCentral.paginator = this.paginatorCentral;
+      }
+      if (this.sortCentral) {
+        this.dataSourceCentral.sort = this.sortCentral;
+      }
+    });    
+  }
+
+  handlePageChangeCentral(event: any) {
+    this.currentPageCentral = event.pageIndex + 1;
+    this.pageSizeCentral = event.pageSize;
+  }
+
   //Valida que exista alguna Central que responda al filtro.
   validarFiltrado(): Boolean {
     if (this.CentralConsultaFiltrados.length == 0) {
@@ -119,35 +139,29 @@ myTable = 'myTable';
       this.fechaBajaSeleccionado = centralConsulta.cenFechaBaja ? new Date(centralConsulta.cenFechaBaja).toLocaleDateString("es-AR") : '';     
   }
 
-  //Filtro de Central por Nombre Cliente o Usuario.
+  //Filtro de Central por Id, Nombre Cliente o Usuario.
   esFiltrar(event: Event) {
+    const filtronIdCentral = (this.formfiltro.get('idCentral') as FormControl).value?.toLowerCase();
     const filtronCliente = (this.formfiltro.get('cliente') as FormControl).value?.toLowerCase();
     const filtroUsuario = (this.formfiltro.get('usuario') as FormControl).value?.toLowerCase();
 
     this.CentralConsultaFiltrados = this.CentralConsulta.filter((central) => {
+      const valorIdCentral = central.cenNro.toString().toLowerCase();
       const valorCliente = central.cliApeNomDen.toString().toLowerCase();
       const valorUsuario = central.usuario.toString().toLowerCase();
       return (
+        (!filtronIdCentral || valorIdCentral.includes(filtronIdCentral)) &&
         (!filtronCliente || valorCliente.includes(filtronCliente)) &&
         (!filtroUsuario || valorUsuario.includes(filtroUsuario)) 
       );
     });
-  }
 
-  //Metodos para grilla
-  //Almacena en una variable la propiedad por la cual se quiere ordenar la consulta de Central.
-  ordenarPor(propiedad: string) {
-    this.tipoOrdenamiento =
-      propiedad === this.propiedadOrdenamiento ? this.tipoOrdenamiento * -1 : 1;
-    this.propiedadOrdenamiento = propiedad;
-  }
-
-  //En base a la propiedad por la que se quiera ordenar y el tipo de orden muestra un icono.
-  ordenarIcono(propiedad: string) {
-    if (propiedad === this.propiedadOrdenamiento) {
-      return this.tipoOrdenamiento === 1 ? '🠉' : '🠋';
-    } else {
-      return '🠋🠉';
+    this.dataSourceCentral = new MatTableDataSource(this.CentralConsultaFiltrados);
+    if (this.paginatorCentral) {
+      this.dataSourceCentral.paginator = this.paginatorCentral;
+    }
+    if (this.sortCentral) {
+      this.dataSourceCentral.sort = this.sortCentral;
     }
   }
 
@@ -167,7 +181,7 @@ myTable = 'myTable';
             Swal.fire({
               text: 'Se ha actualizado el estado a '+ estado,
               icon: 'success',
-              position: 'top',
+              position: 'center',
               showConfirmButton: true,
               confirmButtonColor: '#0f425b',
               confirmButtonText: 'Aceptar',
@@ -181,7 +195,7 @@ myTable = 'myTable';
             Swal.fire({
               text: 'No es posible modificar el estado de esta central',
               icon: 'error',
-              position: 'top',
+              position: 'center',
               showConfirmButton: true,
               confirmButtonColor: '#0f425b',
               confirmButtonText: 'Aceptar',
@@ -193,22 +207,9 @@ myTable = 'myTable';
   }
 
   enviarDatos(){
-    //console.log(this.CentralSeleccionada)
-    //console.log("paso por consultar central y los datos son");
     this.servicioCentral.enviarCentralSeleccionada(this.CentralSeleccionada)  
   }
-  paginaCambiada(event: any) {
-    this.currentPage = event;
-    const cantidadPaginas = Math.ceil(
-      this.CentralConsultaFiltrados.length / this.pageSize
-    );
-    const paginas = [];
 
-    for (let i = 1; i <= cantidadPaginas; i++) {
-      paginas.push(i);
-    }
-    return paginas;
-  }
    //STEP
    goToNextStep(stepNumber: number): void {    
     if (this.stepper) {
@@ -220,17 +221,6 @@ myTable = 'myTable';
     if (this.stepper) {
       this.stepper.previous();
     }    
-  }
-  toggleCollapse1() {
-    this.isCollapsed1 = !this.isCollapsed1;
-  }
-
-  toggleCollapse2() {
-    this.isCollapsed2 = !this.isCollapsed2;
-  }
-
-  toggleCollapse3() {
-    this.isCollapsed3 = !this.isCollapsed3;
   }
 
 }

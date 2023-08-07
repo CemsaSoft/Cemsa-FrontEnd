@@ -39,6 +39,8 @@ export class ConsultarCuentaComponent implements OnInit {
 
   idUsuario: any = 0;
 
+  habilitarModCuenta = false;
+
   //FORMULARIOS DE AGRUPACION DE DATOS
   formModificar: FormGroup;
 
@@ -152,7 +154,7 @@ export class ConsultarCuentaComponent implements OnInit {
               Swal.fire({
                 text: 'Se ha actualizado el Usuario: '+ this.formModificar.get('usuario')?.value,
                 icon: 'success',
-                position: 'top',
+                position: 'center',
                 showConfirmButton: true,
                 confirmButtonColor: '#0f425b',
                 confirmButtonText: 'Aceptar',
@@ -168,7 +170,7 @@ export class ConsultarCuentaComponent implements OnInit {
               Swal.fire({
                 text: 'No es posible Actualizar el Cliente',
                 icon: 'error',
-                position: 'top',
+                position: 'center',
                 showConfirmButton: true,
                 confirmButtonColor: '#0f425b',
                 confirmButtonText: 'Aceptar',
@@ -180,7 +182,7 @@ export class ConsultarCuentaComponent implements OnInit {
           Swal.fire({
             text: error.error,
             icon: 'error',
-            position: 'top',
+            position: 'center',
             showConfirmButton: true,
             confirmButtonColor: '#0f425b',
             confirmButtonText: 'Aceptar',
@@ -188,5 +190,18 @@ export class ConsultarCuentaComponent implements OnInit {
         }
       );
     }
+  }
+
+  habilitarModificarCuenta(): void { 
+    this.habilitarModCuenta = !this.habilitarModCuenta;
+    this.clienteConsultar.obtenerCuenta(this.idUsuario).subscribe(data => {
+      this.Cuenta = data;
+      this.tipoDocumento = this.Cuenta[0].tdDescripcion;
+      this.nroDoc = this.Cuenta[0].cliNroDoc;
+      this.cliApeNomDen = this.Cuenta[0].cliApeNomDen;
+      this.usuario = this.Cuenta[0].usuario;
+      this.email = this.Cuenta[0].cliEmail;
+      this.telefono = this.Cuenta[0].cliTelefono;
+    })
   }
 }

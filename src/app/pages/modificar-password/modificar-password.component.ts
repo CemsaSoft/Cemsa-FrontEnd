@@ -102,10 +102,13 @@ export class ModificarPasswordComponent implements OnInit {
     return this.formPassword.get('confPassword');
   }
 
-  //Redirecciona a la landing page en caso de obtener un token.
-  // redireccionar(): string {
-  //   //return (location.href = '/home');
-  // }
+  validarCambPass(password: string, newPassword: string, confPassword: string): Boolean {
+    if (password != '' && newPassword != '' && confPassword != '' && password && newPassword && confPassword != null) {    
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   cambiarPassword(): void {
     //Verifica que este completo el formulario y que no tenga errores.
@@ -125,7 +128,7 @@ export class ModificarPasswordComponent implements OnInit {
           Swal.fire({
             text: 'Se ha actualizado el Password del Usuario: '+ this.usu,
             icon: 'success',
-            position: 'top',
+            position: 'center',
             showConfirmButton: true,
             confirmButtonColor: '#0f425b',
             confirmButtonText: 'Aceptar',
@@ -141,7 +144,7 @@ export class ModificarPasswordComponent implements OnInit {
             Swal.fire({
               text: 'La contraseña no es válida',
               icon: 'error',
-              position: 'top',
+              position: 'center',
               showConfirmButton: true,
               confirmButtonColor: '#0f425b',
               confirmButtonText: 'Aceptar',
@@ -150,7 +153,7 @@ export class ModificarPasswordComponent implements OnInit {
             Swal.fire({
               text: 'No es posible Actualizar el Password',
               icon: 'error',
-              position: 'top',
+              position: 'center',
               showConfirmButton: true,
               confirmButtonColor: '#0f425b',
               confirmButtonText: 'Aceptar',
