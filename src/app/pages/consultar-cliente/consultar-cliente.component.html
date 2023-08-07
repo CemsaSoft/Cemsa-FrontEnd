@@ -26,148 +26,156 @@
             <div class="row justify-content-center">
               <div class="col-10 cardFiltrado cardAnimate cardFlat">
                 <div>
-                  <!-- <h3>Búsqueda por:</h3> -->
-                  <!-- <form [formGroup]="formfiltro"></form> -->
-                  <div class="row">
-                    <div class="col-md-2 image-container">
-                      <span
-                        ><img
-                          style="width: 102%; height: 102"
-                          src="../../../assets/icons8-user-64_1.png"
-                          class="image"
-                          alt="..."
-                        />
-                        <div class="texto">
-                          <h4
-                            style="
-                              text-align: center;
-                              color: #63ddff;
-                              font-size: 18px;
-                            "
-                          >
-                            Filtrar Cliente
-                          </h4>
-                          <!---->
-                        </div></span
-                      >
-                    </div>
-                    <div
-                      class="col-md-2"
-                      style="margin-top: 48px; padding-left: 40px"
-                    >
-                      <div
-                        class="form-outline input-group"
-                        data-toggle="tooltip"
-                        data-placement="top"
-                        title="Buscar por Tipo de Documento"
-                      >
-                        <mat-form-field
-                          class="FormatoCombos;"
-                          style="width: 156px"
-                          appearance="outline"
-                        >
-                          <mat-label>Tipo Documento</mat-label>
-                          <mat-select
-                            style="text-align: center; border-color: #63ddff"
-                            placeholder="Seleccionar"
-                            [(ngModel)]="tipoDocumentoSeleccionado"
-                            (selectionChange)="
-                              filtrarClientesPorTipoDocumento()
-                            "
-                          >
-                            <mat-option
-                              *ngFor="let tipoDocumento of tiposDocumento"
-                              [value]="tipoDocumento.tdId"
-                              >{{ tipoDocumento.tdDescripcion }}</mat-option
+
+                  <form [formGroup]="formfiltro">
+
+                    <div class="row">
+                      <div class="col-md-2 image-container">
+                        <span
+                          ><img
+                            style="width: 102%; height: 102"
+                            src="../../../assets/icons8-user-64_1.png"
+                            class="image"
+                            alt="..."
+                          />
+                          <div class="texto">
+                            <h4
+                              style="
+                                text-align: center;
+                                color: #63ddff;
+                                font-size: 18px;
+                              "
                             >
-                          </mat-select>
-                        </mat-form-field>
+                              Filtrar Cliente
+                            </h4>
+                            <!---->
+                          </div></span
+                        >
                       </div>
-                    </div>
-
-                    <div class="col-md-2 margen" style="padding-left: 0px">
                       <div
-                        class="form-outline input-group"
-                        data-toggle="tooltip"
-                        data-placement="top"
-                        title="Buscar por Numero de Documento"
+                        class="col-md-2"
+                        style="margin-top: 48px; padding-left: 40px"
                       >
-                        <label class="search-field2 label">
-                          <mat-label class="search-field label"
-                            >N° de Documento</mat-label
+                        <div
+                          class="form-outline input-group"
+                          data-toggle="tooltip"
+                          data-placement="top"
+                          title="Buscar por Tipo de Documento"
+                        >
+                          <mat-form-field
+                            class="FormatoCombos;"
+                            style="width: 156px"
+                            appearance="outline"
                           >
-                          <input
-                            type="text"
-                            style="width: 164px"
-                            class="form-control inputBusqueda2"
-                            placeholder="12.345.678"
-                            (input)="formatDocumentNumber($event)"
-                            (keyup)="esFiltrar($event, 'numero')"
-                          />
-                          
-                          <i
-                            class="fas fa-search FormatoIconos"
-                            style="padding-left: 20px"
-                          ></i>
-                        </label>
+                            <mat-label>Tipo Documento</mat-label>
+                            <mat-select
+                              style="text-align: center; border-color: #63ddff"
+                              placeholder="Seleccionar"
+                              formControlName="tipoF" 
+                              (selectionChange)="esFiltrar()"
+                            >
+                              <mat-option
+                                *ngFor="let tipoDocumento of tiposDocumento"
+                                [value]="tipoDocumento.tdId"
+                                >{{ tipoDocumento.tdDescripcion }}</mat-option
+                              >
+                            </mat-select>
+                          </mat-form-field>
+                        </div>
                       </div>
-                    </div>
 
-                    <div
-                      class="col-md-1 vertical-line"
-                      style="width: 20px"
-                    ></div>
-                    <div class="col-md-2 margenFiltros">
-                      <div
-                        class="form-outline input-group"
-                        data-toggle="tooltip"
-                        data-placement="top"
-                        title="Buscar por Nombre de Cliente"
-                      >
-                        <label class="search-field">
-                          <mat-label
-                            class="search-field label ng-tns-c97-48 ng-star-inserted"
-                            >Nombre de Cliente</mat-label
+                        <div class="col-md-2 margen" style="padding-left: 0px">
+                          <div
+                            class="form-outline input-group"
+                            data-toggle="tooltip"
+                            data-placement="top"
+                            title="Buscar por Numero de Documento"
                           >
-                          <input
-                            type="text"
-                            class="form-control inputBusqueda .input-con-color-de-fondo"
-                            placeholder="Ej. Agustín"
-                            (keyup)="esFiltrar($event, 'cliente')"
-                          />
+                            <label class="search-field2 label">
+                              <mat-label class="search-field label"
+                                >N° de Documento</mat-label
+                              >
+                              <input
+                                type="text"
+                                style="width: 164px"
+                                class="form-control inputBusqueda2"
+                                placeholder="12.345.678"     
+                                formControlName="numeroF" 
+                                (input)="formatDocumentNumber($event)"
+                                (keyup)="esFiltrar()"
+                              />
                               
-                          <i class="fa-solid fa-person FormatoIconos"></i>
-                        </label>
-                      </div>
-                    </div>
-                    <div class="col-md-3 margenFiltros vertical-line">
-                      <div
-                        class="form-outline input-group"
-                        data-toggle="tooltip"
-                        data-placement="top"
-                        title="Buscar por Nombre de Usuario"
-                      >
-                      <label class="search-field">
-                          <mat-label
-                            class="search-field label ng-tns-c97-48 ng-star-inserted"
-                            >Nombre del Usuario</mat-label
+                              <i
+                                class="fas fa-search FormatoIconos"
+                                style="padding-left: 20px"
+                              ></i>
+                            </label>
+                          </div>
+                        </div>
+
+                        <div
+                          class="col-md-1 vertical-line"
+                          style="width: 20px"
+                        ></div>
+
+                        <div class="col-md-2 margenFiltros">
+                          <div
+                            class="form-outline input-group"
+                            data-toggle="tooltip"
+                            data-placement="top"
+                            title="Buscar por Nombre de Cliente"
                           >
-                          <input
-                            type="text"
-                            class="form-control inputBusqueda .input-con-color-de-fondo"
-                            placeholder="Ej. Usu123"
-                            (keyup)="esFiltrar($event, 'usuario')"
-                          />
-                             
-                          <i class="fa-solid fa-user FormatoIconos"></i>
-                        </label>
-                      </div>
+                            <label class="search-field">
+                              <mat-label
+                                class="search-field label ng-tns-c97-48 ng-star-inserted"
+                                >Nombre de Cliente</mat-label
+                              >
+                              <input
+                                type="text"
+                                class="form-control inputBusqueda .input-con-color-de-fondo"
+                                placeholder="Ej. Felipe"
+                                formControlName="clienteF" 
+                                (keyup)="esFiltrar()"
+                              />
+                                  
+                              <i class="fa-solid fa-person FormatoIconos"></i>
+                            </label>
+                          </div>
+                        </div>
+
+                        <div class="col-md-3 margenFiltros vertical-line">
+                          <div
+                            class="form-outline input-group"
+                            data-toggle="tooltip"
+                            data-placement="top"
+                            title="Buscar por Nombre de Usuario"
+                          >
+                          <label class="search-field">
+                              <mat-label
+                                class="search-field label ng-tns-c97-48 ng-star-inserted"
+                                >Nombre del Usuario</mat-label
+                              >
+                              <input
+                                type="text"
+                                class="form-control inputBusqueda .input-con-color-de-fondo"
+                                placeholder="Ej. Usu123"
+                                formControlName="usuarioF" 
+                                (keyup)="esFiltrar()"
+                              />
+                                
+                              <i class="fa-solid fa-user FormatoIconos"></i>
+                            </label>
+                          </div>
+                        </div>
+                      
                     </div>
-                  </div>
+
+                  </form>
+
                 </div>
               </div>
             </div>
-          <!-- </form> -->
+
             <br />
             <br />
 

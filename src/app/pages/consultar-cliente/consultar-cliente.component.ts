@@ -50,6 +50,7 @@ export class ConsultarClienteComponent implements OnInit {
   Clientes: ClienteConsultaClass[] = [];
   ClientesFiltrados: ClienteConsultaClass[] = [];
   tiposDocumento: TipoDocumentoClass[] = [
+    new TipoDocumentoClass(0, 'TODOS'),
     new TipoDocumentoClass(1, 'DNI'),
     new TipoDocumentoClass(2, 'LE'),
     new TipoDocumentoClass(3, 'LC'),
@@ -57,7 +58,6 @@ export class ConsultarClienteComponent implements OnInit {
     new TipoDocumentoClass(5, 'CUIL')
   ];
   //VARIABLES DE DATOS
-  propiedadOrdenamientoCliente: string = 'tdDescripcion'; 
   cliNroDocSeleccionado: string = '';
   cliApeNomDenSeleccionado : string = '';
   cliEmailSeleccionado : string = '';
@@ -75,11 +75,10 @@ export class ConsultarClienteComponent implements OnInit {
   "Ingrese un correo electrónico válido. Los caracteres permitidos son letras, números, puntos, guiones y guiones bajos.";
   telefonoValido: string =
   "Ingrese un número de teléfono válido. Los formatos permitidos son: '1234567890', '123-4567890', '1234-567890' o '1234-56-7890'";
-  
+
   cliTipoDocSeleccionado : number = 0;
   cliIdUsuarioSeleccionado : number = 0;
-  tipoOrdenamientoCliente: number = 1;
-  tipoDocumentoSeleccionado: number = 0;
+  tipoDocumentoSeleccionado: number = -1;
   
   cliFechaAltaDate: Date = new Date(); 
 
@@ -122,10 +121,10 @@ export class ConsultarClienteComponent implements OnInit {
     });
 
     this.formfiltro = new FormGroup({
-      tipo: new FormControl(null, []),
-      numero: new FormControl(null, []),
-      cliente: new FormControl(null, []),
-      usuario: new FormControl(null, []),
+      tipoF: new FormControl(null, []),
+      numeroF: new FormControl(null, []),
+      clienteF: new FormControl(null, []),
+      usuarioF: new FormControl(null, []),
     });   
   }
    
@@ -174,7 +173,16 @@ export class ConsultarClienteComponent implements OnInit {
   set telefono(valor: any) {
     this.formModificar.get('telefono')?.setValue(valor);
   }
-  
+  set numeroF(valor: any) {
+    this.formfiltro.get('numeroF')?.setValue(valor);
+  }
+  set clienteF(valor: any) {
+    this.formfiltro.get('clienteF')?.setValue(valor);
+  }
+  set usuarioF(valor: any) {
+    this.formfiltro.get('usuarioF')?.setValue(valor);
+  }
+
   get tipoDocumentoç() {
     return this.formModificar.get('tipoDocumento');
   }
@@ -198,6 +206,15 @@ export class ConsultarClienteComponent implements OnInit {
   }
   get telefono() {
     return this.formModificar.get('telefono');
+  }
+  get numeroF() {
+    return this.formfiltro.get('numeroF');
+  }
+  get clienteF() {
+    return this.formfiltro.get('clienteF');
+  }
+  get usuarioF() {
+    return this.formfiltro.get('usuarioF');
   }
 
   //Valida que exista algún cliente que responda al filtro.
@@ -297,39 +314,42 @@ export class ConsultarClienteComponent implements OnInit {
 
     this.goToNextStep(1);
   }
-
-  //Filtro de Tipo de DNI
-  filtrarClientesPorTipoDocumento() {
-    this.ClientesFiltrados = this.Clientes.filter(cliente => cliente.cliTipoDoc === this.tipoDocumentoSeleccionado);
-    
-    this.dataSourceCliente = new MatTableDataSource(this.ClientesFiltrados);
-    if (this.paginatorCliente) {
-      this.dataSourceCliente.paginator = this.paginatorCliente;
-    }
-    if (this.sortCliente) {
-      this.dataSourceCliente.sort = this.sortCliente;
-    }
-  }
   
-  //Filtro de Central por Nombre Cliente o Usuario.
-  esFiltrar(event: Event, campo: string) {
-    let txtBuscar = (event.target as HTMLInputElement).value;
-    let filtro = txtBuscar
-      .replace(/[^\w\s]/g, '')
-      .trim()
-      .toLowerCase();
-    this.ClientesFiltrados = [];
-    this.Clientes.forEach((clienteConsulta) => {
-      if (
-        (campo === 'tipo' && clienteConsulta.tdDescripcion.toString().toLowerCase().includes(filtro)) ||
-        (campo === 'numero' && clienteConsulta.cliNroDoc.toString().toLowerCase().includes(filtro)) ||
-        (campo === 'cliente' && clienteConsulta.cliApeNomDen.toString().toLowerCase().includes(filtro)) ||
-        (campo === 'usuario' && clienteConsulta.usuario.toString().toLowerCase().includes(filtro))
-      ) {
-        this.ClientesFiltrados.push(clienteConsulta);
+  //Filtro de Central por Tipo Doc, Numero, Nombre Cliente o Usuario.
+  esFiltrar() {
+    const tipoDocumentoControl = this.formfiltro.get('tipoF');
+    const numeroFControl = this.formfiltro.get('numeroF');
+    const clienteFControl = this.formfiltro.get('clienteF');
+    const usuarioFControl = this.formfiltro.get('usuarioF');
+  
+    const tipoDocumentoSeleccionado = tipoDocumentoControl?.value || "";
+    const filtroNumeroF = (numeroFControl?.value || "").toString().toLowerCase();
+    const filtroClienteF = (clienteFControl?.value || "").toString().toLowerCase();
+    const filtronUsuarioF = (usuarioFControl?.value || "").toString().toLowerCase();
+  
+    this.ClientesFiltrados = this.Clientes.filter((cliente) => {
+      const valorTipoF = cliente.cliTipoDoc.toString().toLowerCase();
+      const valorNumeroF = cliente.cliNroDoc.toString().toLowerCase();
+      const valorClienteF = cliente.cliApeNomDen.toString().toLowerCase();
+      const valorUsuarioF = cliente.usuario.toString().toLowerCase();
+  
+      if (tipoDocumentoSeleccionado === "0") {
+        return (
+          (!filtroNumeroF || valorNumeroF.includes(filtroNumeroF)) &&
+          (!filtroClienteF || valorClienteF.includes(filtroClienteF)) &&
+          (!filtronUsuarioF || valorUsuarioF.includes(filtronUsuarioF))
+        );
+      } else {
+        const filtronTipoF = tipoDocumentoSeleccionado.toString().toLowerCase();
+        return (
+          (!filtronTipoF || valorTipoF === filtronTipoF) &&
+          (!filtroNumeroF || valorNumeroF.includes(filtroNumeroF)) &&
+          (!filtroClienteF || valorClienteF.includes(filtroClienteF)) &&
+          (!filtronUsuarioF || valorUsuarioF.includes(filtronUsuarioF))
+        );
       }
     });
-
+  
     this.dataSourceCliente = new MatTableDataSource(this.ClientesFiltrados);
     if (this.paginatorCliente) {
       this.dataSourceCliente.paginator = this.paginatorCliente;
@@ -337,9 +357,8 @@ export class ConsultarClienteComponent implements OnInit {
     if (this.sortCliente) {
       this.dataSourceCliente.sort = this.sortCliente;
     }
-
   }
-
+    
   modificarEstadoCliente(element: any, accion: number, estado:string): void {
     Swal.fire({
       text: '¿Estás seguro que deseas modificar el estado del Cliente a "' + estado + '"?',
