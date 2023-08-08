@@ -393,3 +393,46 @@
   color: #01C3CC;
   font-size: 18px;  
 }
+
+.btonNuevaConsulta{
+  background-color: #01C3CC;
+  width: 237px !important;
+  height: 59px !important;
+  border-radius: 50px !important;
+}
+
+.edit{
+  color: #63ddff;
+  font-variation-settings:
+  'FILL' 1,
+  'wght' 200,
+  'GRAD' 200,
+  'opsz' 24
+}
+
+/* -------Botón Guardar------- */
+.btnConfirmar{
+  width: 237px !important;
+  height: 59px !important;
+  border-radius: 4px !important;
+  background-color: rgba(0, 63, 138, 1) !important;
+  color: #fff;
+  border-color: #194c87 !important;
+}
+.btnConfirmar:hover{/*efecto a pasar por arriba*/
+  color: #fff;
+  background-color: #01C3CC !important;
+  border-color:#194c87 !important;
+  box-shadow: 0 0 10px rgba(var(--bs-btn-focus-shadow-rgb), 0.5); /*sombra*/
+}
+.btnConfirmar:active{/*efecto al presionar*/
+  color:  #fff;
+  background-color: #194c873f !important;
+  border-color: #194c8754 !important;
+  box-shadow: var(--bs-btn-active-shadow);
+}
+.btnConfirmar:disabled{
+  color: #632626 !important;
+  background-color: #194c8781 !important;
+  border-color: #194c87 !important;
+}

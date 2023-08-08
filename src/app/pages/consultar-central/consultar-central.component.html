@@ -1,6 +1,17 @@
-<app-navbar></app-navbar>
-
-
+<head>
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    integrity="VzLXTJGPSyTLX6d96AxgkKvE/LRb7ECGyTxuwtpjHnVWVZs2gp5RDjeM/tgBnVdM"
+    crossorigin=""
+  />
+  <script
+    src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+    integrity="9+9VLV50ZIoYm6ndV2JzOw1i6jKzJ5uuIbRvL9afckY="
+    crossorigin=""
+  ></script>
+  <script src="ruta/a/tu/archivo.js"></script>
+</head>
 
 <div class="body">
   <h1 class="text-center titulo tituloFuente">Consultar Central Meteorológica</h1>
@@ -207,8 +218,7 @@
                       <td class="table-row" class="align-center" mat-cell *matCellDef="let element">
                         <button
                           mat-button
-                          routerLink="/modificar-central"
-                          (click)="esfilaSeleccionada(element); enviarDatos()"
+                          (click)="esfilaSeleccionada(element);"
                           type="button"
                           class="btn"
                           data-bs-target="#staticBackdrop"
@@ -254,245 +264,488 @@
           </div>
         </ng-container>
       </mat-step>
+      
+      <mat-step
+      [label]="titulo2"
+      [completed]="isStep2Completed"
+      [ngClass]="{ collapse: isCollapsed2 }"
+      >
+      <ng-container contenido-paso-2> 
+        <!-- Botón ver otra central -->
+        <div class="row">
+          <div
+            class="example-button-row"
+            style="display: flex; justify-content: flex-end"
+          >
+            <button
+              mat-fab
+              extended
+              color="primary"
+              class="btonNuevaConsulta"
+              (click)="goToPreviousStep()"
+            >
+              <mat-icon>touch_app</mat-icon>
+              Nueva Consulta
+            </button>
+          </div>
+        </div>
+
+        <br>
+        <br>
+
+        <form [formGroup]="formModificar">
+
+          <div class="card cardFiltrado cardAnimate cardFlat">
+            <div class="card-header">
+              <div class="d-flex justify-content-between align-items-center">
+                <h4 class="mb-0 tituloCard">Datos de la Central N°: {{cenNroSeleccionado}} </h4>
+                <img
+                  src="../../../assets/central_seleccionada.png"
+                  class="image"
+                  style="width: 5%; height: 5%; padding-right: 5px"
+                  alt="..."
+                />
+              </div>
+            </div>
+
+            <br>
+            <br>
+          
+            <div class="row">          
+              <div class="col-md-6">
+                <div class="form-outline input-group mb-3">
+                  <mat-form-field
+                    appearance="fill"
+                    class="example-full-width form-outline input-group"
+                  >
+                    <mat-label>Cliente</mat-label>
+                    <input
+                      type="text"
+                      style="padding-left: 20px"
+                      matInput
+                      id="cliApeNomDenVM"
+                      value="cliApeNomDenVM"
+                      formControlName="cliApeNomDenVM"
+                      required
+                      readonly
+                    />
+                    <mat-icon class="edit" matSuffix
+                      >edit_off</mat-icon
+                    >
+                  </mat-form-field>                        
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-outline input-group mb-3">
+                  <mat-form-field
+                    appearance="fill"
+                    class="example-full-width form-outline input-group"
+                  >
+                    <mat-label>Usuario</mat-label>
+                    <input
+                      type="text"
+                      style="padding-left: 20px"
+                      matInput
+                      id="usuarioVM"
+                      value="usuarioVM"
+                      formControlName="usuarioVM"
+                      required
+                      readonly
+                    />
+                    <mat-icon class="edit" matSuffix
+                      >edit_off</mat-icon
+                    >
+                  </mat-form-field>
+                </div>
+              </div>    
+
+              <div class="col-md-6">
+                <div class="form-outline input-group mb-3">
+                  <mat-form-field
+                    appearance="fill"
+                    class="example-full-width form-outline input-group"
+                  >
+                    <mat-label>Cod. Central</mat-label>
+                    <input
+                      type="text"
+                      style="padding-left: 20px"
+                      matInput
+                      id="id"
+                      value="id"
+                      formControlName="id"
+                      required
+                      readonly
+                    />
+                    <mat-icon class="edit" matSuffix
+                      >edit_off</mat-icon
+                    >
+                  </mat-form-field>                        
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-outline input-group mb-3">
+                  <mat-form-field
+                    appearance="fill"
+                    class="example-full-width form-outline input-group"
+                  >
+                    <mat-label>IMEI</mat-label>
+                    <input
+                      type="text"
+                      style="padding-left: 20px"
+                      matInput
+                      id="imei"
+                      value="imei"
+                      formControlName="imei"
+                      required                      
+                    />
+                    <mat-icon class="edit" matSuffix
+                      >edit</mat-icon
+                    >                    
+                  </mat-form-field>
+                  <mat-error
+                    *ngIf="
+                    imei?.invalid &&
+                      (imei?.dirty ||
+                      imei?.touched)
+                    "
+                    class="text-danger"
+                  >
+                    <mat-error
+                      class="error"
+                      *ngIf="imei?.errors?.['required']"
+                    >
+                      El IMEI es requerido.
+                    </mat-error>
+                    <mat-error
+                      class="error"
+                      *ngIf="imei?.errors?.['pattern']"
+                    >
+                      Debe ingresar solamente 15 números.
+                    </mat-error>
+                  </mat-error>
+                </div>
+              </div>   
+
+              <div class="col-md-6">
+                <div class="form-outline input-group mb-3">
+                  <mat-form-field
+                    appearance="fill"
+                    class="example-full-width form-outline input-group"
+                  >
+                    <mat-label>Estado</mat-label>
+                    <input
+                      type="text"
+                      style="padding-left: 20px"
+                      matInput
+                      id="estadoCentralDescripcion"
+                      value="estadoCentralDescripcion"
+                      formControlName="estadoCentralDescripcion"
+                      required
+                      readonly
+                    />
+                    <mat-icon class="edit" matSuffix
+                      >edit_off</mat-icon
+                    >
+                  </mat-form-field>                        
+                </div>
+              </div>
+              <div class="col-md-6">                
+              
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-outline input-group mb-3">
+                  <mat-form-field
+                    appearance="fill"
+                    class="example-full-width form-outline input-group"
+                  >
+                    <mat-label>Fecha de Alta </mat-label>
+                    <input
+                      type="text"
+                      style="padding-left: 20px"
+                      matInput
+                      id="fechaAlta"
+                      value="fechaAlta"
+                      formControlName="fechaAlta"                    
+                      readonly
+                    />
+                    <mat-icon class="edit" matSuffix
+                      >edit_off</mat-icon
+                    >
+                  </mat-form-field>                        
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-outline input-group mb-3">
+                  <mat-form-field
+                    appearance="fill"
+                    class="example-full-width form-outline input-group"
+                  >
+                    <mat-label>Fecha de Baja</mat-label>
+                    <input
+                      type="text"
+                      style="padding-left: 20px"
+                      matInput
+                      id="fechaBaja"
+                      value="fechaBaja"
+                      formControlName="fechaBaja"                      
+                      readonly
+                    />
+                    <mat-icon class="edit" matSuffix
+                      >edit_off</mat-icon
+                    >
+                  </mat-form-field>
+                </div>
+              </div> 
+
+            </div>
+          </div>
+
+          <br>
+          <br>
+
+          <div class="card cardFiltrado cardAnimate cardFlat">
+            <div class="card-header">
+              <div class="d-flex justify-content-between align-items-center">
+                <h4 class="mb-0 tituloCard">Ubicación de la Central N°: {{cenNroSeleccionado}} </h4>
+                <img
+                  src="../../../assets/central_seleccionada.png"
+                  class="image"
+                  style="width: 5%; height: 5%; padding-right: 5px"
+                  alt="..."
+                />
+              </div>
+            </div>
+
+            <br>
+            <br>
+          
+            <div class="row">          
+              <div class="col-md-6">
+                <div class="form-outline input-group mb-3">
+                  <mat-form-field
+                    appearance="fill"
+                    class="example-full-width form-outline input-group"
+                  >
+                    <mat-label>Coordenadas X </mat-label>
+                    <input
+                      type="text"
+                      style="padding-left: 20px"
+                      matInput
+                      id="coordenadaX"
+                      value="coordenadaX"
+                      formControlName="coordenadaX"
+                      required
+                      readonly
+                    />
+                    <mat-icon class="edit" matSuffix
+                      >edit_off</mat-icon
+                    >
+                  </mat-form-field>                        
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-outline input-group mb-3">
+                  <mat-form-field
+                    appearance="fill"
+                    class="example-full-width form-outline input-group"
+                  >
+                    <mat-label>Coordenadas Y</mat-label>
+                    <input
+                      type="text"
+                      style="padding-left: 20px"
+                      matInput
+                      id="coordenadaY"
+                      value="coordenadaY"
+                      formControlName="coordenadaY"
+                      required
+                      readonly
+                    />
+                    <mat-icon class="edit" matSuffix
+                      >edit_off</mat-icon
+                    >
+                  </mat-form-field>
+                </div>
+              </div>  
+            </div>
+
+            <br />
+            <div id="map" style="height: 400px"></div>      
+          </div>
+
+          <br>
+          <br>
+
+          <div class="card cardFiltrado cardAnimate cardFlat">
+            <div class="card-header">
+              <div class="d-flex justify-content-between align-items-center">
+                <h4 class="mb-0 tituloCard">Lista de Servicios de la Central N° {{cenNroSeleccionado}} </h4>
+                <img
+                  src="../../../assets/cold.png"
+                  class="image"
+                  style="width: 5%; height: 5%; padding-right: 5px"
+                  alt="..."
+                />
+              </div>
+            </div>
+  
+            <br>
+            <br>
+
+            <div class="row">          
+              <div class="col-md-6">
+                <h2 class="align-center"> Servicios Disponibles </h2>
+                <div class="table" *ngIf="dataSourceServicio">
+                    <table mat-table [dataSource]="dataSourceServicio" matSort #matSortServicio="matSort">
+  
+                    <!-- Columnas -->
+                    <ng-container matColumnDef="serId">
+                      <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header="serId">Cod.</th>
+                      <td class="table-row first-column" style="vertical-align: middle; text-align: textIzquierda"  mat-cell *matCellDef="let element">{{ element.serId }}</td>
+                    </ng-container>
+  
+                    <ng-container matColumnDef="serDescripcion">
+                      <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header="serDescripcion">Nombre de Servicio</th>
+                      <td class="table-row" style="vertical-align: middle; text-align: textIzquierda" mat-cell *matCellDef="let element">{{ element.serDescripcion }}</td>
+                    </ng-container>                 
+            
+                    <ng-container matColumnDef="agregarServ">
+                      <th class="encabezado text-center" mat-header-cell *matHeaderCellDef>Agregar Serv.</th>
+                      <td class="table-row" class="align-center" mat-cell *matCellDef="let element">
+                        <button type="button" class="btn"
+                          data-bs-target="#staticBackdrop" (click)="agregarServicio(element)" title="Agregar Servicio">                        
+                          <img
+                          style="width: 50%; height: 50%"
+                          src="../../../assets/agregar.png"
+                          class="image"
+                          alt="..."
+                          />     
+                        </button>
+
+                      </td>
+                    </ng-container>
+
+                    <!-- Filas -->
+                    <tr mat-header-row *matHeaderRowDef="displayedColumnsServicio"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumnsServicio;
+                      let i = index" [ngClass]="{ 'fila-par': i % 2 === 0, 'fila-impar': i % 2 !== 0 }">
+                    </tr>
+                    
+                  </table>
+            
+                  <!-- Paginador -->
+                  <mat-paginator *ngIf="dataSourceServicio"
+                    [length]="dataSourceServicio.data.length"
+                    [pageSize]="pageSizeServicio"
+                    [pageSizeOptions]="[5, 10, 25, 100]"
+                    (page)="handlePageChangeServicio($event)"
+                    showFirstLastButtons
+                    #paginatorServicio 
+                  ></mat-paginator>
+            
+                  <div class="align-center" *ngIf="validarFiltradoServicios() == true">
+                  </div>
+            
+                  <div class="alert alert-primary text-center" role="alert" *ngIf="validarFiltradoServicios() == false">
+                    No hay Servicios disposable
+                  </div>
+            
+                </div>
+              </div>  
+              
+              <div class="col-md-6">
+                <h2 class="align-center"> Servicios Activos </h2>
+                <div class="table" *ngIf="dataSourceServicioActivos">
+                  <table mat-table [dataSource]="dataSourceServicioActivos" matSort #matSortServicioActivos="matSort">
+
+                  <!-- Columnas -->
+                  <ng-container matColumnDef="serId">
+                    <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header="serId">Cod.</th>
+                    <td class="table-row first-column" style="vertical-align: middle; text-align: textIzquierda"  mat-cell *matCellDef="let element">{{ element.serId }}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="serDescripcion">
+                    <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header="serDescripcion">Nombre de Servicio</th>
+                    <td class="table-row" style="vertical-align: middle; text-align: textIzquierda" mat-cell *matCellDef="let element">{{ element.serDescripcion }}</td>
+                  </ng-container>                 
+          
+                  <ng-container matColumnDef="extraerServ">
+                    <th class="encabezado text-center" mat-header-cell *matHeaderCellDef>Extrar Serv.</th>
+                    <td class="table-row" class="align-center" mat-cell *matCellDef="let element">
+                      <button type="button" class="btn"
+                        data-bs-target="#staticBackdrop" (click)="extraerServicio(element)" title="Extrar Servicio">                        
+                        <img
+                        style="width: 50%; height: 50%"
+                        src="../../../assets/minus.png"
+                        class="image"
+                        alt="..."
+                        />     
+                      </button>
+
+                    </td>
+                  </ng-container>
+
+                  <!-- Filas -->
+                  <tr mat-header-row *matHeaderRowDef="displayedColumnsServicioActivos"></tr>
+                  <tr mat-row *matRowDef="let row; columns: displayedColumnsServicioActivos;
+                    let i = index" [ngClass]="{ 'fila-par': i % 2 === 0, 'fila-impar': i % 2 !== 0 }">
+                  </tr>
+                  
+                </table>
+          
+                <!-- Paginador -->
+                <mat-paginator *ngIf="dataSourceServicioActivos"
+                  [length]="dataSourceServicioActivos.data.length"
+                  [pageSize]="pageSizeServicioActivos"
+                  [pageSizeOptions]="[5, 10, 25, 100]"
+                  (page)="handlePageChangeServicioActivos($event)"
+                  showFirstLastButtons
+                  #paginatorServicioActivos 
+                ></mat-paginator>
+          
+                <div class="align-center" *ngIf="validarFiltradoServiciosDeCentral() == true">
+                </div>
+          
+                <div class="alert alert-primary text-center" role="alert" *ngIf="validarFiltradoServiciosDeCentral() == false">
+                  No tiene Servicios Activos la Central
+                </div>
+          
+              </div>
+              </div>
+            </div>
+            
+
+            <br>             
+            <div class="col-12 text-center">
+              <button
+                mat-fab
+                extended
+                color="primary"
+                type="submit"
+                id="btnAgregar"
+                class="btn btnConfirmar"
+                data-bs-target="#staticBackdrop"
+                [disabled]="cenNroSeleccionado === 0"
+                (click)="modificarCentral()"
+              >
+              Modificar Central
+              </button>
+            </div>
+    
+            <br>
+
+            <br>
+          </div>
+
+        </form>
+
+      </ng-container>
+    </mat-step>
+
     
      
         
     </mat-vertical-stepper>
-<!-- <form [formGroup]="formfiltro">
 
-<div class="row justify-content-center">
-  <div class="col-3"></div>
-  <div class="col-6 search-container">
-    <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por Nombre de Cliente">
-      <span class="input-group-text">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-          class="bi bi-search" viewBox="0 0 16 16">
-          <path
-            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-        </svg>
-      </span>
-      <input formControlName="cliente" type="text" class="form-control" 
-      placeholder="Filtrar por Nombre del Cliente" (keyup)="esFiltrar($event)">
-  
-    </div>
-  </div>
-  <div class="col-3"></div>
-  <div class="col-6 search-container">
-    <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar por Nombre de Usuario">
-      <span class="input-group-text">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-          class="bi bi-search" viewBox="0 0 16 16">
-          <path
-            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-        </svg>
-      </span>
-      <input formControlName="usuario" type="text" class="form-control" placeholder="Filtrar por Nombre del Usuario" (keyup)="esFiltrar($event)">
-   
-    </div>
-  </div>
 </div>
-</form>
 
-  <div class="row">
-    <div class="col-1"></div>
-    <div class="col-10">
-      <table class="table" *ngIf="validarFiltrado() == true">
-        <thead class="encabezado">
-          <tr>
-            <th
-              (click)="ordenarPor('cenNro')"
-              [appSort]="CentralConsultaFiltrados"
-              data-order="desc"
-              data-name="cenNro"
-              style="text-align: center"
-            >
-              <a>Cod. Central {{ ordenarIcono("cenNro") }}</a>
-            </th>
-            <th
-              (click)="ordenarPor('cliApeNomDen')"
-              [appSort]="CentralConsultaFiltrados"
-              data-order="desc"
-              data-name="cliApeNomDen"
-              style="text-align: center"
-            >
-              <a>Cliente {{ ordenarIcono("cliApeNomDen") }}</a>
-            </th>
-            <th
-              (click)="ordenarPor('usuario')"
-              [appSort]="CentralConsultaFiltrados"
-              data-order="desc"
-              data-name="usuario"
-              style="text-align: center"
-            >
-              <a>Usuario {{ ordenarIcono("usuario") }}</a>
-            </th>
-            <th
-              (click)="ordenarPor('estDescripcion')"
-              [appSort]="CentralConsultaFiltrados"
-              data-order="desc"
-              data-name="estDescripcion"
-              style="text-align: center"
-            >
-              <a>Estado {{ ordenarIcono("estDescripcion") }}</a>
-            </th>
-
-            <th scope="col" style="text-align: center">Modificar Estado</th>
-            <th scope="col" style="text-align: center">Ver Más</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            *ngFor="let central of CentralConsultaFiltrados 
-            | paginate
-            : {
-                itemsPerPage: pageSize,
-                currentPage: currentPage,
-                totalItems: totalItems
-              }; let i = index"
-            [ngClass]="{ 'fila-par': i % 2 == 0, 'fila-impar': i % 2 == 1 }"
-            (click)="esfilaSeleccionada(central)"
-          >
-            <th style="vertical-align: middle" class="align-center">
-              {{ central.cenNro }}
-            </th>
-            <td style="vertical-align: middle">{{ central.cliApeNomDen }}</td>
-            <td style="vertical-align: middle">{{ central.usuario }}</td>
-            <td style="vertical-align: middle">{{ central.estDescripcion }}</td>
-            <td class="align-center">
-              <button
-                type="button"
-                class="btn"
-                data-bs-target="#staticBackdrop"
-                (click)="ModificarEstadoCentral(1, 'Disponible')"
-                title="Cambiar Estado Central a Disponible"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="25"
-                  height="25"
-                  fill="currentColor"
-                  class="bi bi-check2-square"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    d="M3 14.5A1.5 1.5 0 0 1 1.5 13V3A1.5 1.5 0 0 1 3 1.5h8a.5.5 0 0 1 0 1H3a.5.5 0 0 0-.5.5v10a.5.5 0 0 0 .5.5h10a.5.5 0 0 0 .5-.5V8a.5.5 0 0 1 1 0v5a1.5 1.5 0 0 1-1.5 1.5H3z"
-                  />
-                  <path
-                    d="m8.354 10.354 7-7a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0z"
-                  />
-                </svg>
-              </button>
-              <button
-                type="button"
-                class="btn"
-                data-bs-target="#staticBackdrop"
-                (click)="ModificarEstadoCentral(2, 'Bloqueada')"
-                title="Cambiar Estado Central a Bloqueada"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="25"
-                  height="25"
-                  fill="currentColor"
-                  class="bi bi-file-lock"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    d="M8 5a1 1 0 0 1 1 1v1H7V6a1 1 0 0 1 1-1zm2 2.076V6a2 2 0 1 0-4 0v1.076c-.54.166-1 .597-1 1.224v2.4c0 .816.781 1.3 1.5 1.3h3c.719 0 1.5-.484 1.5-1.3V8.3c0-.627-.46-1.058-1-1.224zM6.105 8.125A.637.637 0 0 1 6.5 8h3a.64.64 0 0 1 .395.125c.085.068.105.133.105.175v2.4c0 .042-.02.107-.105.175A.637.637 0 0 1 9.5 11h-3a.637.637 0 0 1-.395-.125C6.02 10.807 6 10.742 6 10.7V8.3c0-.042.02-.107.105-.175z"
-                  />
-                  <path
-                    d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"
-                  />
-                </svg>
-              </button>
-              <button
-                type="button"
-                class="btn"
-                data-bs-target="#staticBackdrop"
-                (click)="ModificarEstadoCentral(3, 'Error')"
-                title="Cambiar Estado Central a Error"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="25"
-                  height="25"
-                  fill="currentColor"
-                  class="bi bi-x-circle"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"
-                  />
-                  <path
-                    d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"
-                  />
-                </svg>
-              </button>
-              <button
-                type="button"
-                class="btn"
-                data-bs-target="#staticBackdrop"
-                (click)="ModificarEstadoCentral(4, 'Baja')"
-                title="Cambiar Estado Central a Baja"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="25"
-                  height="25"
-                  fill="gray"
-                  class="bi bi-trash"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"
-                  />
-                  <path
-                    fill-rule="evenodd"
-                    d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
-                  />
-                </svg>
-              </button>
-            </td>
-            <td class="align-center">
-              <button
-                type="button"
-                class="btn"
-                routerLink="/modificar-central"
-                (click)="esfilaSeleccionada(central); enviarDatos()"
-                title="Ver Más Opciones"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  class="bi bi-search"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"
-                  />
-                </svg>
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <div class="align-center">
-        <pagination-controls
-          (pageChange)="paginaCambiada($event)"
-          itemsPerPage="pageSize"
-          totalItems="totalItems"
-        ></pagination-controls>
-      </div>
-    </div>
-    <div
-      class="alert alert-primary text-center"
-      role="alert"
-      *ngIf="validarFiltrado() == false"
-    >
-      ¡No se ha encontrado ninguna Central!
-    </div>
-  </div> -->
-</div>
-<app-footer-interno></app-footer-interno>
