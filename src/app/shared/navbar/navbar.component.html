@@ -18,25 +18,15 @@
           
         <div class="position-absolute top-1 start-0">
             <div class="d-flex">
-                <div class="col-6">
-                    <!-- <button class="navbar-brand" type="button" data-bs-toggle="offcanvas"
-                        data-bs-target="#navbarToggleExternalContentAdmin" aria-controls="navbarToggleExternalContentAdmin"
-                        aria-expanded="false" aria-label="Toggle navigation" *ngIf="rol === '1' && token != null">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
-                        </svg>
-                    </button> -->
-                </div>
                 <div class="col-3">
-                    <button class="navbar-brand" type="button" data-bs-toggle="offcanvas"
-                        data-bs-target="#navbarToggleExternalContentCliente" aria-controls="navbarToggleExternalContentCliente"
-                        aria-expanded="false" aria-label="Toggle navigation" *ngIf="rol === '0' && token != null">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
-                        </svg>
-                    </button>            
-                </div>                
+                    <button class="navbar-brand" type="button" data-bs-toggle="offcanvas" *ngIf="token != null" (click)="home()" title="Home">
+                        <svg class="bi pe-none" width="40" height="40" role="img" aria-label="Home">
+                          <use xlink:href="#home"/></svg>
+                      </button>
+                </div>
+                
             </div>
+            <!-- <h3 style="color: white; ">Home</h3> -->
         </div>
         <div class="position-absolute top-1 end-50">
             <div class="d-flex">
@@ -56,15 +46,9 @@
         <div class="position-absolute top-1 end-0">
             <div class="d-flex">
                 <div class="col-3">
-                    <button 
-                        class="navbar-brand" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarToggleExternalContentUsuario" 
-                        aria-controls="navbarToggleExternalContentUsuario" aria-expanded="false" aria-label="Toggle navigation" *ngIf="token != null" >
-                        
-                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-person-square" viewBox="0 0 16 16">
-                            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-                            <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1v-1c0-1-1-4-6-4s-6 3-6 4v1a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12z"/>
-                        </svg>
-                    </button>
+                    <button class="navbar-brand" type="button" data-bs-toggle="offcanvas" *ngIf="token != null" (click)="cerrarSesion()" title="Cerrar Sesion">
+                        <img src="../../../assets/desconectar.png" style="margin-bottom: 10px; margin-left: 10px; margin-right: 10px;" alt="" width="40" height="40">
+                      </button>
                 </div>
             </div>
         </div>

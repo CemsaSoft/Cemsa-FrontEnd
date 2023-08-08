@@ -53,4 +53,13 @@
   }
   
 
-
+  .custom-button {
+    /* Agrega los estilos que deseas para que ambos botones se vean iguales */
+    /* Por ejemplo: */
+    background-color: #01C3CC;
+    border: none;
+    color: white;
+    font-weight: bold;
+    padding: 10px;
+  }
+  

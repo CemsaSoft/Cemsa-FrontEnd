@@ -50,5 +50,13 @@ export class NavbarComponent implements OnInit {
   openConsultarAlarma() {
     window.location.href = "consultar-alarma";
   }
-  
+
+  cerrarSesion(): void {
+    this.servicioUsuario.limpiarToken(); 
+    window.location.href = "/home";
+  }
+
+  home(): void {
+    window.location.href = "/home";
+  }
 }
