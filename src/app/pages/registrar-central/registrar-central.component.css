@@ -1,52 +1,4 @@
-.encabezado {
-    background-color: #006d2c;
-    color: white;
-  }
-  
-  .fila-par {
-    background-color: #c7e9c0;
-  }
-  
-  .fila-impar {
-    background-color: white;
-  }
-  .align-center {
-    text-align: center;
-  }
-  div.row {
-    margin-bottom: 10px;
-  }
-  .colorLetra{
-    color:red;
-  }
-  
-  .search-container {
-    margin-bottom: 20px;
-  }
-
-
-  .card-header {
-    background-color: #2E8B57; /* verde oscuro */
-    color: #FFF; /* texto en blanco */
-    font-weight: bold; /* texto en negrita */
-  }
-  .card-body {
-    border: 1px solid #2E8B57; /* borde verde claro */
-    padding: 20px; /* espacio interno */
-  }
-  .btn-unstyled {
-    border: none;
-  }
-  .body{
-    margin-top: 160px;
-  }
-
-  /* ---------TABS------------ */
-  .example-tab-icon {
-    margin-right: 8px;
-  }
-  /* -------CSS copiado------------ */
-  /* -----------STEP----------------------- */
+/* -----------STEP----------------------- */
 .mat-stepper-vertical {
   margin-top: 8px !important;
 }
@@ -168,6 +120,7 @@
     padding: 20px; 
     border-radius: 35px 35px 0 0;
   }
+ 
  /* -------Titulo de la pantalla--------- */
   .titulo{
     padding-left: 10px;
@@ -265,15 +218,6 @@
   -webkit-box-shadow: 0 1px 2px 0 rgba(0,0,0,.12);
   box-shadow: 8px 10px 8px 1px rgba(0,0,0,.12);
 }
-.cardSeparacion {
-  flex: 1; 
-  margin-right: 20px; 
-  margin-left: 20px; 
-}
-.containerCard {
-  display: flex;
-  flex-wrap: wrap;
-}
 /* --------------INPUT DE BÚSQUEDA-------------------------- */
 .inputBusqueda{
     z-index: 915;
@@ -287,18 +231,13 @@
     display: flex;
     box-shadow: 0 1px 2px 0 rgba(0,0,0,.2);
     height: 50px;
-    width: 350px;
+    width: 150px;
     padding: 10px 60px 10px 15px;
     border-style: solid;
     border-color: rgba(0,0,0,0);
     border-width: 1.5px;
     box-shadow: inset 0 0 2px #63ddff;
     border-radius: 3px;
-}
-.inputUsuarioNombre{
-    width: 250px !important;
-    padding-right: 40px !important;
-    padding-left: 20px;
 }
 .search-field {
   position: relative;
@@ -370,7 +309,7 @@
 }
 /* ---------------Iconos de input---------------- */
 .FormatoIconos{
-  left: 290px;
+  left: 110px;
     top: 55px;
     margin-left: 10px;
     margin-top: 30px;
@@ -452,7 +391,10 @@
   width: 100%;
 }
 .error{
-  font-size: 12px;
+  font-size: 16px;
+}
+.form-outline .mat-error {
+  margin-top: 8px; /* Añade espacio entre el campo y el mensaje de error */
 }
 .edit{
   color: #63ddff;
@@ -487,7 +429,7 @@
   border-radius: 50px !important;
 }
 /* -------Botón Guardar------- */
-.btnAgregarServicio{
+.btnGuardar{
   width: 237px !important;
   height: 59px !important;
   border-radius: 4px !important;
@@ -495,28 +437,22 @@
   color: #fff;
   border-color: #194c87 !important;
 }
-.btnAgregar:hover{/*efecto a pasar por arriba*/
+.btnGuardar:hover{/*efecto a pasar por arriba*/
   color: #fff;
   background-color: #01C3CC !important;
   border-color:#194c87 !important;
   box-shadow: 0 0 10px rgba(var(--bs-btn-focus-shadow-rgb), 0.5); /*sombra*/
 }
-.btnAgregar:active{/*efecto al presionar*/
+.btnGuardar:active{/*efecto al presionar*/
   color:  #fff;
   background-color: #194c873f !important;
   border-color: #194c8754 !important;
   box-shadow: var(--bs-btn-active-shadow);
 }
-.btnAgregar:disabled{
+.btnGuardar:disabled{
   color: #632626 !important;
   background-color: #194c8781 !important;
   border-color: #194c87 !important;
-}
-.cardBotonCentrado {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
 }
 /* -------Botón Cambiar Contraseña------- */
 .btnBlanqueoContraseña{
@@ -541,3 +477,35 @@
   box-shadow: var(--bs-btn-active-shadow);
 }
 
+.first-column {
+  background-color: #f7f9fa23;
+  color: #01C3CC;
+  font-size: 18px;  
+}
+
+/* -------Botón Guardar------- */
+.btnConfirmar{
+  width: 237px !important;
+  height: 59px !important;
+  border-radius: 4px !important;
+  background-color: rgba(0, 63, 138, 1) !important;
+  color: #fff;
+  border-color: #194c87 !important;
+}
+.btnConfirmar:hover{/*efecto a pasar por arriba*/
+  color: #fff;
+  background-color: #01C3CC !important;
+  border-color:#194c87 !important;
+  box-shadow: 0 0 10px rgba(var(--bs-btn-focus-shadow-rgb), 0.5); /*sombra*/
+}
+.btnConfirmar:active{/*efecto al presionar*/
+  color:  #fff;
+  background-color: #194c873f !important;
+  border-color: #194c8754 !important;
+  box-shadow: var(--bs-btn-active-shadow);
+}
+.btnConfirmar:disabled{
+  color: #632626 !important;
+  background-color: #194c8781 !important;
+  border-color: #194c87 !important;
+}

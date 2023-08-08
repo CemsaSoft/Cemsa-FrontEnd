@@ -313,7 +313,7 @@
           
             <div class="row">          
               <div class="col-md-6">
-                <div class="form-outline input-group mb-3">
+                <div class="form-outline input-group mb-3 d-flex align-items-center justify-content-center">
                   <mat-form-field
                     appearance="fill"
                     class="example-full-width form-outline input-group"
@@ -336,7 +336,7 @@
                 </div>
               </div>
               <div class="col-md-6">
-                <div class="form-outline input-group mb-3">
+                <div class="form-outline input-group mb-3 d-flex align-items-center justify-content-center">
                   <mat-form-field
                     appearance="fill"
                     class="example-full-width form-outline input-group"
@@ -360,7 +360,7 @@
               </div>    
 
               <div class="col-md-6">
-                <div class="form-outline input-group mb-3">
+                <div class="form-outline input-group mb-3 d-flex align-items-center justify-content-center">
                   <mat-form-field
                     appearance="fill"
                     class="example-full-width form-outline input-group"
@@ -383,11 +383,8 @@
                 </div>
               </div>
               <div class="col-md-6">
-                <div class="form-outline input-group mb-3">
-                  <mat-form-field
-                    appearance="fill"
-                    class="example-full-width form-outline input-group"
-                  >
+                <div class="form-outline input-group mb-3 d-flex flex-column align-items-center">
+                  <mat-form-field appearance="fill" class="example-full-width form-outline input-group">
                     <mat-label>IMEI</mat-label>
                     <input
                       type="text"
@@ -396,38 +393,26 @@
                       id="imei"
                       value="imei"
                       formControlName="imei"
-                      required                      
+                      required
                     />
-                    <mat-icon class="edit" matSuffix
-                      >edit</mat-icon
-                    >                    
+                    <mat-icon class="edit" matSuffix>edit</mat-icon>
                   </mat-form-field>
                   <mat-error
-                    *ngIf="
-                    imei?.invalid &&
-                      (imei?.dirty ||
-                      imei?.touched)
-                    "
+                    *ngIf="imei?.invalid && (imei?.dirty || imei?.touched)"
                     class="text-danger"
                   >
-                    <mat-error
-                      class="error"
-                      *ngIf="imei?.errors?.['required']"
-                    >
+                    <mat-error class="error" *ngIf="imei?.errors?.['required']">
                       El IMEI es requerido.
                     </mat-error>
-                    <mat-error
-                      class="error"
-                      *ngIf="imei?.errors?.['pattern']"
-                    >
+                    <mat-error class="error" *ngIf="imei?.errors?.['pattern']">
                       Debe ingresar solamente 15 números.
                     </mat-error>
                   </mat-error>
                 </div>
-              </div>   
+              </div>
 
               <div class="col-md-6">
-                <div class="form-outline input-group mb-3">
+                <div class="form-outline input-group mb-3 d-flex align-items-center justify-content-center">
                   <mat-form-field
                     appearance="fill"
                     class="example-full-width form-outline input-group"
@@ -454,7 +439,7 @@
               </div>
 
               <div class="col-md-6">
-                <div class="form-outline input-group mb-3">
+                <div class="form-outline input-group mb-3 d-flex align-items-center justify-content-center">
                   <mat-form-field
                     appearance="fill"
                     class="example-full-width form-outline input-group"
@@ -476,7 +461,7 @@
                 </div>
               </div>
               <div class="col-md-6">
-                <div class="form-outline input-group mb-3">
+                <div class="form-outline input-group mb-3 d-flex align-items-center justify-content-center">
                   <mat-form-field
                     appearance="fill"
                     class="example-full-width form-outline input-group"
@@ -522,7 +507,7 @@
           
             <div class="row">          
               <div class="col-md-6">
-                <div class="form-outline input-group mb-3">
+                <div class="form-outline input-group mb-3 d-flex align-items-center justify-content-center">
                   <mat-form-field
                     appearance="fill"
                     class="example-full-width form-outline input-group"
@@ -545,7 +530,7 @@
                 </div>
               </div>
               <div class="col-md-6">
-                <div class="form-outline input-group mb-3">
+                <div class="form-outline input-group mb-3 d-flex align-items-center justify-content-center">
                   <mat-form-field
                     appearance="fill"
                     class="example-full-width form-outline input-group"

@@ -50,7 +50,7 @@
     margin-bottom: 10px;
   }
   th{
-    text-align: center;width: 280px;height: 67px;padding-bottom: 20px;padding-top: 20px;text-align: center; font: 400 15px/24px Roboto, "Helvetica Neue", sans-serif;    
+    text-align: center;width: 280px;height: 67px;padding-bottom: 20px;padding-top: 20px;text-align: center; font: 400 15px/24px Roboto, "Helvetica Neue", sans-serif;
     letter-spacing: normal;
     margin: 0 0 16px;
     color: #63DDFF;
@@ -242,12 +242,6 @@
 .search-field {
   position: relative;
   display: inline-block;
-  /* display: flex; */
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    /* text-align: center; */
-    margin-bottom: 5px; 
 }
 
 .search-field input {
@@ -286,7 +280,7 @@
 }
 .margenFiltros{
   margin-top: 30px;
-  margin-bottom: 10px;
+    margin-bottom: 10px;
 }
 /* -----imágen de Input de Búsqueda----- */
 .image-container {
@@ -313,16 +307,9 @@
     width: 110px;
     padding-left: 5px;
 }
-.centrarInput{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    text-align: center;
-}
 /* ---------------Iconos de input---------------- */
 .FormatoIconos{
-  left: 10px;
+  left: 110px;
     top: 55px;
     margin-left: 10px;
     margin-top: 30px;
@@ -388,10 +375,51 @@
   margin-top: 30px;
 }
 
-.first-column {
-  background-color: #f7f9fa23;
-  color: #01C3CC;
-  font-size: 18px;  
+/* ---------------MENSAJES DE ERROR---------------------------------- */
+.example-form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.example-full-width {
+  width: 100%;
+  top: 10px;
+
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+.error{
+  font-size: 16px;
+}
+.form-outline .mat-error {
+  margin-top: 8px; /* Añade espacio entre el campo y el mensaje de error */
+}
+.edit{
+  color: #63ddff;
+  font-variation-settings:
+  'FILL' 1,
+  'wght' 200,
+  'GRAD' 200,
+  'opsz' 24
+}
+.enabled {
+  color: #acaaaa;
+  font-variation-settings:
+  'FILL' 1,
+  'wght' 200,
+  'GRAD' 200,
+  'opsz' 24
+}
+/* -------------Botón  Seleccionar Otro Cliente-------------------------------- */
+.example-button-row button,
+.example-button-row a {
+  margin-right: 8px;
+}
+
+.example-disabled {
+  display: inline-block;
 }
 
 .btonNuevaConsulta{
@@ -400,14 +428,59 @@
   height: 59px !important;
   border-radius: 50px !important;
 }
+/* -------Botón Guardar------- */
+.btnGuardar{
+  width: 237px !important;
+  height: 59px !important;
+  border-radius: 4px !important;
+  background-color: rgba(0, 63, 138, 1) !important;
+  color: #fff;
+  border-color: #194c87 !important;
+}
+.btnGuardar:hover{/*efecto a pasar por arriba*/
+  color: #fff;
+  background-color: #01C3CC !important;
+  border-color:#194c87 !important;
+  box-shadow: 0 0 10px rgba(var(--bs-btn-focus-shadow-rgb), 0.5); /*sombra*/
+}
+.btnGuardar:active{/*efecto al presionar*/
+  color:  #fff;
+  background-color: #194c873f !important;
+  border-color: #194c8754 !important;
+  box-shadow: var(--bs-btn-active-shadow);
+}
+.btnGuardar:disabled{
+  color: #632626 !important;
+  background-color: #194c8781 !important;
+  border-color: #194c87 !important;
+}
+/* -------Botón Cambiar Contraseña------- */
+.btnBlanqueoContraseña{
+  text-align: center;
+  width: 237px !important;
+  height: 40px !important;
+  border-radius: 1px !important;
+  background-color: #fff !important;
+  color: rgba(0, 63, 138, 1) !important;
+  bottom: 60px;
+}
+.btnBlanqueoContraseña:hover{
+  color: #fff !important;
+  background-color: #9eecf0 !important;
+  border-color:#6ae5ec !important;
+  box-shadow: 0 0 10px rgba(var(--bs-btn-focus-shadow-rgb), 0.5); 
+}
+.btnBlanqueoContraseña:active{/*efecto al presionar*/
+  color:  #194c87 !important;
+  background-color: #fff !important;
+  border-color: #fff!important;
+  box-shadow: var(--bs-btn-active-shadow);
+}
 
-.edit{
-  color: #63ddff;
-  font-variation-settings:
-  'FILL' 1,
-  'wght' 200,
-  'GRAD' 200,
-  'opsz' 24
+.first-column {
+  background-color: #f7f9fa23;
+  color: #01C3CC;
+  font-size: 18px;  
 }
 
 /* -------Botón Guardar------- */

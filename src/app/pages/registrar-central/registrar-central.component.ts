@@ -1,16 +1,17 @@
 //SISTEMA
-import { Component, OnInit, Output, ViewChild, AfterViewInit} from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit} from '@angular/core';
 import {
-  FormBuilder,
   FormGroup,
   FormControl,
   Validators,
 } from '@angular/forms';
+
 import Swal, { SweetAlertOptions } from 'sweetalert2';
-import {MatIconModule} from '@angular/material/icon';
-import {MatTabsModule} from '@angular/material/tabs';
-import { MatTabGroup } from '@angular/material/tabs';
-import {MatGridListModule} from '@angular/material/grid-list';
+import { MatStepper } from '@angular/material/stepper';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
+
 
 import { Map, Marker, icon } from 'leaflet';
 import * as L from 'leaflet';
@@ -38,16 +39,40 @@ export interface Tile {
   styleUrls: ['./registrar-central.component.css']
 })
 export class RegistrarCentralComponent implements OnInit, AfterViewInit  {
-  @ViewChild(MatTabGroup) tabGroup!: MatTabGroup;
+
+  //TABLA Cliente
+  displayedColumnsCliente: string[] = ['tdDescripcion', 'cliNroDoc', 'cliApeNomDen', 'usuario', 'columnaVacia', 'seleccionar'];
+  @ViewChild('paginatorCliente', { static: false }) paginatorCliente: MatPaginator | undefined;
+  @ViewChild('matSortCliente', { static: false }) sortCliente: MatSort | undefined;
+  dataSourceCliente: MatTableDataSource<any>;
+  pageSizeCliente = 10; // Número de elementos por página
+  currentPageCliente = 1; // Página actual
+
+  //TABLA Servicios
+  displayedColumnsServicio: string[] = ['serId', 'serDescripcion', 'agregarServ'];
+  @ViewChild('matSortServicio', { static: false }) sortServicio: MatSort | undefined;
+  @ViewChild('paginatorServicio', { static: false }) paginatorServicio: MatPaginator | undefined;
+  dataSourceServicio: MatTableDataSource<any>;
+  pageSizeServicio = 5; // Número de elementos por página
+  currentPageServicio = 1; // Página actual
+
+  //TABLA Servicios Agregados
+  displayedColumnsServicioAgregados: string[] = ['serId', 'serDescripcion', 'extraerServ'];
+  @ViewChild('matSortServicioAgregados', { static: false }) sortServicioAgregados: MatSort | undefined;
+  @ViewChild('paginatorServicioAgregados', { static: false }) paginatorServicioAgregados: MatPaginator | undefined;
+  dataSourceServicioAgregados: MatTableDataSource<any>;
+  pageSizeServicioAgregados = 5; // Número de elementos por página
+  currentPageServicioAgregados = 1; // Página actual
+
   //STEPPER
   titulo1 = 'Consultá información de los clientes:';
-  titulo2 = 'Modificar información de un cliente';
+  titulo2 = 'Ingresar Datos de Central Meteorológica';
   titulo3 = 'Título del tercer paso';
   isStep1Completed = false;
   isStep2Completed = false;
-  isStep3Completed = false;
-  
-  
+  isStep3Completed = false;  
+  @ViewChild(MatStepper, { static: false }) stepper: MatStepper | undefined;
+
   //VARIABLES DE OBJETOS LIST
   Servicios: ServicioClass[] = [];
   ServiciosNuevos: ServicioClass[] = [];
@@ -55,6 +80,7 @@ export class RegistrarCentralComponent implements OnInit, AfterViewInit  {
   Clientes: CentralClienteConsultaClass[] = [];
   ClientesFiltrados: CentralClienteConsultaClass[] = [];
   tiposDocumento: TipoDocumentoClass[] = [
+    new TipoDocumentoClass(0, 'TODOS'),
     new TipoDocumentoClass(1, 'DNI'),
     new TipoDocumentoClass(2, 'LE'),
     new TipoDocumentoClass(3, 'LC'),
@@ -68,20 +94,13 @@ export class RegistrarCentralComponent implements OnInit, AfterViewInit  {
   imeiSeleccionado: string = '';
   coordenadaXSeleccionado: string = '';
   coordenadaYSeleccionado: string = '';
-  //validadorCamposModif: string = '1';
   numerosValidos: string = 'Solo se admiten 15 números';  
   cenNroDocSeleccionado: string = '';
   propiedadOrdenamientoCliente: string = 'tdDescripcion';
   propiedadOrdenamientoServicio: string = 'serId';
   propiedadOrdenamientoServicioCentral: string = 'serId';
 
-  idListaServiciosSeleccionado: number=0;
-  idListaServiciosCentralSeleccionado: number=0;
   cenTipoDocSeleccionado: number=0;
-  tipoOrdenamientoCliente: number = 1;
-  tipoOrdenamientoServicio: number = 1;
-  tipoOrdenamientoServicioCentral: number = 1;
-  tipoDocumentoSeleccionado: number = 0;
 
   isCollapsed1 = false;
   isCollapsed2 = false;
@@ -92,20 +111,17 @@ export class RegistrarCentralComponent implements OnInit, AfterViewInit  {
   formRegistar: FormGroup;
   formfiltro: FormGroup;
 
-  //GRILLA
-  tiles: Tile[] = [
-    {text: '1', cols: 3, rows: 14, color: 'lightblue'},
-    {text: '2', cols: 2, rows: 1, color: 'lightgreen'},
-    {text: '3', cols: 2, rows: 13, color: 'lightpink'},
-    {text: '4', cols: 5, rows: 1, color: '#DDBDF1'},
-  ];
-
-    map: L.Map | undefined;
-    marker: L.Marker | undefined;
+  map: L.Map | undefined;
+  marker: L.Marker | undefined;
+  
   constructor(
     private servicioConsultar: ServicioService,
     private centralRegistrar: CentralService,
   ) { 
+    this.dataSourceCliente = new MatTableDataSource<any>();
+    this.dataSourceServicio = new MatTableDataSource<any>();
+    this.dataSourceServicioAgregados = new MatTableDataSource<any>();
+
     this.formRegistar = new FormGroup({
       id: new FormControl(null, []),
       imei: new FormControl(null, [
@@ -123,27 +139,11 @@ export class RegistrarCentralComponent implements OnInit, AfterViewInit  {
     });
 
     this.formfiltro = new FormGroup({
-      tipo: new FormControl(null, []),
-      numero: new FormControl(null, []),
-      cliente: new FormControl(null, []),
-      usuario: new FormControl(null, []),
+      tipoF: new FormControl(null, []),
+      numeroF: new FormControl(null, []),
+      clienteF: new FormControl(null, []),
+      usuarioF: new FormControl(null, []),
     });   
-  }
-
-  toggleCollapse1() {
-    this.isCollapsed1 = !this.isCollapsed1;
-  }
-
-  toggleCollapse2() {
-    this.isCollapsed2 = !this.isCollapsed2;
-  }
-
-  toggleCollapse3() {
-    this.isCollapsed3 = !this.isCollapsed3;
-  }
-
-  toggleCollapse4() {
-    this.isCollapsed4 = !this.isCollapsed4;
   }
 
   set cliApeNomDenVM(valor: any) {
@@ -161,6 +161,16 @@ export class RegistrarCentralComponent implements OnInit, AfterViewInit  {
   set coordenadaY(valor: any) {
     this.formRegistar.get('coordenadaY')?.setValue(valor);
   }
+  set numeroF(valor: any) {
+    this.formfiltro.get('numeroF')?.setValue(valor);
+  }
+  set clienteF(valor: any) {
+    this.formfiltro.get('clienteF')?.setValue(valor);
+  }
+  set usuarioF(valor: any) {
+    this.formfiltro.get('usuarioF')?.setValue(valor);
+  }
+
   get cliApeNomDenVM() {
     return this.formRegistar.get('cliApeNomDenVM');
   }
@@ -176,20 +186,43 @@ export class RegistrarCentralComponent implements OnInit, AfterViewInit  {
   get coordenadaY() {
     return this.formRegistar.get('coordenadaY');
   }
+  get numeroF() {
+    return this.formfiltro.get('numeroF');
+  }
+  get clienteF() {
+    return this.formfiltro.get('clienteF');
+  }
+  get usuarioF() {
+    return this.formfiltro.get('usuarioF');
+  }
+
   
   ngOnInit(): void {
-    const mapContainer = document.getElementById('map');
-    if (mapContainer) {
-      this.inicializarMapa();
-    }
 
     this.servicioConsultar.obtenerServicios().subscribe(data => {
       this.Servicios = data;  
+
+      this.dataSourceServicio = new MatTableDataSource(this.Servicios);
+      if (this.paginatorServicio) {
+        this.dataSourceServicio.paginator = this.paginatorServicio;
+      }
+      if (this.sortServicio) {
+        this.dataSourceServicio.sort = this.sortServicio;
+      }
+
     })
 
     this.centralRegistrar.listaClientes().subscribe(data => {
       this.Clientes = data;  
       this.ClientesFiltrados = data;
+
+      this.dataSourceCliente = new MatTableDataSource(data);
+      if (this.paginatorCliente) {
+        this.dataSourceCliente.paginator = this.paginatorCliente;
+      }
+      if (this.sortCliente) {
+        this.dataSourceCliente.sort = this.sortCliente;
+      }
     })
 
     //Coordenadas de Córdoba
@@ -198,46 +231,40 @@ export class RegistrarCentralComponent implements OnInit, AfterViewInit  {
     this.coordenadaYSeleccionado = "-64.188776";    
     this.coordenadaY = this.coordenadaYSeleccionado;
   }
-  // ngAfterViewInit() {
-    
-  //   this.tabGroup.selectedIndex = 0;
-  // }
-  ngAfterViewInit(): void {
-    this.tabGroup.selectedIndex = 0;
-    this.coordenadaXSeleccionado = '-31.420083';
-    this.coordenadaYSeleccionado = '-64.188776';
 
+  ngAfterViewInit(): void {
     this.map = L.map('map').setView([-31.420083, -64.188776], 10);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(this.map);
   }
 
-  inicializarMapa(): void {
-    let self = this;
-    var map = L.map('map').setView([-31.420083, -64.188776], 10);
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(
-      map
-    );
-    var marker = L.marker([-31.420083, -64.188776], {
-      icon: icon({
-        iconUrl:
-          'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
-        shadowUrl:
-          'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
-        iconSize: [25, 41],
-        iconAnchor: [12, 41],
-      }),
-      draggable: true, // Agregamos la propiedad draggable al marcador
-    }).addTo(map);
+  handlePageChangeCliente(event: any) {
+    this.currentPageCliente = event.pageIndex + 1;
+    this.pageSizeCliente= event.pageSize;
+  }
 
-    marker.on('dragend', function (e) {
-      var newCoords = e.target.getLatLng();
-      self.coordenadaXSeleccionado = newCoords.lat;
-      self.coordenadaYSeleccionado = newCoords.lng;
-      self.coordenadaX = newCoords.lat;
-      self.coordenadaY = newCoords.lng;
-    });
+  handlePageChangeServicio(event: any) {
+    this.currentPageServicio = event.pageIndex + 1;
+    this.pageSizeServicio = event.pageSize;
+  }
+
+  handlePageChangeServicioAgregados(event: any) {
+    this.currentPageServicioAgregados = event.pageIndex + 1;
+    this.pageSizeServicioAgregados = event.pageSize;
   }
   
+  //STEP
+  goToNextStep(stepNumber: number): void {
+    if (this.stepper) {
+      this.stepper.selectedIndex = stepNumber;
+    }
+  }
+  
+  goToPreviousStep(): void {
+    if (this.stepper) {
+      this.stepper.previous();
+    }
+  }
+   
   //Valida que exista algún servicio que responda al filtro.
   validarFiltradoServicios(): Boolean {
     if (this.Servicios.length == 0) {
@@ -264,6 +291,7 @@ export class RegistrarCentralComponent implements OnInit, AfterViewInit  {
       return true;
     }
   }
+
   // Placeholder de DNI
   formatDocumentNumber(event: Event) {
     const input = event.target as HTMLInputElement;
@@ -309,19 +337,6 @@ export class RegistrarCentralComponent implements OnInit, AfterViewInit  {
       }
     }
   }
-  // Permite controlar la navegación entre las pestañas
-  selectTab(tabIndex: number) {
-    this.tabGroup.selectedIndex = tabIndex;
-  }
-  //Almacena los datos del servicio que fue seleccionado en la tabla de servicio filtrados dentro de variables locales.
-  esfilaSeleccionadaServicio(servicios: ServicioClass) {
-    this.idListaServiciosSeleccionado = servicios.serId;      
-  }
-
-  //Almacena los datos del servicio que fue seleccionado en la tabla de servicio filtrados dentro de variables locales.
-  esfilaSeleccionadaServicioDeCentral(servicios: ServicioClass) {      
-    this.idListaServiciosCentralSeleccionado = servicios.serId;
-  }
 
   //Almacena los datos del servicio que fue seleccionado en la tabla de servicio filtrados dentro de variables locales.
   esfilaSeleccionadaCliente(cliente: CentralClienteConsultaClass) {      
@@ -331,103 +346,88 @@ export class RegistrarCentralComponent implements OnInit, AfterViewInit  {
     this.cenNroDocSeleccionado = cliente.cliNroDoc;
     this.cliApeNomDenVM = this.cliApeNomDenSeleccionado;
     this.usuarioVM = this.usuarioSeleccionado;
-    
+    this.coordenadaX = this.coordenadaXSeleccionado;
+    this.coordenadaY = this.coordenadaYSeleccionado ;
+
     this.isCollapsed1 = !this.isCollapsed1;
-  }
+    this.goToNextStep(1)
 
-  //Metodos para grilla
-  //Almacena en una variable la propiedad por la cual se quiere ordenar la consulta de Cliente.
-  ordenarClientePor(propiedad: string) {
-    this.tipoOrdenamientoCliente =
-      propiedad === this.propiedadOrdenamientoCliente ? this.tipoOrdenamientoCliente * -1 : 1;
-    this.propiedadOrdenamientoCliente = propiedad;
-  }
-
-  //En base a la propiedad por la que se quiera ordenar y el tipo de orden muestra un icono.
-  ordenarIconoCliente(propiedad: string) {
-    if (propiedad === this.propiedadOrdenamientoCliente) {
-      return this.tipoOrdenamientoCliente === 1 ? '🠉' : '🠋';
-    } else {
-      return '🠋🠉';
-    }
-  }
-  //Filtro de Tipo de DNI
-  filtrarClientesPorTipoDocumento() {
+    if (!this.marker) {
+      if (this.map) {
+        this.marker = new L.Marker([parseFloat( this.coordenadaXSeleccionado ), parseFloat( this.coordenadaYSeleccionado  )], {
+          icon: icon({
+            iconUrl:
+              'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+            shadowUrl:
+              'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+          }),
+          draggable: true, // Agregamos la propiedad draggable al marcador
+        }).addTo(this.map);
     
-    this.ClientesFiltrados = this.Clientes.filter(cliente => cliente.cliTipoDoc === this.tipoDocumentoSeleccionado);
-  }
-
-  //Almacena en una variable la propiedad por la cual se quiere ordenar la consulta de Servicio.
-  ordenarServicioPor(propiedad: string) {
-    this.tipoOrdenamientoServicio =
-      propiedad === this.propiedadOrdenamientoServicio ? this.tipoOrdenamientoServicio * -1 : 1;
-    this.propiedadOrdenamientoServicio = propiedad;
-  }
-
-  //En base a la propiedad por la que se quiera ordenar y el tipo de orden muestra un icono.
-  ordenarIconoServicio(propiedad: string) {
-    if (propiedad === this.propiedadOrdenamientoServicio) {
-      return this.tipoOrdenamientoServicio === 1 ? '🠉' : '🠋';
-    } else {
-      return '🠋🠉';
+        // Agregar evento de cambio de posición al marcador
+        this.marker.on('dragend', (event) => {
+          const newPosition = event.target.getLatLng();
+          this.coordenadaX = newPosition.lat.toString();
+          this.coordenadaY = newPosition.lng.toString();      
+        });
+      }
+    } else {      
+      const newLatLng = L.latLng(parseFloat( this.coordenadaXSeleccionado), parseFloat( this.coordenadaYSeleccionado  ));
+      this.marker.setLatLng(newLatLng);
     }
-  }
-
-  //Almacena en una variable la propiedad por la cual se quiere ordenar la consulta de Servicio Central.
-  ordenarServicioCentralPor(propiedad: string) {
-    this.tipoOrdenamientoServicioCentral =
-      propiedad === this.propiedadOrdenamientoServicioCentral ? this.tipoOrdenamientoServicioCentral * -1 : 1;
-    this.propiedadOrdenamientoServicioCentral = propiedad;
-  }
-
-  //En base a la propiedad por la que se quiera ordenar y el tipo de orden muestra un icono.
-  ordenarIconoServicioCentral(propiedad: string) {
-    if (propiedad === this.propiedadOrdenamientoServicioCentral) {
-      return this.tipoOrdenamientoServicioCentral === 1 ? '🠉' : '🠋';
-    } else {
-      return '🠋🠉';
+    
+    if (this.map) {
+      this.map.setView([parseFloat( this.coordenadaXSeleccionado ), parseFloat( this.coordenadaYSeleccionado )], 10);
     }
+
   }
+
+  //Filtro de Central por Tipo Doc, Numero, Nombre Cliente o Usuario.
+  esFiltrar() {
+    const tipoDocumentoControl = this.formfiltro.get('tipoF');
+    const numeroFControl = this.formfiltro.get('numeroF');
+    const clienteFControl = this.formfiltro.get('clienteF');
+    const usuarioFControl = this.formfiltro.get('usuarioF');
   
-  //Filtro de Cliente por Tipo, numero, Nombre Cliente o Usuario.
-  esFiltrar2(event: Event) {
-    const filtronTipo = (this.formfiltro.get('tipo') as FormControl).value?.toLowerCase();
-    const filtroNumero = (this.formfiltro.get('numero') as FormControl).value?.toLowerCase();
-    const filtroCliente = (this.formfiltro.get('cliente') as FormControl).value?.toLowerCase();
-    const filtronUsuario = (this.formfiltro.get('usuario') as FormControl).value?.toLowerCase();
-
-    this.ClientesFiltrados = this.Clientes.filter((cli) => {
-      const valorTdDescripcion= cli.tdDescripcion.toString().toLowerCase();
-      const valorCliNroDoc = cli.cliNroDoc.toString().toLowerCase();
-      const valorCliApeNomDen = cli.cliApeNomDen.toString().toLowerCase();
-      const valorUsuario = cli.usuario.toString().toLowerCase();
-
-      return (
-        (!filtronTipo || valorTdDescripcion.includes(filtronTipo)) &&
-        (!filtroNumero || valorCliNroDoc.includes(filtroNumero)) &&
-        (!filtroCliente || valorCliApeNomDen.includes(filtroCliente)) &&
-        (!filtronUsuario || valorUsuario.includes(filtronUsuario))
-      );
-    });
-  }
-  esFiltrar(event: Event, campo: string) {
-    let txtBuscar = (event.target as HTMLInputElement).value;
-    let filtro = txtBuscar
-      .replace(/[^\w\s]/g, '')
-      .trim()
-      .toLowerCase();
-    this.ClientesFiltrados = [];
-    this.Clientes.forEach((clienteConsulta) => {
-      if (
-        (campo === 'tipo' && clienteConsulta.tdDescripcion.toString().toLowerCase().includes(filtro)) ||
-        (campo === 'numero' && clienteConsulta.cliNroDoc.toString().toLowerCase().includes(filtro)) ||
-        (campo === 'cliente' && clienteConsulta.cliApeNomDen.toString().toLowerCase().includes(filtro)) ||
-        (campo === 'usuario' && clienteConsulta.usuario.toString().toLowerCase().includes(filtro))
-      ) {
-        this.ClientesFiltrados.push(clienteConsulta);
+    const tipoDocumentoSeleccionado = tipoDocumentoControl?.value || "";
+    const filtroNumeroF = (numeroFControl?.value || "").toString().toLowerCase();
+    const filtroClienteF = (clienteFControl?.value || "").toString().toLowerCase();
+    const filtronUsuarioF = (usuarioFControl?.value || "").toString().toLowerCase();
+  
+    this.ClientesFiltrados = this.Clientes.filter((cliente) => {
+      const valorTipoF = cliente.cliTipoDoc.toString().toLowerCase();
+      const valorNumeroF = cliente.cliNroDoc.toString().toLowerCase();
+      const valorClienteF = cliente.cliApeNomDen.toString().toLowerCase();
+      const valorUsuarioF = cliente.usuario.toString().toLowerCase();
+  
+      if (tipoDocumentoSeleccionado === "0") {
+        return (
+          (!filtroNumeroF || valorNumeroF.includes(filtroNumeroF)) &&
+          (!filtroClienteF || valorClienteF.includes(filtroClienteF)) &&
+          (!filtronUsuarioF || valorUsuarioF.includes(filtronUsuarioF))
+        );
+      } else {
+        const filtronTipoF = tipoDocumentoSeleccionado.toString().toLowerCase();
+        return (
+          (!filtronTipoF || valorTipoF === filtronTipoF) &&
+          (!filtroNumeroF || valorNumeroF.includes(filtroNumeroF)) &&
+          (!filtroClienteF || valorClienteF.includes(filtroClienteF)) &&
+          (!filtronUsuarioF || valorUsuarioF.includes(filtronUsuarioF))
+        );
       }
     });
+  
+    this.dataSourceCliente = new MatTableDataSource(this.ClientesFiltrados);
+    if (this.paginatorCliente) {
+      this.dataSourceCliente.paginator = this.paginatorCliente;
+    }
+    if (this.sortCliente) {
+      this.dataSourceCliente.sort = this.sortCliente;
+    }
   }
+
   // Extraer servicios a la central selecciona
   agregarServicio(servicios: ServicioClass): void {  
     const index = this.Servicios.indexOf(servicios);
@@ -436,6 +436,22 @@ export class RegistrarCentralComponent implements OnInit, AfterViewInit  {
       this.ServiciosNuevos.push(servicios);
     }
     this.validarFiltradoServicios();  
+
+    this.dataSourceServicio = new MatTableDataSource(this.Servicios);
+    if (this.paginatorServicio) {
+      this.dataSourceServicio.paginator = this.paginatorServicio;
+    }
+    if (this.sortServicio) {
+      this.dataSourceServicio.sort = this.sortServicio;
+    }
+
+    this.dataSourceServicioAgregados = new MatTableDataSource(this.ServiciosNuevos);
+    if (this.paginatorServicioAgregados) {
+      this.dataSourceServicioAgregados.paginator = this.paginatorServicioAgregados;
+    }
+    if (this.sortServicioAgregados) {
+      this.dataSourceServicioAgregados.sort = this.sortServicioAgregados;
+    }
   }
 
   // Extraer servicios a la central selecciona
@@ -445,7 +461,23 @@ export class RegistrarCentralComponent implements OnInit, AfterViewInit  {
       this.ServiciosNuevos.splice(index, 1);
       this.Servicios.push(servicios);
     }
-    this.validarFiltradoServiciosDeCentral();  
+    this.validarFiltradoServiciosDeCentral(); 
+    
+    this.dataSourceServicio = new MatTableDataSource(this.Servicios);
+    if (this.paginatorServicio) {
+      this.dataSourceServicio.paginator = this.paginatorServicio;
+    }
+    if (this.sortServicio) {
+      this.dataSourceServicio.sort = this.sortServicio;
+    }
+
+    this.dataSourceServicioAgregados = new MatTableDataSource(this.ServiciosNuevos);
+    if (this.paginatorServicioAgregados) {
+      this.dataSourceServicioAgregados.paginator = this.paginatorServicioAgregados;
+    }
+    if (this.sortServicioAgregados) {
+      this.dataSourceServicioAgregados.sort = this.sortServicioAgregados;
+    }
   } 
   
   // Registar Central
@@ -474,8 +506,8 @@ export class RegistrarCentralComponent implements OnInit, AfterViewInit  {
       let Central: CentralClass = new CentralClass(
         0,
         this.formRegistar.get('imei')?.value,
-        this.coordenadaXSeleccionado,
-        this.coordenadaYSeleccionado,
+        this.formRegistar.get('coordenadaX')?.value,
+        this.formRegistar.get('coordenadaY')?.value,
         new Date(),
         null,      
         1,
@@ -491,7 +523,7 @@ export class RegistrarCentralComponent implements OnInit, AfterViewInit  {
               ' se ha registrado con éxito con el número de Central: ' +
               data.cenNro,
             icon: 'success',
-            position: 'top',
+            position: 'center',
             showConfirmButton: true,
             confirmButtonColor: '#0f425b',
             confirmButtonText: 'Aceptar',
@@ -523,7 +555,7 @@ export class RegistrarCentralComponent implements OnInit, AfterViewInit  {
                 ' se ha registrado con éxito con el número de Central: ' +
                 nroCentralNew,
                 icon: 'success',
-                position: 'top',
+                position: 'center',
                 showConfirmButton: true,
                 confirmButtonColor: '#0f425b',
                 confirmButtonText: 'Aceptar',
@@ -536,7 +568,7 @@ export class RegistrarCentralComponent implements OnInit, AfterViewInit  {
               Swal.fire({
                 text: 'No es posible Agregar los Servicios a la Central',
                 icon: 'error',
-                position: 'top',
+                position: 'center',
                 showConfirmButton: true,
                 confirmButtonColor: '#0f425b',
                 confirmButtonText: 'Aceptar',
@@ -547,7 +579,7 @@ export class RegistrarCentralComponent implements OnInit, AfterViewInit  {
           Swal.fire({
             text: 'No es posible Agregar esta Central',
             icon: 'error',
-            position: 'top',
+            position: 'center',
             showConfirmButton: true,
             confirmButtonColor: '#0f425b',
             confirmButtonText: 'Aceptar',

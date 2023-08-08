@@ -333,9 +333,7 @@ export class ConsultarCentralComponent implements OnInit   {
 
       this.servicioConsultar.obtenerServicios().subscribe(data => {
         this.Servicios = data;  
-      
-
-
+        
       this.centralConsultar.obtenerServicioXCentral(centralConsulta.cenNro).subscribe(data => {
         this.ServiciosDeCentralActualizado = data; 
         this.Servicios = this.Servicios.filter(servicio => {
