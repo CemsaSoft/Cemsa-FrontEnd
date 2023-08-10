@@ -381,7 +381,7 @@ export class ConsultarMedicionesActualesComponent implements OnInit {
               label: {
                 show: true,
                 position: 'top',
-                formatter: (param: { value: number }) => `${param.value -20} ºC`,
+                formatter: (param: { value: number }) => `${(param.value - 20).toFixed(1)} ºC`,
                 fontSize: 20
               }
             }],

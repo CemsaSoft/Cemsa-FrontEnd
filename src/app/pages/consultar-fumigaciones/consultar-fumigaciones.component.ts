@@ -48,6 +48,7 @@ export class ConsultarFumigacionesComponent implements OnInit {
   titulo1 = 'Seleccionar Central para Consultar sus Fumigaciones';
   titulo2 = 'Fumigaciones de la Central N°:';
   titulo3 = 'Modificar Datos de la Fumigación N°:';
+  public habilitarBoton: boolean = false;  
   isStep1Completed = false;
   isStep2Completed = false;
   isStep3Completed = false;
@@ -58,6 +59,8 @@ export class ConsultarFumigacionesComponent implements OnInit {
   CentralConsulta: CentralConsultaClass[] = [];
   CentralConsultaFiltrados: CentralConsultaClass [] = [];
   Fumigaciones: FumigacionesClass[] =[];
+  FumigacionesFiltrados: FumigacionesClass[] =[];
+
 
   //VARIABLES DE DATOS
   propiedadOrdenamiento: string = "cenNro";
@@ -76,6 +79,7 @@ export class ConsultarFumigacionesComponent implements OnInit {
 
   //FORMULARIOS DE AGRUPACION DE DATOS
   formModificar: FormGroup;
+  formfiltroFumigacion: FormGroup;
 
   constructor(
     private centralConsultar: CentralService, 
@@ -93,6 +97,13 @@ export class ConsultarFumigacionesComponent implements OnInit {
         Validators.pattern("^[A-Za-zÑñáéíóúÁÉÍÓÚ'°0-9/%ºª ]{1,50}$"),
       ]),      
     });
+
+    this.formfiltroFumigacion = new FormGroup({
+      codFum: new FormControl(null, []),
+      observacion: new FormControl(null, []),
+      fecha_desde: new FormControl(null, []),
+      fecha_hasta: new FormControl(null, []),
+    });
   }
 
   ngOnInit(): void {
@@ -109,6 +120,8 @@ export class ConsultarFumigacionesComponent implements OnInit {
         this.dataSourceCentral.sort = this.sortCentral;
       }
     });
+    this.formfiltroFumigacion.get('fecha_desde')?.disable();
+    this.formfiltroFumigacion.get('fecha_hasta')?.disable();
   }
 
   handlePageChangeCentral(event: any) {
@@ -177,7 +190,7 @@ export class ConsultarFumigacionesComponent implements OnInit {
 
   //Valida que exista alguna Fumigación en Central que responda al filtro.
   validarFiltradoFumigacion(): Boolean {
-    if (this.Fumigaciones.length == 0) {
+    if (this.FumigacionesFiltrados.length == 0) {
       return false;
     } else {
       return true;
@@ -209,12 +222,123 @@ export class ConsultarFumigacionesComponent implements OnInit {
     }
   }
 
+  //Filtro de Alarmas
+  esFiltrarFumigacion(event: Event) {
+    const filtronCodFum = (this.formfiltroFumigacion.get('codFum') as FormControl).value?.toLowerCase();
+    const filtroObservacion = (this.formfiltroFumigacion.get('observacion') as FormControl).value?.toLowerCase();
+
+    this.FumigacionesFiltrados = this.Fumigaciones.filter((fumigaciones) => {
+      const valorCodFum = fumigaciones.fumId !== null ? fumigaciones.fumId.toString().toLowerCase() : '';
+      const valorObservacion = fumigaciones.fumObservacion !== null ? fumigaciones.fumObservacion.toString().toLowerCase() : '';
+
+      return (
+        (!filtronCodFum || valorCodFum.includes(filtronCodFum)) &&
+        (!filtroObservacion || valorObservacion.includes(filtroObservacion)) 
+      );
+    });
+
+    this.dataSourceFumigacion= new MatTableDataSource(this.FumigacionesFiltrados);
+    if (this.paginatorFumigacion) {
+      this.dataSourceFumigacion.paginator = this.paginatorFumigacion;
+    }
+    if (this.sortFumigacion) {
+      this.dataSourceFumigacion.sort = this.sortFumigacion;
+    }
+  }  
+  
+  //filtro de Alarma por Fecha
+  filtarXFechas(){
+    var hoy = new Date();
+    var desde = new Date();
+    var hasta = new Date();
+
+    var fechaDesde = this.formfiltroFumigacion.value.fecha_desde ?? null;
+    var fechaSeleccionada = new Date(fechaDesde);
+    fechaSeleccionada.setDate(fechaSeleccionada.getDate() ); // Sumar un día
+    fechaSeleccionada.setHours(0, 0, 0, 0);
+    desde = fechaSeleccionada;
+
+    var fechaHasta = this.formfiltroFumigacion.value.fecha_hasta ?? null;
+    fechaSeleccionada = new Date(fechaHasta);
+    fechaSeleccionada.setDate(fechaSeleccionada.getDate() ); // Sumar un día
+    fechaSeleccionada.setHours(0, 0, 0, 0);
+    hasta = fechaSeleccionada;      
+
+    function mostrarError(mensaje: string, footer: string) {
+      Swal.fire({
+        title: 'Error',
+        text: mensaje,
+        icon: 'warning',
+        confirmButtonColor: '#0f425b',
+        confirmButtonText: 'Aceptar',
+        footer: footer
+      });
+    }
+
+    if (fechaDesde === null || isNaN(desde.getTime())) {
+      mostrarError('Ingrese una fecha de desde válida.', 'Por favor, ingrese una fecha de hasta válida para generar el filtro.');
+    } else if (fechaHasta === null || isNaN(hasta.getTime())) {
+      mostrarError('Ingrese una fecha de hasta válida.', 'Por favor, ingrese una fecha de hasta válida para generar el filtro.');
+    } else if (desde > hasta) {
+      mostrarError('La fecha "desde" es posterior a la fecha "hasta".', 'Por favor, cambie el rango de fechas seleccionado para generar el filtro.');
+    } else if (hasta > hoy) {
+      mostrarError('La fecha "desde" no puede ser posterior a la fecha actual.', 'Por favor, cambie el rango de fechas seleccionado para generar el filtro.');
+    } else {
+      
+    // if (desde.getTime() === hasta.getTime()) {
+      // Agregar un día a la fecha 'hasta'
+      hasta.setDate(hasta.getDate() + 1);
+
+      const filtronCodFum = ((this.formfiltroFumigacion.get('codFum') as FormControl).value ?? "").toLowerCase();
+      const filtroObservacion = ((this.formfiltroFumigacion.get('observacion') as FormControl).value ?? "").toLowerCase();
+
+      this.FumigacionesFiltrados = this.Fumigaciones.filter((fumigaciones) => {
+      const valorCodFum = fumigaciones.fumId !== null ? fumigaciones.fumId.toString().toLowerCase() : '';
+      const valorObservacion = fumigaciones.fumObservacion !== null ? fumigaciones.fumObservacion.toString().toLowerCase() : '';
+      const fechaFumigacion = new Date(fumigaciones.fumFechaRealizacion);
+
+      return (
+        (!filtronCodFum || valorCodFum.includes(filtronCodFum)) &&
+        (!filtroObservacion || valorObservacion.includes(filtroObservacion)) &&
+        (fechaFumigacion >= desde && fechaFumigacion <= hasta)
+      );
+      });
+
+    }
+
+    this.dataSourceFumigacion = new MatTableDataSource(this.FumigacionesFiltrados);
+    if (this.paginatorFumigacion) {
+      this.dataSourceFumigacion.paginator = this.paginatorFumigacion;
+    }
+    if (this.sortFumigacion) {
+      this.dataSourceFumigacion.sort = this.sortFumigacion;
+    }
+  }
+  
+  // valida para que un solo selector de frecuencia este seleccionado a la vez
+  filtroFecha(event: any) {
+    if (event.checked === true) {
+      this.formfiltroFumigacion.get('codFum')?.disable();
+      this.formfiltroFumigacion.get('observacion')?.disable();
+      this.formfiltroFumigacion.get('fecha_desde')?.enable();
+      this.formfiltroFumigacion.get('fecha_hasta')?.enable();
+      this.habilitarBoton = true;
+    }
+    else {
+      this.formfiltroFumigacion.get('codFum')?.enable();      
+      this.formfiltroFumigacion.get('observacion')?.enable();
+      this.formfiltroFumigacion.get('fecha_desde')?.disable();
+      this.formfiltroFumigacion.get('fecha_hasta')?.disable();
+      this.habilitarBoton = false;
+    }
+  }
   seleccionarCentral(element: any) {
 
     this.centralNroSeleccionada = element.cenNro;  
 
     this.fumigacionesConsulta.obtenerFumigacionesDeCentral(this.centralNroSeleccionada).subscribe(data => {
       this.Fumigaciones = data; 
+      this.FumigacionesFiltrados=data;
 
       this.dataSourceFumigacion = new MatTableDataSource(data);
       if (this.paginatorFumigacion) {

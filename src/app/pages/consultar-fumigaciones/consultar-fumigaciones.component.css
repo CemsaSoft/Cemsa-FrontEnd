@@ -316,9 +316,44 @@
     width: 110px;
     padding-left: 5px;
 }
+.label2{
+  position: relative;
+  display: inline-block;
+  background-color: white;
+  text-align: left;
+  color: #80807a;
+  font-size: 11px;
+  top: 10px;
+    left: 10px;
+    border-left-width: 10px;
+    width: 130px;
+    padding-left: 5px;
+}
+.label3{
+  position: relative;
+  display: inline-block;
+  background-color: white;
+  text-align: left;
+  color: #80807a;
+  font-size: 11px;
+  top: 10px;
+    left: 10px;
+    border-left-width: 10px;
+    width: 155px;
+    padding-left: 5px;
+}
 /* ---------------Iconos de input---------------- */
 .FormatoIconos{
   left: 190px;
+    top: 55px;
+    margin-left: 10px;
+    margin-top: 30px;
+    height: 69px;
+    margin-bottom: 20px;
+    margin-top: 38px;
+}
+.FormatoIconos2{
+  left: 230px;
     top: 55px;
     margin-left: 10px;
     margin-top: 30px;
@@ -369,7 +404,7 @@
     display: flex;
     box-shadow: 0 1px 1px 0 rgba(0,0,0,.2);
     height: 50px;
-    width: 150px;
+    width: 290px;
     /* width: 90px; */
     padding: 10px 60px 10px 15px;
     border-style: solid;
@@ -518,4 +553,39 @@
   background-color: #f7f9fa23;
   color: #01C3CC;
   font-size: 18px;  
+}
+
+/* -------Botón aplicar filtro------- */
+.btnAplicarFiltro{
+  background-color: #01C3CC;
+  width: 237px !important;
+  height: 59px !important;
+  border-radius: 50px !important;
+}
+.margenFiltrosSlite{
+  margin-top: 40px;
+  margin-bottom: 0px;
+}
+.margenFiltrosFecha{
+  margin-top: 2px;
+  margin-bottom: 0px;
+  margin-left: 0px; 
+  width: 300px; 
+  /* width: 100%; */
+
+}
+.margenFiltrosBtn{
+  margin-top: -10px;
+  margin-bottom: 0px;
+  margin-left: 30px; 
+}
+.input-container {
+  display: flex;
+  align-items: center;
+}
+.mat-datepicker-toggle {
+  margin-left: 8px;
+}
+.mat-form-field {
+  width: 250px;
 }

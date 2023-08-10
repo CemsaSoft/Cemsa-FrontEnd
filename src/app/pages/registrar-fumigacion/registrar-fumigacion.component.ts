@@ -196,7 +196,7 @@ export class RegistrarFumigacionComponent implements OnInit {
     var fecha = this.formAgregar.value.fechaRealizacionA ?? null;
     if (fecha!=null) {
       fechaSeleccionada = new Date(fecha);
-      fechaSeleccionada.setDate(fechaSeleccionada.getDate() + 1); // Sumar un día
+      fechaSeleccionada.setDate(fechaSeleccionada.getDate() ); // Sumar un día
       fechaSeleccionada.setHours(0, 0, 0, 0);
       fechaRealiz = fechaSeleccionada;
       esFechaPosterior = fechaRealiz > hoy;
@@ -227,7 +227,7 @@ export class RegistrarFumigacionComponent implements OnInit {
         if (esFechaPosterior) {
           mostrarError('La fecha de realización de la fumigación no puede ser posterior a la fecha actual.', 'Por favor, cambie la fecha de realización de la fumigación.');
         } else {
-          mostrarError('La fecha de realización de la fumigación debe ser anterior a la fecha actual y no puede exceder los 7 días a partir de la fecha actual.', 'Por favor, cambie la fecha de realización de la fumigación.');
+          mostrarError('La fecha de realización de la fumigación debe ser anterior o igual a la fecha actual y no puede exceder los 7 días a partir de hoy.', 'Por favor, seleccione una fecha válida.');
         }
         return false;
       } 
