@@ -30,92 +30,149 @@
     <div class="scrollarea">
 
       <!-- Contenido de la barra lateral -->
-      <main class="d-flex flex-nowrap">  
-    
-            <div class="d-flex flex-column flex-shrink-0 bg-body-tertiary" style="width: 30%; height: 30%;" 
-            id="navbarToggleExternalContentAdmin"
-            >
-              <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
-                  <!-- <li class="nav-item">
-                      <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed nav-link active iconPading" >
-                        <a href="home" class="nav-link active py-3 border-bottom rounded-0" aria-current="page" title="Home" data-bs-toggle="tooltip" data-bs-placement="center">
-                          <svg class="bi pe-none" width="25" height="25" role="img" aria-label="Home"><use xlink:href="#home"/></svg>
-                          <b>Home</b> 
-                        </a>
-                        </button>
-                    </li> -->
-                <li class="nav-item">
-                      <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed nav-link active iconPading" data-bs-toggle="collapse" data-bs-target="#central-collapse" aria-expanded="false" >
-                    <a class="nav-link  border-bottom rounded-0" aria-current="page" title="Mis Centrales" data-bs-toggle="tooltip" data-bs-placement="center">
-                      <img src="../../../assets/mis centrales.png"alt="" srcset="" style="width: 40px;height: 40px;">
-                      <br>
-                      <span class="titulosBotones">Mis Centrales</span>
+      <main class="d-flex flex-nowrap">      
+            <div class="d-flex flex-column flex-shrink-0 bg-body-tertiary" style="width: 30%; height: 30%;" id="navbarToggleExternalContentAdmin">
+              <!-- <ul class="nav nav-pills nav-flush flex-column mb-auto text-center"> -->
+              <ul class="nav nav-pills nav-flush flex-column mb-auto text-center sidebar-list">
+
+                <li class="sidebar-item" style="margin-top: -15px; margin-bottom: -10px;">
+                  <button class="btn btn-toggle d-flex align-items-center rounded border-0 collapsed nav-link active iconPadding"
+                          data-bs-toggle="collapse"
+                          aria-expanded="false">
+                    <a href="home" class="nav-link rounded-0" aria-current="page" title="Home" data-bs-toggle="tooltip" data-bs-placement="center">
+                      <div class="d-flex align-items-center">
+                        <svg class="bi pe-none" width="30" height="30" role="img" aria-label="Home" style="margin-right: 10px;"><use xlink:href="#home"/></svg>
+                        <span class="titulosBotones">Home</span>
+                      </div>
                     </a>
-                    </button>
-                    <div class="collapse" id="central-collapse">
-                      <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        
-                        <li><a href="consultar-central-cliente" class="link-body-emphasis d-inline-flex text-decoration-none rounded titulosBotones">Consultar</a></li>
-                      </ul>
-                    </div>
+                  </button>
                 </li>
-                <li class="nav-item" >
-                  <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed nav-link active iconPading " data-bs-toggle="collapse" data-bs-target="#alarmas-collapse" aria-expanded="false">
-                    <a class="nav-link border-bottom rounded-0" aria-current="page" title="Mis Alarmas" data-bs-toggle="tooltip " title="Mis Alarnas" data-bs-placement="center">
-                      <img src="../../../assets/mis_alarmas.png"alt="" srcset="" style="width: 40px;height: 40px;"><br>
-                      <span class="titulosBotones">Mis Alarmas</span>
+                <div class="menu-item-content d-flex align-items-center" style="margin-top: -10px; margin-bottom: -5px;">
+                </div>
+                
+                <li class="sidebar-item" style="margin-top: -10px; margin-bottom: -10px;">
+                  <button class="btn btn-toggle d-flex align-items-center rounded border-0 collapsed nav-link active iconPadding"
+                          data-bs-toggle="collapse"
+                          data-bs-target="#central-collapse"
+                          aria-expanded="false"
+                          (click)="toggleCollapse('central-collapse')">
+                      <a class="nav-link rounded-0" aria-current="page" title="Mis Centrales"
+                       data-bs-toggle="tooltip"
+                       data-bs-placement="center">
+                      <div style="display: flex; align-items: center;">
+                        <img src="../../../assets/mis_centrales.png" alt="" style="width: 30px; height: 30px; margin-right: 10px;">
+                        <span class="titulosBotones" style="white-space: nowrap;">Mis Centrales</span>
+                      </div>
+                    </a>
+                  </button>
+                  <div class="collapse" id="central-collapse">
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                      <li style="margin-left: 20px;">
+                        <a href="consultar-central-cliente" class="link-body-emphasis d-inline-flex text-decoration-none rounded titulosBotones">
+                          <span class="titulosBotones"></span> Consultar
+                        </a>
+                      </li>
+                    </ul>
+                  </div>                  
+                </li>
+                <div class="menu-item-content d-flex align-items-center" style="margin-top: -10px; margin-bottom: -5px;">
+                </div>
+
+                <li class="sidebar-item" style="margin-top: -10px; margin-bottom: -10px;">
+                  <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed nav-link active iconPadding"
+                          data-bs-toggle="collapse"
+                          data-bs-target="#alarmas-collapse"
+                          aria-expanded="false"
+                          (click)="toggleCollapse('alarmas-collapse')">
+                          
+                    <a class="nav-link rounded-0" aria-current="page" title="Mis Alarmas"
+                       data-bs-toggle="tooltip"
+                       data-bs-placement="center">
+                      <div style="display: flex; align-items: center;">
+                        <img src="../../../assets/mis_alarmas.png" alt="" style="width: 30px; height: 30px; margin-right: 10px;">
+                        <span class="titulosBotones">Mis Alarmas</span>
+                      </div>
                     </a>
                   </button>
                   <div class="collapse" id="alarmas-collapse">
-                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                      <li><a href="consultar-alarma" class="link-body-emphasis d-inline-flex text-decoration-none rounded titulosBotones">Consultar</a></li>
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small ">
+                      <li style="margin-left: 20px;"><a href="consultar-alarma" class="link-body-emphasis d-inline-flex text-decoration-none rounded titulosBotones">Consultar </a></li>
                     </ul>
                   </div>
                 </li>
-                <li>
-                  <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed iconPading" data-bs-toggle="collapse" data-bs-target="#config-alarmas-collapse" aria-expanded="false">
-                    <a class="nav-link border-bottom rounded-0" title="Configuración de Alarmas" data-bs-toggle="tooltip" data-bs-placement="center">
-                      <img src="../../../assets/config_alarma.png"alt="" srcset="" style="width: 40px;height: 40px;"><br>
-                      <span class="titulosBotones">Configuración de Alarmas</span>
+                <div class="menu-item-content d-flex align-items-center" style="margin-top: -10px; margin-bottom: -5px;">
+                </div>
+
+                <li class="sidebar-item" style="margin-top: -10px; margin-bottom: -10px;">
+                  <button class="btn btn-toggle d-flex align-items-center rounded border-0 collapsed nav-link active iconPadding "
+                          data-bs-toggle="collapse"
+                          data-bs-target="#config-alarmas-collapse"
+                          aria-expanded="false"
+                          (click)="toggleCollapse('config-alarmas-collapse')">
+                    <a class="nav-link rounded-0" title="Configuración de Alarmas" data-bs-toggle="tooltip" data-bs-placement="center">
+                      <div style="display: flex; align-items: center;">
+                        <img src="../../../assets/config_alarma.png" alt="" style="width: 30px; height: 30px; margin-right: 10px;">
+                        <span class="titulosBotones">Ajuste de Alarmas</span>
+                      </div>
                     </a>
                   </button>
                   <div class="collapse" id="config-alarmas-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                      <li><a href="consultar-alarma-config" class="link-body-emphasis d-inline-flex text-decoration-none rounded titulosBotones">Consultar</a></li>
-                      <li><a href="registrar-alarma-config" class="link-body-emphasis d-inline-flex text-decoration-none rounded titulosBotones">Registrar</a></li>
+                      <li style="margin-left: 20px;"><a href="consultar-alarma-config" class="link-body-emphasis d-inline-flex text-decoration-none rounded titulosBotones">Consultar</a></li>
+                      <li style="margin-left: 20px;"><a href="registrar-alarma-config" class="link-body-emphasis d-inline-flex text-decoration-none rounded titulosBotones">Registrar</a></li>
                     </ul>
                   </div>
                 </li>
-                <br>
-                <li>
-                  <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed iconPading" data-bs-toggle="collapse" data-bs-target="#tableros-collapse" aria-expanded="false">
-                    <a class="nav-link border-bottom rounded-0" title="Mis Tableros" data-bs-toggle="tooltip" data-bs-placement="center">
-                      <img src="../../../assets/mis_tableros.png"alt="" srcset="" style="width: 40px;height: 40px;"><br>
-                      <span class="titulosBotones">Mis Tableros</span>
+                <div class="menu-item-content d-flex align-items-center" style="margin-top: -10px; margin-bottom: -5px;">
+                </div>
+
+                <li class="sidebar-item" style="margin-top: -10px; margin-bottom: -10px;">
+                  <button class="btn btn-toggle d-flex align-items-center rounded border-0 collapsed nav-link active iconPadding"
+                          data-bs-toggle="collapse"
+                          data-bs-target="#tableros-collapse"
+                          aria-expanded="false"
+                          (click)="toggleCollapse('tableros-collapse')">
+                    <a class="nav-link rounded-0" title="Mis Tableros" data-bs-toggle="tooltip" data-bs-placement="center">
+                      <div style="display: flex; align-items: center;">
+                        <img src="../../../assets/mis_tableros.png" alt="" style="width: 30px; height: 30px; margin-right: 10px;">
+                        <span class="titulosBotones">Mis Tableros</span>
+                      </div>
                     </a>
                   </button>
                   <div class="collapse" id="tableros-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                      <li><a href="consultar-paneles-monitoreo" class="link-body-emphasis d-inline-flex text-decoration-none rounded titulosBotones">Panel de Monitoreo</a></li>
-                      <li><a href="consultar-mediciones-actuales" class="link-body-emphasis d-inline-flex text-decoration-none rounded titulosBotones">Mediciones Actuales</a></li>
-                      <li><a href="consultar-reportes" class="link-body-emphasis d-inline-flex text-decoration-none rounded titulosBotones">Consultar Reportes</a></li>
+                      <li style="margin-left: 20px;"><a href="consultar-paneles-monitoreo" class="link-body-emphasis d-inline-flex text-decoration-none rounded titulosBotones">Panel de Monitoreo</a></li>
+                      <li style="margin-left: 20px;"><a href="consultar-mediciones-actuales" class="link-body-emphasis d-inline-flex text-decoration-none rounded titulosBotones">Mediciones Actuales</a></li>
+                      <li style="margin-left: 20px;"><a href="consultar-reportes" class="link-body-emphasis d-inline-flex text-decoration-none rounded titulosBotones">Consultar Reportes</a></li>
                     </ul>
                   </div>
                 </li>
-                <li>
-                  <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed iconPading titulosBotones" data-bs-toggle="collapse" data-bs-target="#fumigacion-collapse" aria-expanded="false">
-                    <a class="nav-link border-bottom rounded-0" title="Fumigaciones" data-bs-toggle="tooltip" data-bs-placement="center">
-                      <img src="../../../assets/fumigaciones.png"alt="" srcset="" style="width: 40px;height: 40px;"><br>
-                    <span class="titulosBotones">Fumigaciones</span>
+                <div class="menu-item-content d-flex align-items-center" style="margin-top: -10px; margin-bottom: -5px;">
+                </div>
+
+                <li class="sidebar-item" style="margin-top: -10px; margin-bottom: -10px;">
+                  <button class="btn btn-toggle d-flex align-items-center rounded border-0 collapsed nav-link active iconPadding"
+                          data-bs-toggle="collapse"
+                          data-bs-target="#fumigacion-collapse"
+                          aria-expanded="false"
+                          (click)="toggleCollapse('fumigacion-collapse')">
+                    <a class="nav-link rounded-0" title="Fumigaciones" data-bs-toggle="tooltip" data-bs-placement="center">
+                      <div style="display: flex; align-items: center;">
+                        <img src="../../../assets/fumigaciones.png" alt="" style="width: 30px; height: 30px; margin-right: 10px;">
+                        <span class="titulosBotones">Fumigaciones</span>
+                      </div>
                     </a>
                   </button>
                   <div class="collapse" id="fumigacion-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                      <li><a href="consultar-fumigaciones" class="link-body-emphasis d-inline-flex text-decoration-none rounded titulosBotones">Consultar</a></li>
-                      <li><a href="registrar-fumigaciones" class="link-body-emphasis d-inline-flex text-decoration-none rounded titulosBotones">Registrar</a></li>
+                      <li style="margin-left: 20px;"><a href="consultar-fumigaciones" class="link-body-emphasis d-inline-flex text-decoration-none rounded titulosBotones">Consultar</a></li>
+                      <li style="margin-left: 20px;"><a href="registrar-fumigaciones" class="link-body-emphasis d-inline-flex text-decoration-none rounded titulosBotones">Registrar</a></li>
                     </ul>
                   </div>
                 </li>
+                <div class="menu-item-content d-flex align-items-center" style="margin-top: -10px; margin-bottom: -5px;">
+                </div>
+
                 <!-- <li>
                   <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed iconPading titulosBotones" data-bs-toggle="collapse" data-bs-target="#reportes-collapse" aria-expanded="false">
                     <a class="nav-link  border-bottom rounded-0" title="Mis Reportes" data-bs-toggle="tooltip" data-bs-placement="center">
@@ -137,9 +194,21 @@
                     </a>
                   </button>
                 </li> -->
+
+                <li class="sidebar-item" style="margin-top: -10px; margin-bottom: -10px;">
+                  <button class="btn btn-toggle d-flex align-items-center rounded border-0 collapsed nav-link active iconPadding"
+                          data-bs-toggle="collapse"                          
+                          (click)="cerrarSesion()">
+                    <a href="''" class="nav-link rounded-0" title="Cerrar Sesión" data-bs-toggle="tooltip" data-bs-placement="center">
+                      <div style="display: flex; align-items: center;">
+                        <img src="../../../assets/salir.png" alt="" style="width: 30px; height: 30px; margin-right: 10px;">
+                        <span class="titulosBotones">Cerrar Sesión</span>
+                      </div>
+                    </a>
+                  </button>
+                </li>
               </ul>
-              <!-- <a href="" class="d-flex align-items-center link-body-emphasis text-decoration-none" (click)="cerrarSesion()">
-                  
+              <!-- <a href="" class="d-flex align-items-center link-body-emphasis text-decoration-none" (click)="cerrarSesion()">                  
                 <svg class="bi pe-none me-2" width="36" height="36" (click)="cerrarSesion()"><use xlink:href="#people-circle"/></svg><br>
                 <p style="padding-right: 15px; padding-left: 2px; margin-bottom: 40px;">Salir</p>
                 <img src="../../../assets/desconectar.png" style="margin-bottom: 40px; margin-left: 40px; margin-right: 5px;" alt="" width="45" height="45">
