@@ -1,3 +1,4 @@
+
 .fondoNavBar{
     /* background-color: #c54848; */
     height:150px; 
@@ -62,4 +63,71 @@
     font-weight: bold;
     padding: 10px;
   }
+  /* .........Notificaciones............ */
+  
+/* :host {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }  */
+  
+  .demo-section + .demo-section {
+    margin-top: 16px;
+  } 
+  .mat-badge-content {
+    animation: badgePulse 1s infinite; /* Nombre de la animación, duración y repetición infinita */
+  }
+  
+  @keyframes badgePulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+  }
+  
+  /* Cambio de color */
+  .mat-icon.notification-icon {
+    color: rgb(234, 198, 16); /* Cambiar a tu color deseado */
+  }
+  .bell-shake {
+    animation: shake 5s infinite;
+  }
+  
+  @keyframes shake {
+    0%, 100% {
+      transform: translateX(0);
+    }
+    10%, 30%, 50%, 70%, 90% {
+      transform: translateX(-5px);
+    }
+    20%, 40%, 60%, 80% {
+      transform: translateX(5px);
+    }
+  }
+  .notification-icon {
+    font-size: 42px; /* Cambia este valor al tamaño deseado */
+  }
+  .bell-swing {
+    animation: swing 2s ease-in-out infinite;
+  }
+  
+  @keyframes swing {
+    0%,
+    100% {
+      transform: rotate(0deg) translateX(0);
+    }
+    20%,
+    80% {
+      transform: rotate(10deg) translateX(-5px);
+    }
+    40%,
+    60% {
+      transform: rotate(-10deg) translateX(5px);
+    }
+  }
+  
+  
+  
+  
+  
+  
   

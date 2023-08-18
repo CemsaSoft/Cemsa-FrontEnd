@@ -61,6 +61,7 @@ import {MatTabsModule} from '@angular/material/tabs';
 
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
+import { MatBadgeModule } from '@angular/material/badge';
 
 //import { TextMaskModule } from 'angular2-text-mask';// npm i angular2-text-mask
 @NgModule({
@@ -134,6 +135,7 @@ import { MatTableModule } from '@angular/material/table';
     MatGridListModule,
     MatSortModule,
     MatTableModule,
+    MatBadgeModule,
   ],
   // Inyección de dependencias
   providers: [
