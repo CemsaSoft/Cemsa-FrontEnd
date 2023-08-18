@@ -14,6 +14,7 @@ export class SidebarClienteComponent implements OnInit {
 
   ngOnInit(): void {
   }
+  
   cerrarSesion(): void {
     this.servicioUsuario.limpiarToken();
 
@@ -35,8 +36,6 @@ export class SidebarClienteComponent implements OnInit {
         bsCollapse.hide(); // Ocultar los demás elementos
       }
     });
-  }
-  
-  
+  } 
   
 }

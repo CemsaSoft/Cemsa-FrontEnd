@@ -2,6 +2,7 @@
 body {
     min-height: 100vh;
     min-height: -webkit-fill-available;
+    height: 100vh;
   }
   
   html {
@@ -12,7 +13,7 @@ body {
     height: 100vh;
     height: -webkit-fill-available;
     max-height: 100vh;
-    overflow-x: auto;
+    overflow-x: hidden;
     overflow-y: hidden;
     margin-bottom: 130px;
   }
@@ -20,10 +21,11 @@ body {
   .dropdown-toggle { outline: 0; }
   
   .btn-toggle {
-    padding: .25rem .5rem;
+    padding: .25rem 1rem; /* Adjust padding as needed */
     font-weight: 600;
     color: var(--bs-emphasis-color);
     background-color: transparent;
+    display: block; /* Set buttons to block to take full width of parent */
   }
   .btn-toggle:hover,
   .btn-toggle:focus {
@@ -34,7 +36,10 @@ body {
   .btn-toggle::before {
     width: 1.25em;
     line-height: 0;
-    content: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='rgba%280,0,0,.5%29' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 14l6-6-6-6'/%3e%3c/svg%3e");
+    /* Blanco */
+    content: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3e%3cpath fill='none' stroke='rgba(255,255,255,.85)' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 14l6-6-6-6'/%3e%3c/svg%3e");
+    /* Negro */
+    /* content: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='rgba%280,0,0,.5%29' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 14l6-6-6-6'/%3e%3c/svg%3e"); */
     transition: transform .35s ease;
     transform-origin: .5em 50%;
   }
@@ -61,7 +66,9 @@ body {
   }
   
   .scrollarea {
-    overflow-y: auto;
+    /* overflow-x: scroll; */    
+    overflow-x: hidden;
+
   }
   .bd-placeholder-img {
     font-size: 1.125rem;
@@ -97,25 +104,25 @@ body {
     fill: currentColor;
   }
 
-  .nav-scroller {
+  /* .nav-scroller {
     position: relative;
     z-index: 2;
     height: 2.75rem;
     overflow-y: hidden;
-  }
+  } */
 
   .nav-scroller .nav {
     display: flex;
     flex-wrap: nowrap;
     padding-bottom: 1rem;
     margin-top: -1px;
-    overflow-x: auto;
+    overflow-x: hidden;
     text-align: center;
     white-space: nowrap;
     -webkit-overflow-scrolling: touch;
   }
 
-  .btn-bd-primary {
+  /* .btn-bd-primary {
     --bd-violet-bg: #712cf9;
     --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
 
@@ -130,7 +137,7 @@ body {
     --bs-btn-active-color: var(--bs-btn-hover-color);
     --bs-btn-active-bg: #5a23c8;
     --bs-btn-active-border-color: #5a23c8;
-  }
+  } */
   .bd-mode-toggle {
     z-index: 1500;
   }
@@ -138,13 +145,22 @@ body {
   .container {
     position: relative;
   }
-  
+  .sidebar-list {
+    text-align: left;
+  }
+  .sidebar-item {
+    margin-left: 0; /* Ajusta el margen izquierdo según tu preferencia */
+    padding: 8px 0; /* Ajusta el espaciado interno vertical según tu preferencia */
+    text-align: left; /* Alinea el contenido a la izquierda */
+  }
   .sidebar {
+    height: 100vh;
+    overflow-x: hidden;
+
     position: fixed;
     top: 0;
     left: -39px; /* Inicialmente oculta la barra lateral fuera de la pantalla */
-    width: 160px;
-    height: 100vh;
+    width: 230px;
     
     background-color: rgba(30, 39, 58, 0.988);
     transition: left 0.3s ease;
@@ -155,7 +171,7 @@ body {
   }
   
   .content {
-    margin-left: 200px; /* Deja espacio para la barra lateral visible */
+    margin-left:230px; /* Deja espacio para la barra lateral visible */
     transition: margin-left 0.3s ease;
   }
   
@@ -186,8 +202,15 @@ body {
 }
 
 .iconPading{
+  padding: 10px; /* Ajusta este valor según tu preferencia para el espaciado */
+
   margin-right: 1px;
   padding-left: 1px;
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+    padding-right: 0px!important;
+    padding-left: 0px !important;
+
 }
 .nav-link {
   display: block;
@@ -211,4 +234,30 @@ body {
 }
 a {
   color: rgb(241, 243, 244); /* Cambia "red" al color deseado */
+}
+.titulosBotones {
+    font-size: 16px;
+    font-family:Arial, Helveica, sans-serif;    
+    font-weight: normal;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+}
+
+.menu-item-content {
+  border-bottom: 1px solid #fff; /* Adjust the border style as needed */
+  padding: 8px; /* Adjust the padding as needed */
+}
+/* Añade este CSS para crear la viñeta circular */
+.bullet-circle {
+  display: inline-block;
+  width: 10px; /* Ajusta el tamaño del círculo */
+  height: 10px; /* Ajusta el tamaño del círculo */
+  background-color: #fff; /* Establece el color del círculo */
+  border-radius: 50%; /* Crea una forma circular */
+  margin-right: 10px; /* Ajusta el margen a la derecha para separar el círculo del texto */
+  margin-top: 7px; 
+  vertical-align: middle; /* Alinea verticalmente el círculo con el texto */
 }

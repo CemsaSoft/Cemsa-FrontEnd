@@ -76,74 +76,126 @@
   </symbol>
 </svg>
 <div class="container">
-  <div class="sidebar" id="sidebar">
-    
-    <!-- Contenido de la barra lateral -->
-    <main class="d-flex flex-nowrap">
+  <div class="sidebar" style="overflow-y: auto; height: 100%; position: fixed;" id="sidebar">
+    <div class="scrollarea">
+
+      <!-- Contenido de la barra lateral -->
+      <main class="d-flex flex-nowrap">
         <!-- EJEMPLO 3 -->
-           <div class="d-flex flex-column flex-shrink-0 bg-body-tertiary" style="width: 4.5rem;" 
-           id="navbarToggleExternalContentAdmin"
-           >
-            <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
-              <!-- <li class="nav-item">
-                <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed nav-link active iconPading" >
-                  
-                  <a href="home" class="nav-link active py-3 border-bottom rounded-0" aria-current="page" title="Home" data-bs-toggle="tooltip" data-bs-placement="right">
-                    <svg class="bi pe-none" width="40" height="40" role="img" aria-label="Home"><use xlink:href="#home"/></svg>
-                    <b>Home</b> 
+            <div class="d-flex flex-column flex-shrink-0 bg-body-tertiary" style="width: 30%; height: 30%;" id="navbarToggleExternalContentAdmin">
+              <ul class="nav nav-pills nav-flush flex-column mb-auto text-center sidebar-list">
+
+              <li class="sidebar-item" style="margin-top: -15px; margin-bottom: -10px;">
+                <button class="btn btn-toggle d-flex align-items-center rounded border-0 collapsed nav-link active iconPadding"
+                        data-bs-toggle="collapse"
+                        aria-expanded="false">
+                  <a href="home" class="nav-link rounded-0" aria-current="page" title="Home" data-bs-toggle="tooltip" data-bs-placement="center">
+                    <div class="d-flex align-items-center">
+                      <svg class="bi pe-none" width="40" height="40" role="img" aria-label="Home" style="margin-right: 20px;"><use xlink:href="#home"/></svg>
+                      <span class="titulosBotones">Home</span>
+                    </div>
                   </a>
                 </button>
-              </li> -->
-              <li class="nav-item">
-                <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed nav-link active iconPading" data-bs-toggle="collapse" data-bs-target="#clientes-collapse" aria-expanded="false">
-                  <a class="nav-link py-3 border-bottom rounded-0" aria-current="page" title="Clientes" data-bs-toggle="tooltip" data-bs-placement="right">
-                    <svg class="bi pe-none" width="40" height="40" role="img" aria-label="Customers"><use xlink:href="#people-circle"/></svg>
-                    <b>Clientes</b>
+              </li>
+              <div class="menu-item-content d-flex align-items-center" style="margin-top: -10px; margin-bottom: -5px;">
+              </div>
+
+              <li class="sidebar-item" style="margin-top: -10px; margin-bottom: -10px;">
+                <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed nav-link active iconPadding"
+                      data-bs-toggle="collapse" 
+                      data-bs-target="#clientes-collapse" 
+                      aria-expanded="false"
+                      (click)="toggleCollapse('clientes-collapse')">
+
+                  <a class="nav-link rounded-0" aria-current="page" title="Clientes" 
+                      data-bs-toggle="tooltip" 
+                      data-bs-placement="center">
+                      <div style="display: flex; align-items: center;">
+                        <svg class="bi pe-none" width="40" height="40" role="img" aria-label="Customers" style="margin-right: 20px;"><use xlink:href="#people-circle"/></svg>
+                        <span class="titulosBotones">Clientes</span>
+                      </div>
                   </a>
                   </button>
                   <div class="collapse" id="clientes-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                      <li><a href="consultar-cliente" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Consultar</a></li>
-                      <li><a href="registrar-cliente" class="link-body-emphasis d-inline-flex text-decoration-none rounded color">Registrar</a></li>
+                      <li style="margin-left: 20px;"><a href="consultar-cliente" class="link-body-emphasis d-inline-flex text-decoration-none rounded titulosBotones">Consultar</a></li>
+                      <li style="margin-left: 20px;"><a href="registrar-cliente" class="link-body-emphasis d-inline-flex text-decoration-none rounded titulosBotones">Registrar</a></li>
                     </ul>
                   </div>
               </li>
-              <li class="nav-item">
-                <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#centrales-collapse" aria-expanded="false">
-                  <a class="nav-link py-3 border-bottom rounded-0" data-bs-toggle="tooltip " title="Centrales" data-bs-toggle="tooltip" data-bs-placement="right">
-                    <svg class="bi pe-none" width="40" height="40" role="img" aria-label="Dashboard"><use xlink:href="#speedometer2"/></svg>
-                    <b>Centrales</b>
+              <div class="menu-item-content d-flex align-items-center" style="margin-top: -10px; margin-bottom: -5px;">
+              </div>
+
+              <li class="sidebar-item" style="margin-top: -10px; margin-bottom: -10px;">
+                <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed nav-link active iconPadding"
+                      data-bs-toggle="collapse" 
+                      data-bs-target="#centrales-collapse" 
+                      aria-expanded="false"
+                      (click)="toggleCollapse('centrales-collapse')">
+
+                  <a class="nav-link rounded-0" aria-current="page" title="Centrales" 
+                      data-bs-toggle="tooltip" 
+                      data-bs-placement="center">
+                      <div style="display: flex; align-items: center;">
+                        <svg class="bi pe-none" width="40" height="40" role="img" aria-label="Dashboard" style="margin-right: 20px;"><use xlink:href="#speedometer2"/></svg>
+                        <span class="titulosBotones">Centrales</span>
+                      </div> 
                   </a>
                 </button>
                 <div class="collapse" id="centrales-collapse">
                   <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                    <li><a href="consultar-central" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Consultar</a></li>
-                    <li><a href="registrar-central" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Registrar</a></li>
+                    <li style="margin-left: 20px;"><a href="consultar-central" class="link-body-emphasis d-inline-flex text-decoration-none rounded titulosBotones">Consultar</a></li>
+                    <li style="margin-left: 20px;"><a href="registrar-central" class="link-body-emphasis d-inline-flex text-decoration-none rounded titulosBotones">Registrar</a></li>
                   </ul>
                 </div>
               </li>
-              <li>
-                <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#servicios-collapse" aria-expanded="false">
-                  <a class="nav-link py-3 border-bottom rounded-0" title="Servicios" data-bs-toggle="tooltip" data-bs-placement="right">
-                    <svg class="bi pe-none me-2" width="40" height="40"><use xlink:href="#table"/></svg>
-                    <b href="#">Servicios</b>
+              <div class="menu-item-content d-flex align-items-center" style="margin-top: -10px; margin-bottom: -5px;">
+              </div>
+
+              <li class="sidebar-item" style="margin-top: -10px; margin-bottom: -10px;">
+                <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed nav-link active iconPadding"
+                    data-bs-toggle="collapse" 
+                    data-bs-target="#servicios-collapse" 
+                    aria-expanded="false"
+                    (click)="toggleCollapse('servicios-collapse')">
+
+                  <a class="nav-link rounded-0" aria-current="page" title="Servicios" 
+                      data-bs-toggle="tooltip"
+                      data-bs-placement="center">
+                      <div style="display: flex; align-items: center;">
+                        <svg class="bi pe-none" width="40" height="40" role="img" aria-label="Dashboard" style="margin-right: 20px;"><use xlink:href="#table"/></svg>
+                        <span class="titulosBotones">Servicios</span>
+                      </div>
                   </a>
                 </button>
                 <div class="collapse" id="servicios-collapse">
                   <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                    <li><a href="consultar-servicio" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Consultar</a></li>
-                    <li><a href="registrar-servicio" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Registrar</a></li>
+                    <li style="margin-left: 20px;"><a href="consultar-servicio" class="link-body-emphasis d-inline-flex text-decoration-none rounded titulosBotones">Consultar</a></li>
+                    <li style="margin-left: 20px;"><a href="registrar-servicio" class="link-body-emphasis d-inline-flex text-decoration-none rounded titulosBotones">Registrar</a></li>
                   </ul>
                 </div>
               </li>
+              <div class="menu-item-content d-flex align-items-center" style="margin-top: -10px; margin-bottom: -5px;">
+              </div>
+
+              <li class="sidebar-item" style="margin-top: -10px; margin-bottom: -10px;">
+                <button class="btn btn-toggle d-flex align-items-center rounded border-0 collapsed nav-link active iconPadding"
+                        data-bs-toggle="collapse"                          
+                        (click)="cerrarSesion()">
+                  <a href="''" class="nav-link rounded-0" title="Cerrar Sesión" data-bs-toggle="tooltip" data-bs-placement="center">
+                    <div style="display: flex; align-items: center;">
+                      <img src="../../../assets/salir.png" alt="" style="width: 40px; height: 40px; margin-right: 20px;">
+                      <span class="titulosBotones">Cerrar Sesión</span>
+                    </div>
+                  </a>
+                </button>
+              </li>
+
             </ul>
-              <!-- <a href="" class="d-flex align-items-center link-body-emphasis text-decoration-none" (click)="cerrarSesion()"> -->
-                <!-- <svg class="bi pe-none me-2" width="36" height="36" (click)="cerrarSesion()"><use xlink:href="#people-circle"/></svg> -->
-                <!-- <p style="padding-right: 15px; padding-left: 2px; margin-bottom: 30px;">Salir</p>
-                <img src="../../../assets/desconectar.png" style="margin-bottom: 30px; margin-left: 20px; margin-right: 5px;" alt="" width="45" height="45">
-              </a> -->
           </div> 
-        </main>
+      </main>
+    </div>
+
   </div>
   <div class="content">
     <!-- Contenido principal -->
