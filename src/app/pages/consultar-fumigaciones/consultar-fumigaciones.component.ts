@@ -94,7 +94,7 @@ export class ConsultarFumigacionesComponent implements OnInit {
       fechaAlta: new FormControl(null, []),
       fechaRealizacion: new FormControl(null, []),
       observacion: new FormControl(null, [
-        Validators.pattern("^[A-Za-zÑñáéíóúÁÉÍÓÚ'°0-9/%ºª ]{1,50}$"),
+        Validators.pattern("^[\\s\\S]{1,500}$"),
       ]),      
     });
 
@@ -379,7 +379,7 @@ export class ConsultarFumigacionesComponent implements OnInit {
         Swal.fire({
         title: 'Error',
         text: `Verificar los datos ingresados:              
-          ${this.observacion?.invalid && this.observacion.errors?.['pattern'] ? '\n* Observación no debe contener caracteres especiales ni tener más de 50 caracteres.' : ''}`,                      
+          ${this.observacion?.invalid && this.observacion.errors?.['pattern'] ? '\n* Observación no debe contener más de 500 caracteres.' : ''}`,                      
         icon: 'warning',
         position: 'center',
         confirmButtonColor: '#0f425b',
