@@ -349,7 +349,7 @@
                             appearance="fill"
                             class="example-full-width form-outline input-group"
                           >
-                            <mat-label>Límite Superior</mat-label>
+                            <mat-label>Alarma Valor Superior</mat-label>
                             <input
                               type="text"
                               style="padding-left: 20px"
@@ -357,7 +357,7 @@
                               id="cfgValorSuperiorAA"
                               value="cfgValorSuperiorAA"
                               formControlName="cfgValorSuperiorAA"
-                              required
+                              
                             />
                             <mat-icon class="edit" matSuffix
                               >edit</mat-icon
@@ -375,7 +375,7 @@
                               class="error"
                               *ngIf="cfgValorSuperiorAA?.errors?.['required']"
                             >
-                              Debe ingresar un Límite Superior.
+                              Debe ingresar un Valor Superior.
                             </mat-error>
                             <mat-error
                               class="error"
@@ -391,7 +391,7 @@
                             appearance="fill"
                             class="example-full-width form-outline input-group"
                           >
-                            <mat-label>Límite Inferior</mat-label>
+                            <mat-label>Alarma Valor Inferior</mat-label>
                             <input
                               type="text"
                               style="padding-left: 20px"
@@ -399,7 +399,7 @@
                               id="cfgValorInferiorAA"
                               value="cfgValorInferiorAA"
                               formControlName="cfgValorInferiorAA"
-                              required
+                              
                             />
                             <mat-icon class="edit" matSuffix
                               >edit</mat-icon
@@ -417,7 +417,7 @@
                               class="error"
                               *ngIf="cfgValorInferiorAA?.errors?.['required']"
                             >
-                            Debe ingresar un Límite Inferior.
+                            Debe ingresar un Valor Inferior.
                           </mat-error>
                           <mat-error
                               class="error"

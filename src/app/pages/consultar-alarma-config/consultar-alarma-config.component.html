@@ -254,12 +254,12 @@
                   </ng-container>    
 
                   <ng-container matColumnDef="cfgValorSuperiorA">
-                    <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header>Lím. Superior </th>
+                    <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header>Valor Superior </th>
                     <td class="table-row" style="vertical-align: middle; text-align: textIzquierda" mat-cell *matCellDef="let element">{{ element.cfgValorSuperiorA }}</td>
                   </ng-container>    
 
                   <ng-container matColumnDef="cfgValorInferiorA">
-                    <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header>Lím. Inferior </th>
+                    <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header>Valor Inferior </th>
                     <td class="table-row" style="vertical-align: middle; text-align: textIzquierda" mat-cell *matCellDef="let element">{{ element.cfgValorInferiorA }}</td>
                   </ng-container>    
 
@@ -502,7 +502,7 @@
                           appearance="fill"
                           class="example-full-width form-outline input-group"
                         >
-                          <mat-label>Límite Superior</mat-label>
+                          <mat-label>Alarma Valor Superior a:</mat-label>
                           <input
                             type="text"
                             style="padding-left: 20px"
@@ -510,7 +510,7 @@
                             id="cfgValorSuperiorA"
                             value="cfgValorSuperiorA"
                             formControlName="cfgValorSuperiorA"
-                            required
+                            
                           />
                           <mat-icon class="edit" matSuffix
                             >edit</mat-icon
@@ -528,7 +528,7 @@
                             class="error"
                             *ngIf="cfgValorSuperiorA?.errors?.['required']"
                           >
-                            Debe ingresar un Límite Superior.
+                            Debe ingresar un Valor Superior.
                           </mat-error>
                           <mat-error
                             class="error"
@@ -544,7 +544,7 @@
                           appearance="fill"
                           class="example-full-width form-outline input-group"
                         >
-                          <mat-label>Límite Inferior</mat-label>
+                          <mat-label>Alarma Valor Inferior a:</mat-label>
                           <input
                             type="text"
                             style="padding-left: 20px"
@@ -552,7 +552,7 @@
                             id="cfgValorInferiorA"
                             value="cfgValorInferiorA"
                             formControlName="cfgValorInferiorA"
-                            required
+                            
                           />
                           <mat-icon class="edit" matSuffix
                             >edit</mat-icon
@@ -570,7 +570,7 @@
                             class="error"
                             *ngIf="cfgValorInferiorA?.errors?.['required']"
                           >
-                          Debe ingresar un Límite Inferior.
+                          Debe ingresar un Valor Inferior.
                         </mat-error>
                         <mat-error
                             class="error"
