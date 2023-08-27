@@ -342,11 +342,19 @@
                 <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header="fumFechaRealizacion">Fecha Realización</th>
                 <td class="table-row" style="vertical-align: middle; text-align: textIzquierda" mat-cell *matCellDef="let element">{{ element.fumFechaRealizacion | date: 'yyyy-MM-dd'}}</td>
               </ng-container>
-
               <ng-container matColumnDef="fumObservacion">
+              <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header="fumObservacion">Observación</th>
+              <td class="table-row" style="vertical-align: middle; text-align: textIzquierda" mat-cell *matCellDef="let element">
+              <ng-container *ngIf="element.fumObservacion">{{ element.fumObservacion.slice(0, 100) }}</ng-container>
+              </td>
+              </ng-container>
+
+              <!-- <ng-container matColumnDef="fumObservacion">
                 <th class="encabezado text-center" mat-header-cell *matHeaderCellDef mat-sort-header="fumObservacion">Observación</th>
-                <td class="table-row" style="vertical-align: middle; text-align: textIzquierda" mat-cell *matCellDef="let element">{{ element.fumObservacion }}</td>
-              </ng-container>                      
+                <td class="table-row" style="vertical-align: middle; text-align: textIzquierda" mat-cell *matCellDef="let element">{{ element.fumObservacion}}</td>
+              </ng-container>    
+                               -->
+                             
       
               <!-- Columna vacia -->
               <ng-container matColumnDef="columnaVacia">
@@ -600,7 +608,7 @@
                             class="error"
                             *ngIf="observacion?.errors?.['pattern']"
                           >
-                            No debe contener caracteres especiales ni tener más de 50 caracteres.                             
+                          No debe contener más de 500 carácteres.                               
                           </mat-error>
                         </mat-error>
                       </div>                        

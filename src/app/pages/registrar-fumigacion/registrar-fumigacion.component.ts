@@ -78,7 +78,7 @@ export class RegistrarFumigacionComponent implements OnInit {
       nroCentralA: new FormControl(null, []),
       fechaRealizacionA: new FormControl(null, []),
       observacionA: new FormControl(null, [
-        Validators.pattern("^[A-Za-zÑñáéíóúÁÉÍÓÚ'°0-9/%ºª ]{1,}$"),
+        Validators.pattern("^[\\s\\S]{1,500}$"),
       ]),
     });
   }
@@ -242,7 +242,7 @@ export class RegistrarFumigacionComponent implements OnInit {
       Swal.fire({
         title: 'Error',
         text: `Verificar los datos ingresados:                        
-            ${this.observacionA?.invalid && this.observacionA.errors?.['pattern'] ? '\n* Observación no debe contener caracteres especiales.' : ''}`,
+            ${this.observacionA?.invalid && this.observacionA.errors?.['pattern'] ? '\n* Observación no debe contener más de 500 caracteres.' : ''}`,
         icon: 'warning',
         confirmButtonColor: '#0f425b',
         confirmButtonText: 'Aceptar',

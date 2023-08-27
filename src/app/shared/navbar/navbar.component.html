@@ -16,7 +16,7 @@
           <div class="rounded-square2"></div>
           <div class="rounded-square"></div> -->
           
-        <div class="position-absolute top-1 start-0">
+        <!-- <div class="position-absolute top-1 start-0">
             <div class="d-flex">
                 <div class="col-3">
                     <button class="navbar-brand" type="button" data-bs-toggle="offcanvas" *ngIf="token != null" (click)="home()" title="Home">
@@ -26,8 +26,8 @@
                 </div>
                 
             </div>
-            <!-- <h3 style="color: white; ">Home</h3> -->
-        </div>
+            <h3 style="color: white; ">Home</h3>
+        </div> -->
         <div class="position-absolute top-1 end-50">
             <div class="d-flex">
                 <div class="col-3">
@@ -54,27 +54,12 @@
 		          </div> -->
                   <!-- aprietos -->
                   <br>
-                  <div class="demo-section">
+                  <!-- <div class="demo-section">
                     <button mat-raised-button color="primary"
                     *ngIf="cantAlarma !== 1" [matBadge]="cantAlarma" matBadgePosition="before" matBadgeColor="accent"(click)="openConsultarAlarma()">
                       Notifificación
                     </button>
-                  </div>
-                  
-                  <div class="demo-section">
-                    <mat-icon
-                      *ngIf="cantAlarma !== 1"
-                      [matBadge]="cantAlarma"
-                      matBadgeColor="warn"
-                      (click)="openConsultarAlarma()"
-                      class="mat-badge mat-badge-overlap mat-badge-above mat-badge-small mat-badge-glow notification-icon bell-swing">
-                      notifications
-                    </mat-icon>
-                  </div>
-                  
-                  
-                  
-                  
+                  </div> -->
                   
                   <!-- Fin -->
                     <!-- <button 
@@ -89,14 +74,19 @@
                 </div>
             </div>
         </div>
-        <div class="position-absolute top-1 end-0">
-            <div class="d-flex">
-                <div class="col-3">
-                    <button class="navbar-brand" type="button" data-bs-toggle="offcanvas" *ngIf="token != null" (click)="cerrarSesion()" title="Cerrar Sesion">
-                        <img src="../../../assets/desconectar.png" style="margin-bottom: 10px; margin-left: 10px; margin-right: 10px;" alt="" width="40" height="40">
-                      </button>
-                </div>
+        <div class="d-flex justify-content-end" style="width: 600px;">
+          <div class="col-3">
+            <div class="demo-section">
+              <mat-icon
+                *ngIf="cantAlarma !== -1"
+                [matBadge]="cantAlarma"
+                matBadgeColor="warn"
+                (click)="openConsultarAlarma()"
+                class="mat-badge mat-badge-overlap mat-badge-above mat-badge-small mat-badge-glow notification-icon bell-swing">
+                notifications
+              </mat-icon>
             </div>
+          </div>
         </div>
     </div>
 </nav>
