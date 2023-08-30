@@ -10,7 +10,8 @@
   </div>
   <div class="row">
     <div class="col-1">
-      <a href="/landing-page">
+      <!-- <a href="/landing-page"> -->
+        <a href="">
         <img src="../../../assets/back3.png" style="width: 150px; height: 150px; margin-top: 440px;margin-left: 175px; z-index: 3 ; position: relative;" alt="logo">
     </a>
     </div>
@@ -90,11 +91,10 @@
                       <div class="text-center pt-1 mb-5 pb-1 ">
                           <!-- <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" style="background-color: #0e3c53; height: 50px;" type="submit"
                               (click)="login()" [routerLink]="[redireccionar()]" [disabled]="validarIngresar(usuario?.value, password?.value) == false">Ingresar 
-                              
-                        
                           </button> -->
+
                           <div class="submit-row">
-                            <input type="submit" (click)="login()" [routerLink]="[redireccionar()]" [disabled]="validarIngresar(usuario?.value, password?.value) == false" value="Ingresar &raquo;"/>
+                            <input type="submit" (click)="login()" [disabled]="validarIngresar(usuario?.value, password?.value) == false" value="Ingresar &raquo;"/>
                           </div>
                           <p></p>
                           <span class="reset"><a href="olvido-password">¿Olvidaste tu Contraseña?</a></span>

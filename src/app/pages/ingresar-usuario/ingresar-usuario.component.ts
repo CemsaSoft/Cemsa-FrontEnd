@@ -64,6 +64,10 @@ export class IngresarUsuarioComponent implements OnInit {
         this.sharedDataService.setNombreUsuario(this.nombreUsuarioIngresado); 
         
         this.esInicioValido = 1;
+
+        if (this.formInicio.get('password')?.value != "123456") { localStorage.setItem('cambiarPassword', "0"); } 
+        else { localStorage.setItem('cambiarPassword', "1"); }   
+         location.href = '/home';   
       } else {
         this.esInicioValido = 2;
       }
@@ -71,20 +75,22 @@ export class IngresarUsuarioComponent implements OnInit {
   }
 
   //Redirecciona a la landing page en caso de obtener un token.
-  redireccionar(): string {
-     let localToken = this.servicioUsuario.obtenerToken();
-     if (localToken != null && localToken != '') {
-       if (this.formInicio.get('password')?.value != "123456") {
-        localStorage.setItem('cambiarPassword', "0");
-        return (location.href = '/home');
-       } else { 
-        localStorage.setItem('cambiarPassword', "1");
-        return (location.href = '/home');                  
-       }       
-     } else {
-       return '';
-     }
-  }
+  // redireccionar(): string {
+  //    let localToken = this.servicioUsuario.obtenerToken();
+  //    if (localToken != null && localToken != '') {
+  //      if (this.formInicio.get('password')?.value != "123456") {
+  //       localStorage.setItem('cambiarPassword', "0");
+  //       return (location.href = '/home');
+  //      } else { 
+  //       localStorage.setItem('cambiarPassword', "1");
+  //       console.log("entro if");
+  //       return (location.href = '/home');                  
+  //      }       
+  //    } else {
+  //     console.log("nada");
+  //     return '';
+  //    }
+  // }
 
   //Valida que el usuario y la contraseña ingresada sean correctas.
   validarIngresar(usuario: string, contraseña: string): Boolean {

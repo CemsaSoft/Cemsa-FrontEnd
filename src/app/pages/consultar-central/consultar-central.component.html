@@ -196,16 +196,16 @@
                       <th class="encabezado text-center" mat-header-cell *matHeaderCellDef>Modificar Estado</th>
                       <td class="table-row" class="align-center" mat-cell *matCellDef="let element">
                         <div class="d-flex justify-content-center"> <!-- Contenedor para centrar los botones horizontalmente -->
-                          <button *ngIf="element.cenIdEstadoCentral != 1" mat-button (click)="ModificarEstadoCentral(1, 'Disponible')" type="button" class="btn" data-bs-target="#staticBackdrop" title="Cambiar Estado Central a Disponible">
+                          <button *ngIf="element.cenIdEstadoCentral != 1" mat-button (click)="ModificarEstadoCentral(element, 1, 'Disponible')" type="button" class="btn" data-bs-target="#staticBackdrop" title="Cambiar Estado Central a Disponible">
                             <img src="../../../assets/disponible.png" class="iconosBoton" alt="..." />
                           </button>
-                          <button *ngIf="element.cenIdEstadoCentral != 2" mat-button (click)="ModificarEstadoCentral(2, 'Bloqueada')" type="button" class="btn" data-bs-target="#staticBackdrop" title="Cambiar Estado Central a Bloqueada">
+                          <button *ngIf="element.cenIdEstadoCentral != 2" mat-button (click)="ModificarEstadoCentral(element, 2, 'Bloqueada')" type="button" class="btn" data-bs-target="#staticBackdrop" title="Cambiar Estado Central a Bloqueada">
                             <img src="../../../assets/bloqueada2.png" class="iconosBoton" alt="..." />
                           </button>
-                          <button *ngIf="element.cenIdEstadoCentral != 3" mat-button (click)="ModificarEstadoCentral(3, 'Error')" type="button" class="btn" data-bs-target="#staticBackdrop" title="Cambiar Estado Central a Error">
+                          <button *ngIf="element.cenIdEstadoCentral != 3" mat-button (click)="ModificarEstadoCentral(element, 3, 'Error')" type="button" class="btn" data-bs-target="#staticBackdrop" title="Cambiar Estado Central a Error">
                             <img src="../../../assets/error2.png" class="iconosBoton" alt="..." />
                           </button>
-                          <button *ngIf="element.cenIdEstadoCentral != 4" mat-button (click)="ModificarEstadoCentral(4, 'Baja')" type="button" class="btn" data-bs-target="#staticBackdrop" title="Cambiar Estado Central a Baja">
+                          <button *ngIf="element.cenIdEstadoCentral != 4" mat-button (click)="ModificarEstadoCentral(element, 4, 'Baja')" type="button" class="btn" data-bs-target="#staticBackdrop" title="Cambiar Estado Central a Baja">
                             <img src="../../../assets/deshabilitada.png" class="iconosBoton " alt="..." />
                           </button>
                         </div>

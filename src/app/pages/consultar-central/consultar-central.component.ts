@@ -390,7 +390,7 @@ export class ConsultarCentralComponent implements OnInit   {
     }
   }
 
-  ModificarEstadoCentral(estIdSeleccionado: number, estado:string): void {
+  ModificarEstadoCentral(centralConsulta: CentralConsultaClass, estIdSeleccionado: number, estado:string): void {
     Swal.fire({
       text: '¿Estás seguro que deseas modificar el estado de esta central a "' + estado + '"?',
       icon: 'warning',
@@ -401,7 +401,7 @@ export class ConsultarCentralComponent implements OnInit   {
       cancelButtonText: 'Cancelar'
     } as SweetAlertOptions).then((result) => {
       if (result.isConfirmed) {
-        this.centralModificarEstado.modificarEstado(this.cenNroSeleccionado, estIdSeleccionado).subscribe(
+        this.centralModificarEstado.modificarEstado(centralConsulta.cenNro, estIdSeleccionado).subscribe(
           result => {
             Swal.fire({
               text: 'Se ha actualizado el estado a '+ estado,
