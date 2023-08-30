@@ -5,6 +5,7 @@ import { Component, OnInit } from '@angular/core';
 //SERVICIOS
 import { AlarmaService } from 'src/app/core/services/alarma.service';
 import { UsuarioService } from 'src/app/core/services/usuario.service';
+import { SharedDataService } from 'src/app/core/services/shared-data.service';
 
 @Component({
   selector: 'app-navbar',
@@ -17,12 +18,13 @@ export class NavbarComponent implements OnInit {
 
   rol: any = 0;
   idUsuario: any = 0;
-
   cantAlarma: number=0;
+  nombreUsuarioIngresado: string='';
 
   constructor(
     private servicioUsuario: UsuarioService,
     private alarmaConsultar: AlarmaService, 
+    private sharedDataService: SharedDataService,
     )
   {}
 
@@ -30,13 +32,18 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit () : void {
     this.rol = localStorage.getItem('rol');
-    this.idUsuario = localStorage.getItem('idUsuario');    
+    this.idUsuario = localStorage.getItem('idUsuario');  
+    const storedNombreUsuario= localStorage.getItem('usuario'); 
+    this.nombreUsuarioIngresado = storedNombreUsuario !== null ? storedNombreUsuario : ''; 
 
     if (this.idUsuario !=0) {
       this.alarmaConsultar.obtenerCantAlarmasCliente(this.idUsuario).subscribe(data => {
         this.cantAlarma = data.length;
       });    
     }
+    // this.sharedDataService.nombreUsuario$.subscribe(nombre => {
+    //   this.nombreUsuarioIngresado = nombre;
+    // });
 
 
   }

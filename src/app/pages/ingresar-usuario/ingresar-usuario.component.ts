@@ -2,9 +2,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import Swal, { SweetAlertOptions } from 'sweetalert2';
+import { Router } from '@angular/router';
 
 //COMPONENTES
 import { UsuarioClass } from 'src/app/core/models/usuario';
+import { SharedDataService } from 'src/app/core/services/shared-data.service';
 
 //SERVICIOS
 import { UsuarioService } from 'src/app/core/services/usuario.service';
@@ -18,7 +20,7 @@ import { ClienteService } from 'src/app/core/services/cliente.service';
 export class IngresarUsuarioComponent implements OnInit {
   //VARIABLES DE DATOS
   esInicioValido: number = 0;
-  
+  nombreUsuarioIngresado: string ='';
 
   //FORMS PARA LA AGRUPACIÓN DE DATOS
   formInicio: FormGroup;
@@ -27,6 +29,8 @@ export class IngresarUsuarioComponent implements OnInit {
     private fb: FormBuilder,
     private servicioUsuario: UsuarioService,
     private servicioCliente: ClienteService,
+    private router: Router,
+    private sharedDataService: SharedDataService,
   ) {
     this.formInicio = this.fb.group({
       usuario: [null, [Validators.required]],
@@ -56,7 +60,9 @@ export class IngresarUsuarioComponent implements OnInit {
         localStorage.setItem('usuario', data.usu);
         localStorage.setItem('idUsuario', data.idUsuario);
         localStorage.setItem('cliente', data.cliente);
-            
+        this.nombreUsuarioIngresado = this.formInicio.get('usuario')?.value;
+        this.sharedDataService.setNombreUsuario(this.nombreUsuarioIngresado); 
+        
         this.esInicioValido = 1;
       } else {
         this.esInicioValido = 2;
@@ -73,7 +79,6 @@ export class IngresarUsuarioComponent implements OnInit {
         return (location.href = '/home');
        } else { 
         localStorage.setItem('cambiarPassword', "1");
-        // return (location.href = '/modificar-password'); 
         return (location.href = '/home');                  
        }       
      } else {

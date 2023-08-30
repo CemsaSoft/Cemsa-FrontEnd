@@ -26,6 +26,7 @@ import { RegistrarAlarmaConfigComponent } from './pages/registrar-alarma-config/
 import { ConsultarAlarmaConfigComponent } from './pages/consultar-alarma-config/consultar-alarma-config.component';
 import { ConsultarAlarmaComponent } from './pages/consultar-alarma/consultar-alarma.component';
 import { NoLoginGuard } from './nologuin.guard';
+import { LandingPageComponent } from './pages/landing-page/landing-page.component';
 
 //RUTAS
 let routes: Routes = [];
@@ -35,8 +36,9 @@ if (localStorage.getItem('rol') === '1')
    //Aquí configuramos las rutas, indicamos en el path la ruta, seguido de los componentes que mostrará esa ruta
    routes = [
    
-    {path: '', component: IngresarUsuarioComponent},
-    {path:'olvido-password', component: OlvidoPasswordComponent},    
+    {path: 'ingresar-usuario', component: IngresarUsuarioComponent},
+    {path:'olvido-password', component: OlvidoPasswordComponent},  
+    {path:'', component: LandingPageComponent},  
     {path:'home', component: HomeComponent, canActivate: [RouteguardsGuard]},
     {path:'consultar-servicio', component: ConsultarServicioComponent, canActivate: [RouteguardsGuard]},
     {path:'registrar-servicio', component: RegistrarServicioComponent, canActivate: [RouteguardsGuard]},
@@ -48,8 +50,8 @@ if (localStorage.getItem('rol') === '1')
     {path:'modificar-password', component: ModificarPasswordComponent, canActivate: [RouteguardsGuard]},
     {path:'consultar-cuenta', component: ConsultarCuentaComponent, canActivate: [RouteguardsGuard]},
 
-    {path: '', redirectTo: '/', pathMatch:'full'},
-    {path:'**', redirectTo: '/', pathMatch:'full'},
+    {path: '', redirectTo: '/ingresar-usuario', pathMatch:'full'},
+    // {path:'**', redirectTo: '/', pathMatch:'full'},
   ];
 } else 
 {
@@ -68,10 +70,11 @@ if (localStorage.getItem('rol') === '1')
       {path:'registrar-alarma-config', component: RegistrarAlarmaConfigComponent, canActivate: [RouteguardsGuard]},
       {path:'consultar-alarma', component: ConsultarAlarmaComponent, canActivate: [RouteguardsGuard]},
   
-      {path: '', component: IngresarUsuarioComponent},
-      {path: 'olvido-password', component: OlvidoPasswordComponent},    
-      {path: '', redirectTo: '/', pathMatch:'full'},
-      {path:'**', redirectTo: '/', pathMatch:'full'},
+      {path: 'ingresar-usuario', component: IngresarUsuarioComponent},
+      {path: 'olvido-password', component: OlvidoPasswordComponent},  
+      {path:'', component: LandingPageComponent},   
+      {path: '', redirectTo: '/ingresar-usuario', pathMatch:'full'},
+      // {path:'**', redirectTo: '/', pathMatch:'full'},
     ];
 }
 @NgModule({

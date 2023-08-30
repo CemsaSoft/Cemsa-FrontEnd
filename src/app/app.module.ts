@@ -62,6 +62,9 @@ import {MatTabsModule} from '@angular/material/tabs';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatBadgeModule } from '@angular/material/badge';
+import { NavbarExternoComponent } from './shared/navbar-externo/navbar-externo.component';
+import { LandingPageComponent } from './pages/landing-page/landing-page.component';
+
 
 //import { TextMaskModule } from 'angular2-text-mask';// npm i angular2-text-mask
 @NgModule({
@@ -104,6 +107,8 @@ import { MatBadgeModule } from '@angular/material/badge';
     StepComponent,
     StepperComponent,
     SidebarClienteComponent,
+    NavbarExternoComponent,
+    LandingPageComponent,
   ],
   //Para importar otros módulos de angular
   imports: [

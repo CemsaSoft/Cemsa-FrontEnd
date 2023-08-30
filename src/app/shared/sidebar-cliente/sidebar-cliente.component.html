@@ -199,7 +199,7 @@
                   <button class="btn btn-toggle d-flex align-items-center rounded border-0 collapsed nav-link active iconPadding"
                           data-bs-toggle="collapse"                          
                           (click)="cerrarSesion()">
-                    <a href="''" class="nav-link rounded-0" title="Cerrar Sesión" data-bs-toggle="tooltip" data-bs-placement="center">
+                    <a [routerLink]="''" class="nav-link rounded-0" title="Cerrar Sesión" data-bs-toggle="tooltip" data-bs-placement="center">
                       <div style="display: flex; align-items: center;">
                         <img src="../../../assets/salir.png" alt="" style="width: 30px; height: 30px; margin-right: 10px;">
                         <span class="titulosBotones">Cerrar Sesión</span>

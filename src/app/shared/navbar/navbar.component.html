@@ -3,15 +3,43 @@
 <!-------------------- LOGO de CeMSA ------------------->
     <div class="container-fluid">
         <div class="row justify-content-end">
-            <!-- <div class="col-9">
-              <a class="navbar-brand" (click)="redirigir()">                
-                <img _ngcontent-goa-c48="" 
-                src="../../../assets/CEM.png" 
-                alt="" width="150" height="90" class="bi pe-none">
-                
-              </a>
-            </div> -->
+          <div class="row">
+            <div class="col-12">
+              <img _ngcontent-goa-c48="" 
+                src="../../../assets/LOGOhojaconSombra.png" 
+                alt="" width="70" height="70"  style="z-index: -1; margin-left: 51px;margin-top: 35px;">  
+            </div>
           </div>
+          <div class="row">
+            <div class="col-12">
+              <img _ngcontent-goa-c48="" 
+                src="../../../assets/LOGOSIGLA.svg" 
+                alt="" width="270" height="270" style="z-index: -2;margin-top: -35px;width: 169px;height: 92px;"> 
+            </div>
+          </div>
+            <div class="col-12">
+              <!-- <a class="navbar-brand" (click)="redirigir()">   
+                <img _ngcontent-goa-c48="" 
+                src="../../../assets/LOGOHOJA.svg" 
+                alt="" width="95" height="95" >   
+                <img _ngcontent-goa-c48="" 
+                src="../../../assets/LOGOSIGLA.svg" 
+                alt="" width="250" height="250" >  
+              </a> -->
+             
+              <!-- <a class="navbar-brand" (click)="redirigir()">
+                <img _ngcontent-goa-c48="" 
+                src="../../../assets/LOGOhojaconSombra.png" 
+                alt="" width="95" height="95" >  
+                <img _ngcontent-goa-c48="" 
+                src="../../../assets/LOGOsiglasconSombre.png" 
+                alt="" width="250" height="250" >  
+              </a> -->
+               
+            </div>
+            
+          </div>
+          <!-- class="bi pe-none" -->
           <!-- <div class="circle"></div>
           <div class="rounded-square2"></div>
           <div class="rounded-square"></div> -->
@@ -74,9 +102,11 @@
                 </div>
             </div>
         </div>
-        <div class="d-flex justify-content-end" style="width: 600px;">
-          <div class="col-3">
-            <div class="demo-section">
+        <div class="d-flex justify-content-end" style="width: 500px; width: 473px;">
+          <!-- <mat-icon style="color: #fff; height: 100%; width: 100%;">account_circle</mat-icon> -->
+          <div class="col-3" style="margin-top: 15px;">
+            <div class="demo-section" style="margin-left: 50px;">
+             
               <mat-icon
                 *ngIf="cantAlarma !== -1"
                 [matBadge]="cantAlarma"
@@ -87,6 +117,10 @@
               </mat-icon>
             </div>
           </div>
+          <div class="nameUser">Hola {{ nombreUsuarioIngresado }}!</div>
+          <img _ngcontent-goa-c48="" 
+          src="../../../assets/user5.png" 
+          alt="" style="height: 65px; width: 65px;" > 
         </div>
     </div>
 </nav>

@@ -1,4 +1,4 @@
-
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;500&family=Poppins&display=swap');
 .fondoNavBar{
     /* background-color: #c54848; */
     height:150px; 
@@ -124,9 +124,20 @@
       transform: rotate(-10deg) translateX(5px);
     }
   }
+  /* ------------Nombre de Usuario---------------------- */
   
-  
-  
+  .nameUser{
+    font-family: 'Arial', sans-serif;
+    color: #fff;
+    padding: 24px;
+    margin-right: 6px;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 24px;
+    font-family: 'Poppins', sans-serif;
+    /* font-family: 'Poppins', sans-serif; */
+    letter-spacing: normal;
+  }
   
   
   

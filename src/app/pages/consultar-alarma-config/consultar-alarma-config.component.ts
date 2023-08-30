@@ -304,67 +304,67 @@ export class ConsultarAlarmaConfigComponent implements OnInit {
 
   }
 
-  ModificarEstadoAlarma(element: any, estIdSeleccionado: number, estado:string): void {
-
-    if (estIdSeleccionado===0)
-    {
-      const filteredAlarms = this.AlarmaConfigConsulta.filter(alarma => alarma.cfgId !== element.cfgId && alarma.cfgSer === element.cfgSer);
-      const areAllSameServiceAndActive = filteredAlarms.every(alarma => alarma.cfgFechaBaja);
-      if (!areAllSameServiceAndActive) {
-        Swal.fire({
-          text: 'NO es posible, ya que hay otras alarmas activas para el mismo servicio.',
-          icon: 'error',
-          position: 'center',
-          showConfirmButton: true,
-          confirmButtonColor: '#0f425b',
-          confirmButtonText: 'Aceptar',
-        } as SweetAlertOptions);
-        return; // Sale de la función si se cumple la condición de error
-      }
-    }
-
-      Swal.fire({
-        text: '¿Estás seguro de que deseas modificar el estado de la alarma: ' + element.cfgNombre + ' del servicio: ' + element.serDescripcion + ' al estado ' + estado + '?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#0f425b',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Aceptar',
-        cancelButtonText: 'Cancelar',
-        position: 'center' 
-
-      } as SweetAlertOptions).then((result) => {
-        if (result.isConfirmed) {
-          this.alarmaConfigConsula.modificarEstado(estIdSeleccionado, element.cfgId ).subscribe(
-            result => {
-              Swal.fire({
-                text: 'Se ha actualizado el estado a '+ estado,
-                icon: 'success',
-                position: 'center',
-                showConfirmButton: true,
-                confirmButtonColor: '#0f425b',
-                confirmButtonText: 'Aceptar',
-              } as SweetAlertOptions).then((result) => {
-                if (result.value == true) {
-                  return location.reload();
-                }
-              });
-            },
-            error => {
-              Swal.fire({
-                text: 'No es posible modificar el estado de esta Alarma',
-                icon: 'error',
-                position: 'center',
-                showConfirmButton: true,
-                confirmButtonColor: '#0f425b',
-                confirmButtonText: 'Aceptar',
-              } as SweetAlertOptions);    
-            }
-          );
+    ModificarEstadoAlarma(element: any, estIdSeleccionado: number, estado:string): void {
+      
+      if (estIdSeleccionado===0)
+      {
+        const filteredAlarms = this.AlarmaConfigConsulta.filter(alarma => alarma.cfgId !== element.cfgId && alarma.cfgSer === element.cfgSer);
+        const areAllSameServiceAndActive = filteredAlarms.every(alarma => alarma.cfgFechaBaja);
+        if (!areAllSameServiceAndActive) {
+          Swal.fire({
+            text: 'No es posible, ya que hay otras alarmas activas para el mismo servicio.',
+            icon: 'error',
+            position: 'center',
+            showConfirmButton: true,
+            confirmButtonColor: '#0f425b',
+            confirmButtonText: 'Aceptar',
+          } as SweetAlertOptions);
+          return; // Sale de la función si se cumple la condición de error
         }
-      });    
-  }
-  
+      }
+        Swal.fire({
+          text: '¿Estás seguro de que deseas modificar el estado de la alarma: ' + element.cfgNombre + ' del servicio: ' + element.serDescripcion + ' al estado ' + estado + '?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#0f425b',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Aceptar',
+          cancelButtonText: 'Cancelar',
+          position: 'center'
+
+        } as SweetAlertOptions).then((result) => {
+          if (result.isConfirmed) {
+            this.alarmaConfigConsula.modificarEstado(estIdSeleccionado, element.cfgId ).subscribe(
+              result => {
+                Swal.fire({
+                  text: 'Se ha actualizado el estado a '+ estado,
+                  icon: 'success',
+                  // position: 'center',
+                  showConfirmButton: true,
+                  confirmButtonColor: '#0f425b',
+                  confirmButtonText: 'Aceptar',
+                } as SweetAlertOptions).then((result) => {
+                  if (result.value == true) {
+                    return location.reload();
+                    
+                  }
+                });
+              },
+              error => {
+                Swal.fire({
+                  text: 'No es posible modificar el estado de esta Alarma',
+                  icon: 'error',
+                  // position: 'center',
+                  showConfirmButton: true,
+                  confirmButtonColor: '#0f425b',
+                  confirmButtonText: 'Aceptar',
+                } as SweetAlertOptions);    
+              }
+            );
+          }
+        });    
+    }
+    
   modificarAlarmaConfig():void {
     //Verifica que este completo el formulario y que no tenga errores.
     function mostrarError(mensaje: string, footer: string) {
@@ -428,6 +428,7 @@ export class ConsultarAlarmaConfigComponent implements OnInit {
       cfgValorInferiorA,
       this.formModificar.get('cfgObservacion')?.value
     );
+    
     this.alarmaConfigConsula
       .modificarAlarmaConfig(alarmaC)  
       .subscribe(() => {

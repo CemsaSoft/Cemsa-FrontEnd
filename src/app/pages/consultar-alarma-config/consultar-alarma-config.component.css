@@ -1,3 +1,54 @@
+/* ------------Alertas de Swal2-------------------- */
+.swal2-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 9999;
+}
+
+.swal2-popup {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  width: 80%;
+  max-width: 400px; 
+  padding: 20px;
+}
+
+.swal2-popup {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+
+/* .swal2-popup {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+} 
+.swal2-container {
+  z-index: 1 !important;
+} 
+.swal2-container.swal2-center > .swal2-popup {
+  grid-column: 2 !important;
+  grid-row: 2 !important;
+  align-self: center !important;
+  justify-self: center !important;
+} */
+/* .swal2-shown {
+  overflow: unset !important;
+  padding-top: 0px !important;
+  scroll-padding-top: 0px !important;
+} */
+/* body.swal2-height-auto {
+  height: -webkit-fill-available;
+} */
 /* -----------STEP----------------------- */
 .mat-stepper-vertical {
   margin-top: 8px !important;

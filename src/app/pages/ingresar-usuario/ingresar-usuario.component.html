@@ -1,34 +1,155 @@
-<section class="h-100 gradient-form bodyF">
-  <div class="container py-5 h-100">
-    <div class="row d-flex justify-content-center align-items-center h-100">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.2/normalize.css"/>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+<app-navbar-externo></app-navbar-externo>
+
+<section class="h-100 gradient-form">
+  <div class="video-container">
+    <video autoplay muted loop id="video-background">
+      <source src="../../../assets/video2.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="row">
+    <div class="col-1">
+      <a href="/landing-page">
+        <img src="../../../assets/back3.png" style="width: 150px; height: 150px; margin-top: 440px;margin-left: 175px; z-index: 3 ; position: relative;" alt="logo">
+    </a>
+    </div>
+    <div class="col-11">
+      <div class="container py-5 h-100" style="margin-left: 110px;">
+        <div class="row d-flex justify-content-center align-items-center h-100 card-animation">
+          <div class="col-xl-10">
+            <div class="card rounded-3 text-black">
+              <div class="row g-0">
+                <div class="col-lg-6">
+                  <div class="card-body p-md-5 mx-md-4">
+                    <!-- ---LOGO----->
+                    <div class="text-center">
+                      <img src="../../../assets/LOGOHOJA.svg" 
+                        style="width: 450px; z-index: -3; margin-bottom: -148px;" alt="logo">
+                    </div>
+                    <div class="text-center">
+                      <img src="../../../assets/LOGOSIGLA.svg" 
+                        style="width: 350px; z-index: -2; margin-bottom: -57px;" alt="logo">
+                    </div>
+    
+                    <form [formGroup]="formInicio" class="row form_main">
+                      <h1 class="mt-1 mb-5 pb-1 text-center"><span>Bienvenido</span></h1>
+                      <p class="text-center">Por favor, ingrese a su cuenta</p>
+                      
+                      <!-- Campo Usuario -->
+                      <div class="form-outline ">
+                      <div class="input-row form-outlineinput-group mb-3">
+                        <span class="icon"><i class="fa fa-at"></i></span>
+                        <input type="text" id="usuario" value="Usuario" formControlName="usuario" placeholder="Usuario" required />
+                    </div>
+                          <!-- <div class="form-outline input-group mb-3">
+                              <span class="input-group-text">Usuario</span>
+                              <input type="text" id="usuario" class="form-control" value="Usuario" formControlName="usuario"  placeholder="Nombre de Usuario"
+                                  required />                                
+                          </div> -->
+                          <!-- Validaciones Usuario -->
+                          <div *ngIf="usuario?.invalid && (usuario?.dirty || usuario?.touched)"
+                              class="text-danger">
+                              <div *ngIf="usuario?.errors?.['required']">
+                                  El usuario es requerido.
+                              </div>
+                          </div>
+                      </div>
+                      <!-- Campo Contraseña -->
+                      <div class="form-outline ">
+                        <div class="input-row">
+                          <span class="icon"><i class="fa fa-lock"></i></span>
+                          <input type="password" value="Password" formControlName="password" placeholder="Contraseña" required/>
+                      </div>
+                          <!-- <div class="form-outline input-group mb-3">
+                              <span class="input-group-text">Contraseña</span>
+                              <input type="password" class="form-control" value="Password" placeholder="**********"
+                                  formControlName="password" required />
+                          </div>                     -->
+    
+                          <!-- Validaciones Contraseña -->
+                          <div *ngIf="password?.invalid && (password?.dirty || password?.touched)"
+                              class="text-danger">
+                              <div *ngIf="password?.errors?.['required']">
+                                  La contraseña es requerida.
+                              </div>
+                          </div>
+                      </div>
+                      <!-- Validaciones de Campos -->
+                      <div *ngIf="esInicioValido == 2" class="text-danger">
+                          <p>Usuario y/o contraseña incorrectos</p>
+                      </div>
+    
+                      <!-- <li style="list-style: none;"><a href="olvido-password">¿Olvidaste tu Contraseña?</a></li> -->
+                      
+                  
+                     
+    
+                      <!-- Validaciones Boton Ingresar -->
+                      <div class="col-8"></div>
+                      <div class="text-center pt-1 mb-5 pb-1 ">
+                          <!-- <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" style="background-color: #0e3c53; height: 50px;" type="submit"
+                              (click)="login()" [routerLink]="[redireccionar()]" [disabled]="validarIngresar(usuario?.value, password?.value) == false">Ingresar 
+                              
+                        
+                          </button> -->
+                          <div class="submit-row">
+                            <input type="submit" (click)="login()" [routerLink]="[redireccionar()]" [disabled]="validarIngresar(usuario?.value, password?.value) == false" value="Ingresar &raquo;"/>
+                          </div>
+                          <p></p>
+                          <span class="reset"><a href="olvido-password">¿Olvidaste tu Contraseña?</a></span>
+                      </div>
+                    </form>
+                 
+                  </div>
+                </div>
+                
+                <div class="col-lg-6 d-flex align-items-center gradient-custom-2 color-transition-container">
+                  
+                  <div class="text-white px-3 py-4 p-md-5 mx-md-4">
+                    <h1 class="my-5 display-5 fw-bold ls-tight" style="color: hsl(218, 81%, 95%)">
+                      La mejor solución <br />
+                      <span style="color: #2ef6dd">para tu negocio</span>
+                    </h1>
+                    
+                    <p class="small mb-0">A la vanguardia, implementando soluciones tecnológicas al Sector Agropecuario.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100 card-animation">
       <div class="col-xl-10">
         <div class="card rounded-3 text-black">
           <div class="row g-0">
             <div class="col-lg-6">
               <div class="card-body p-md-5 mx-md-4">
-
-                <div class="text-center">
-                  <img src="../../../assets/LOGO CEMSA V2.0.png" 
-                    style="width: 300px;" alt="logo">
-                    <br>
-                    <br>
-                    <br>
-                  <h4 class="mt-1 mb-5 pb-1">Bienvenido!</h4>
-                </div>
-                <p class="text-center">Por favor, ingrese a su cuenta</p>
                 
-                <form [formGroup]="formInicio" class="row">
-                          
-                  <!-- Campo Usuario -->
-                  <div class="form-outline mb-4">
-                      <div class="form-outline input-group mb-3">
-                          <span class="input-group-text">Usuario</span>
-                          <input type="text" id="usuario" class="form-control" value="Usuario" formControlName="usuario"  placeholder="Nombre de Usuario"
-                              required />   
-                                                              
-                      </div>
+                <div class="text-center">
+                  <img src="../../../assets/LOGOHOJA.svg" 
+                    style="width: 450px; z-index: -3; margin-bottom: -148px;" alt="logo">
+                </div>
+                <div class="text-center">
+                  <img src="../../../assets/LOGOSIGLA.svg" 
+                    style="width: 350px; z-index: -2; margin-bottom: -57px;" alt="logo">
+                </div>
 
-                      <!-- Validaciones Usuario -->
+                <form [formGroup]="formInicio" class="row form_main">
+                  <h1 class="mt-1 mb-5 pb-1 text-center"><span>Bienvenido</span></h1>
+                  <p class="text-center">Por favor, ingrese a su cuenta</p>
+                  
+                 
+                  <div class="form-outline ">
+                  <div class="input-row form-outlineinput-group mb-3">
+                    <span class="icon"><i class="fa fa-at"></i></span>
+                    <input type="text" id="usuario" value="Usuario" formControlName="usuario" placeholder="Usuario" required />
+                </div>
+                      
                       <div *ngIf="usuario?.invalid && (usuario?.dirty || usuario?.touched)"
                           class="text-danger">
                           <div *ngIf="usuario?.errors?.['required']">
@@ -36,16 +157,15 @@
                           </div>
                       </div>
                   </div>
+                 
+                  <div class="form-outline ">
+                    <div class="input-row">
+                      <span class="icon"><i class="fa fa-lock"></i></span>
+                      <input type="password" value="Password" formControlName="password" placeholder="Contraseña" required/>
+                  </div>
+                                      
 
-                  <!-- Campo Contraseña -->
-                  <div class="form-outline mb-4">
-                      <div class="form-outline input-group mb-3">
-                          <span class="input-group-text">Contraseña</span>
-                          <input type="password" class="form-control" value="Password" placeholder="**********"
-                              formControlName="password" required />
-                      </div>                    
-
-                      <!-- Validaciones Contraseña -->
+                     
                       <div *ngIf="password?.invalid && (password?.dirty || password?.touched)"
                           class="text-danger">
                           <div *ngIf="password?.errors?.['required']">
@@ -54,48 +174,47 @@
                       </div>
                   </div>
                   
-
-                  <!-- Validaciones de Campos -->
                   <div *ngIf="esInicioValido == 2" class="text-danger">
                       <p>Usuario y/o contraseña incorrectos</p>
                   </div>
 
-                  <li style="list-style: none;"><a href="olvido-password">¿Olvidaste tu Contraseña?</a></li>
                   
-                  <br>
-                  <br>
+              
+                 
 
-                  <!-- Validaciones Boton Ingresar -->
+                 
                   <div class="col-8"></div>
-                  <div class="text-center pt-1 mb-5 pb-1">
-                      <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" style="background-color: #0e3c53; height: 50px;" type="button"
-                          (click)="login()" [routerLink]="[redireccionar()]" [disabled]="validarIngresar(usuario?.value, password?.value) == false">Ingresar 
-                          
-
-                      </button>
-                      <br>
+                  <div class="text-center pt-1 mb-5 pb-1 ">
+                     
+                      <div class="submit-row">
+                        <input type="submit" (click)="login()" [routerLink]="[redireccionar()]" [disabled]="validarIngresar(usuario?.value, password?.value) == false" value="Ingresar &raquo;"/>
+                      </div>
+                      <p></p>
+                      <span class="reset"><a href="olvido-password">¿Olvidaste tu Contraseña?</a></span>
+                    
                   </div>
+                   
                 </form>
              
               </div>
             </div>
             
-            <div class="col-lg-6 d-flex align-items-center gradient-custom-2">
+            <div class="col-lg-6 d-flex align-items-center gradient-custom-2 color-transition-container">
               
               <div class="text-white px-3 py-4 p-md-5 mx-md-4">
                 <h1 class="my-5 display-5 fw-bold ls-tight" style="color: hsl(218, 81%, 95%)">
                   La mejor solución <br />
-                  <span style="color: hsl(87, 81%, 75%)">para tu negocio</span>
+                  <span style="color: #2ef6dd">para tu negocio</span>
                 </h1>
                 
-                <p class="small mb-0">Siempre a la vanguardia, implementando soluciones tecnológicas al Sector Agropecuario.</p>
+                <p class="small mb-0">A la vanguardia, implementando soluciones tecnológicas al Sector Agropecuario.</p>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 </section>
                         
 
@@ -106,5 +225,5 @@
                                     (click)="login()" [routerLink]="[redireccionar()]" *ngIf="validarIngresar(usuario?.value, password?.value) == true">Ingresar 
                                 </button>
                             </div> -->
-                        
+                            <!-- <app-landing-page></app-landing-page>                      -->
 <app-footer></app-footer>

@@ -7,8 +7,8 @@
 }
 .footerExterno {
     background-image: url('../../../assets/2.png');
-    background-size: cover; /* Ajusta el tamaño de la imagen para cubrir el área */
-    background-repeat: no-repeat; /* Evita que la imagen se repita */
-    background-color: transparent; /* Asegura que el color de fondo sea transparente */
-    /* Otros estilos para tu pie de página */
+    background-size: cover; 
+    background-repeat: no-repeat; 
+    background-color: transparent; 
+   
   }
