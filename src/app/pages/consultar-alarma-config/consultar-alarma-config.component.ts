@@ -104,12 +104,18 @@ export class ConsultarAlarmaConfigComponent implements OnInit {
       nombreServicio: new FormControl(null, []),
       cfgFechaAlta: new FormControl(null, []),
       cfgFechaBaja: new FormControl(null, []),
+      // cfgValorSuperiorA: new FormControl(null, [
+      //   Validators.required,
+      //   Validators.pattern(/^-?\d+([.,]\d{1,2})?$/)
+      // ]),
+      // cfgValorInferiorA: new FormControl(null, [
+      //   Validators.required,
+      //   Validators.pattern(/^-?\d+([.,]\d{1,2})?$/)
+      // ]),
       cfgValorSuperiorA: new FormControl(null, [
-        Validators.required,
         Validators.pattern(/^-?\d+([.,]\d{1,2})?$/)
       ]),
       cfgValorInferiorA: new FormControl(null, [
-        Validators.required,
         Validators.pattern(/^-?\d+([.,]\d{1,2})?$/)
       ]),
       cfgObservacion: new FormControl(null, [
@@ -393,29 +399,36 @@ export class ConsultarAlarmaConfigComponent implements OnInit {
     {
       const filteredAlarms = this.AlarmaConfigConsulta.filter(alarma => alarma.cfgId !== this.formModificar.get('cfgId')?.value && alarma.cfgSer === this.formModificar.get('nombreServicio')?.value );
       areAllSameServiceAndActive = filteredAlarms.every(alarma => alarma.cfgFechaBaja);
-    }
+    }    
 
     if (!areAllSameServiceAndActive) {
       mostrarError('Ese Servicio ya tiene una alarma activa', 'Por favor, seleccione otro servicio.');
-    } else if (!(this.centralNroSeleccionada !=0 )) {
+    } else if (this.centralNroSeleccionada === 0) {
       mostrarError('Debe ingresar una central', 'Por favor, seleccione una Central.');
-    } else if (this.nombreAlarma?.invalid && this.nombreAlarma.errors?.['required'] ) {
-      mostrarError('Debe ingresar un nombre de alarma', 'Por favor, introduzca un nombre de alarma.');
-    } else if (this.nombreAlarma?.invalid && this.nombreAlarma.errors?.['pattern'] ) {
-      mostrarError('El nombre no debe contener caracteres especiales ni tener más de 50 carácteres.', 'Por favor, corrija el nombre e inténtelo de nuevo.');
-    } else if (this.cfgValorSuperiorA?.invalid && this.cfgValorSuperiorA.errors?.['required'] ) {
-      mostrarError('Debe ingresar un límite superior', 'Por favor, introduzca un límite superior.');    
-    } else if (this.cfgValorSuperiorA?.invalid && this.cfgValorSuperiorA.errors?.['pattern'] ) {
-      mostrarError('El límite superior no es valido', 'Por favor, corrija el límite superior e inténtelo de nuevo.');        
-    } else if (this.cfgValorInferiorA?.invalid && this.cfgValorInferiorA.errors?.['required'] ) {
-      mostrarError('Debe ingresar un límite inferior', 'Por favor, introduzca un límite límite.');
-    } else if (this.cfgValorSuperiorA?.invalid && this.cfgValorSuperiorA.errors?.['pattern'] ) {
-      mostrarError('El límite inferior no es valido', 'Por favor, corrija el límite inferior e inténtelo de nuevo.');    
-    } else if (cfgValorInferiorA >= cfgValorSuperiorA) {
-      mostrarError('El valor del límite inferior debe ser menor que el límite superior', 'Por favor, cambie el límite');  
-    } else if (this.cfgObservacion?.invalid && this.cfgObservacion.errors?.['pattern'] ) {
-      mostrarError('La observación no debe contener caracteres especiales ni tener más de 100 carácteres.', 'Por favor, Por favor, corrija la observación e inténtelo de nuevo.');
-    } else {
+    } else if (this.nombreAlarma?.invalid) {
+      if (this.nombreAlarma.errors?.['required']) {
+        mostrarError('Debe ingresar un nombre de alarma', 'Por favor, introduzca un nombre de alarma.');
+      } else if (this.nombreAlarma.errors?.['pattern']) {
+        mostrarError('El nombre no debe contener caracteres especiales ni tener más de 50 carácteres.', 'Por favor, corrija el nombre e inténtelo de nuevo.');
+      }
+    } else if (
+      (this.formModificar.get('cfgValorSuperiorA')?.value === null || this.formModificar.get('cfgValorSuperiorA')?.value === '') &&
+      (this.formModificar.get('cfgValorInferiorA')?.value === null || this.formModificar.get('cfgValorInferiorA')?.value === '')
+    ) {
+      mostrarError('Debe ingresar un valor superior o un valor inferior', 'Por favor, introduzca un valor superior o un valor inferior.');    
+    } else if (this.cfgValorSuperiorA?.invalid && this.cfgValorSuperiorA.errors?.['pattern']) {
+      mostrarError('El valor superior no es valido', 'Por favor, corrija el valor superior e inténtelo de nuevo.');        
+    } else if (this.cfgValorInferiorA?.invalid && this.cfgValorInferiorA.errors?.['pattern']) {
+      mostrarError('El valor inferior no es valido', 'Por favor, corrija el valor inferior e inténtelo de nuevo.');    
+    } else if (this.cfgObservacion?.invalid && this.cfgObservacion.errors?.['pattern']) {
+      mostrarError('La observación no debe contener caracteres especiales ni tener más de 100 carácteres.', 'Por favor, corrija la observación e inténtelo de nuevo.');  
+    } else if ( 
+      !(this.formModificar.get('cfgValorSuperiorA')?.value === null || this.formModificar.get('cfgValorSuperiorA')?.value === '') &&
+      !(this.formModificar.get('cfgValorInferiorA')?.value === null || this.formModificar.get('cfgValorInferiorA')?.value === '') &&
+      (this.formModificar.get('cfgValorInferiorA')?.value >= this.formModificar.get('cfgValorSuperiorA')?.value)
+    ) { 
+        mostrarError('El valor del valor inferior debe ser menor que el valor superior', 'Por favor, cambie el valor'); 
+    } else { 
     
     let alarmaC: AlarmaConfigClass = new AlarmaConfigClass(
       this.formModificar.get('cfgId')?.value,
