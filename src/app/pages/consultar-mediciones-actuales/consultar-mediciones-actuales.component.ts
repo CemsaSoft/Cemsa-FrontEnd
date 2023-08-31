@@ -282,7 +282,6 @@ export class ConsultarMedicionesActualesComponent implements OnInit {
 
     this.MedicionesService.obtenerUltimaMedicionesXCentral(element.cenNro).subscribe(data => {
       this.MedicionesConsulta = data;
-  
       if (this.MedicionesConsulta.length == 0) {
         this.sinMedicones = false;
       } else {
@@ -302,9 +301,10 @@ export class ConsultarMedicionesActualesComponent implements OnInit {
         const cartelTitulo = document.createElement('div');    
         if (this.MedicionesConsulta[i].serTipoGrafico === 1) { cartelTitulo.textContent = 'HUMEDAD DE SUELO '; }
         if (this.MedicionesConsulta[i].serTipoGrafico === 2) { cartelTitulo.textContent = 'HUMEDAD AMBIENTE'; }
-        if (this.MedicionesConsulta[i].serTipoGrafico === 3) { cartelTitulo.textContent = 'TEMPERATURA'; }
-        if (this.MedicionesConsulta[i].serTipoGrafico === 4) { cartelTitulo.textContent = 'DIRECCION DEL VIENTO'; }
-        if (this.MedicionesConsulta[i].serTipoGrafico === 5) { cartelTitulo.textContent = 'VELOCIDAD DEL VIENTO'; }
+        if (this.MedicionesConsulta[i].serTipoGrafico === 3) { cartelTitulo.textContent = 'TEMPERATURA'; }        
+        if (this.MedicionesConsulta[i].serTipoGrafico === 4) { cartelTitulo.textContent = 'VELOCIDAD DEL VIENTO'; }
+        if (this.MedicionesConsulta[i].serTipoGrafico === 5) { cartelTitulo.textContent = 'DIRECCION DEL VIENTO'; }
+
         cartelTitulo.style.textAlign = 'center';
         cartelTitulo.style.fontWeight = 'bold';
       
@@ -439,7 +439,7 @@ export class ConsultarMedicionesActualesComponent implements OnInit {
         return option;
       }
         
-      function crearGraficoOpcion5():EChartsOption  {
+      function crearGraficoOpcion4():EChartsOption  {
         const option: EChartsOption = {
           series: [
             { type: 'gauge',        
@@ -499,7 +499,7 @@ export class ConsultarMedicionesActualesComponent implements OnInit {
         return option;
       }
 
-      function crearGraficoOpcion4():EChartsOption  {
+      function crearGraficoOpcion5():EChartsOption  {
         const option: EChartsOption = {
           series: [
             {
