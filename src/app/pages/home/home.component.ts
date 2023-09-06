@@ -14,6 +14,7 @@ export class HomeComponent implements OnInit {
   @ViewChild('miModal', { static: false }) miModal: ModalComponent | null = null;
   habilitarDatoPerfil = false;
   habilitarModContrasena = false;
+  habilitarAccesoDirectos = false;
 
   constructor(
   ) {}
@@ -23,13 +24,15 @@ export class HomeComponent implements OnInit {
     this.rol = localStorage.getItem('rol');
 
     this.cambPassword = localStorage.getItem('cambiarPassword');
-    if (this.cambPassword == 0) {
-      this.habilitarDatoPerfil = false;
+    console.log(this.cambPassword);
+    if (this.cambPassword == 1) {
+      // this.habilitarDatoPerfil = false;
       this.habilitarModContrasena = true;
-     } else { 
-      this.habilitarDatoPerfil = true;
-      this.habilitarModContrasena = false;    
-     }   
+     } 
+    //  else { 
+    //   this.habilitarDatoPerfil = true;
+    //   this.habilitarModContrasena = false;    
+    //  }   
   }
 
   mostrarHora() {
@@ -42,11 +45,14 @@ export class HomeComponent implements OnInit {
 
   datoPerfil(){
     this.habilitarDatoPerfil = !this.habilitarDatoPerfil;
-    this.habilitarModContrasena = !this.habilitarModContrasena;
+    this.habilitarModContrasena = false;
   }
   modContr(){
-    this.habilitarDatoPerfil = !this.habilitarDatoPerfil;
+    this.habilitarDatoPerfil = false;
     this.habilitarModContrasena = !this.habilitarModContrasena;
+  }
+  accesoDirectos(){
+    this.habilitarAccesoDirectos = !this.habilitarAccesoDirectos;
   }
   redirigirPanel(){
     return location.href = '/consultar-paneles-monitoreo';

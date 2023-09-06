@@ -32,8 +32,8 @@
                             alt="..."
                             />    -->
             <!-- <button mat-button>MODIFICAR</button> -->
-            <button mat-button (click)="datoPerfil()">VER</button>
-
+            <button mat-button (click)="datoPerfil()" *ngIf="!habilitarDatoPerfil">VER</button>
+            <button mat-button (click)="datoPerfil()" *ngIf="habilitarDatoPerfil">OCULTAR</button>
             
           </mat-card-actions>
         </mat-card>
@@ -51,7 +51,8 @@
                             />  
           </mat-card-header>
           <mat-card-actions align="end">
-            <button mat-button (click)="modContr()">ACCEDER</button>
+            <button mat-button (click)="modContr()" *ngIf="!habilitarModContrasena">ACCEDER</button>
+            <button mat-button (click)="modContr()" *ngIf="habilitarModContrasena">OCULTAR</button>
           </mat-card-actions>
         </mat-card>
       </div>
@@ -68,11 +69,12 @@
                             />  
           </mat-card-header>
           <mat-card-actions align="end">
-            <button mat-button (click)="openModal()">VER</button>
+            <button mat-button (click)="accesoDirectos()" *ngIf="!habilitarAccesoDirectos">VER</button>
+            <button mat-button (click)="accesoDirectos()" *ngIf="habilitarAccesoDirectos">OCULTAR</button>
           </mat-card-actions>
         </mat-card>
       </div>
-      <div class="col-3">
+      <div class="col-3" *ngIf="rol != 1">
         <mat-card class="cardInternas card4">
           <mat-card-header>
             <mat-card-title class="cardTitulo">Mi Panel de Monitoreo</mat-card-title>
@@ -99,16 +101,19 @@
       <div class="card_externa html body">
         <h1>Bienvenido!</h1>
         <div class="row">
-          <div class="col-8">
+
+          <div class="col-8" style="height: 450px;" *ngIf="!(habilitarDatoPerfil || habilitarModContrasena)">
+            
+          </div>
+          <div class="col-8" *ngIf="habilitarDatoPerfil || habilitarModContrasena">
             <br />
             <div class="row row-cols-1 row-cols-md-1 g-2">
-              <div class="col">
-                
+              <div class="col">                
                 
                 <div class="card">
                   <div class="card-body">
-                    <h5 class="card-title cardTitulo" style="font-weight: bold; color:#4a67a4fc" *ngIf="!habilitarDatoPerfil">Mi Perfil</h5>
-                    <h5 class="card-title cardTitulo" style="font-weight: bold; color:#4a67a4fc" *ngIf="!habilitarModContrasena">Restablecer Contraseña</h5>
+                    <h5 class="card-title cardTitulo" style="font-weight: bold; color:#4a67a4fc" *ngIf="habilitarDatoPerfil">Mi Perfil</h5>
+                    <h5 class="card-title cardTitulo" style="font-weight: bold; color:#4a67a4fc" *ngIf="habilitarModContrasena">Restablecer Contraseña</h5>
                     <p class="card-text">
                     </p>
                   </div>
@@ -122,8 +127,8 @@
               <div class="col">
                 <div class="card">
                   <div class="card-body">
-                    <app-consultar-cuenta *ngIf="!habilitarDatoPerfil"></app-consultar-cuenta>
-                    <app-modificar-password *ngIf="!habilitarModContrasena"></app-modificar-password>
+                    <app-consultar-cuenta *ngIf="habilitarDatoPerfil"></app-consultar-cuenta>
+                    <app-modificar-password *ngIf="habilitarModContrasena"></app-modificar-password>
 
                     <br>
                     <br>
@@ -148,6 +153,7 @@
             </div>
             
           </div>
+
           <div class="col-4">
             <!-- Aqui lo de la izquierda -->
             <div class="row row-cols-1 row-cols-md-1 g-2">
@@ -268,7 +274,7 @@
         </div>
         <br />
 
-        <div class="card">
+        <div class="card" *ngIf="habilitarAccesoDirectos">
           <div class="card-body">
             <h5 class="card-title cardTitulo" style="font-weight: bold; color:#4a67a4fc" >Mis Acessos Directos</h5>
             <p class="card-text" style="margin: 0px 0 33px">
@@ -287,7 +293,7 @@
                 <h5 class="efecto-texto content">Estado Actual</h5>
               </a>
             </div>
-            <div class="card-container2" style="margin-bottom: 291px;" *ngIf="rol != 0">
+            <div class="card-container2" *ngIf="rol != 0">
               <a routerLink="/consultar-cliente" class="accesosDirectos accesosDirectos:hover">            
                 <img src="./assets/resource.png" class="image" alt="..." />
                 <h5 class="efecto-texto content">Mis Clientes</h5>
