@@ -64,6 +64,10 @@ import { MatTableModule } from '@angular/material/table';
 import { MatBadgeModule } from '@angular/material/badge';
 import { NavbarExternoComponent } from './shared/navbar-externo/navbar-externo.component';
 import { LandingPageComponent } from './pages/landing-page/landing-page.component';
+import {MatCardModule} from '@angular/material/card';
+import {Component} from '@angular/core';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatDividerModule} from '@angular/material/divider';
 
 
 //import { TextMaskModule } from 'angular2-text-mask';// npm i angular2-text-mask
@@ -141,6 +145,9 @@ import { LandingPageComponent } from './pages/landing-page/landing-page.componen
     MatSortModule,
     MatTableModule,
     MatBadgeModule,
+    MatCardModule,
+    MatDividerModule, 
+    MatProgressBarModule,
   ],
   // Inyección de dependencias
   providers: [
