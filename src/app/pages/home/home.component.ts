@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef   } from '@angular/core';
+import { ModalComponent } from 'src/app/shared/modal/modal.component';
 
 @Component({
   selector: 'app-home',
@@ -10,11 +11,12 @@ export class HomeComponent implements OnInit {
   hora: any;
   rol: any = 0;
   cambPassword: any = 0;
-
+  @ViewChild('miModal', { static: false }) miModal: ModalComponent | null = null;
   habilitarDatoPerfil = false;
   habilitarModContrasena = false;
 
-  constructor() {}
+  constructor(
+  ) {}
 
   ngOnInit(): void {
     this.mostrarHora();
@@ -46,4 +48,14 @@ export class HomeComponent implements OnInit {
     this.habilitarDatoPerfil = !this.habilitarDatoPerfil;
     this.habilitarModContrasena = !this.habilitarModContrasena;
   }
+  redirigirPanel(){
+    return location.href = '/consultar-paneles-monitoreo';
+  }
+  openModal(): void {
+    if (this.miModal) {
+      console.log("Entró a abrir el modal");
+      this.miModal.toggle();
+    }
+  }
+
 }

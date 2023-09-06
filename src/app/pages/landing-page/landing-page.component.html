@@ -4,7 +4,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
   </header>
   <div class="button-container">
-    <button class="custom-btn btn-12" routerLink="ingresar-usuario"><span>Click!</span><span>Ingresar</span></button>
+    <button class="custom-btn btn-12" routerLink="ingresar-usuario"><span class="hoverClick">Click!</span><span>Ingresar</span></button>
   </div>
   
   <div class="text-center">
@@ -40,6 +40,7 @@
   </div> -->
   </section>
   <main class="main">
+     <!-- ------------SECCIÓN QUIENES SOMOS-------------- -->
     <section class="slider" id="somos">
       <h1>CEMSA</h1>
       <br><br><br>
@@ -48,25 +49,406 @@
         Nos enfocamos en hacer que cada uno de nuestros clientes cumpla todos sus objetivos, alcance el éxito y se destaque en su ámbito de acción.
         
         A nivel humano, desarrollamos el talento de las personas, fortaleciendo sus habilidades y formando sus competencias.</h4>
-    </section>
-    <section class="slider" id="servicios">
-      <h1>SERVICIOS</h1>
-      <br>
-      <h4>Hacemos que tu organización aproveche al máximo su potencial de crecimiento.
+        <p style="margin-top: 90px;"></p>
+        <div class="row" style="width: 1900px; margin-left: 650px;">
+       
+          <!-- Integrante 1 -->
+          <div class="col-2">
+            <mat-card class="example-card cardIntegrantes">
+              <mat-card-header>
+                <div mat-card-avatar class="example-header-image"></div>
+                <mat-card-title style="text-align: center;">Karen Yanina Cruz</mat-card-title>
+                <mat-card-subtitle>Developer FullStack</mat-card-subtitle>
+              </mat-card-header>
+              <div style="text-align: center;"> <!-- Agregar un div para centrar la imagen y el texto -->
+                <img mat-card-image src="./../../../assets/integrante1.png" style="width: 50%; height: 50%; margin: 0 auto;" alt="DesarrolladorFrontEnd">
+              </div>
+              <mat-card-content>
+                <p>
+                  Estudiante de Ingeniería en Sistemas de Información
+                </p>
+                <p><strong>Scrum Master.</strong>
+                </p>
+                <mat-divider></mat-divider>
+              </mat-card-content>
+              <mat-card-actions>
+               
+                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="48" height="48" viewBox="0 0 48 48">
+                  <path fill="#0078d4" d="M8.421,14h0.052l0,0C11.263,14,13,12,13,9.5C12.948,6.945,11.263,5,8.526,5S4,6.945,4,9.5	C4,12,5.736,14,8.421,14z M4,17h9v26H4V17z M44,26.5c0-5.247-4.253-9.5-9.5-9.5c-3.053,0-5.762,1.446-7.5,3.684V17h-9v26h9V28l0,0	c0-2.209,1.791-4,4-4s4,1.791,4,4v15h9C44,43,44,27.955,44,26.5z"></path>
+                  </svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="64" height="64" viewBox="0 0 72 72">
+                    <path d="M36,12c13.255,0,24,10.745,24,24c0,10.656-6.948,19.685-16.559,22.818c0.003-0.009,0.007-0.022,0.007-0.022	s-1.62-0.759-1.586-2.114c0.038-1.491,0-4.971,0-6.248c0-2.193-1.388-3.747-1.388-3.747s10.884,0.122,10.884-11.491	c0-4.481-2.342-6.812-2.342-6.812s1.23-4.784-0.426-6.812c-1.856-0.2-5.18,1.774-6.6,2.697c0,0-2.25-0.922-5.991-0.922	c-3.742,0-5.991,0.922-5.991,0.922c-1.419-0.922-4.744-2.897-6.6-2.697c-1.656,2.029-0.426,6.812-0.426,6.812	s-2.342,2.332-2.342,6.812c0,11.613,10.884,11.491,10.884,11.491s-1.097,1.239-1.336,3.061c-0.76,0.258-1.877,0.576-2.78,0.576	c-2.362,0-4.159-2.296-4.817-3.358c-0.649-1.048-1.98-1.927-3.221-1.927c-0.817,0-1.216,0.409-1.216,0.876s1.146,0.793,1.902,1.659	c1.594,1.826,1.565,5.933,7.245,5.933c0.617,0,1.876-0.152,2.823-0.279c-0.006,1.293-0.007,2.657,0.013,3.454	c0.034,1.355-1.586,2.114-1.586,2.114s0.004,0.013,0.007,0.022C18.948,55.685,12,46.656,12,36C12,22.745,22.745,12,36,12z"></path>
+                    </svg>
+                    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+              </mat-card-actions>
+              
+              <mat-card-footer>
+                
+              </mat-card-footer>
+            </mat-card>
+          </div>
+          <!-- Integrante 2 -->
+          <div class="col-2">
+            <mat-card class="example-card cardIntegrantes">
+              <mat-card-header>
+                <div mat-card-avatar class="example-header-image"></div>
+                <mat-card-title style="text-align: center;">Pablo Gómez</mat-card-title>
+                <mat-card-subtitle>Desarrollador BackEnd</mat-card-subtitle>
+              </mat-card-header>
+              <div style="text-align: center;"> <!-- Agregar un div para centrar la imagen y el texto -->
+                <img mat-card-image src="./../../../assets/integrantes2.png" style="width: 50%; height: 50%; margin: 0 auto;" alt="DesarrolladorFrontEnd">
+              </div>
+              <mat-card-content>
+                <p>
+                  Estudiante de Ingeniería en Sistemas de Información
+                </p>
+                <p><strong>Administration Data Base (DBA).</strong>
+                </p>
+            
+                <mat-divider></mat-divider>
+              </mat-card-content>
+              <mat-card-actions>
+               
+                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="48" height="48" viewBox="0 0 48 48">
+                  <path fill="#0078d4" d="M8.421,14h0.052l0,0C11.263,14,13,12,13,9.5C12.948,6.945,11.263,5,8.526,5S4,6.945,4,9.5	C4,12,5.736,14,8.421,14z M4,17h9v26H4V17z M44,26.5c0-5.247-4.253-9.5-9.5-9.5c-3.053,0-5.762,1.446-7.5,3.684V17h-9v26h9V28l0,0	c0-2.209,1.791-4,4-4s4,1.791,4,4v15h9C44,43,44,27.955,44,26.5z"></path>
+                  </svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="64" height="64" viewBox="0 0 72 72">
+                    <path d="M36,12c13.255,0,24,10.745,24,24c0,10.656-6.948,19.685-16.559,22.818c0.003-0.009,0.007-0.022,0.007-0.022	s-1.62-0.759-1.586-2.114c0.038-1.491,0-4.971,0-6.248c0-2.193-1.388-3.747-1.388-3.747s10.884,0.122,10.884-11.491	c0-4.481-2.342-6.812-2.342-6.812s1.23-4.784-0.426-6.812c-1.856-0.2-5.18,1.774-6.6,2.697c0,0-2.25-0.922-5.991-0.922	c-3.742,0-5.991,0.922-5.991,0.922c-1.419-0.922-4.744-2.897-6.6-2.697c-1.656,2.029-0.426,6.812-0.426,6.812	s-2.342,2.332-2.342,6.812c0,11.613,10.884,11.491,10.884,11.491s-1.097,1.239-1.336,3.061c-0.76,0.258-1.877,0.576-2.78,0.576	c-2.362,0-4.159-2.296-4.817-3.358c-0.649-1.048-1.98-1.927-3.221-1.927c-0.817,0-1.216,0.409-1.216,0.876s1.146,0.793,1.902,1.659	c1.594,1.826,1.565,5.933,7.245,5.933c0.617,0,1.876-0.152,2.823-0.279c-0.006,1.293-0.007,2.657,0.013,3.454	c0.034,1.355-1.586,2.114-1.586,2.114s0.004,0.013,0.007,0.022C18.948,55.685,12,46.656,12,36C12,22.745,22.745,12,36,12z"></path>
+                    </svg>
+                    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+              </mat-card-actions>
+              
+              <mat-card-footer>
+                
+              </mat-card-footer>
+            </mat-card>
+          </div>
+          <!-- Integrante 3 -->
+          <div class="col-2">
+            <mat-card class="example-card cardIntegrantes">
+              <mat-card-header>
+                <div mat-card-avatar class="example-header-image"></div>
+                <mat-card-title style="text-align: center;">Pablo Jornet</mat-card-title>
+                <mat-card-subtitle>Developer FrontEnd</mat-card-subtitle>
+              </mat-card-header>
+              <div style="text-align: center;"> <!-- Agregar un div para centrar la imagen y el texto -->
+                <img mat-card-image src="./../../../assets/integrantes3.png" style="width: 50%; height: 50%; margin: 0 auto;" alt="DesarrolladorFrontEnd">
+              </div>
+              <mat-card-content>
+                <p>
+                  Estudiante de Ingeniería en Sistemas de Información
+                </p>
+                <p><strong>Tester QA.</strong>
+                </p>
+            
+                <mat-divider></mat-divider>
+              </mat-card-content>
+              <mat-card-actions>
+               
+                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="48" height="48" viewBox="0 0 48 48">
+                  <path fill="#0078d4" d="M8.421,14h0.052l0,0C11.263,14,13,12,13,9.5C12.948,6.945,11.263,5,8.526,5S4,6.945,4,9.5	C4,12,5.736,14,8.421,14z M4,17h9v26H4V17z M44,26.5c0-5.247-4.253-9.5-9.5-9.5c-3.053,0-5.762,1.446-7.5,3.684V17h-9v26h9V28l0,0	c0-2.209,1.791-4,4-4s4,1.791,4,4v15h9C44,43,44,27.955,44,26.5z"></path>
+                  </svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="64" height="64" viewBox="0 0 72 72">
+                    <path d="M36,12c13.255,0,24,10.745,24,24c0,10.656-6.948,19.685-16.559,22.818c0.003-0.009,0.007-0.022,0.007-0.022	s-1.62-0.759-1.586-2.114c0.038-1.491,0-4.971,0-6.248c0-2.193-1.388-3.747-1.388-3.747s10.884,0.122,10.884-11.491	c0-4.481-2.342-6.812-2.342-6.812s1.23-4.784-0.426-6.812c-1.856-0.2-5.18,1.774-6.6,2.697c0,0-2.25-0.922-5.991-0.922	c-3.742,0-5.991,0.922-5.991,0.922c-1.419-0.922-4.744-2.897-6.6-2.697c-1.656,2.029-0.426,6.812-0.426,6.812	s-2.342,2.332-2.342,6.812c0,11.613,10.884,11.491,10.884,11.491s-1.097,1.239-1.336,3.061c-0.76,0.258-1.877,0.576-2.78,0.576	c-2.362,0-4.159-2.296-4.817-3.358c-0.649-1.048-1.98-1.927-3.221-1.927c-0.817,0-1.216,0.409-1.216,0.876s1.146,0.793,1.902,1.659	c1.594,1.826,1.565,5.933,7.245,5.933c0.617,0,1.876-0.152,2.823-0.279c-0.006,1.293-0.007,2.657,0.013,3.454	c0.034,1.355-1.586,2.114-1.586,2.114s0.004,0.013,0.007,0.022C18.948,55.685,12,46.656,12,36C12,22.745,22.745,12,36,12z"></path>
+                    </svg>
+                    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+              </mat-card-actions>
+              
+              <mat-card-footer>
+                
+              </mat-card-footer>
+            </mat-card>
+          </div>
+          <!-- Integrante 4 -->
+          <div class="col-2">
+            <mat-card class="example-card cardIntegrantes">
+              <mat-card-header>
+                <div mat-card-avatar class="example-header-image"></div>
+                <mat-card-title style="text-align: center;">Claudio Oliveda</mat-card-title>
+                <mat-card-subtitle>Developer FullStack</mat-card-subtitle>
+              </mat-card-header>
+              <div style="text-align: center;"> <!-- Agregar un div para centrar la imagen y el texto -->
+                <img mat-card-image src="./../../../assets/integrante4.png" style="width: 50%; height: 50%; margin: 0 auto;" alt="DesarrolladorFrontEnd">
+              </div>
+              <mat-card-content>
+                <p>
+                  Estudiante de Ingeniería en Sistemas de Información
+                </p>
+                <p><strong>Esp. Sistemas Embebidos - Android.</strong>
+                </p>
+            
+                <mat-divider></mat-divider>
+              </mat-card-content>
+              <mat-card-actions>
+               
+                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="48" height="48" viewBox="0 0 48 48">
+                  <path fill="#0078d4" d="M8.421,14h0.052l0,0C11.263,14,13,12,13,9.5C12.948,6.945,11.263,5,8.526,5S4,6.945,4,9.5	C4,12,5.736,14,8.421,14z M4,17h9v26H4V17z M44,26.5c0-5.247-4.253-9.5-9.5-9.5c-3.053,0-5.762,1.446-7.5,3.684V17h-9v26h9V28l0,0	c0-2.209,1.791-4,4-4s4,1.791,4,4v15h9C44,43,44,27.955,44,26.5z"></path>
+                  </svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="64" height="64" viewBox="0 0 72 72">
+                    <path d="M36,12c13.255,0,24,10.745,24,24c0,10.656-6.948,19.685-16.559,22.818c0.003-0.009,0.007-0.022,0.007-0.022	s-1.62-0.759-1.586-2.114c0.038-1.491,0-4.971,0-6.248c0-2.193-1.388-3.747-1.388-3.747s10.884,0.122,10.884-11.491	c0-4.481-2.342-6.812-2.342-6.812s1.23-4.784-0.426-6.812c-1.856-0.2-5.18,1.774-6.6,2.697c0,0-2.25-0.922-5.991-0.922	c-3.742,0-5.991,0.922-5.991,0.922c-1.419-0.922-4.744-2.897-6.6-2.697c-1.656,2.029-0.426,6.812-0.426,6.812	s-2.342,2.332-2.342,6.812c0,11.613,10.884,11.491,10.884,11.491s-1.097,1.239-1.336,3.061c-0.76,0.258-1.877,0.576-2.78,0.576	c-2.362,0-4.159-2.296-4.817-3.358c-0.649-1.048-1.98-1.927-3.221-1.927c-0.817,0-1.216,0.409-1.216,0.876s1.146,0.793,1.902,1.659	c1.594,1.826,1.565,5.933,7.245,5.933c0.617,0,1.876-0.152,2.823-0.279c-0.006,1.293-0.007,2.657,0.013,3.454	c0.034,1.355-1.586,2.114-1.586,2.114s0.004,0.013,0.007,0.022C18.948,55.685,12,46.656,12,36C12,22.745,22.745,12,36,12z"></path>
+                    </svg>
+                    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+              </mat-card-actions>
+              
+              <mat-card-footer>
+                
+              </mat-card-footer>
+            </mat-card>
+          </div>
 
-        Nuestro portfolio de servicios está orientado a satisfacer de manera integral todas tus necesidades, acompañando las más altas exigencias del mercado.</h4>
+        </div>
     </section>
+    <!-- ------------SECCIÓN SERVICIOS-------------- -->
+    <section class="slider" id="servicios">
+      <h1 style="padding-bottom: 15px;">SERVICIOS</h1>
+      <br>
+      <h4 style="padding-bottom: 100px;">Si eres un aficionado a la meteorología podrás seguir en directo y online <br> todos los datos meteorológicos a través de CeMSA</h4>
+      
+        <!-- ------------SECCIÓN SLIDER--------------- -->
+        <form action="#" class=" form">
+          <div id="carouselExampleInterval" class="from-group carousel" data-bs-ride="carousel">
+              <div class="carousel-inner">
+                <!--  servicio 1 -->
+                <div class="carousel-item active" data-bs-interval="5000">
+                    
+                  <img id="imagen1" src="./../../../assets/viento2.png" style="padding-bottom: 230px; width: 10%; height: 10%;" class="animada"  >
+                  <!-- <img src="./../../../assets/direccion1.png" style="padding-bottom: 230px; width: 10%; height: 10%;"  > -->
+                  <img src="./../../../assets/velocidad1.png" style="padding-bottom: 230px; width: 15%; height: 10%;"  >
+                  <!-- <img src="./../../../assets/viento1.png" style="padding-bottom: 230px; width: 10%; height: 10%;"  > -->
+               
+                  <div class="carousel-caption d-none d-md-block w-20 fondo">
+                      <div class="card-body">
+                        <br>
+                        <span class="tituloCarrucel">VELOCIDAD DEL VIENTO</span>
+                            <p> 
+                        <div class="uc-content">
+                           <p style="font-size: 18px;"><strong><span class="subtituloCarrucel">Tecnología : Anemométro </span></strong></p>
+                        </div>
+                        <br>
+                        <div class="uc-content">
+                           <p style="font-size: 18px;"><span class="textoCarrucel">CeMSA supone una evolución en las estaciones meteorológicas <br> al introducir un sensor exterior que mide la velocidad y dirección del viento.</span></p>
+                      </div>
+                      </div>
+                  </div>
+              </div>
+              <!--  servicio 2 -->
+              <div class="carousel-item active" data-bs-interval="5000">
+                    
+                <img id="imagen1" src="./../../../assets/viento2.png" style="padding-bottom: 230px; width: 10%; height: 10%;" class="animada"  >
+                <!-- <img src="./../../../assets/direccion1.png" style="padding-bottom: 230px; width: 10%; height: 10%;"  > -->
+                <img src="./../../../assets/velocidad1.png" style="padding-bottom: 230px; width: 15%; height: 10%;"  >
+                <!-- <img src="./../../../assets/viento1.png" style="padding-bottom: 230px; width: 10%; height: 10%;"  > -->
+             
+                <div class="carousel-caption d-none d-md-block w-20 fondo">
+                    <div class="card-body">
+                      <br>
+                      <span class="tituloCarrucel">DIRECCIÓN DEL VIENTO</span>
+                          <p> 
+                      <div class="uc-content">
+                         <p style="font-size: 18px;"><strong><span class="subtituloCarrucel">Tecnología : VELETA </span></strong></p>
+                      </div>
+                      <br>
+                      <div class="uc-content">
+                         <p style="font-size: 18px;"><span class="textoCarrucel">CeMSA supone una evolución en las estaciones meteorológicas <br> al introducir un sensor exterior que mide la velocidad y dirección del viento.</span></p>
+                    </div>
+                    </div>
+                </div>
+            </div>
+                <!--  servicio 3 -->
+                  <div class="carousel-item" data-bs-interval="5000">
+                    
+                      <img id="imagen1" src="./../../../assets/humedad2.png" style="padding-bottom: 230px; width: 10%; height: 10%;" class="animada">
+                      <!-- <img src="./../../../assets/humedad2.png" style="padding-bottom: 230px; width: 10%; height: 10%;">
+                      <img src="./../../../assets/humedad3.png" style="padding-bottom: 230px; width: 15%; height: 10%;">
+                      <img src="./../../../assets/humedad4.png" style="padding-bottom: 230px; width: 10%; height: 10%;"> -->
+                   
+                      <div class="carousel-caption d-none d-md-block w-20 fondo">
+                          <div class="card-body">
+                            <br>
+                            <span class="tituloCarrucel">HUMEDAD DEL SUELO</span>
+                                <p> 
+                            <div class="uc-content">
+                               <p style="font-size: 18px;"><strong><span class="subtituloCarrucel">Tecnología : Sensor </span></strong></p>
+                            </div>
+                            <br>
+                            <div class="uc-content">
+                               <p style="font-size: 18px;"><span class="textoCarrucel">CeMSA supone una evolución en las estaciones meteorológicas <br> al introducir un sensor exterior que mide la velocidad y dirección del viento.</span></p>
+                          </div>
+                          </div>
+                      </div>
+                  </div>
+                  <!--  servicio 4 -->
+                  <div class="carousel-item" data-bs-interval="5000">
+                    
+                    <img id="imagen1" src="./../../../assets/humedad4.png" style="padding-bottom: 230px; width: 10%; height: 10%;" class="animada">
+                    <!-- <img src="./../../../assets/humedad2.png" style="padding-bottom: 230px; width: 10%; height: 10%;">
+                    <img src="./../../../assets/humedad3.png" style="padding-bottom: 230px; width: 15%; height: 10%;">
+                    <img src="./../../../assets/humedad4.png" style="padding-bottom: 230px; width: 10%; height: 10%;"> -->
+                 
+                    <div class="carousel-caption d-none d-md-block w-20 fondo">
+                        <div class="card-body">
+                          <br>
+                          <span class="tituloCarrucel">HUMEDAD AMBIENTE</span>
+                              <p> 
+                          <div class="uc-content">
+                             <p style="font-size: 18px;"><strong><span class="subtituloCarrucel">Tecnología : Sensor </span></strong></p>
+                          </div>
+                          <br>
+                          <div class="uc-content">
+                             <p style="font-size: 18px;"><span class="textoCarrucel">CeMSA supone una evolución en las estaciones meteorológicas <br> al introducir un sensor exterior que mide la velocidad y dirección del viento.</span></p>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                 <!--  servicio 5 -->
+
+                 <div class="carousel-item" data-bs-interval="5000">
+                    
+                  <img id="imagen1" src="./../../../assets/temperatura2.png" style="padding-bottom: 230px; width: 10%; height: 10%;" class="animada">
+                  <!-- <img src="./../../../assets/temperatura2.png" style="padding-bottom: 230px; width: 10%; height: 10%;"  > -->
+                  <!-- <img src="./../../../assets/temperatura3.png" style="padding-bottom: 230px; width: 15%; height: 10%;"  > -->
+               
+                  <div class="carousel-caption d-none d-md-block w-20 fondo">
+                      <div class="card-body">
+                        <br>
+                        <span class="tituloCarrucel">TEMPERATURA AMBIENTE</span>
+                            <p> 
+                        <div class="uc-content">
+                           <p style="font-size: 18px;"><strong><span class="subtituloCarrucel">Tecnología : Sensor </span></strong></p>
+                        </div>
+                        <br>
+                        <div class="uc-content">
+                           <p style="font-size: 18px;"><span class="textoCarrucel">CeMSA supone una evolución en las estaciones meteorológicas <br> al introducir un sensor exterior que mide la velocidad y dirección del viento.</span></p>
+                      </div>
+                      </div>
+                  </div>
+              </div>
+                 <!--  servicio 3 -->
+                 <!-- <div class="carousel-item" data-bs-interval="5000">
+                    
+                  <img id="imagen1" src="./../../../assets/temperatura1.png" style="padding-bottom: 230px; width: 10%; height: 10%;" class="animada">
+                  <img src="./../../../assets/temperatura2.png" style="padding-bottom: 230px; width: 10%; height: 10%;"  >
+                  <img src="./../../../assets/temperatura3.png" style="padding-bottom: 230px; width: 15%; height: 10%;"  >
+               
+                  <div class="carousel-caption d-none d-md-block w-20 fondo">
+                      <div class="card-body">
+                        <br>
+                        <span class="tituloCarrucel">TEMPERATURA AMBIENTE</span>
+                            <p> 
+                        <div class="uc-content">
+                           <p style="font-size: 18px;"><strong><span class="subtituloCarrucel">Tecnología : Sensor </span></strong></p>
+                        </div>
+                        <br>
+                        <div class="uc-content">
+                           <p style="font-size: 18px;"><span class="textoCarrucel">CeMSA supone una evolución en las estaciones meteorológicas <br> al introducir un sensor exterior que mide la velocidad y dirección del viento.</span></p>
+                      </div>
+                      </div>
+                  </div>
+              </div> -->
+                 <!--  servicio 4 -->
+                 <!-- <div class="carousel-item" data-bs-interval="5000">
+                    
+                  <img id="imagen1" src="./../../../assets/viento2.png" style="padding-bottom: 230px; width: 10%; height: 10%;" class="animada"  >
+                  <img src="./../../../assets/velocidad1.png" style="padding-bottom: 230px; width: 15%; height: 10%;"  >
+               
+                  <div class="carousel-caption d-none d-md-block w-20 fondo">
+                      <div class="card-body">
+                        <br>
+                        <span class="tituloCarrucel">DIRECCIÓN Y VELOCIDAD DEL VIENTO</span>
+                            <p> 
+                        <div class="uc-content">
+                           <p style="font-size: 18px;"><strong><span class="subtituloCarrucel">Tecnología : Anemométro </span></strong></p>
+                        </div>
+                        <br>
+                        <div class="uc-content">
+                           <p style="font-size: 18px;"><span class="textoCarrucel">CeMSA supone una evolución en las estaciones meteorológicas <br> al introducir un sensor exterior que mide la velocidad y dirección del viento.</span></p>
+                      </div>
+                      </div>
+                  </div>
+              </div> -->
+                 <!--  servicio 5 -->
+              </div>
+              <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval"
+                  data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="false"></span>
+                  <span class="visually-hidden-focusable">Anterior</span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval"
+                  data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="false"></span>
+                  <span class="visually-hidden-focusable">Siguiente</span>
+              </button>
+          </div>
+      </form>
+        <!-- ------------------------------------------- -->
+    </section>
+    <!-- ------------SECCIÓN DE CONTACTO-------------- -->
     <section class="slider" id="contacto">
-      <h1>CONTÁCTANOS</h1>
-      <h2>framework for Production</h2>
+      <div class="row">
+        <div class="col-7" style="padding-top: 350px;">
+          <h1 style="padding-right: 80px">CONTÁCTANOS</h1>
+        </div>
+        <div class="col-5">
+          <title>Formulario de contacto</title>
+      <div class="contact_form">
+      <!-- ------------Formulario-------------- -->
+        <div class="formulario">			
+          <h1 style="font-size: 30px">Formulario de contacto</h1>
+            <h3 style="padding-bottom: 0px; font-style: oblique;">Escríbenos y en breve los pondremos en contacto contigo</h3>
+              <form action="submeter-formulario.php" method="post">	                
+                    <p>
+                      <label for="nombre" class="colocar_nombre labelInput">Nombre
+                        <span class="obligatorio">*</span>
+                      </label>
+                        <input class="espacioInput" type="text" name="introducir_nombre" id="nombre" required="obligatorio" placeholder="Escribe tu nombre">
+                    </p>
+                  
+                    <p>
+                      <label for="email" class="colocar_email labelInput">Email
+                        <span class="obligatorio">*</span>
+                      </label>
+                        <input class="espacioInput" type="email" name="introducir_email" id="email" required="obligatorio" placeholder="Escribe tu Email">
+                    </p>
+                
+                    <p>
+                      <label for="telefone" class="colocar_telefono labelInput">Teléfono
+                      </label>
+                        <input class="espacioInput" type="tel" name="introducir_telefono" id="telefono" placeholder="Escribe tu teléfono">
+                    </p>		
+                  	
+                    <p>
+                      <label for="asunto" class="colocar_asunto labelInput">Asunto
+                        <span class="obligatorio">*</span>
+                      </label>
+                        <input class="espacioInput" type="text" name="introducir_asunto" id="assunto" required="obligatorio" placeholder="Escribe un asunto">
+                    </p>		
+                  
+                    <p>
+                      <label for="mensaje" class="colocar_mensaje labelInput">Mensaje
+                        <span class="obligatorio">*</span>
+                      </label>                     
+                                         <textarea name="introducir_mensaje" class="texto_mensaje espacioInput" id="mensaje" required="obligatorio" placeholder="Deja aquí tu comentario..."></textarea> 
+                                     </p>	  								
+                  
+                    <button class= "botonEnviar" type="submit" name="enviar_formulario" id="enviar"><p  style="margin-bottom: 0px;">Enviar</p></button>
+                
+              </form>
+        </div>	
+      </div>
+        </div>
+      </div>
+      
+     
     </section>
     <!-- <section class="slider" id="tab-typescript">
       <h1>TYPESCRIPT</h1>
       <h2>giving you better tooling at any scale</h2>
     </section> -->
-    <canvas class="background1" width="303" height="458" style="width: 100%; height: 100%;"></canvas>
+    
   </main>
-  <!-- <canvas class="background"></canvas> -->
-  <canvas class="background1" width="303" height="458" style="width: 100%; height: 100%;"></canvas>
+ 
+  <!-- <canvas class="background"></canvas>
+  <canvas class="background1" width="303" height="458" style="width: 100%; height: 100%;"></canvas> -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://cdpn.io/cpe/boomboom/pen.js?key=pen.js-b4df154e-7a7b-5124-5309-a18c85ee983e" crossorigin=""></script>
+  <app-footer></app-footer>

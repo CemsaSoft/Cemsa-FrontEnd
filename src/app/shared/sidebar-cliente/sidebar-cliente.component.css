@@ -153,6 +153,16 @@ body {
     padding: 8px 0; /* Ajusta el espaciado interno vertical según tu preferencia */
     text-align: left; /* Alinea el contenido a la izquierda */
   }
+  .sidebar-item :hover{
+    /* background-color: rgba(
+      68,
+      182,
+      202,
+      0.2
+    );  */
+    transform: translateX(5px); /* Mueve la tarjeta 10px hacia la derecha */
+    
+  }
   .sidebar {
     height: 100vh;
     overflow-x: hidden;
@@ -261,3 +271,11 @@ a {
   margin-top: 7px; 
   vertical-align: middle; /* Alinea verticalmente el círculo con el texto */
 }
+.tituloContacto{
+  font-size: 16px !important;
+  font-family:Arial, Helveica, sans-serif;    
+  font-weight: normal;
+  color: #01C3CC;
+
+}
+/* ---------opciones del menu laterial-------- */

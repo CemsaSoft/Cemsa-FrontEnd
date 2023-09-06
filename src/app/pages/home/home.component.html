@@ -1,10 +1,100 @@
 <!-- <app-navbar></app-navbar> -->
 <div class="row body_" style="padding-left: 75px; margin-top: 25px;">
+  <p><p></p> <p><p></p> <p><p></p> <p><p></p>
   
+                
   <div class="col-1">
     <!-- Aqui lo de la izquierda -->
   </div>
   <div class="col-10">
+    <!-- card internas -->
+    <div class="row">
+      <div class="col-sm-3">
+        <mat-card class="cardInternas card1">
+          <mat-card-header>
+            <mat-card-content></mat-card-content>
+            <mat-card-title class="cardTitulo" style="position: center;">Mi Perfil</mat-card-title>
+            <br>
+            <mat-card-subtitle class="cardSubTitulo">Consulta los datos de tu cuenta</mat-card-subtitle>
+            <img
+                            style="width: 22%; height: 22%"
+                            src="../../../assets/cuenta.png"
+                            class=""
+                            alt="..."
+                            />  
+            
+          </mat-card-header>
+          <mat-card-actions align="end">
+            <!-- <img
+                            style="width: 22%; height: 22%"
+                            src="../../../assets/cuenta.png"
+                            class="iconoTarjetas"
+                            alt="..."
+                            />    -->
+            <!-- <button mat-button>MODIFICAR</button> -->
+            <button mat-button (click)="datoPerfil()">VER</button>
+
+            
+          </mat-card-actions>
+        </mat-card>
+      </div>
+      <div class="col-3">
+        <mat-card class="cardInternas card2">
+          <mat-card-header>
+            <mat-card-title class="cardTitulo" style="position: center;">Datos de Acceso</mat-card-title>
+            <mat-card-subtitle class="cardSubTitulo">Modifica tu contraseña.</mat-card-subtitle>
+            <img
+                            style="width: 22%; height: 22%"
+                            src="../../../assets/password.png"
+                            class=""
+                            alt="..."
+                            />  
+          </mat-card-header>
+          <mat-card-actions align="end">
+            <button mat-button (click)="modContr()">ACCEDER</button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+      <div class="col-3">
+        <mat-card class="cardInternas card3">
+          <mat-card-header>
+            <mat-card-title class="cardTitulo">Mis Accesos Directos</mat-card-title>
+            <mat-card-subtitle class="cardSubTitulo">Accede rápidamente a tus opciones preferidas.  </mat-card-subtitle>
+            <img
+                            style="width: 22%; height: 22%"
+                            src="../../../assets/accesodirecto1.png"
+                            class=""
+                            alt="..."
+                            />  
+          </mat-card-header>
+          <mat-card-actions align="end">
+            <button mat-button (click)="openModal()">VER</button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+      <div class="col-3">
+        <mat-card class="cardInternas card4">
+          <mat-card-header>
+            <mat-card-title class="cardTitulo">Mi Panel de Monitoreo</mat-card-title>
+            <mat-card-subtitle class="cardSubTitulo">Interpreta los gráficos de tus mediciones.</mat-card-subtitle>
+            <img
+                            style="width: 22%; height: 22%"
+                            src="../../../assets/panel1.png"
+                            class=""
+                            alt="..."
+                            />  
+          </mat-card-header>
+          <mat-card-actions align="end">
+            <button mat-button (click)="redirigirPanel()" >VER</button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </div>
+    <br>
+    
+
+    <!-- fin card internas -->
+    <div class="card-body"></div>
     <div class="card-container">
       <div class="card_externa html body">
         <h1>Bienvenido!</h1>
@@ -13,10 +103,12 @@
             <br />
             <div class="row row-cols-1 row-cols-md-1 g-2">
               <div class="col">
+                
+                
                 <div class="card">
                   <div class="card-body">
-                    <h5 class="card-title" *ngIf="!habilitarDatoPerfil">Mi Perfil</h5>
-                    <h5 class="card-title" *ngIf="!habilitarModContrasena">Ingrese los datos para Cambiar Contraseña </h5>
+                    <h5 class="card-title cardTitulo" style="font-weight: bold; color:#4a67a4fc" *ngIf="!habilitarDatoPerfil">Mi Perfil</h5>
+                    <h5 class="card-title cardTitulo" style="font-weight: bold; color:#4a67a4fc" *ngIf="!habilitarModContrasena">Restablecer Contraseña</h5>
                     <p class="card-text">
                     </p>
                   </div>
@@ -35,20 +127,20 @@
 
                     <br>
                     <br>
-                    <div class="col-12" style="display: flex; justify-content: center" *ngIf="habilitarModContrasena">
+                    <!-- <div class="col-12" style="display: flex; justify-content: center" *ngIf="habilitarModContrasena">
                       <div class="col-md-6" style="display: flex; justify-content: center">
                         <button mat-fab extended color="primary" type="submit" class="btn btnGuardar" data-bs-toggle="button"
                           (click)="modContr()" > Modificar Contraseña
                         </button>
                       </div>
-                    </div>
-                    <div class="col-12" style="display: flex; justify-content: center" *ngIf="habilitarDatoPerfil">                      
+                    </div> -->
+                    <!-- <div class="col-12" style="display: flex; justify-content: center" *ngIf="habilitarDatoPerfil">                      
                       <div class="col-md-6" style="display: flex; justify-content: center">
                         <button mat-fab extended color="primary" type="submit" class="btn btnGuardar" data-bs-toggle="button"
                           (click)="datoPerfil()" > Datos de Perfil 
                         </button>
                       </div>
-                    </div>
+                    </div> -->
 
                   </div>
                 </div>
@@ -64,8 +156,8 @@
                   <h5 class="card-title efecto-texto"></h5>
                   <div class="  ">
                     <img
-                      src="./assets/calendario.png"
-                      class="image"
+                      src="./assets/calendar.png"
+                      class="icon"
                       alt="..."
                     />
                     <div class="reloj">
@@ -79,11 +171,10 @@
                 </div>
                 <br />
               </div>
-              <div class="col">
-                <div class="cardDerecha">
+              <!-- <div class="col">
+                <div class="cardDerecha" style="margin-top: 291px;">
                   <div class="card-body">
                     <h5 class="card-title efecto-texto"></h5>
-
                     <app-carousel>
                       <form action="#" class="border form">
                         <div
@@ -168,7 +259,7 @@
                     <p class="card-text"></p>
                   </div>
                 </div>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -177,36 +268,41 @@
         </div>
         <br />
 
-        <div class="card-container2" *ngIf="rol != 1">
-          <a routerLink="/consultar-paneles-monitoreo" class="accesosDirectos accesosDirectos:hover">
-            <img src="../../../assets/control-panel.png" class="image" alt="..." />
-            <h5 class="efecto-texto content">Mi Panel de Control</h5>
-          </a>
-          <a routerLink="/consultar-central-cliente" class="accesosDirectos accesosDirectos:hover">
-            <img src="./assets/anemometers.png" class="image" alt="..." />
-            <h5 class="efecto-texto content">Mis Centrales</h5>
-          </a>
-          <a routerLink="/consultar-mediciones-actuales" class="accesosDirectos accesosDirectos:hover">
-            <img src="./assets/mediciones.png" class="image" alt="..." />
-            <h5 class="efecto-texto content">Estado Actual</h5>
-          </a>
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title cardTitulo" style="font-weight: bold; color:#4a67a4fc" >Mis Acessos Directos</h5>
+            <p class="card-text" style="margin: 0px 0 33px">
+            </p>
+            <div class="card-container2" *ngIf="rol != 1">
+              <a routerLink="/consultar-paneles-monitoreo" class="accesosDirectos accesosDirectos:hover">
+                <img src="../../../assets/control-panel.png" class="image" alt="..." />
+                <h5 class="efecto-texto content">Mi Panel de Control</h5>
+              </a>
+              <a routerLink="/consultar-central-cliente" class="accesosDirectos accesosDirectos:hover">
+                <img src="./assets/anemometers.png" class="image" alt="..." />
+                <h5 class="efecto-texto content">Mis Centrales</h5>
+              </a>
+              <a routerLink="/consultar-mediciones-actuales" class="accesosDirectos accesosDirectos:hover">
+                <img src="./assets/mediciones.png" class="image" alt="..." />
+                <h5 class="efecto-texto content">Estado Actual</h5>
+              </a>
+            </div>
+            <div class="card-container2" style="margin-bottom: 291px;" *ngIf="rol != 0">
+              <a routerLink="/consultar-cliente" class="accesosDirectos accesosDirectos:hover">            
+                <img src="./assets/resource.png" class="image" alt="..." />
+                <h5 class="efecto-texto content">Mis Clientes</h5>
+              </a>
+              <a routerLink="/consultar-central" class="accesosDirectos accesosDirectos:hover">
+                <img src="./assets/central_admin.png" class="image" alt="..." />
+                <h5 class="efecto-texto content">Ver Centrales</h5>
+              </a>
+              <a routerLink="/consultar-servicio" class="accesosDirectos accesosDirectos:hover">
+                <img src="./assets/climate.png" class="image" alt="..." />
+                <h5 class="efecto-texto content">Consultar Servicios </h5>
+              </a>
+            </div>
+          </div>
         </div>
-
-        <div class="card-container2" *ngIf="rol != 0">
-          <a routerLink="/consultar-cliente" class="accesosDirectos accesosDirectos:hover">            
-            <img src="./assets/resource.png" class="image" alt="..." />
-            <h5 class="efecto-texto content">Mis Clientes</h5>
-          </a>
-          <a routerLink="/consultar-central" class="accesosDirectos accesosDirectos:hover">
-            <img src="./assets/central_admin.png" class="image" alt="..." />
-            <h5 class="efecto-texto content">Ver Centrales</h5>
-          </a>
-          <a routerLink="/consultar-servicio" class="accesosDirectos accesosDirectos:hover">
-            <img src="./assets/climate.png" class="image" alt="..." />
-            <h5 class="efecto-texto content">Consultar Servicios </h5>
-          </a>
-        </div>
-
       </div>
     </div>
   </div>

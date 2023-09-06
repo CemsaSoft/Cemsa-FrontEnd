@@ -1,5 +1,6 @@
 import { Component, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
+
 // declare const Particles: any; 
 declare const $: any;
 // Inicialización de la página de navegación
@@ -121,6 +122,8 @@ class NavigationPage {
 })
 export class LandingPageComponent implements OnInit {
   currentId : any;
+  longText = `The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog
+  from Japan.`;
   constructor(private router: Router) { }
   ngOnInit() {
     // Inicialización de Particles
@@ -148,4 +151,5 @@ export class LandingPageComponent implements OnInit {
   //     this.router.navigate(['/ingresar-usuario']);
   //   }
   // }
+
 }
