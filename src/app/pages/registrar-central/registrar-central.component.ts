@@ -117,6 +117,7 @@ export class RegistrarCentralComponent implements OnInit, AfterViewInit  {
   constructor(
     private servicioConsultar: ServicioService,
     private centralRegistrar: CentralService,
+    private centralConsultarIMEI: CentralService,
   ) { 
     this.dataSourceCliente = new MatTableDataSource<any>();
     this.dataSourceServicio = new MatTableDataSource<any>();
@@ -489,10 +490,8 @@ export class RegistrarCentralComponent implements OnInit, AfterViewInit  {
         title: 'Error',
         text: `Verificar los datos ingresados:
     
-          ${(this.cliApeNomDenVM?.invalid && this.cliApeNomDenVM.errors?.['required']) || (this.usuarioVM?.invalid && this.usuarioVM.errors?.['required']) ? '*El Cliente / Usuario es requerido - Seleccione un Clilente/Usuario de la lista' : ''}
-          
-          ${this.imei?.invalid && this.imei.errors?.['required'] ? '\n* El IMEI es requerido' : ''}
-          
+          ${(this.cliApeNomDenVM?.invalid && this.cliApeNomDenVM.errors?.['required']) || (this.usuarioVM?.invalid && this.usuarioVM.errors?.['required']) ? '*El Cliente / Usuario es requerido - Seleccione un Clilente/Usuario de la lista' : ''}          
+          ${this.imei?.invalid && this.imei.errors?.['required'] ? '\n* El IMEI es requerido' : ''}          
           ${this.imei?.invalid && this.imei.errors?.['pattern'] ? '\n*Debe ingresar solamente 15 números para el IMEI' : ''}`,
         icon: 'warning',
         confirmButtonColor: '#0f425b',
@@ -502,90 +501,107 @@ export class RegistrarCentralComponent implements OnInit, AfterViewInit  {
     
     } else {
 
-      let nroCentralNew: number = 0;
-      let Central: CentralClass = new CentralClass(
-        0,
-        this.formRegistar.get('imei')?.value,
-        this.formRegistar.get('coordenadaX')?.value,
-        this.formRegistar.get('coordenadaY')?.value,
-        new Date(),
-        null,      
-        1,
-        this.cenTipoDocSeleccionado,
-        this.cenNroDocSeleccionado      
-      );      
-        this.centralRegistrar.registrarCentral(Central).subscribe((data) => {
-          nroCentralNew = data.cenNro;          
-          Swal.fire({
-            text:
-              'La Central del Cliente: ' + 
-              this.cliApeNomDenSeleccionado +           
-              ' se ha registrado con éxito con el número de Central: ' +
-              data.cenNro,
-            icon: 'success',
-            position: 'center',
-            showConfirmButton: true,
-            confirmButtonColor: '#0f425b',
-            confirmButtonText: 'Aceptar',
-          } as SweetAlertOptions).then((result) => {
-            if (result.value == true) {
-              return location.reload();
-            }
-          });
-
-          // Agregar los servicios para insertar en la base de datos
-          this.ServiciosAgregar = [];
-          for (const servicios of this.ServiciosNuevos) {
-            const sxc = new ServicioxCentralClass(
-              nroCentralNew, // Coloca aquí el número de central
-              servicios.serId,
-              1, // Aquí coloco 1 como estado por defecto disponible
-              new Date(), // Aquí coloco la fecha actual
-              null,
-            );
-            this.ServiciosAgregar.push(sxc);
-          }            
-          if (this.ServiciosAgregar.length > 0) {
-            this.centralRegistrar.registrarServiciosCentral(this.ServiciosAgregar ).subscribe((data) => {
-              
-              Swal.fire({
-                text:
-                'La Central del Cliente: ' + 
-                this.cliApeNomDenSeleccionado +           
-                ' se ha registrado con éxito con el número de Central: ' +
-                nroCentralNew,
-                icon: 'success',
-                position: 'center',
-                showConfirmButton: true,
-                confirmButtonColor: '#0f425b',
-                confirmButtonText: 'Aceptar',
-              } as SweetAlertOptions).then((result) => {
-                if (result.value == true) {
-                  return location.reload();
+      this.centralConsultarIMEI.VerificarImei(this.formRegistar.get('imei')?.value,0).subscribe(
+        (response) => {
+            // El IMEI está disponible
+            let nroCentralNew: number = 0;
+            let Central: CentralClass = new CentralClass(
+              0,
+              this.formRegistar.get('imei')?.value,
+              this.formRegistar.get('coordenadaX')?.value,
+              this.formRegistar.get('coordenadaY')?.value,
+              new Date(),
+              null,      
+              1,
+              this.cenTipoDocSeleccionado,
+              this.cenNroDocSeleccionado      
+            );      
+              this.centralRegistrar.registrarCentral(Central).subscribe((data) => {
+                nroCentralNew = data.cenNro;          
+                Swal.fire({
+                  text:
+                    'La Central del Cliente: ' + 
+                    this.cliApeNomDenSeleccionado +           
+                    ' se ha registrado con éxito con el número de Central: ' +
+                    data.cenNro,
+                  icon: 'success',
+                  position: 'center',
+                  showConfirmButton: true,
+                  confirmButtonColor: '#0f425b',
+                  confirmButtonText: 'Aceptar',
+                } as SweetAlertOptions).then((result) => {
+                  if (result.value == true) {
+                    return location.reload();
+                  }
+                });
+      
+                // Agregar los servicios para insertar en la base de datos
+                this.ServiciosAgregar = [];
+                for (const servicios of this.ServiciosNuevos) {
+                  const sxc = new ServicioxCentralClass(
+                    nroCentralNew, // Coloca aquí el número de central
+                    servicios.serId,
+                    1, // Aquí coloco 1 como estado por defecto disponible
+                    new Date(), // Aquí coloco la fecha actual
+                    null,
+                  );
+                  this.ServiciosAgregar.push(sxc);
+                }            
+                if (this.ServiciosAgregar.length > 0) {
+                  this.centralRegistrar.registrarServiciosCentral(this.ServiciosAgregar ).subscribe((data) => {
+                    
+                    Swal.fire({
+                      text:
+                      'La Central del Cliente: ' + 
+                      this.cliApeNomDenSeleccionado +           
+                      ' se ha registrado con éxito con el número de Central: ' +
+                      nroCentralNew,
+                      icon: 'success',
+                      position: 'center',
+                      showConfirmButton: true,
+                      confirmButtonColor: '#0f425b',
+                      confirmButtonText: 'Aceptar',
+                    } as SweetAlertOptions).then((result) => {
+                      if (result.value == true) {
+                        return location.reload();
+                      }
+                    });
+                  }, (error) => {
+                    Swal.fire({
+                      text: 'No es posible Agregar los Servicios a la Central',
+                      icon: 'error',
+                      position: 'center',
+                      showConfirmButton: true,
+                      confirmButtonColor: '#0f425b',
+                      confirmButtonText: 'Aceptar',
+                    } as SweetAlertOptions);    
+                  });
                 }
-              });
-            }, (error) => {
-              Swal.fire({
-                text: 'No es posible Agregar los Servicios a la Central',
+              }, (error) => {
+                Swal.fire({
+                  text: 'No es posible Agregar esta Central',
+                  icon: 'error',
+                  position: 'center',
+                  showConfirmButton: true,
+                  confirmButtonColor: '#0f425b',
+                  confirmButtonText: 'Aceptar',
+                } as SweetAlertOptions);    
+              });   
+             
+        },
+        (error) => {
+            Swal.fire({
+                text: 'No es posible modificar el estado de esta central, el IMEI ya está en uso.',
                 icon: 'error',
                 position: 'center',
                 showConfirmButton: true,
                 confirmButtonColor: '#0f425b',
                 confirmButtonText: 'Aceptar',
-              } as SweetAlertOptions);    
-            });
-          }
-        }, (error) => {
-          Swal.fire({
-            text: 'No es posible Agregar esta Central',
-            icon: 'error',
-            position: 'center',
-            showConfirmButton: true,
-            confirmButtonColor: '#0f425b',
-            confirmButtonText: 'Aceptar',
-          } as SweetAlertOptions);    
-        });   
-    }   
+            } as SweetAlertOptions);
+        }
+    );
+    
+
+    }
   }
-  
 }

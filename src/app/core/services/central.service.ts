@@ -27,6 +27,10 @@ export class CentralService {
     return this.http.post(this.url + '/' + cenNum + '/' + idEstado, null);    
   }
   
+  VerificarImei(cenImei: string, cenNum: number): Observable<any> {
+    return this.http.post(this.url + '/verificarImei/' + cenImei + '/' + cenNum , null);    
+  }
+
   obtenerEstadoCentral(): Observable<any> {
     return this.http.get(this.url + '/listaEstadosCentrales') ;
   }

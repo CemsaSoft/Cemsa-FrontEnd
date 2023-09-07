@@ -96,6 +96,7 @@ export class ConsultarCentralComponent implements OnInit   {
     private fb: FormBuilder,
     private centralModificarEstado: CentralService,
     private centralConsultar: CentralService, 
+    private centralConsultarIMEI: CentralService, 
     private servicioCentral: CentralService,
     private servicioConsultar: ServicioService, 
     )    
@@ -390,46 +391,72 @@ export class ConsultarCentralComponent implements OnInit   {
     }
   }
 
-  ModificarEstadoCentral(centralConsulta: CentralConsultaClass, estIdSeleccionado: number, estado:string): void {
+  ModificarEstadoCentral(centralConsulta: CentralConsultaClass, estIdSeleccionado: number, estado: string): void {
     Swal.fire({
-      text: '¿Estás seguro que deseas modificar el estado de esta central a "' + estado + '"?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#0f425b',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Aceptar',
-      cancelButtonText: 'Cancelar'
+        text: '¿Estás seguro que deseas modificar el estado de esta central a "' + estado + '"?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#0f425b',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Aceptar',
+        cancelButtonText: 'Cancelar'
     } as SweetAlertOptions).then((result) => {
-      if (result.isConfirmed) {
-        this.centralModificarEstado.modificarEstado(centralConsulta.cenNro, estIdSeleccionado).subscribe(
-          result => {
-            Swal.fire({
-              text: 'Se ha actualizado el estado a '+ estado,
-              icon: 'success',
-              position: 'center',
-              showConfirmButton: true,
-              confirmButtonColor: '#0f425b',
-              confirmButtonText: 'Aceptar',
-            } as SweetAlertOptions).then((result) => {
-              if (result.value == true) {
-                return location.reload();
-              }
-            });
-          },
-          error => {
-            Swal.fire({
-              text: 'No es posible modificar el estado de esta central',
-              icon: 'error',
-              position: 'center',
-              showConfirmButton: true,
-              confirmButtonColor: '#0f425b',
-              confirmButtonText: 'Aceptar',
-            } as SweetAlertOptions);    
-          }
-        );
-      }
+        if (result.isConfirmed) {
+            if (estIdSeleccionado === 1) {
+                // El estado es 1, realizar verificación del IMEI
+                this.centralConsultarIMEI.VerificarImei(centralConsulta.cenImei,0).subscribe(
+                    (response) => {
+                        // El IMEI está disponible, puedes cambiar el estado
+                        this.cambiarEstadoCentral(centralConsulta, estIdSeleccionado, estado);
+                    },
+                    (error) => {
+                        Swal.fire({
+                            text: 'No es posible modificar el estado de esta central, el IMEI ya está en uso.',
+                            icon: 'error',
+                            position: 'center',
+                            showConfirmButton: true,
+                            confirmButtonColor: '#0f425b',
+                            confirmButtonText: 'Aceptar',
+                        } as SweetAlertOptions);
+                    }
+                );
+            } else {
+                // El estado no es 1, cambiar el estado directamente
+                this.cambiarEstadoCentral(centralConsulta, estIdSeleccionado, estado);
+            }
+        }
     });
-  }
+}
+
+private cambiarEstadoCentral(centralConsulta: CentralConsultaClass, estIdSeleccionado: number, estado: string): void {
+    this.centralModificarEstado.modificarEstado(centralConsulta.cenNro, estIdSeleccionado).subscribe(
+        (result) => {
+            Swal.fire({
+                text: 'Se ha actualizado el estado a ' + estado,
+                icon: 'success',
+                position: 'center',
+                showConfirmButton: true,
+                confirmButtonColor: '#0f425b',
+                confirmButtonText: 'Aceptar',
+            } as SweetAlertOptions).then((result) => {
+                if (result.value == true) {
+                    return location.reload();
+                }
+            });
+        },
+        (error) => {
+            Swal.fire({
+                text: 'No es posible modificar el estado de esta central',
+                icon: 'error',
+                position: 'center',
+                showConfirmButton: true,
+                confirmButtonColor: '#0f425b',
+                confirmButtonText: 'Aceptar',
+            } as SweetAlertOptions);
+        }
+    );
+}
+
 
    //STEP
    goToNextStep(stepNumber: number): void {    
@@ -445,69 +472,96 @@ export class ConsultarCentralComponent implements OnInit   {
   }
 
 
-   // Modificar Central
-   modificarCentral(): void {
+  // Método para mostrar un mensaje de error usando SweetAlert
+  private mostrarMensajeError(text: string): void {
+    Swal.fire({
+      text,
+      icon: 'error',
+      position: 'center',
+      showConfirmButton: true,
+      confirmButtonColor: '#0f425b',
+      confirmButtonText: 'Aceptar',
+    } as SweetAlertOptions);
+  }
 
-    //Verifica que este completo el formulario y que no tenga errores.
-    if (this.imei?.valid == false) {      
-      Swal.fire({
-        title: 'Error',
-        text: `Verificar los datos ingresados:              
-          ${this.imei?.invalid && this.imei.errors?.['required'] ? '\n* El IMEI es requerido' : ''}          
-          ${this.imei?.invalid && this.imei.errors?.['pattern'] ? '\n*Debe ingresar solamente 15 números para el IMEI' : ''}`,
-        icon: 'warning',
-        confirmButtonColor: '#0f425b',
-        confirmButtonText: 'Aceptar',
-        footer: 'Por favor, corrija los errores e inténtelo de nuevo.'
-      });     
-    } else {
+  // Método para mostrar un mensaje de éxito usando SweetAlert
+  private mostrarMensajeExito(text: string): void {
+    Swal.fire({
+      text,
+      icon: 'success',
+      position: 'center',
+      showConfirmButton: true,
+      confirmButtonColor: '#0f425b',
+      confirmButtonText: 'Aceptar',
+    } as SweetAlertOptions).then((result) => {
+      if (result.value === true) {
+        return location.reload();
+      }
+    });
+  }
 
-    this.controlServicios();
-    this.centralConsultar.actualizarServiciosCentral(this.actualizacionServicio).subscribe(() => {
-        
-        }, (error) => {
-          Swal.fire({
-            text: 'No es posible modificar datos de esta Central',
-            icon: 'error',
-            position: 'center',
-            showConfirmButton: true,
-            confirmButtonColor: '#0f425b',
-            confirmButtonText: 'Aceptar',
-          } as SweetAlertOptions);    
-        });    
-      this.centralConsultar.actualizarDatosCentral(
-      this.cenNroSeleccionado, 
-      this.formModificar.get('imei')?.value,
+  // Método para realizar la verificación de IMEI
+  private verificarImeiYModificar(imei: string, cenNum: number): void {
+    this.centralConsultarIMEI.VerificarImei(imei,cenNum).subscribe(
+      (response) => {
+        this.controlServicios();
+        this.centralConsultar.actualizarServiciosCentral(this.actualizacionServicio).subscribe(
+          () => {
+            this.actualizarDatosCentral(imei);
+          },
+          (error) => {
+            this.mostrarMensajeError('No es posible modificar datos de esta Central');
+          }
+        );
+      },
+      (error) => {
+        this.mostrarMensajeError('No es posible modificar el estado de esta central, el IMEI ya está en uso.');
+      }
+    );
+  }
+
+  // Método para actualizar datos de la Central
+  private actualizarDatosCentral(imei: string): void {
+    this.centralConsultar.actualizarDatosCentral(
+      this.cenNroSeleccionado,
+      imei,
       this.formModificar.get('coordenadaX')?.value,
       this.formModificar.get('coordenadaY')?.value
-     )
-    .subscribe(() => {
-      Swal.fire({
-        text:
-          'Se Actualizo con éxito los datos de la Central ' + this.cenNroSeleccionado,
-        icon: 'success',
-        position: 'center',
-        showConfirmButton: true,
-        confirmButtonColor: '#0f425b',
-        confirmButtonText: 'Aceptar',
-      } as SweetAlertOptions).then((result) => {
-        if (result.value == true) {
-          return location.reload();
-        }
-      });
-      // return location.reload();
-    }, (error) => {
-      Swal.fire({
-        text: 'No es posible modificar datos de esta Central',
-        icon: 'error',
-        position: 'center',
-        showConfirmButton: true,
-        confirmButtonColor: '#0f425b',
-        confirmButtonText: 'Aceptar',
-      } as SweetAlertOptions);    
-    });   
-      } 
+    ).subscribe(
+      () => {
+        this.mostrarMensajeExito('Se actualizó con éxito los datos de la Central ' + this.cenNroSeleccionado);
+      },
+      (error) => {
+        this.mostrarMensajeError('No es posible modificar datos de esta Central');
+      }
+    );
   }
+
+  // Método principal para modificar la Central
+  modificarCentral(): void {
+    // Verifica que este completo el formulario y que no tenga errores.
+    if (this.imei?.valid === false) {
+      this.mostrarMensajeError(`Verificar los datos ingresados:
+        ${this.imei?.invalid && this.imei.errors?.['required'] ? '\n* El IMEI es requerido' : ''}
+        ${this.imei?.invalid && this.imei.errors?.['pattern'] ? '\n* Debe ingresar solamente 15 números para el IMEI' : ''}`);
+    } else {
+      if (this.formModificar.get('estadoCentralDescripcion')?.value === 'Disponible') {
+        const imei = this.formModificar.get('imei')?.value;
+        this.verificarImeiYModificar(imei,this.cenNroSeleccionado);
+      } else {
+        this.controlServicios();
+        this.centralConsultar.actualizarServiciosCentral(this.actualizacionServicio).subscribe(
+          () => {
+            this.actualizarDatosCentral(this.formModificar.get('imei')?.value);
+          },
+          (error) => {
+            this.mostrarMensajeError('No es posible modificar datos de esta Central');
+          }
+        );
+      }
+    }
+  }
+
 
   controlServicios(): void {
     this.actualizacionServicio = [];
