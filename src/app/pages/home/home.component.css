@@ -27,7 +27,7 @@
 }
 
 .card {
-  background-color: #8995ae33;
+  background-color: #01091a33;
   border-radius: -7px;
   box-shadow: 0 5px 17px rgba(92, 246, 3, 0);
   padding: 20px;
@@ -39,7 +39,7 @@
 }
 .card_externa {
   background-image: url('./../../../assets/logoCEMSA.svg'); 
-  /* background-size: cover;  */
+  
   background-repeat: no-repeat; 
   background-color: #9bdef540;
   border-radius: 6px 6px;
@@ -50,6 +50,8 @@
   margin: 0 auto;
   margin-top: -40px;
   border: none;
+  height: 100%;
+  width: 100%;
 }
 
 .card_interna {
@@ -78,7 +80,7 @@
 .accesosDirectos:hover {
   background: #2cd9c3;
   background: linear-gradient(25deg, rgba(44,217,195,1) 0%, rgba(29,193,211,1) 40%, rgba(9,169,226,1) 100%);
-  transform: translateX(5px); /* Mueve la tarjeta 10px hacia la derecha */
+  transform: translateX(5px); 
 }
 .image {
   width: 100px;
@@ -86,27 +88,21 @@
 }
 .content {
   flex: 1;
-  /* padding: 0 15px;  */
-  /* Espaciado entre la imagen y el contenido */
   padding-left: 30px;
-  
-    padding-top: 20px; /* Ajusta el padding superior para dar espacio al nav fijo */
-    
-   
-  margin-bottom: 20px; /* Ajusta el margen inferior para evitar que el contenido se solape con el nav fijo */
+  padding-top: 20px; 
+  margin-bottom: 20px; 
   
 }
 .card-container2 {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* Cada tarjeta ocupa 1/3 del ancho */
-  grid-gap: 80px; /*Espacio entre las tarjetas */
+  grid-template-columns: repeat(3, 1fr); 
+  grid-gap: 80px; 
   margin-left: 10px;
   border: none;
   margin-top: 10px;
 }
 .txt {
   font-size: 10px;
-  /* position: absolute; */
   bottom: 0;
   left: 0;
   right: 0;
@@ -150,15 +146,7 @@
   font-size: 10px;
   margin-top: -25px;
 }
-/*.shape {
-   background: #2d97db;
-  border: 1em solid #fff;
-  width: 4em;
-  height: 4em; 
-  position: absolute;
-  top: calc(50% - 2em);
-  left: calc(50% - 2em);
-}*/
+
 .imgR {
   padding-bottom: -70%;
 }
@@ -223,160 +211,6 @@ h5 {
   height: 100vh;
   position: relative;
 }
-
-/* titulo de accesos directos */
-
-/* .texto{
-  color: white;
-  text-align: center;           
-  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-  margin: 0;
-  background: black;
-  position: relative;
-  letter-spacing: 5px;
-  
-} */
-/* .texto::before,.texto::after{
-  content: attr(data-texto);            
-  color: white;
-  position:absolute;
-  top: 0 ; 
-  left: 50%;
-  transform: translate(-50%, 0%);
-  pointer-events: none;
-  filter: blur(0.02em);  
-}
-.texto::after{
-  mix-blend-mode: difference;
-}
-.gradiente,.luces{
-  position: absolute;
-  top: 0;   
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 10;
-}
-.gradiente{
-  background: linear-gradient(0deg, rgb(255, 0, 98), rgb(255, 166, 0));
-  mix-blend-mode: multiply;
-}
-.luces{
-  top: -100%;
-  left: -100%;
-  background: 
-      radial-gradient(circle, white, transparent 25%) 0 0 / 25% 25%, 
-      radial-gradient(circle, white, black 25%) 50% 50% / 12.5% 12.5%;
-  mix-blend-mode: color-dodge;
-  animation: animate 5s linear infinite;
-}
-@keyframes animate{
-  100%{ transform: translate(50%, 50% );}
-}
-body,.bg-dark{ background: black !important;}
-._card {
-  position: relative;
-  margin: 10% auto 0;
-  width: 90%;
-  height: auto;
-background: linear-gradient(90deg, #000, #323232); 
-border-radius: 30px
-}
-._fondo:before, ._fondo:after {
-  content: '';
-  position: absolute;
-  left: -8px;
-  top: -8px;
-  background: linear-gradient(120deg, #79fb00, #8d01a0, #031ba5,#ff004c,  
-  #e6036d, #fb0094,#ff6600, #04c2e4,#adad02, #00c3ff);
-  background-size: 300%;
-  width: calc(100% + 16px);
-  height: calc(100% + 16px);
-  z-index: -1;
-  animation: _fondogradiente 15s ease infinite; 
-  border-radius: 40px
-}
-@keyframes  _fondogradiente {
-  0% { background-position: 0% 200%; }
-  50% { background-position: 200% 0%; }
-  100% { background-position: 0% 330%;}
-}
-._fondo:after {
-  filter: brightness(1.4);
-  filter: drop-shadow(16px 16px 20px rgb(248, 220, 97));
-  filter: blur(15px);
-}
-.card-img-top {
-  width: 30%;
-  height: 30%;
-  position:right;
-}
-/******* EIGHT (Secondary action) *******/
-
-/* .eight .shape.a {
-  transform: translateX(-6em);
-  animation: eight-shape-a 4s cubic-bezier(.57,-0.5,.43,1.53) infinite;
-}
-.eight .shape.b {
-  top: calc(50% + 6em);
-  opacity: 0;
-  animation: eight-shape-b 4s linear infinite;
-}
-.eight .shape.c {
-  transform: translateX(6em);
-  animation: eight-shape-c 4s cubic-bezier(.57,-0.5,.43,1.53) infinite;
-}
-
-@keyframes eight-shape-a {
-  0%, 50% {
-    transform: translateX(-5.5em);
-  }
-  70%, 100% {
-    transform: translateX(-10em);
-  }
-}
-
-@keyframes eight-shape-b {
-  0% {
-    transform: none;
-  }
-  20%, 30% {
-    transform: translateY(-1.5em);
-    opacity: 1;
-    animation-timing-function: cubic-bezier(.57,-0.5,.43,1.53);
-  }
-  32% {
-    transform: translateY(-1.25em);
-    opacity: 1;
-  }
-  34% {
-    transform: translateY(-1.75em);
-    opacity: 1;
-  }
-  36%, 38% {
-    transform: translateY(-1.25em);
-    opacity: 1;
-  }
-  42%, 60% {
-    transform: translateY(-1.5em);
-    opacity: 1;
-  }
-  75%, 100% {
-    transform: translateY(-8em);
-    opacity: 1;
-  }
-}
-
-@keyframes eight-shape-c {
-  0%, 50% {
-    transform: translateX(5.5em);
-  }
-  70%, 100% {
-    transform: translateX(10em);
-  }
-} */
-
-/* General styling */
 html,
 body {
   margin: 0;
@@ -389,23 +223,13 @@ body {
   margin-top: 90px;
 }
 
-/* .shape {
-  background: #2d97db;
-  border: 1em solid #fff;
-  width: 4em;
-  height: 4em;
-  position: absolute;
-  top: calc(50% - 2em);
-  left: calc(50% - 2em);
-} */
 .card-container {
   display: flex;
   padding-top: 50px;
 }
 
 .cardi {
-  flex-basis: 20.33%; /* Cada tarjeta ocupa 1/3 del ancho */
-  /* Otros estilos de la tarjeta */
+  flex-basis: 20.33%; 
 }
 .body_{
   margin-top: 100px;
@@ -421,13 +245,13 @@ body {
   color: #fff;
   border-color: #194c87 !important;
 }
-.btnGuardar:hover{/*efecto a pasar por arriba*/
+.btnGuardar:hover{
   color: #fff;
   background-color: #01C3CC !important;
   border-color:#194c87 !important;
-  box-shadow: 0 0 10px rgba(var(--bs-btn-focus-shadow-rgb), 0.5); /*sombra*/
+  box-shadow: 0 0 10px rgba(var(--bs-btn-focus-shadow-rgb), 0.5); 
 }
-.btnGuardar:active{/*efecto al presionar*/
+.btnGuardar:active{
   color:  #fff;
   background-color: #194c873f !important;
   border-color: #194c8754 !important;
@@ -450,10 +274,6 @@ body {
   background: rgb(41,130,236);
 background: linear-gradient(87deg, rgba(41,130,236,1) 0%, rgba(73,84,223,1) 0%, rgba(57,140,219,1) 100%);
 border: none;
-  /* background: #4B6DDD; */
-  /* background: rgb(44,217,195);
-background: linear-gradient(25deg, rgba(44,217,195,1) 0%, rgba(29,193,211,0.6923144257703081) 100%, rgba(9,169,226,1) 100%); */
-  
 }
 .card2{
   background: #2cd9c3;
@@ -483,4 +303,12 @@ border: none;
   margin-left: 2px;
   margin-right: 126px;
   margin-top: -35px;
+}
+.imagenesCard{
+  width: 22%;
+ height: 22%;
+}
+.cardPerfilContraseña{
+  font-weight: bold; 
+  color:#4a67a4fc;
 }

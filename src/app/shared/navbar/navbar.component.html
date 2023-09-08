@@ -12,9 +12,11 @@
           </div> -->
           <div class="row">
             <div class="col-12">
-              <img _ngcontent-goa-c48="" 
-                src="../../../assets/LOGOSIGLA.svg" 
-                alt="" width="500px" height="500px" style="z-index: -2;margin-top: 0px;width: 285px;height: 285px;"> 
+              <a href="/home">
+                <img _ngcontent-goa-c48="" 
+                  src="../../../assets/LOGOSIGLA.svg" 
+                  alt="" class="logo"> 
+              </a>
             </div>
           </div>
             <div class="col-12">
@@ -105,10 +107,10 @@
         <div class="d-flex justify-content-end" style="width: 500px; width: 473px;">
           <!-- <mat-icon style="color: #fff; height: 100%; width: 100%;">account_circle</mat-icon> -->
           <div class="col-3" style="margin-top: 15px;">
-            <div class="demo-section" style="margin-left: 50px;">
+            <div class="demo-section" class="espaciadoCampana">
              
               <mat-icon
-                *ngIf="cantAlarma !== -1"
+                *ngIf="cantAlarma !== 0"
                 [matBadge]="cantAlarma"
                 matBadgeColor="warn"
                 (click)="openConsultarAlarma()"
@@ -120,7 +122,7 @@
           <div class="nameUser">Hola {{ nombreUsuarioIngresado }}!</div>
           <img _ngcontent-goa-c48="" 
           src="../../../assets/user5.png" 
-          alt="" style="height: 65px; width: 65px;" > 
+          alt="" class="nombreUsuario" > 
         </div>
     </div>
 </nav>

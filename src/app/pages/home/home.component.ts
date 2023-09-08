@@ -57,6 +57,10 @@ export class HomeComponent implements OnInit {
   redirigirPanel(){
     return location.href = '/consultar-paneles-monitoreo';
   }
+  
+  redirigirCentrales(){
+    return location.href = '/consultar-central';
+  }
   openModal(): void {
     if (this.miModal) {
       console.log("Entró a abrir el modal");

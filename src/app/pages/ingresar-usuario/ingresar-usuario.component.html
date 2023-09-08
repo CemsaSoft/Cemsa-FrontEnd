@@ -8,29 +8,29 @@
       <source src="../../../assets/video2.mp4" type="video/mp4">
     </video>
   </div>
-  <div class="row">
+  <div class="row" style="padding-top: 5%;">
     <div class="col-1">
       <!-- <a href="/landing-page"> -->
         <a href="">
-        <img src="../../../assets/back3.png" style="width: 150px; height: 150px; margin-top: 440px;margin-left: 175px; z-index: 3 ; position: relative;" alt="logo">
+        <img src="../../../assets/back3.png" class="imagenBack" alt="logo">
     </a>
     </div>
-    <div class="col-11">
-      <div class="container py-5 h-100" style="margin-left: 110px;">
+    <div class="col-10" style="padding-left: 5%; padding-left: 5%;">
+      <div class="container py-sm-5 h-50 espacio" >
         <div class="row d-flex justify-content-center align-items-center h-100 card-animation">
           <div class="col-xl-10">
-            <div class="card rounded-3 text-black">
+            <div class="card rounded-3 text-black cardContenedora">
               <div class="row g-0">
                 <div class="col-lg-6">
-                  <div class="card-body p-md-5 mx-md-4">
+                  <div class="card-body altoTarjeta">
                     <!-- ---LOGO----->
                     <div class="text-center">
                       <img src="../../../assets/LOGOHOJA.svg" 
-                        style="width: 450px; z-index: -3; margin-bottom: -148px;" alt="logo">
+                        class="logoImg" alt="logo">
                     </div>
                     <div class="text-center">
                       <img src="../../../assets/LOGOSIGLA.svg" 
-                        style="width: 350px; z-index: -2; margin-bottom: -57px;" alt="logo">
+                        class="logoSigla" alt="logo">
                     </div>
     
                     <form [formGroup]="formInicio" class="row form_main">
@@ -38,7 +38,7 @@
                       <p class="text-center">Por favor, ingrese a su cuenta</p>
                       
                       <!-- Campo Usuario -->
-                      <div class="form-outline ">
+                      <div class="form-outline estiloInput">
                       <div class="input-row form-outlineinput-group mb-3">
                         <span class="icon"><i class="fa fa-at"></i></span>
                         <input type="text" id="usuario" value="Usuario" formControlName="usuario" placeholder="Usuario" required />
@@ -57,7 +57,7 @@
                           </div>
                       </div>
                       <!-- Campo Contraseña -->
-                      <div class="form-outline ">
+                      <div class="form-outline estiloInput">
                         <div class="input-row">
                           <span class="icon"><i class="fa fa-lock"></i></span>
                           <input type="password" value="Password" formControlName="password" placeholder="Contraseña" required/>
@@ -121,6 +121,7 @@
         </div>
       </div>
     </div>
+    <div class="col-1"></div>
   </div>
   <!-- <div class="container py-5 h-100">
     <div class="row d-flex justify-content-center align-items-center h-100 card-animation">

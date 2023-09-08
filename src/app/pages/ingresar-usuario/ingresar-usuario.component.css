@@ -98,7 +98,17 @@
 img {
   width: 275px;
 }
-
+@media (max-width: 767px) {
+  .container {
+    margin-left: 0; /* Elimina el margen izquierdo en pantallas pequeñas */
+  }
+  
+  /* Ajusta el tamaño de las imágenes en dispositivos móviles */
+  img {
+    width: 100%;
+    max-width: 300px; /* Cambia el valor según tus necesidades */
+  }
+}
 
 @media (min-width: 768px) {
   .gradient-form {
@@ -114,6 +124,12 @@ img {
 .card {
   background-color: hsla(180, 14%, 75%, 0.605) !important;
 }
+/* @media (min-width: 768px) and (max-width: 1023px) {
+  .cardContenedora{
+    width: 70%;
+    height: 70%;
+  }
+} */
 
 /* --------Inicio de Sesión------------------- */
 
@@ -128,7 +144,7 @@ img {
 }
 
 form h1{
-    color:#02c0cc;
+    color:#1d0350;
     font-size:2.8em;
     font-weight: normal;
     letter-spacing: -1px;
@@ -245,11 +261,82 @@ form .reset a:hover{
   animation: colorChange 5s ease-in-out;
   animation-fill-mode: forwards;
 }
-/* .gradient-custom-2 {
-  background: #32b8cd;
-  background: linear-gradient(
-    49deg,
-    #32b8cde3 0%,
-    #38184c 100%
-  );
+/* ---------------Label-------------- */
+.estiloInput{
+  padding-left: 75px;
+  padding-right: 75px;
+}
+ /* ---------------BotónBack--------------*/
+ .imagenBack{
+  width: 150px; 
+  height: 150px; 
+  margin-top: 440px;
+  margin-left: 175px; 
+  z-index: 3 ; 
+  position: relative;
+ }
+ /* --------LOGO IMAGEN----- */
+ .logoImg{
+  width: 450px; z-index: -3; margin-bottom: -148px;
+  margin-top: -67px;
+ }
+ /* -------LOGO SIGLA------- */
+ .logoSigla{
+  width: 350px; z-index: -2; margin-bottom: -57px;
+ }
+ .altoTarjeta{
+ height: 762px;
+ }
+ .espacio{
+  margin-left: 6%;
+ }
+/* -------Responsive--------------------- */
+/* @media (max-width: 767px) {
+  .cardContenedora {
+    width: 90%; 
+    height: 50%;
+  }
+  
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  .card-body {
+    text-align: center;
+  }
+  
+} */
+/* Estilos para tabletas en modo paisaje y pantallas más grandes */
+/* @media (min-width: 768px) and (max-width: 1023px) {
+  .cardContenedora {
+    width: 100%; 
+  }
+  
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+  .card-body {
+    text-align: center;
+    height: 50%;
+  }
+} */
+
+/* Estilos para pantallas de escritorio */
+/* @media (max-width: 1024px) {
+  .cardContenedora {
+    width: 30%; 
+    height: 150%;
+  }
+  
+  img {
+    max-width: 100%;
+    height: 50%;
+  }
+  
+  .card-body {
+    text-align: center;
+    height: 100%;
+  }
 } */

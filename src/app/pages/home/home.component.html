@@ -17,21 +17,13 @@
             <br>
             <mat-card-subtitle class="cardSubTitulo">Consulta los datos de tu cuenta</mat-card-subtitle>
             <img
-                            style="width: 22%; height: 22%"
                             src="../../../assets/cuenta.png"
-                            class=""
+                            class="imagenesCard"
                             alt="..."
                             />  
             
           </mat-card-header>
           <mat-card-actions align="end">
-            <!-- <img
-                            style="width: 22%; height: 22%"
-                            src="../../../assets/cuenta.png"
-                            class="iconoTarjetas"
-                            alt="..."
-                            />    -->
-            <!-- <button mat-button>MODIFICAR</button> -->
             <button mat-button (click)="datoPerfil()" *ngIf="!habilitarDatoPerfil">VER</button>
             <button mat-button (click)="datoPerfil()" *ngIf="habilitarDatoPerfil">OCULTAR</button>
             
@@ -44,9 +36,8 @@
             <mat-card-title class="cardTitulo" style="position: center;">Datos de Acceso</mat-card-title>
             <mat-card-subtitle class="cardSubTitulo">Modifica tu contraseña.</mat-card-subtitle>
             <img
-                            style="width: 22%; height: 22%"
                             src="../../../assets/password.png"
-                            class=""
+                            class="imagenesCard"
                             alt="..."
                             />  
           </mat-card-header>
@@ -62,9 +53,8 @@
             <mat-card-title class="cardTitulo">Mis Accesos Directos</mat-card-title>
             <mat-card-subtitle class="cardSubTitulo">Accede rápidamente a tus opciones preferidas.  </mat-card-subtitle>
             <img
-                            style="width: 22%; height: 22%"
                             src="../../../assets/accesodirecto1.png"
-                            class=""
+                            class="imagenesCard"
                             alt="..."
                             />  
           </mat-card-header>
@@ -80,14 +70,29 @@
             <mat-card-title class="cardTitulo">Mi Panel de Monitoreo</mat-card-title>
             <mat-card-subtitle class="cardSubTitulo">Interpreta los gráficos de tus mediciones.</mat-card-subtitle>
             <img
-                            style="width: 22%; height: 22%"
                             src="../../../assets/panel1.png"
-                            class=""
+                            class="imagenesCard"
                             alt="..."
                             />  
           </mat-card-header>
           <mat-card-actions align="end">
             <button mat-button (click)="redirigirPanel()" >VER</button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+      <div class="col-3" *ngIf="rol == 1">
+        <mat-card class="cardInternas card4">
+          <mat-card-header>
+            <mat-card-title class="cardTitulo">Centrales Meteorológicas</mat-card-title>
+            <mat-card-subtitle class="cardSubTitulo">Consulta tu inventario</mat-card-subtitle>
+            <img
+                            src="../../../assets/centralTarjeta.png"
+                            class="imagenesCard"
+                            alt="..."
+                            />  
+          </mat-card-header>
+          <mat-card-actions align="end">
+            <button mat-button (click)="redirigirCentrales()" >VER</button>
           </mat-card-actions>
         </mat-card>
       </div>
@@ -103,17 +108,16 @@
         <div class="row">
 
           <div class="col-8" style="height: 450px;" *ngIf="!(habilitarDatoPerfil || habilitarModContrasena)">
-            
           </div>
           <div class="col-8" *ngIf="habilitarDatoPerfil || habilitarModContrasena">
             <br />
-            <div class="row row-cols-1 row-cols-md-1 g-2">
+            <div class="row row-cols-1 row-cols-md-1 g-2" style="height: 45px;">
               <div class="col">                
                 
                 <div class="card">
                   <div class="card-body">
-                    <h5 class="card-title cardTitulo" style="font-weight: bold; color:#4a67a4fc" *ngIf="habilitarDatoPerfil">Mi Perfil</h5>
-                    <h5 class="card-title cardTitulo" style="font-weight: bold; color:#4a67a4fc" *ngIf="habilitarModContrasena">Restablecer Contraseña</h5>
+                    <h5 class="card-title cardTitulo cardPerfilContraseña" *ngIf="habilitarDatoPerfil">Mi Perfil</h5>
+                    <h5 class="card-title cardTitulo cardPerfilContraseña" *ngIf="habilitarModContrasena">Restablecer Contraseña</h5>
                     <p class="card-text">
                     </p>
                   </div>

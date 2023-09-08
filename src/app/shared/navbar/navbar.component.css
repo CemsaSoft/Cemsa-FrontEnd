@@ -140,6 +140,18 @@
     letter-spacing: normal;
   }
   
-  
+  .logo{
+    z-index: -2;
+    margin-top: 0px;
+    width: 285px;
+    height: 285px;
+  }
+  .nombreUsuario{
+    height: 65px; 
+    width: 65px;
+  }
+  .espaciadoCampana{
+    margin-left: 50px;
+  }
   
   
