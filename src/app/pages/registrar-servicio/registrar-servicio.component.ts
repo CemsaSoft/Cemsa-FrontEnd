@@ -112,7 +112,6 @@ export class RegistrarServicioComponent implements OnInit {
 //Agregar un servicio
 agregarServicio(): void {
   //Verifica que este completo el formulario y que no tenga errores.
-  console.log(    this.formAgregar.get('tipoGraficoA')?.value)
   if (this.formAgregar.valid == false) {      
     Swal.fire({
       title: 'Error',

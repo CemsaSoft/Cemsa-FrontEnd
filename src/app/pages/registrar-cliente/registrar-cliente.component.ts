@@ -236,6 +236,8 @@ export class RegistrarClienteComponent implements OnInit {
   
   registarCliente(): void {
     if (this.formRegistar.valid == false || !this.validarNumeroDocumento()) {      
+      this.formRegistar.markAllAsTouched(); // Marca todos los campos como tocados para resaltar errores
+
       Swal.fire({
         title: 'Error',
         text: 'Verificar los datos ingresados.',              

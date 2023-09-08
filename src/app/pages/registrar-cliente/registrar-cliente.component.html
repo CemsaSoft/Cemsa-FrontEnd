@@ -62,19 +62,22 @@
                                 <mat-label >N° de Documento</mat-label>
                                 <input matInput type="number" placeholder="Ej. 12.345.678"  id="nroDocumento" value="nroDocumento" [formControl]="nroDocumento" required="true">
                                 <mat-icon matSuffix>123</mat-icon>
-
-
                               </mat-form-field>
                                 <!-- Validación de N° de Documento -->
                                     <mat-error
-                                        class="error"
-                                        *ngIf="!validarNumeroDocumento()"
-                                      >Formato <strong>incorrecto</strong>  {{ msjErrorDoc }}
-                                    </mat-error>                               
-                                    <mat-error
+                                      *ngIf=" nroDocumento?.invalid && (nroDocumento?.dirty || nroDocumento?.touched) "
+                                      class="text-danger"
+                                    >
+                                      <mat-error
                                           class="error"
-                                          *ngIf="nroDocumento?.errors?.['required']"
-                                        >El N° de Documento es <strong>requerido.</strong>
+                                          *ngIf="!validarNumeroDocumento()"
+                                        >Formato <strong>incorrecto</strong>  {{ msjErrorDoc }}
+                                      </mat-error>                               
+                                      <mat-error
+                                            class="error"
+                                            *ngIf="nroDocumento?.errors?.['required']"
+                                          >El N° de Documento es <strong>requerido.</strong>
+                                      </mat-error>
                                     </mat-error>
                             </div>
                                   <!--------Input Nombre de Cliente ----------->
@@ -162,22 +165,27 @@
                               <input matInput type="tel"placeholder="351 210 9815" id="telefono" [formControl]="telefono" required>
                               <mat-icon matSuffix>phone_in_talk</mat-icon>
                             </mat-form-field>
-                            <mat-error  *ngIf="telefono?.invalid && (telefono?.dirty || telefono?.touched)">
-                            </mat-error>
-                            <mat-error  *ngIf="telefono?.errors?.['required']">
-                              El teléfono es <strong>requerido.</strong>
-                            </mat-error>
-                            <mat-error  *ngIf="telefono?.errors?.['pattern']">
-                              El número de teléfono es inválido. Los formatos permitidos son: '1234567890', '123-4567890', '1234-567890' o '1234-56-7890'
+                            <mat-error  *ngIf="telefono?.invalid && (telefono?.dirty || telefono?.touched)">                            
+                              <mat-error  *ngIf="telefono?.errors?.['required']">
+                                El teléfono es <strong>requerido.</strong>
+                              </mat-error>
+                              <mat-error  *ngIf="telefono?.errors?.['pattern']">
+                                El número de teléfono es inválido. Los formatos permitidos son: '1234567890', '123-4567890', '1234-567890' o '1234-56-7890'
+                              </mat-error>
                             </mat-error>
                           </div>
                           <br>
                           <br>
+                          <br>
+                          <br>
+                          <br>
+                                   
                           <div
                                   class="col-6"
                                   style="display: flex; justify-content: center"
                                 >
-                                  <div class="example-button-row">
+                                  <div class="modal-footer example-button-row">
+                                    
                                     <button
                                       mat-fab
                                       extended
@@ -185,6 +193,7 @@
                                       type="submit"
                                       class="btn btnGuardar"
                                       data-bs-toggle="button"
+                                      data-bs-target="#staticBackdrop"
                                       (click)="registarCliente()"
                                     >
                                       Registrar Cliente 
