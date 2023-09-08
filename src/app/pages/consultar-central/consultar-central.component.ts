@@ -515,7 +515,7 @@ private cambiarEstadoCentral(centralConsulta: CentralConsultaClass, estIdSelecci
         );
       },
       (error) => {
-        this.mostrarMensajeError('No es posible modificar el estado de esta central, el IMEI ya está en uso.');
+        this.mostrarMensajeError('No es posible modificar esta central, el IMEI ya está en uso.');
       }
     );
   }

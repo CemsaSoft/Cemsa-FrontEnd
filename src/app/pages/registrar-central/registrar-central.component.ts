@@ -591,7 +591,7 @@ export class RegistrarCentralComponent implements OnInit, AfterViewInit  {
         },
         (error) => {
             Swal.fire({
-                text: 'No es posible modificar el estado de esta central, el IMEI ya está en uso.',
+                text: 'No es posible registrar esta central, el IMEI ya está en uso.',
                 icon: 'error',
                 position: 'center',
                 showConfirmButton: true,
