@@ -301,6 +301,11 @@ export class ConsultarPanelesMonitoreoComponent implements OnInit {
       );
     });
 
+    this.MedicionesTablaFiltrados = this.MedicionesTablaFiltrados.filter(medicion => {
+      const servicio = this.ServiciosGraficar.find(servicio => servicio.serId === medicion.medSer);
+      return servicio;        
+    });
+
     this.dataSourceMediciones = new MatTableDataSource(this.MedicionesTablaFiltrados);
     if (this.paginatorMediciones) {
       this.dataSourceMediciones.paginator = this.paginatorMediciones;
@@ -391,6 +396,11 @@ export class ConsultarPanelesMonitoreoComponent implements OnInit {
         );
       });
 
+      this.MedicionesTablaFiltrados = this.MedicionesTablaFiltrados.filter(medicion => {
+        const servicio = this.ServiciosGraficar.find(servicio => servicio.serId === medicion.medSer);
+        return servicio;        
+      });
+      
       this.dataSourceMediciones = new MatTableDataSource(this.MedicionesTablaFiltrados);
       if (this.paginatorMediciones) {
         this.dataSourceMediciones.paginator = this.paginatorMediciones;
@@ -552,7 +562,13 @@ export class ConsultarPanelesMonitoreoComponent implements OnInit {
     this.medicionesConsultar.obtenerMediciones(this.centralNroSeleccionada, desde, hasta).subscribe(data => {
       this.Mediciones = data; 
       this.MedicionesTabla = data; 
+
       this.MedicionesTablaFiltrados = data;
+      
+      this.MedicionesTablaFiltrados = this.MedicionesTablaFiltrados.filter(medicion => {
+        const servicio = this.ServiciosGraficar.find(servicio => servicio.serId === medicion.medSer);
+        return servicio;        
+      });
 
       this.dataSourceMediciones = new MatTableDataSource(this.MedicionesTablaFiltrados);
       if (this.paginatorMediciones) {
@@ -564,7 +580,6 @@ export class ConsultarPanelesMonitoreoComponent implements OnInit {
       }  
 
       const contenedor = document.getElementById('contenedor-graficos')!;
-
       if ( (this.op1G && this.ServiciosGraficar.length > 1) || (this.op1G && !this.ingresoDireViento && this.ServiciosGraficar.length === 1) ) {
         this.Mediciones = this.Mediciones.filter(medicion => {
           const servicio = this.ServiciosGraficar.find(servicio => servicio.serId === medicion.medSer);
