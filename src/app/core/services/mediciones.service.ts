@@ -2,12 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { MedicionesClass } from '../models/mediciones';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MedicionesService {
-   private url: string ='https://localhost:7155/api/mediciones';
+  private baseUrl: string = environment.baseUrl;
+   private url: string =`${this.baseUrl}api/mediciones`;
 
   constructor(private http: HttpClient) { 
   }

@@ -4,13 +4,15 @@ import { UsuarioClass } from '../models/usuario';
 import { Observable } from 'rxjs';
 import jwt_decode from 'jwt-decode'; // npm i jwt-decode
 import * as moment from 'moment'; // npm i moment
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UsuarioService {
+  private baseUrl: string = environment.baseUrl;
   token: string = '';
-  url: string = 'https://localhost:7155/usuario';
+  url: string = `${this.baseUrl}usuario`;
 
   constructor(private http: HttpClient) {}
 

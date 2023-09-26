@@ -2,12 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { FumigacionesClass } from '../models/fumigaciones';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FumigacionesService {
-   private url: string ='https://localhost:7155/api/fumigaciones';
+  private baseUrl: string = environment.baseUrl;
+   private url: string =`${this.baseUrl}api/fumigaciones`;
    fumigacionesSeleccionada: any;
 
   constructor(private http: HttpClient) { 

@@ -2,12 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AlarmaConfigClass } from '../models/alarmaConfig';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AlarmaConfigService {
-   private url: string ='https://localhost:7155/api/alarmaConfig';
+  private baseUrl: string = environment.baseUrl;
+   private url: string =`${this.baseUrl}api/alarmaConfig`;
    //centralSeleccionada: any;
 
   constructor(private http: HttpClient) { 
