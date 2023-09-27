@@ -297,9 +297,14 @@ export class ConsultarMedicionesActualesComponent implements OnInit {
         graficoDiv.id = graficoId;
         graficoDiv.style.width = '300px';
         graficoDiv.style.height = '300px';
+        graficoDiv.style.background = '#fefefe';
+        graficoDiv.style.marginRight = '20px';
+        graficoDiv.style.marginTop = '10px';
+        graficoDiv.style.marginBottom = '10px';
+        graficoDiv.style.borderRadius = '10px';
       
         const cartelTitulo = document.createElement('div');    
-        if (this.MedicionesConsulta[i].serTipoGrafico === 1) { cartelTitulo.textContent = 'HUMEDAD DE SUELO '; }
+        if (this.MedicionesConsulta[i].serTipoGrafico === 1) { cartelTitulo.textContent = 'HUMEDAD DE SUELO ' ; cartelTitulo.style.fontSize = '16px'; }
         if (this.MedicionesConsulta[i].serTipoGrafico === 2) { cartelTitulo.textContent = 'HUMEDAD AMBIENTE'; }
         if (this.MedicionesConsulta[i].serTipoGrafico === 3) { cartelTitulo.textContent = 'TEMPERATURA'; }        
         if (this.MedicionesConsulta[i].serTipoGrafico === 4) { cartelTitulo.textContent = 'VELOCIDAD DEL VIENTO'; }
