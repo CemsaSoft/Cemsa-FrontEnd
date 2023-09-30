@@ -494,3 +494,10 @@
   color: #01C3CC;
   font-size: 18px;  
 }
+.cartelTitulo {
+  background-color: #f7f9fa23;
+  color: #01C3CC;
+  font-size: 18px;
+  width: 237px ;
+  height: 59px ;
+}
