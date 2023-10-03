@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment';
 })
 export class ClienteService {
   private baseUrl: string = environment.baseUrl;
-   private url: string =`${this.baseUrl}api/client`;
+   private url: string =`${this.baseUrl}api/cliente`;
    centralSeleccionada: any;
 
   constructor(private http: HttpClient) { 
