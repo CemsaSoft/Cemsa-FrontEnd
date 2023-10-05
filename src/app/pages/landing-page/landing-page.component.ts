@@ -1,7 +1,7 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit, AfterViewInit, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 
-// declare const Particles: any; 
+declare var particlesJS: any;
 declare const $: any;
 // Inicialización de la página de navegación
 class NavigationPage {
@@ -10,10 +10,7 @@ class NavigationPage {
   tabContainerHeight = 70;
   lastScroll = 0;
   constructor() {
-    // this.currentId = null;
-    // this.currentTab = null;
-    // this.tabContainerHeight = 70;
-    // this.lastScroll = 0;
+
     let self = this;
     $(".nav-tab").click((event: Event) => { // Usar una función de flecha aquí
       self.onTabClick(event, $(this));
@@ -81,20 +78,7 @@ class NavigationPage {
   findCurrentTabSelector(element: any) {
     let newCurrentId = null;
     let newCurrentTab;
-    // let self = this;
-    // $(".nav-tab").each((index: number, tab: any) => {
-    //   let id = $(tab).attr("href");
-    //   let offsetTop = $(id).offset().top - this.tabContainerHeight;
-    //   let offsetBottom =
-    //     $(id).offset().top + $(id).height() - this.tabContainerHeight;
-    //   if (
-    //     $(window).scrollTop() > offsetTop &&
-    //     $(window).scrollTop() < offsetBottom
-    //   ) {
-    //     newCurrentId = id;
-    //     newCurrentTab = $(tab);
-    //   }
-    // });
+
   
     if (this.currentId != newCurrentId || this.currentId === null) {
       this.currentId = newCurrentId;
@@ -120,36 +104,164 @@ class NavigationPage {
   templateUrl: './landing-page.component.html',
   styleUrls: ['./landing-page.component.css']
 })
-export class LandingPageComponent implements OnInit {
+export class LandingPageComponent implements OnInit, AfterViewInit {
   currentId : any;
   longText = `The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog
   from Japan.`;
-  constructor(private router: Router) { }
+  constructor(private router: Router, private el: ElementRef) { }
   ngOnInit() {
-    // Inicialización de Particles
-//     const particles = Particles.init({
-//       selector: ".background",
-//       color: ["#03dac6", "#ff0266", "#000000"],
-//   connectParticles: true,
-//   responsive: [
-//     {
-//       breakpoint: 768,
-//       options: {
-//         color: ["#faebd7", "#03dac6", "#ff0266"],
-//         maxParticles: 43,
-//         connectParticles: false
-//       }
-//     }
-//   ]
-// });
-    
-    // new NavigationPage();
+
   }
-  // @HostListener('window:keydown', ['$event'])
-  // handleKeyboardEvent(event: KeyboardEvent) {
-  //   if (event.key === 'Enter') {
-  //     this.router.navigate(['/ingresar-usuario']);
-  //   }
-  // }
+  ngAfterViewInit(): void {
+    this.initParticles();
+  }
+  initParticles(): void {
+    particlesJS('particles-js', {
+      // Configuración de las partículas
+      // particles: {
+      //   color: ['50D42C', '50D42C', '50D42C'], // Arreglo de colores
+      //   connectParticles: true,
+      //   responsive: [
+      //     {
+      //       breakpoint: 768,
+      //       options: {
+      //         color: ['faebd7', '03dac6', 'ff0266'],
+      //         maxParticles: 43,
+      //         connectParticles: false
+      //       }
+      //     }
+      //   ],
+      //   move: {
+      //     enable: true,
+      //     speed: 4,
+      //     direction: 'none',
+      //     random: true,
+      //     straight: false,
+      //     outMode: 'out',
+      //     bounce: false,
+      //     attract: {
+      //       enable: false,
+      //       rotateX: 600,
+      //       rotateY: 1200
+      //     }
+      //   }
+      // }
+      particles: {
+        number: {
+          value: 35,
+          density: {
+            enable: true,
+            value_area: 400
+          }
+        },
+        color: {
+          value: '#ffffff' // Cambia el color de las partículas aquí
+        },
+        shape: {
+          type: 'circle',
+          stroke: {
+            width: 0,
+            color: '#000000'
+          },
+          polygon: {
+            nb_sides: 5
+          },
+          image: {
+            src: 'img/github.svg',
+            width: 100,
+            height: 100
+          }
+        },
+        opacity: {
+          value: 0.5,
+          random: false,
+          anim: {
+            enable: false,
+            speed: 1,
+            opacity_min: 0.1,
+            sync: false
+          }
+        },
+        size: {
+          value: 3,
+          random: true,
+          anim: {
+            enable: false,
+            speed: 40,
+            size_min: 0.1,
+            sync: false
+          }
+        },
+        line_linked: {
+          enable: true,
+          distance: 150,
+          color: '#7BE10A',
+          // #33B6F6 , #7BE10A
+          opacity: 0.4,
+          width: 1
+        },
+        
+        move: {
+          enable: true,
+          speed: 6,
+          direction: 'none',
+          random: false,
+          straight: false,
+          out_mode: 'out',
+          bounce: false,
+          attract: {
+            enable: false,
+            rotateX: 600,
+            rotateY: 1200
+          }
+        }
+      },
+      interactivity: {
+        detect_on: 'canvas',
+        events: {
+          onhover: {
+            enable: true,
+            mode: 'repulse'
+          },
+          onclick: {
+            enable: true,
+            mode: 'push'
+          },
+          resize: true
+        },
+        modes: {
+          grab: {
+            distance: 400,
+            line_linked: {
+              opacity: 1
+            }
+          },
+          bubble: {
+            distance: 400,
+            size: 40,
+            duration: 2,
+            opacity: 8,
+            speed: 3
+          },
+          repulse: {
+            distance: 200,
+            duration: 0.4
+          },
+          push: {
+            particles_nb: 4
+          },
+          remove: {
+            particles_nb: 2
+          }
+        }
+      },
+      retina_detect: true
+    });
+  }
+ 
+
+  
+  
+  
 
 }
