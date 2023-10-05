@@ -221,18 +221,19 @@ export class ConsultarReportesComponent implements OnInit {
         fechaSeleccionada.setHours(0, 0, 0, 0);
         hasta = fechaSeleccionada;        
       }
-      
+      let nroPag = 0;
       // Crear el documento PDF
       const doc = new jsPDF();//('p', 'mm', 'A4'); // Tipo de hoja A4
 
       // Obtener la ruta de la imagen
-      const imagePath = 'assets/logo_sinfondo55.png';
+      //const imagePath = 'assets/logo_sinfondo55.png';
+      const imagePath = 'assets/logoCEMSA_reporte.png';
       // Cargar la imagen utilizando la biblioteca FileSaver.js
       const imagePromise = this.loadImage(imagePath);
       let yPos =0;
       imagePromise.then((imageData) => {
         // Agregar la imagen al documento PDF
-        doc.addImage(imageData, 'PNG', 120, 0, 80, 20);  
+        doc.addImage(imageData, 'PNG', 125, 2, 65, 17);  
 
       // Obtener la fecha actual
       const currentDate = new Date().toLocaleDateString().replace(/\//g, '-');
@@ -283,43 +284,77 @@ export class ConsultarReportesComponent implements OnInit {
       yPos += 10;
       doc.text('Cantidad de Medediciones: ' + this.formReporte.get('cantMed')?.value, 20, yPos);
 
-      yPos += 10;
-      let yRef = yPos;
-      doc.text('Máximo Valor: ', 20, yPos);
-      yPos += 10;
-      for (let i = 0; i < this.MedMax.length; i++) {
-        const fechaHora = new Date(this.MedMax[i].medFechaHoraSms);
-        const fechaFormateada = `${fechaHora.getFullYear()}/${(fechaHora.getMonth() + 1).toString().padStart(2, '0')}/${fechaHora.getDate().toString().padStart(2, '0')} ${fechaHora.getHours().toString().padStart(2, '0')}:${fechaHora.getMinutes().toString().padStart(2, '0')}`;    
-        doc.circle(25, yPos -1 , 1, 'FD');
-        doc.text('Fecha: ' + fechaFormateada + ' - Valor: ' + this.MedMax[i].medValor.toString(), 25 + 5, yPos);    
-        yPos += 10;
-      }
-
-
-      yPos = yRef;
-      doc.text('Mínimo Valor: ', 110, yPos);
-      yPos += 10;
-      for (let i = 0; i < this.MedMin.length; i++) {
-        const fechaHora = new Date(this.MedMin[i].medFechaHoraSms);
-        const fechaFormateada = `${fechaHora.getFullYear()}/${(fechaHora.getMonth() + 1).toString().padStart(2, '0')}/${fechaHora.getDate().toString().padStart(2, '0')} ${fechaHora.getHours().toString().padStart(2, '0')}:${fechaHora.getMinutes().toString().padStart(2, '0')}`;    
-        doc.circle(115, yPos -1, 1, 'FD');
-        doc.text('Fecha: ' + fechaFormateada + ' - Valor: ' + this.MedMin[i].medValor.toString(), 115 + 5, yPos);    
-        yPos += 10;
-      }
-
-
 
       doc.line(20, 280, doc.internal.pageSize.getWidth()-20, 280);
-      doc.text('Página 1', 98,  285); 
+      nroPag++;
+      doc.text('Página ' + nroPag, 98, 285);
+
+      yPos += 10;      
+      doc.text('Máximo Valor: ', 20, yPos);
+      doc.text('Mínimo Valor: ', 110, yPos);
+      yPos += 10;
+      
+      const maxDataLength = Math.max(this.MedMax.length, this.MedMin.length);      
+      console.log(maxDataLength);
+
+      let itemMaxMin = 1;
+      for (let i = 0; i < maxDataLength; i++) {
+          if (i < this.MedMax.length) {
+              const fechaHoraMax = new Date(this.MedMax[i].medFechaHoraSms);
+              const fechaFormateadaMax = `${fechaHoraMax.getFullYear()}/${(fechaHoraMax.getMonth() + 1).toString().padStart(2, '0')}/${fechaHoraMax.getDate().toString().padStart(2, '0')} ${fechaHoraMax.getHours().toString().padStart(2, '0')}:${fechaHoraMax.getMinutes().toString().padStart(2, '0')}`;            
+              doc.circle(25, yPos - 1, 1, 'FD');
+              doc.text('Fecha: ' + fechaFormateadaMax + ' - Valor: ' + this.MedMax[i].medValor.toString(), 30, yPos);
+          }
+      
+          if (i < this.MedMin.length) {
+              const fechaHoraMin = new Date(this.MedMin[i].medFechaHoraSms);
+              const fechaFormateadaMin = `${fechaHoraMin.getFullYear()}/${(fechaHoraMin.getMonth() + 1).toString().padStart(2, '0')}/${fechaHoraMin.getDate().toString().padStart(2, '0')} ${fechaHoraMin.getHours().toString().padStart(2, '0')}:${fechaHoraMin.getMinutes().toString().padStart(2, '0')}`;            
+              doc.circle(115, yPos - 1, 1, 'FD');
+              doc.text('Fecha: ' + fechaFormateadaMin + ' - Valor: ' + this.MedMin[i].medValor.toString(), 120, yPos);
+          }
+
+          if ((i === 11 || itemMaxMin === 24) && i != maxDataLength-1)
+          {
+            console.log(i);
+            itemMaxMin = 0;
+            //Agrego Nueva Pagina
+            doc.addPage();
+
+            // Agregar la imagen al documento PDF
+            doc.addImage(imageData, 'PNG', 125, 2, 65, 17);  
+            
+            doc.line(20, 280, doc.internal.pageSize.getWidth()-20, 280);
+            nroPag++;
+            doc.text('Página ' + nroPag, 98, 285);
+
+            // Definir la posición inicial para dibujar el contenido
+            yPos = 15;
+                  
+            // Agregar el título al documento
+            doc.setFontSize(18);
+            doc.text(title, 20, yPos);
+            yPos += 5;
+            doc.line(20, yPos, doc.internal.pageSize.getWidth()-20, yPos);
+            yPos += 10;
+            doc.setFontSize(12);
+          }
+          else { 
+            yPos += 10;
+            itemMaxMin++;
+          }
+      }
+      
+      
 
       //Agrego Nueva Pagina
       doc.addPage();
 
       // Agregar la imagen al documento PDF
-      doc.addImage(imageData, 'PNG', 120, 0, 80, 20);  
+      doc.addImage(imageData, 'PNG', 125, 2, 65, 17);  
       
       doc.line(20, 280, doc.internal.pageSize.getWidth()-20, 280);
-      doc.text('Página 2', 98,  285);
+      nroPag++;
+      doc.text('Página ' + nroPag, 98, 285);
 
       // Definir la posición inicial para dibujar el contenido
       yPos = 15;
@@ -357,17 +392,17 @@ export class ConsultarReportesComponent implements OnInit {
           doc.text(this.formReporte.get('comentario')?.value, 20, yPos);
         }
           //Generar reporte de las mediciones
-          let nroPag = 2;
+
           let count = 0;
           if (this.op1T) {
 
             // Agregar nueva página
             doc.addPage();
-            nroPag++;
             // Agregar la imagen al documento PDF
-            doc.addImage(imageData, 'PNG', 120, 0, 80, 20);
+            doc.addImage(imageData, 'PNG', 125, 2, 65, 17);  
             doc.setFontSize(12);
             doc.line(20, 280, doc.internal.pageSize.getWidth() - 20, 280);
+            nroPag++;
             doc.text('Página ' + nroPag, 98, 285);
 
             // Definir la posición inicial para dibujar el contenido en la nueva página
@@ -411,7 +446,7 @@ export class ConsultarReportesComponent implements OnInit {
                 doc.addPage();
                 nroPag++;
                 // Agregar la imagen al documento PDF
-                doc.addImage(imageData, 'PNG', 120, 0, 80, 20);
+                doc.addImage(imageData, 'PNG', 125, 2, 65, 17);  
                 doc.setFontSize(12);
                 doc.line(20, 280, doc.internal.pageSize.getWidth() - 20, 280);
                 doc.text('Página ' + nroPag, 98, 285);
