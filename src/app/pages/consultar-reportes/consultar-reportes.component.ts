@@ -275,14 +275,14 @@ export class ConsultarReportesComponent implements OnInit {
       yPos += 10;
 
       doc.setFontSize(12);
-      doc.text('Datos Estadisticos: ', 20, yPos);
+      doc.text('Datos Estadísticos: ', 20, yPos);
       yPos += 10;
       doc.text('Fecha desde: ' + desde.toLocaleDateString() + '   -   Fecha hasta: ' + hasta.toLocaleDateString(), 20, yPos);
       yPos += 10;
       
       doc.text('Promedio: ' + this.formReporte.get('promedio')?.value, 20, yPos);
       yPos += 10;
-      doc.text('Cantidad de Medediciones: ' + this.formReporte.get('cantMed')?.value, 20, yPos);
+      doc.text('Cantidad de Mediciones: ' + this.formReporte.get('cantMed')?.value, 20, yPos);
 
 
       doc.line(20, 280, doc.internal.pageSize.getWidth()-20, 280);
@@ -372,7 +372,7 @@ export class ConsultarReportesComponent implements OnInit {
       yPos += 15;
 
       doc.setFontSize(16);
-      doc.text('Grafico: ',20, yPos);
+      doc.text('Gráfico: ',20, yPos);
       yPos += 5;
 
       // Obtener el elemento del reporte
