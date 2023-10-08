@@ -262,7 +262,7 @@ export class RegistrarClienteComponent implements OnInit {
           Swal.fire({
             text: 'Se ha Registrado el Cliente: '+ this.formRegistar.get('cliApeNomDen')?.value,
             icon: 'success',
-            position: 'top',
+            position: 'center',
             showConfirmButton: true,
             confirmButtonColor: '#0f425b',
             confirmButtonText: 'Aceptar',
@@ -277,7 +277,7 @@ export class RegistrarClienteComponent implements OnInit {
             Swal.fire({
               text: error.error,
               icon: 'error',
-              position: 'top',
+              position: 'center',
               showConfirmButton: true,
               confirmButtonColor: '#0f425b',
               confirmButtonText: 'Aceptar',
@@ -286,7 +286,7 @@ export class RegistrarClienteComponent implements OnInit {
             Swal.fire({
               text: 'No es posible Registar el Cliente',
               icon: 'error',
-              position: 'top',
+              position: 'center',
               showConfirmButton: true,
               confirmButtonColor: '#0f425b',
               confirmButtonText: 'Aceptar',
