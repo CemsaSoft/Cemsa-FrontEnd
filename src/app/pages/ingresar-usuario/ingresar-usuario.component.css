@@ -179,7 +179,7 @@ form .icon{
 form input[type="text"],form input[type="password"] {
     padding:0.63em 0.8em 0.8em 0;
     font-size:1.4em;
-    color:#c2c2c2;
+    /* color:#c2c2c2; */
     width:324px;
 }
 

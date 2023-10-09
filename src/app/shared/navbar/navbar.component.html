@@ -110,7 +110,7 @@
             <div class="demo-section" class="espaciadoCampana">
              
               <mat-icon
-                *ngIf="cantAlarma !== 1"
+                *ngIf="rol != 1"
                 [matBadge]="cantAlarma"
                 matBadgeColor="warn"
                 (click)="openConsultarAlarma()"
